@@ -4,11 +4,27 @@ import { Input } from 'react-native-elements'
 import { Icon, Button } from 'react-native-elements'
 import { useState, createRef, useEffect } from 'react'
 import { router } from 'expo-router';
+import { useSession } from '../context/ctx';
 
 export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const session = useSession();
+    const signIn = session?.signIn
+    const processAccessToken = session?.processAccessToken
+
+    const onPressSignIn = () => {
+        // TODO: Comunicarse con el backend para iniciar sesión
+        
+
+        // TODO: Caso feliz, se obtuvo un access token
+        const accessToken = 'myUserName-myEmail'
+        signIn?.(accessToken);
+        processAccessToken?.(accessToken)
+        router.replace('/home');
+    }
 
     const onPressOpenEye = () => {
         setSecureTextEntry(false)
@@ -72,7 +88,6 @@ export default function Page() {
             title="Iniciar sesión"
             disabled={signInDisabled()}
             loading={false}
-            // loadingProps={{ size: 'small', color: 'white' }}
             buttonStyle={styles.buttonStyle}
             titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
             containerStyle={{
@@ -81,7 +96,7 @@ export default function Page() {
                 width: 200,
                 marginVertical: 10,
             }}
-            onPress={() => console.log('aye')} />
+            onPress={onPressSignIn} />
     }
 
     const onPressForgotPassword = () => {
@@ -104,6 +119,7 @@ export default function Page() {
             {renderPasswordInput()}
             {renderSignInButton()}
             {renderForgotPasswordText()}
+
         </View>
     )
 }

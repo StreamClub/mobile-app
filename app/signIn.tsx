@@ -34,8 +34,13 @@ export default function Page() {
         setSecureTextEntry(true)
     }
 
+    const emailIsValid = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     const signInDisabled = () => {
-        return email.length === 0 || password.length === 0
+        return email.length === 0 || password.length === 0 || !emailIsValid(email)
     }
 
     const getPasswordIcon = () => {

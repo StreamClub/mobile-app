@@ -3,6 +3,7 @@ import { Link, Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-rou
 import { router } from 'expo-router';
 import { useSession } from '../context/ctx';
 import { useEffect } from 'react';
+import { InitialScreen } from '../components/InitialScreen';
 
 export default function Index() {
     const session = useSession();
@@ -20,12 +21,7 @@ export default function Index() {
         return <Redirect href="/home" />;
     } else {
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Bienvenido a StreamClub</Text>
-                <Link href="/signUp">Crear cuenta</Link>
-                <Link href="/signIn">Iniciar sesión</Link>
-                {accessToken ? <Text>Sesión iniciada</Text> : <Text>Sesión cerrada</Text>}
-            </View>
+            <InitialScreen />
         );
     }
 }

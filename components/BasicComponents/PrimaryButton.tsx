@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 import * as Font from 'expo-font';
 import { ButtonParams } from './Types/ButtonParams';
 
-export const SecondaryButton = (params: ButtonParams) => {
+export const PrimaryButton = (params: ButtonParams) => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const SecondaryButton = (params: ButtonParams) => {
   }
 
   return (
-    <Button mode="contained" buttonColor='#677486' labelStyle={styles.secondaryButton} onPress={params.onPress}>
+    <Button mode="contained" buttonColor='#C51221' labelStyle={styles.secondaryButton} onPress={params.onPress}>
       {params.buttonText}
     </Button>
   )

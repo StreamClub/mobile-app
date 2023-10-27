@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import * as Font from 'expo-font';
-import { ButtonParams } from './Types/ButtonParams';
+import { TextParams } from './Types/TextParams';
 
-export const SecondaryButton = (params: ButtonParams) => {
+export const TitleText = (params: TextParams) => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
@@ -22,22 +22,19 @@ export const SecondaryButton = (params: ButtonParams) => {
   }
 
   return (
-    <Button mode="contained" buttonColor='#677486' labelStyle={styles.secondaryButton} onPress={params.onPress}>
-      {params.buttonText}
-    </Button>
+    <Text style={styles.textStyle}>
+      {params.body}
+    </Text>
   )
 }
 
 const styles = StyleSheet.create(
   {
-    secondaryButton: {
-      color: "#FFFFFF",
+    textStyle: {
+      color: "#000000",
       fontFamily: "Proxima-Nova",
       fontSize: 24,
-      width: 185,
       height: 30,
-      textAlign: 'center',
-      textAlignVertical: 'center',
     }
   }
 )

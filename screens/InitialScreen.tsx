@@ -1,29 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Image } from 'react-native';
 import { StyleSheet } from 'react-native';
-import * as Font from 'expo-font';
-import { SecondaryButton } from './BasicComponents/SecondaryButton';
-import { PrimaryButton } from './BasicComponents/PrimaryButton';
+import { SecondaryButton } from '../components/BasicComponents/SecondaryButton';
+import { PrimaryButton } from '../components/BasicComponents/PrimaryButton';
 import { router } from 'expo-router';
-import { TitleText } from './BasicComponents/TitleText';
+import { TitleText } from '../components/BasicComponents/TitleText';
 
 export const InitialScreen = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    const loadFont = async () => {
-      await Font.loadAsync({
-        'Proxima-Nova': require('../assets/fonts/proxima-nova-regular.otf'),
-      });
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
-
-  if (!fontLoaded) {
-    return null; // You can return a loading indicator or any other component while the font is loading
-  }
-
   return (
     <View style={styles.initalScreen}>
       <Image

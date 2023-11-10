@@ -1,3 +1,5 @@
 export type TextParams = {
-  body: string
+  body: string,
+  color?: string,
+  style?: object
 }

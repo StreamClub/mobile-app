@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { Appbar } from 'react-native-paper';
 import { Stack } from 'expo-router';
 import { SessionProvider } from '../../context/ctx';
-import { StyleSheet } from 'react-native';
+import { SignUpHeader } from '../../components/SignUpHeader';
 
 export default function SignUpLayout() {
     return(
         <SessionProvider>
-            <Appbar.Header style={styles.header}>
-                <Appbar.BackAction onPress={() => {}} />
-                <Appbar.Content title="Sumate a Stream Club" />
-            </Appbar.Header>
+            <SignUpHeader />
             <Stack
                 screenOptions={{
                     headerStyle: {
@@ -26,10 +22,3 @@ export default function SignUpLayout() {
         </SessionProvider>
     )
 }
-
-const styles = StyleSheet.create({
-    header: {
-      backgroundColor: '#C51221',
-      fontFamily: 'Arial, sans-serif',
-    },
-});

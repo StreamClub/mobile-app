@@ -21,8 +21,10 @@ export const TitleText = (params: TextParams) => {
     return null;
   }
 
+  const textColor = params.color || "#000000";
+
   return (
-    <Text style={styles.textStyle}>
+    <Text style={[styles.textStyle, { color: textColor }, params.style]}>
       {params.body}
     </Text>
   )
@@ -31,7 +33,6 @@ export const TitleText = (params: TextParams) => {
 const styles = StyleSheet.create(
   {
     textStyle: {
-      color: "#000000",
       fontFamily: "Proxima-Nova",
       fontSize: 24,
       height: 30,

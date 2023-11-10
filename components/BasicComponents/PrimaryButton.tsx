@@ -21,8 +21,18 @@ export const PrimaryButton = (params: ButtonParams) => {
     return null;
   }
 
+  const buttonSize = {
+    small: { width: 185, height: 30, fontSize: 24 },
+    medium: { width: 100, height: 20, fontSize: 16 },
+    big: { width: 185, height: 30, fontSize: 24 },
+  }[params.size] || { width: 124, height: 20, fontSize: 16 };
+
   return (
-    <Button mode="contained" buttonColor='#C51221' labelStyle={styles.secondaryButton} onPress={params.onPress}>
+    <Button 
+      mode="contained"
+      buttonColor='#C51221'
+      labelStyle={[styles.secondaryButton, buttonSize]}
+      onPress={params.onPress}>
       {params.buttonText}
     </Button>
   )
@@ -33,9 +43,6 @@ const styles = StyleSheet.create(
     secondaryButton: {
       color: "#FFFFFF",
       fontFamily: "Proxima-Nova",
-      fontSize: 24,
-      width: 185,
-      height: 30,
       textAlign: 'center',
       textAlignVertical: 'center',
     }

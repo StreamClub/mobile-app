@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: 389,
     height: 400,
-    marginBottom: 20, // Adjust as needed
+    marginBottom: 20,
   },
 });

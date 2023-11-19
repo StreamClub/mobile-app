@@ -1,5 +1,5 @@
 export type ButtonParams = {
   buttonText: string;
   size: 'small' | 'medium' | 'big';
-  onPress: () => void;
+  onPress: (...params: any[]) => void;
 }

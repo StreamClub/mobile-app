@@ -25,7 +25,7 @@ export const PrimaryButton = (params: ButtonParams) => {
     small: { width: 185, height: 30, fontSize: 24 },
     medium: { width: 100, height: 20, fontSize: 16 },
     big: { width: 185, height: 30, fontSize: 24 },
-  }[params.size] || { width: 124, height: 20, fontSize: 16 };
+  }[params.size] || { width: 100, height: 20, fontSize: 16 };
 
   return (
     <Button 

@@ -1,5 +1,8 @@
 {
-    "backend": "https://uapi.onrender.com",
+    "api": {
+        "url": "https://uapi.onrender.com",
+        "defaultErrorMessage": "Algo salió mal... :("
+    },
     "signUp": {
         "invalidEmaiError": "Ingrese un email válido.",
         "passwordsNotMatch": "Las contraseñas deben ser iguales."

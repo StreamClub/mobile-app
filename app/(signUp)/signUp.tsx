@@ -45,6 +45,7 @@ export default function Page() {
             } else {
                 response.json().then(json => {
                     console.log(json)
+                    //signIn?.token(json["token"])
                     setShowSuccessMessage(true);
                     setShowErrorMessage(false);
                 })

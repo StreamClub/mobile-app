@@ -6,7 +6,7 @@ import { BodyText } from '../components/BasicComponents/BodyText';
 import { PrimaryButton } from '../components/BasicComponents/PrimaryButton';
 import { SecondaryButton } from '../components/BasicComponents/SecondaryButton';
 import { TextInputMask } from 'react-native-masked-text';
-const config = require('../config.json');
+import config from '../config.json';
 
 type SignUpParams = {
   onNext: (email: string, password: string) => void;
@@ -19,6 +19,7 @@ export const SignUpScreen = (params: SignUpParams) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidBirth, setIsValidBirth] = useState(true);
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -91,7 +92,7 @@ export const SignUpScreen = (params: SignUpParams) => {
             style={styles.input}
             textColor='#FFFFFF'
             activeUnderlineColor="#000000"
-            render={props =>
+            render={(props) =>
               <TextInputMask
                 type={'datetime'}
                 options={{
@@ -106,7 +107,11 @@ export const SignUpScreen = (params: SignUpParams) => {
       <View style={styles.buttons}>
         <SecondaryButton buttonText='Cancelar' onPress={() => console.log("Next")} size='medium'/>
         <View style={{ marginHorizontal: 5 }} />
-        <PrimaryButton buttonText='Siguiente' onPress={() => params.onNext(email, password)} size='medium'/>
+        <PrimaryButton 
+          buttonText='Siguiente' 
+          onPress={() => params.onNext(email, password)} 
+          disabled={!(email && password && isValidEmail && passwordsMatch && isValidBirth)} 
+          size='medium'/>
       </View>
     </View>
   )

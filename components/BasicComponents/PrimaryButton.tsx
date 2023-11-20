@@ -32,7 +32,8 @@ export const PrimaryButton = (params: ButtonParams) => {
       mode="contained"
       buttonColor='#C51221'
       labelStyle={[styles.secondaryButton, buttonSize]}
-      onPress={params.onPress}>
+      onPress={params.onPress}
+      disabled={params.disabled || false}>
       {params.buttonText}
     </Button>
   )

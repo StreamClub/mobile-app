@@ -8,7 +8,6 @@ export default function Index() {
     const accessToken = session?.accessToken
     const processAccessToken = session?.processAccessToken
 
-
     useEffect(() => {
         if (accessToken) {
             processAccessToken?.(accessToken);

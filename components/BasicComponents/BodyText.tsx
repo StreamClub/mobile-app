@@ -35,6 +35,7 @@ const styles = StyleSheet.create(
     textStyle: {
       fontFamily: "Proxima-Nova",
       fontSize: 16,
+      lineHeight: 24,
     }
   }
 )

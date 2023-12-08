@@ -6,11 +6,11 @@ import { TextInput } from 'react-native-paper';
 import { PrimaryButton } from '../components/BasicComponents/PrimaryButton';
 
 type EmailConfirmParams = {
-    onSubmit: (validationCode: string) => void;
+    onSubmit: (validationCode: number) => void;
 }
 
 export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
-    const [validationCode, setValidationCode] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
 
     return(
         <View style={styles.signUpScreen}>
@@ -23,8 +23,10 @@ export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
                     style={styles.input}
                     textColor='#FFFFFF'
                     activeUnderlineColor="#000000"
-                    value={validationCode}
-                    onChangeText={(text) => {setValidationCode(text)}}
+                    value={verificationCode}
+                    onChangeText={(text) => {setVerificationCode(text)}}
+                    maxLength={6}
+                    keyboardType="numeric"
                 />
                 <BodyText body='Ingrese su código aquí' color='#000000' />
             </View>
@@ -35,7 +37,7 @@ export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
             <View style={styles.column}>
                 <PrimaryButton 
                     buttonText='Confirmar código' 
-                    onPress={() => {params.onSubmit(validationCode)}} 
+                    onPress={() => {params.onSubmit(Number(verificationCode))}} 
                     size='big'/>
             </View>
         </View>
@@ -56,6 +58,8 @@ const styles = StyleSheet.create({
     input: {
         margin: 14,
         backgroundColor: '#548496',
+        width: 200,
+        textAlign: "center"
     },
     inputView: {
         alignItems: 'center',

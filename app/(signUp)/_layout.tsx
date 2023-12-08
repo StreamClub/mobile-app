@@ -3,6 +3,10 @@ import { Stack } from 'expo-router';
 import { SessionProvider } from '../../context/ctx';
 import { SignUpHeader } from '../../components/SignUpHeader';
 
+export const unstable_settings = {
+    initialRouteName: 'index',
+  };
+
 export default function SignUpLayout() {
     return(
         <SessionProvider>

@@ -2,14 +2,12 @@ import React from 'react';
 import { Appbar, Avatar } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { TitleText } from './BasicComponents/TitleText';
-import { useNavigation } from "expo-router";
+import { router } from 'expo-router';
 
 export const SignUpHeader = () => {
-    const navigation = useNavigation();
-
     return (
         <Appbar.Header style={styles.header}>
-            <Appbar.BackAction onPress={() => console.log("FALTA IMPLEMENTAR")} />
+            <Appbar.BackAction onPress={() => router.back()} />
             <View style={styles.titleText}>
                 <TitleText body="Sumate a" color='#FFFFFF'/>
                 <TitleText body="Stream Club" color='#FFFFFF'/>

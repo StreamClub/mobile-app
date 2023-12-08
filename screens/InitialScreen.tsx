@@ -17,10 +17,10 @@ export const InitialScreen = () => {
         <TitleText body='Bienvenido a Stream Club' />
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton buttonText='Iniciar sesión' onPress={() => router.replace('/signIn')}  size='big'/>
+        <PrimaryButton buttonText='Iniciar sesión' onPress={() => router.push('/signIn')}  size='big'/>
       </View>
       <View style={styles.buttonContainer}>
-        <SecondaryButton buttonText='Crear cuenta' onPress={() => router.replace('/signUp')}  size='big'/>
+        <SecondaryButton buttonText='Crear cuenta' onPress={() => router.push('/signUpStep1')}  size='big'/>
       </View>
     </View>
   );

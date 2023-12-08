@@ -5,8 +5,8 @@ import { InitialScreen } from '../screens/InitialScreen';
 
 export default function Index() {
     const session = useSession();
-    const accessToken = session?.accessToken
-    const processAccessToken = session?.processAccessToken
+    const accessToken = session?.accessToken;
+    const processAccessToken = session?.processAccessToken;
 
     useEffect(() => {
         if (accessToken) {

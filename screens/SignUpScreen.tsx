@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   formCard: {
     height: 400,
     width: 314,
-    backgroundColor: colors.secondaryBlue,
+    backgroundColor: colors.primarySkyBlue,
   },
   input: {
     margin: 14,

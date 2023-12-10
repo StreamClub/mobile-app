@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import * as Font from 'expo-font';
-import { TextParams } from './Types/TextParams';
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
+import * as Font from "expo-font";
+import { TextParams } from "./Types/TextParams";
+import { colors } from "../../assets";
 
 export const TitleText = (params: TextParams) => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -10,32 +11,30 @@ export const TitleText = (params: TextParams) => {
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
-        'Proxima-Nova': require('../../assets/fonts/proxima-nova-regular.otf'),
+        "Proxima-Nova": require("../../assets/fonts/proxima-nova-regular.otf"),
       });
       setFontLoaded(true);
     };
     loadFont();
   }, []);
 
-  if(!fontLoaded) {
+  if (!fontLoaded) {
     return null;
   }
 
-  const textColor = params.color || "#000000";
+  const textColor = params.color || colors.primaryBlack;
 
   return (
     <Text style={[styles.textStyle, { color: textColor }, params.style]}>
       {params.body}
     </Text>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create(
-  {
-    textStyle: {
-      fontFamily: "Proxima-Nova",
-      fontSize: 24,
-      height: 30,
-    }
-  }
-)
+const styles = StyleSheet.create({
+  textStyle: {
+    fontFamily: "Proxima-Nova",
+    fontSize: 24,
+    height: 30,
+  },
+});

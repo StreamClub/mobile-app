@@ -31,7 +31,7 @@ export const SecondaryButton = (params: ButtonParams) => {
   return (
     <Button
       mode="contained"
-      buttonColor="#677486"
+      buttonColor={colors.primaryGrey}
       labelStyle={[styles.secondaryButton, buttonSize]}
       onPress={params.onPress}
     >

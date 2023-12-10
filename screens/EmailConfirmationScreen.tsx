@@ -37,7 +37,7 @@ export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
       </View>
       <View style={styles.column}>
         <BodyText body="No recibiste tu código?" color={colors.primaryBlack} />
-        <BodyText body="Volver a enviar código" color="#4193A6" />
+        <BodyText body="Volver a enviar código" color={colors.secondaryBlue} />
       </View>
       <View style={styles.column}>
         <PrimaryButton

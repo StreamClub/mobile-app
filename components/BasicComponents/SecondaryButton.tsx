@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import * as Font from 'expo-font';
-import { ButtonParams } from './Types/ButtonParams';
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import * as Font from "expo-font";
+import { ButtonParams } from "./Types/ButtonParams";
+import { colors } from "../../assets";
 
 export const SecondaryButton = (params: ButtonParams) => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -10,14 +11,14 @@ export const SecondaryButton = (params: ButtonParams) => {
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
-        'Proxima-Nova': require('../../assets/fonts/proxima-nova-regular.otf'),
+        "Proxima-Nova": require("../../assets/fonts/proxima-nova-regular.otf"),
       });
       setFontLoaded(true);
     };
     loadFont();
   }, []);
 
-  if(!fontLoaded) {
+  if (!fontLoaded) {
     return null;
   }
 
@@ -28,23 +29,22 @@ export const SecondaryButton = (params: ButtonParams) => {
   }[params.size] || { width: 100, height: 20, fontSize: 16 };
 
   return (
-    <Button 
-      mode="contained" 
-      buttonColor='#677486' 
-      labelStyle={[styles.secondaryButton, buttonSize]} 
-      onPress={params.onPress}>
+    <Button
+      mode="contained"
+      buttonColor="#677486"
+      labelStyle={[styles.secondaryButton, buttonSize]}
+      onPress={params.onPress}
+    >
       {params.buttonText}
     </Button>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create(
-  {
-    secondaryButton: {
-      color: "#FFFFFF",
-      fontFamily: "Proxima-Nova",
-      textAlign: 'center',
-      textAlignVertical: 'center',
-    }
-  }
-)
+const styles = StyleSheet.create({
+  secondaryButton: {
+    color: colors.primaryWhite,
+    fontFamily: "Proxima-Nova",
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+});

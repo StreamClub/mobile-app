@@ -1,13 +1,18 @@
 import React from 'react';
 import { useStorageState } from './useStorageState';
+import { isLoading } from 'expo-font';
 
+// import jwt from 'jsonwebtoken';r
+
+// Context values are declare here
 const AuthContext = React.createContext<{ 
-    signIn: (accessToken: string) => void; 
+    signIn: (accessToken: string, refreshToken: string) => void; 
     signOut: () => void; 
-    accessToken?: string | null, 
+    accessToken?: string | null,
+    refreshToken?: string | null,
     isLoading: boolean,
     
-    processAccessToken: (token: string) => void,
+    processTokens: (accessToken: string, refreshToken: string) => void,
     username: string,
     email: string,
     
@@ -25,41 +30,46 @@ export function useSession() {
     return value;
 }
 
-// export function processAccessToken(token: string) {
-//     
-//     console.log('TODO: Procesar access token')
-// }
-
 type SessionProviderProps = {
     children: React.ReactNode;
 };
 
 export function SessionProvider(props: SessionProviderProps) {
-    const [[isLoading, accessToken], setAccessToken] = useStorageState('session');
+    const [[isLoading_AT, accessToken], setAccessToken] = useStorageState('accessToken');
+    const [[isLoading_RT, refreshToken], setRefreshToken] = useStorageState('refreshToken');
+
+    const isLoading = isLoading_AT && isLoading_RT
 
     const [username, setUsername] = React.useState<string>("");
     const [email, setEmail] = React.useState<string>("");
 
-    const processAccessToken = (token: string) => {
-        //TODO: procesar payload y guardarlo en el contexto (username, etc)
-        const separator = "-";
-        const parts = token.split(separator);
-        setUsername(parts[0]);
-        setEmail(parts[1]);
+    // Tokens are received and saved in the context. 
+    // The relevant information from their payloads are alse saved in the context 
+    const processTokens = (accessToken: string, refreshToken: string) => {
+        // const payload = jwt.decode(accessToken)
+        // console.log(payload)
+
+        setUsername("user name aqui");
+        setEmail("mail aqui");
     }
 
     const values = {
-        signIn: (accessToken: string) => {
+        signIn: (accessToken: string, refreshToken: string) => {
             setAccessToken(accessToken);
+            setRefreshToken(refreshToken);
+            
+            processTokens(accessToken, refreshToken);
         },
         signOut: () => {
             setAccessToken(null);
+            setRefreshToken(null);
         },
 
         accessToken,
+        refreshToken,
         isLoading,
 
-        processAccessToken,
+        processTokens,
         username, 
         email
     }

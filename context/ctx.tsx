@@ -1,8 +1,7 @@
 import React from 'react';
 import { useStorageState } from './useStorageState';
 import { isLoading } from 'expo-font';
-
-// import jwt from 'jsonwebtoken';r
+import { Buffer } from "buffer"
 
 // Context values are declare here
 const AuthContext = React.createContext<{ 
@@ -46,11 +45,13 @@ export function SessionProvider(props: SessionProviderProps) {
     // Tokens are received and saved in the context. 
     // The relevant information from their payloads are alse saved in the context 
     const processTokens = (accessToken: string, refreshToken: string) => {
-        // const payload = jwt.decode(accessToken)
-        // console.log(payload)
+        const parts = accessToken.split('.').map(
+            part => Buffer.from(part.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString()
+        );
+        const payload = JSON.parse(parts[1]);
 
-        setUsername("user name aqui");
-        setEmail("mail aqui");
+        setUsername("PENDIENTE");
+        setEmail(payload.email);
     }
 
     const values = {

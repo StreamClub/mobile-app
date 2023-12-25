@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-
+import React from 'react';
 import { useSession } from '../../context/ctx';
 
 export default function Index() {

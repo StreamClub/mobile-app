@@ -128,6 +128,10 @@ export default function Page() {
         )
     }
 
+    // const renderErrorMessage() {
+
+    // }
+
     return (
         <View style={styles.container}>
 
@@ -136,6 +140,7 @@ export default function Page() {
             {renderSignInButton()}
             {renderForgotPasswordText()}
 
+            {/* {signInFailed && renderErrorMessage()} */}
         </View>
     )
 }

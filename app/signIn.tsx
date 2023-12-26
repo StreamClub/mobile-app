@@ -9,6 +9,8 @@ import { useSession } from '../context/ctx';
 import axios from 'axios'
 import React from 'react'
 
+import { logIn, logInBody } from '../apiCalls/auth'
+
 export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [email, setEmail] = useState('')
@@ -21,7 +23,7 @@ export default function Page() {
     axios.defaults.baseURL = 'https://uapi.onrender.com'
     
 
-    const onPressSignIn = () => {
+    const _onPressSignIn = () => {
         // TODO: Comunicarse con el backend para iniciar sesión
         console.log('Iniciando sesión..')
         axios.post('/auth/login', {
@@ -35,6 +37,27 @@ export default function Page() {
         }, (error) => {
             console.log(error);
         });
+    }
+
+    const onSuccessLogIn = (response: any) => {
+        const accessToken = response.data.token
+        const refreshToken = response.data.refreshToken
+        signIn?.(accessToken, refreshToken)
+        router.replace('/home');
+    }
+    
+    const onFailureLogIn = (error: any) => {
+        console.log(error);
+    }
+
+    const onPressSignIn = () => {
+        console.log('Iniciando sesión..')
+        const body: logInBody = { email, password }
+        logIn(
+            body,
+            onSuccessLogIn,
+            onFailureLogIn
+        )
     }
 
     const onPressOpenEye = () => {

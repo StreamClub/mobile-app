@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 const config = require('../../config.json');
 
 import { signUp, sendVerificationCodeBody } from '../../apiCalls/auth'
+import { signUpStep2ParamsType } from './signUpStep2'
 
 export default function Page() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -19,7 +20,7 @@ export default function Page() {
     const onSuccessSignUp = (response: any) => {
         setShowSuccessMessage(true);
         setShowErrorMessage(false);
-        const data = { email, password, birthDate }
+        const data: signUpStep2ParamsType = { email, password, birthDate }
         router.push({ pathname: '/signUpStep2', params: data });
         
     }

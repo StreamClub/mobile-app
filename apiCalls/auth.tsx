@@ -3,6 +3,8 @@ import { AxiosResponse } from 'axios';
 
 axios.defaults.baseURL = 'https://uapi.onrender.com'
 
+
+// --------- --------- --------- --------- --------- ---------
 export type logInBody = {
     email: string,
     password: string
@@ -17,6 +19,8 @@ export function logIn(body: logInBody, onSuccess: (response: AxiosResponse<any, 
     });
 }
 
+
+// --------- --------- --------- --------- --------- ---------
 export type sendVerificationCodeBody = {
     email: string
 }
@@ -30,10 +34,22 @@ export function signUp(body: sendVerificationCodeBody, onSuccess: (response: Axi
     });
 }
 
-// fetch(config.api.url + "/users/sendVerificationCode", {
-//     method: 'POST',
-//     headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({"email": email})
+
+// --------- --------- --------- --------- --------- ---------
+export type RegisterBodyType = {
+    email: string,
+    password: string,
+    verificationCode: number
+}
+
+export function register(body: RegisterBodyType, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
+    axios.post('/auth/register', body).then(
+        (response) => {
+            onSuccess(response)
+        }, (error) => {
+            onFailure(error)
+    });
+}
+
+
+// --------- --------- --------- --------- --------- ---------

@@ -6,15 +6,18 @@ import { useSession } from '../../context/ctx';
 
 export default function AppLayout() {
 
-    const accessToken = useSession()?.accessToken
-    const isLoading = useSession()?.isLoading
+
+    const session = useSession()
+
+    const accessToken = session?.accessToken
+    const isLoading = session?.isLoading
 
     // Loading Screen
     if (isLoading) {
         return <Text>Loading...</Text>;
     }
 
-    if (!accessToken) {
+    if (!(accessToken)) {
         return <Redirect href="/" />;
     }
 

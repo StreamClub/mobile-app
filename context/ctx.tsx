@@ -2,7 +2,6 @@ import React from 'react';
 import { useStorageState } from './useStorageState';
 import { Buffer } from "buffer"
 
-
 const AuthContext = React.createContext<{ 
     signIn: (accessToken: string, refreshToken: string) => void; 
     signOut: () => void; 
@@ -80,7 +79,7 @@ export function SessionProvider(props: SessionProviderProps) {
         // Context data is shared from here
         // ---------- ---------- ---------- ---------- ----------
         username, 
-        email
+        email,
         // ---------- ---------- ---------- ---------- ----------
     }
 

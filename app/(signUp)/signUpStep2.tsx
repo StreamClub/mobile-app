@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Snackbar } from 'react-native-paper';
 import { EmailConfirmationScreen } from '../../screens/EmailConfirmationScreen';
 import { router, useLocalSearchParams } from 'expo-router';
 const config = require('../../config.json');
 
 import { register, RegisterBodyType } from '../../apiCalls/auth'
+import { useSession } from '../../context/ctx';
+
 
 export type signUpStep2ParamsType = {
     email: string;
@@ -19,10 +21,17 @@ export default function Page() {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const createAccountBody = useLocalSearchParams<signUpStep2ParamsType>();
 
+    const session = useSession();
+    const signIn = session?.signIn
+
     const onSucesssRegister = (response: any) => {
         setShowSuccessMessage(true);
         setShowErrorMessage(false);
-        router.push('/home')
+
+        const { token, refreshToken } = response.data
+        
+        signIn?.(token, refreshToken)
+        router.replace('/home');
     }
 
     const onFailureRegister = (error: any) => {
@@ -38,6 +47,7 @@ export default function Page() {
             "password": createAccountBody.password,
             "verificationCode": verificationCode
         }
+
         register(
             body,
             onSucesssRegister,

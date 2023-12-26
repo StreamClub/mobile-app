@@ -37,6 +37,7 @@ export default function Page() {
         email = _email
         password = _password
         birthDate = _birthDate
+        
         signUp(
             body,
             onSuccessSignUp,

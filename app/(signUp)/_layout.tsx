@@ -9,7 +9,7 @@ export const unstable_settings = {
 
 export default function SignUpLayout() {
     return(
-        <SessionProvider>
+        <>
             <SignUpHeader />
             <Stack
                 screenOptions={{
@@ -23,6 +23,6 @@ export default function SignUpLayout() {
                     headerShown: false,
                 }}
             />
-        </SessionProvider>
+        </>
     )
 }

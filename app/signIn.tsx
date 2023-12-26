@@ -18,26 +18,8 @@ export default function Page() {
 
     const session = useSession();
     const signIn = session?.signIn
-    // const processTokens = session?.processTokens
 
     axios.defaults.baseURL = 'https://uapi.onrender.com'
-    
-
-    const _onPressSignIn = () => {
-        // TODO: Comunicarse con el backend para iniciar sesión
-        console.log('Iniciando sesión..')
-        axios.post('/auth/login', {
-            email: 'scapelli@fi.uba.ar',
-            password: '123',
-        }).then((response) => {
-            const accessToken = response.data.token
-            const refreshToken = response.data.refreshToken
-            signIn?.(accessToken, refreshToken)
-            router.replace('/home');
-        }, (error) => {
-            console.log(error);
-        });
-    }
 
     const onSuccessLogIn = (response: any) => {
         const accessToken = response.data.token

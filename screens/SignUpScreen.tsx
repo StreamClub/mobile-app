@@ -10,7 +10,7 @@ import config from "../config.json";
 import { colors } from "../assets";
 
 type SignUpParams = {
-  onNext: (email: string, password: string) => void;
+  onNext: (email: string, password: string, birthDate: string) => void;
 };
 
 export const SignUpScreen = (params: SignUpParams) => {
@@ -21,6 +21,7 @@ export const SignUpScreen = (params: SignUpParams) => {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidBirth, setIsValidBirth] = useState(true);
+  const [birthDate, setbirthDate] = useState("");
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -111,6 +112,9 @@ export const SignUpScreen = (params: SignUpParams) => {
                 {...props}
               />
             )}
+            onChangeText={(date) => {
+              setbirthDate(date);
+            }}
           />
         </Card.Content>
       </Card>
@@ -123,7 +127,7 @@ export const SignUpScreen = (params: SignUpParams) => {
         <View style={{ marginHorizontal: 5 }} />
         <PrimaryButton
           buttonText="Siguiente"
-          onPress={() => params.onNext(email, password)}
+          onPress={() => params.onNext(email, password, birthDate)}
           disabled={
             !(
               email &&

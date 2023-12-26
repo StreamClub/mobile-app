@@ -1,19 +1,23 @@
 import React from 'react';
 import { useStorageState } from './useStorageState';
+import { Buffer } from "buffer"
 
 const AuthContext = React.createContext<{ 
-    signIn: (accessToken: string) => void; 
+    signIn: (accessToken: string, refreshToken: string) => void; 
     signOut: () => void; 
-    accessToken?: string | null, 
+    processTokens: (accessToken: string, refreshToken: string) => void,
+    accessToken?: string | null,
+    refreshToken?: string | null,
     isLoading: boolean,
     
-    processAccessToken: (token: string) => void,
+    // Context data is declared here
+    // ---------- ---------- ---------- ---------- ----------
     username: string,
     email: string,
-    
+    // ---------- ---------- ---------- ---------- ----------
 } | null> (null);
 
-// This hook can be used to access the user info.
+
 export function useSession() {
     const value = React.useContext(AuthContext);
     if (process.env.NODE_ENV !== 'production') {
@@ -25,43 +29,58 @@ export function useSession() {
     return value;
 }
 
-// export function processAccessToken(token: string) {
-//     
-//     console.log('TODO: Procesar access token')
-// }
-
 type SessionProviderProps = {
     children: React.ReactNode;
 };
 
 export function SessionProvider(props: SessionProviderProps) {
-    const [[isLoading, accessToken], setAccessToken] = useStorageState('session');
+    const [[isLoading_AT, accessToken], setAccessToken] = useStorageState('accessToken');
+    const [[isLoading_RT, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
+    const isLoading = isLoading_AT && isLoading_RT
+
+    // Context data seters are declared here
+    // ---------- ---------- ---------- ---------- ----------
     const [username, setUsername] = React.useState<string>("");
     const [email, setEmail] = React.useState<string>("");
+    // ---------- ---------- ---------- ---------- ----------
 
-    const processAccessToken = (token: string) => {
-        //TODO: procesar payload y guardarlo en el contexto (username, etc)
-        const separator = "-";
-        const parts = token.split(separator);
-        setUsername(parts[0]);
-        setEmail(parts[1]);
+    const processTokens = (accessToken: string, refreshToken: string) => {
+        const parts = accessToken.split('.').map(
+            part => Buffer.from(part.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString()
+        );
+        const payload = JSON.parse(parts[1]);
+
+        // Context data is initialized here
+        // ---------- ---------- ---------- ---------- ----------
+        setUsername(payload.username);
+        setEmail(payload.email);
+        // ---------- ---------- ---------- ---------- ----------
     }
 
     const values = {
-        signIn: (accessToken: string) => {
+        signIn: (accessToken: string, refreshToken: string) => {
             setAccessToken(accessToken);
+            setRefreshToken(refreshToken);
+            
+            processTokens(accessToken, refreshToken);
         },
         signOut: () => {
             setAccessToken(null);
+            setRefreshToken(null);
         },
 
         accessToken,
+        refreshToken,
         isLoading,
 
-        processAccessToken,
+        processTokens,
+
+        // Context data is shared from here
+        // ---------- ---------- ---------- ---------- ----------
         username, 
-        email
+        email,
+        // ---------- ---------- ---------- ---------- ----------
     }
 
     return (

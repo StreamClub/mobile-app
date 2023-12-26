@@ -2,9 +2,14 @@ import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
 import { Link } from 'expo-router'
 import { Input } from 'react-native-elements'
 import { Icon, Button } from 'react-native-elements'
-import { useState, createRef, useEffect } from 'react'
+import { useState, createRef } from 'react'
 import { router } from 'expo-router';
 import { useSession } from '../context/ctx';
+
+import axios from 'axios'
+import React from 'react'
+
+import { logIn, logInBody } from '../apiCalls/auth'
 
 export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
@@ -13,17 +18,28 @@ export default function Page() {
 
     const session = useSession();
     const signIn = session?.signIn
-    const processAccessToken = session?.processAccessToken
+
+    axios.defaults.baseURL = 'https://uapi.onrender.com'
+
+    const onSuccessLogIn = (response: any) => {
+        const accessToken = response.data.token
+        const refreshToken = response.data.refreshToken
+        signIn?.(accessToken, refreshToken)
+        router.replace('/home');
+    }
+    
+    const onFailureLogIn = (error: any) => {
+        console.log(error);
+    }
 
     const onPressSignIn = () => {
-        // TODO: Comunicarse con el backend para iniciar sesión
-        
-
-        // TODO: Caso feliz, se obtuvo un access token
-        const accessToken = 'myUserName-myEmail'
-        signIn?.(accessToken);
-        processAccessToken?.(accessToken)
-        router.replace('/home');
+        console.log('Iniciando sesión..')
+        const body: logInBody = { email, password }
+        logIn(
+            body,
+            onSuccessLogIn,
+            onFailureLogIn
+        )
     }
 
     const onPressOpenEye = () => {
@@ -117,6 +133,10 @@ export default function Page() {
         )
     }
 
+    // const renderErrorMessage() {
+
+    // }
+
     return (
         <View style={styles.container}>
 
@@ -125,6 +145,7 @@ export default function Page() {
             {renderSignInButton()}
             {renderForgotPasswordText()}
 
+            {/* {signInFailed && renderErrorMessage()} */}
         </View>
     )
 }

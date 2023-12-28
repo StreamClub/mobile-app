@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { useSession } from '../context/ctx';
 import { useEffect } from 'react';
 import { InitialScreen } from '../screens/InitialScreen';
@@ -9,14 +9,17 @@ export default function Index() {
     const accessToken = session?.accessToken;
     const refreshToken = session?.refreshToken;
     const processTokens = session?.processTokens;
+    const signIn = session?.signIn;
 
     useEffect(() => {
         if (accessToken && refreshToken) {
+            console.log('accessToken && refreshToken');
+
             processTokens?.(accessToken, refreshToken);
         }
-    }, [accessToken, processTokens]);
+    }, [accessToken, refreshToken]);
 
-    if (accessToken) {
+    if (accessToken && refreshToken) {
         return <Redirect href="/home" />;
     } else {
         return (

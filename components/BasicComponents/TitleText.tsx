@@ -24,8 +24,14 @@ export const TitleText = (params: TextParams) => {
 
   const textColor = params.color || colors.primaryBlack;
 
+  const titleSize = {
+    big: { fontSize: 30, height: 40 },
+    medium: { fontSize: 28, height: 35 },
+    small: { fontSize: 24, height: 30 },
+  }[params.size || 'small'];
+
   return (
-    <Text style={[styles.textStyle, { color: textColor }, params.style]}>
+    <Text style={[styles.textStyle, titleSize, { color: textColor }, params.style]}>
       {params.body}
     </Text>
   );
@@ -33,8 +39,6 @@ export const TitleText = (params: TextParams) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: "Proxima-Nova",
-    fontSize: 24,
-    height: 30,
+    fontFamily: "Proxima-Nova"
   },
 });

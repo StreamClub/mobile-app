@@ -21,8 +21,7 @@ export default function Page() {
         setShowSuccessMessage(true);
         setShowErrorMessage(false);
         const data: signUpStep2ParamsType = { email, password, birthDate }
-        router.push({ pathname: '/signUpStep2', params: data });
-        
+        router.push({ pathname: '/signUpStep2', params: data }); 
     }
 
     const onFailureSignUp = (error: any) => {
@@ -45,48 +44,6 @@ export default function Page() {
         )
     }
 
-    // const _handleSingUpSubmit = (email: string, password: string) => {
-    //     const createAccountBody = {
-    //         "email": email,
-    //         "password": password
-    //     }
-    //     fetch(config.api.url + "/users/sendVerificationCode", {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({"email": email})
-    //     })
-    //     .then(response => {
-    //         if (!response.ok){
-    //             const contentType = response.headers.get('content-type');
-    //             if(contentType && contentType.includes('application/json')) {
-    //                 response.json().then(json => {
-    //                     let err = new Error(json["error"] || "F");
-    //                     throw err;
-    //                 })
-    //                 .catch(error => {
-    //                     setShowErrorMessage(true);
-    //                     setShowSuccessMessage(false);
-    //                     setErrorMessage(error.message);
-    //                 })
-    //             }
-    //             else {
-    //                 setShowErrorMessage(true);
-    //                 setShowSuccessMessage(false);
-    //                 setErrorMessage(config.api.defaultErrorMessage);
-    //             }
-    //         } else {
-    //             if(response.status == 201) {
-    //                 //signIn?.token(json["token"])
-    //                 setShowSuccessMessage(true);
-    //                 setShowErrorMessage(false);
-    //                 router.push({ pathname: '/signUpStep2', params: createAccountBody });
-    //             }
-    //         }
-    //     })
-    // }
     return (
         <>
             <SignUpScreen onNext={handleSingUpSubmit}/>

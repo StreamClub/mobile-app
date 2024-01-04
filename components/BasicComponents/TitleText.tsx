@@ -39,6 +39,6 @@ export const TitleText = (params: TextParams) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: "Proxima-Nova"
+    fontFamily: "Roboto"
   },
 });

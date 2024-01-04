@@ -14,7 +14,7 @@ export default function Movie() {
         title: '',
         genres: [''],
         poster: '',
-        releaseDate: '',
+        releaseDate: new Date(),
         directors: [''],
         backdrop: ''
     })
@@ -27,7 +27,7 @@ export default function Movie() {
             title: response.data.title,
             genres: response.data.genres,
             poster: response.data.poster,
-            releaseDate: response.data.releaseDate,
+            releaseDate: new Date(response.data.releaseDate),
             //platforms: Array<Platform>,
             directors: response.data.directors,
             backdrop: response.data.backdrop
@@ -38,6 +38,7 @@ export default function Movie() {
 
     const onFailure = (error: any) => {
         console.log(error);
+        console.log(error.description);
     }
 
     useEffect(() => {

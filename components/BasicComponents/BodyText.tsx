@@ -6,26 +6,16 @@ import { TextParams } from "./Types/TextParams";
 import { colors } from "../../assets";
 
 export const BodyText = (params: TextParams) => {
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    const loadFont = async () => {
-      await Font.loadAsync({
-        "Proxima-Nova": require("../../assets/fonts/proxima-nova-regular.otf"),
-      });
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
-
-  if (!fontLoaded) {
-    return null;
-  }
-
   const textColor = params.color || colors.primaryBlack;
 
+  const titleSize = {
+    big: { fontSize: 16, height: 24 },
+    medium: { fontSize: 14, height: 20 },
+    small: { fontSize: 12, height: 18 },
+  }[params.size || 'small'];
+
   return (
-    <Text style={[styles.textStyle, { color: textColor }, params.style]}>
+    <Text style={[styles.textStyle, titleSize, { color: textColor }, params.style]}>
       {params.body}
     </Text>
   );
@@ -33,7 +23,7 @@ export const BodyText = (params: TextParams) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: "Proxima-Nova",
+    fontFamily: "Roboto",
     fontSize: 16,
     lineHeight: 24,
   },

@@ -16,21 +16,25 @@ export default function Movie() {
         poster: '',
         releaseDate: new Date(),
         directors: [''],
-        backdrop: ''
+        backdrop: '',
+        runtime: '',
+        platforms: ['']
     })
     const [movieLoaded, setMovieLoaded] = useState(false)
     const movieId = '24' //DE KILL BILL CAMBIAR CUANDO SE HAGA LA NAVEGACION
 
 
     const onSuccess = (response: any) => {
+        const platforms = response.data.platforms;
         const movieData = {
             title: response.data.title,
             genres: response.data.genres,
             poster: response.data.poster,
             releaseDate: new Date(response.data.releaseDate),
-            //platforms: Array<Platform>,
+            platforms: platforms.map(platform => platform.logo_path),
             directors: response.data.directors,
-            backdrop: response.data.backdrop
+            backdrop: response.data.backdrop,
+            runtime: String(response.data.runtime)
         }
         setMovie(movieData);
         setMovieLoaded(true);

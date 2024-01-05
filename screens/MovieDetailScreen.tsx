@@ -1,21 +1,19 @@
 import React from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image } from 'react-native';
+import { Icon } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
+import { BodyText } from '../components/BasicComponents/BodyText';
 const screenWidth = Dimensions.get('window').width;
-
-type Platform = {
-    logo: string,
-    name: string
-}
 
 type MovieDetails = {
     title: string,
     genres: Array<string>,
     poster: string,
     releaseDate: Date,
-    //platforms: Array<Platform>,
+    platforms: Array<string>,
     directors: Array<string>,
-    backdrop: string
+    backdrop: string,
+    runtime: string
 }
 
 type MovieDetailScreenParams = {
@@ -34,6 +32,14 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                 <View style={styles.textOverlay}>
                     <TitleText body={params.movie.title + '(' + params.movie.releaseDate.getFullYear() + ')'} size='big'/>
                 </View>
+                <View style={styles.director}>
+                    <Icon source="movie-open-outline" size={20}/>
+                    <BodyText body={' ' + params.movie.directors[0]} size='big'/>
+                </View>
+                <View style={styles.runtime}>
+                    <Icon source="timer-outline" size={20}/>
+                    <BodyText body={' ' + params.movie.runtime + ' min'} size='big'/>
+                </View>
                 <View style={styles.imageOverlay}>
                     <Image 
                         source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
@@ -41,6 +47,16 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     />
                 </View>
             </ImageBackground>
+            <View style={styles.platforms}>
+                <BodyText body={"Disponible en:"} size="big"/>
+                <View style={{flexDirection: 'row'}}>
+                    {params.movie.platforms.map( platform => 
+                        <Image 
+                            source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
+                            style={styles.platformImage} />
+                    )}
+                </View>
+            </View>
         </View>
     )
 }
@@ -51,7 +67,7 @@ const styles = StyleSheet.create({
     },
     backdropImage: {
         width: screenWidth,
-        height: 200
+        height: 180
     },
     textOverlay: {
         position: 'absolute',
@@ -73,6 +89,31 @@ const styles = StyleSheet.create({
     darkness: {
         backgroundColor: '#C7D6D990',
         width: screenWidth,
-        height: 200
+        height: 180
     },
+    director: {
+        position: 'absolute',
+        top: 90,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+        flexDirection: 'row'
+    },
+    runtime: {
+        position: 'absolute',
+        top: 125,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+        flexDirection: 'row'
+    },
+    platforms: {
+        margin: 20
+    },
+    platformImage: {
+        width: 50,
+        height: 50,
+        margin: 5,
+        borderWidth: 2,
+        borderColor: 'black',
+        borderRadius: 10,
+    }
 });

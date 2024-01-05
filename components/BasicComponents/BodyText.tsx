@@ -11,7 +11,7 @@ export const BodyText = (params: TextParams) => {
   const titleSize = {
     big: { fontSize: 16, height: 24 },
     medium: { fontSize: 14, height: 20 },
-    small: { fontSize: 12, height: 18 },
+    small: { fontSize: 12, /*height: 18*/ },
   }[params.size || 'small'];
 
   return (

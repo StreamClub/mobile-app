@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image } from 'react-native';
-import { Icon } from 'react-native-paper';
+import { Icon, Divider, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
+import { PrimaryButton } from '../components/BasicComponents/PrimaryButton';
 const screenWidth = Dimensions.get('window').width;
 
 type MovieDetails = {
@@ -13,7 +14,8 @@ type MovieDetails = {
     platforms: Array<string>,
     directors: Array<string>,
     backdrop: string,
-    runtime: string
+    runtime: string,
+    overview: string
 }
 
 type MovieDetailScreenParams = {
@@ -50,10 +52,33 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
             <View style={styles.platforms}>
                 <BodyText body={"Disponible en:"} size="big"/>
                 <View style={{flexDirection: 'row'}}>
-                    {params.movie.platforms.map( platform => 
+                    {params.movie.platforms.map( (platform, index) => 
                         <Image 
                             source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
-                            style={styles.platformImage} />
+                            style={styles.platformImage}
+                            key={index} />
+                    )}
+                </View>
+                <Divider style={styles.divider} />
+            </View>
+            <View style={styles.buttom}>
+                <PrimaryButton 
+                    buttonText="Ver ahora" 
+                    size='medium' 
+                    onPress={() => console.log("Que buena peli estoy viendo")} 
+                    icon="play"/>
+            </View>
+            <View style={styles.description}>
+                <BodyText body={params.movie.overview} />
+                <View style={{flexDirection: 'row'}}>
+                    {params.movie.genres.map((genre, index) => 
+                        <Chip 
+                            key={index} 
+                            style={{margin: 10, backgroundColor: 'transparent', borderColor: 'black'}}
+                            mode="outlined"
+                            textStyle={{ color: 'black' }}>
+                                {genre}
+                        </Chip>
                     )}
                 </View>
             </View>
@@ -67,7 +92,7 @@ const styles = StyleSheet.create({
     },
     backdropImage: {
         width: screenWidth,
-        height: 180
+        height: 170
     },
     textOverlay: {
         position: 'absolute',
@@ -89,7 +114,7 @@ const styles = StyleSheet.create({
     darkness: {
         backgroundColor: '#C7D6D990',
         width: screenWidth,
-        height: 180
+        height: 170
     },
     director: {
         position: 'absolute',
@@ -106,7 +131,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     platforms: {
-        margin: 20
+        marginLeft: 20,
+        marginTop: 5
     },
     platformImage: {
         width: 50,
@@ -115,5 +141,23 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'black',
         borderRadius: 10,
+    },
+    divider: {
+        backgroundColor: 'black',
+        width: 150,
+        height: 1,
+        margin: 10,
+    },
+    buttom: {
+        marginLeft: 25,
+        marginTop: 20
+    },
+    description: {
+        margin: 20,
+        flex: 1,
+        alignItems: 'center'
+    },
+    genres: {
+
     }
 });

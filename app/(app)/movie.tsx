@@ -18,7 +18,8 @@ export default function Movie() {
         directors: [''],
         backdrop: '',
         runtime: '',
-        platforms: ['']
+        platforms: [''],
+        overview: ''
     })
     const [movieLoaded, setMovieLoaded] = useState(false)
     const movieId = '24' //DE KILL BILL CAMBIAR CUANDO SE HAGA LA NAVEGACION
@@ -34,7 +35,8 @@ export default function Movie() {
             platforms: platforms.map(platform => platform.logo_path),
             directors: response.data.directors,
             backdrop: response.data.backdrop,
-            runtime: String(response.data.runtime)
+            runtime: String(response.data.runtime),
+            overview: response.data.overview
         }
         setMovie(movieData);
         setMovieLoaded(true);

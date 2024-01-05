@@ -44,7 +44,6 @@ export default function Movie() {
 
     const onFailure = (error: any) => {
         console.log(error);
-        console.log(error.description);
     }
 
     useEffect(() => {

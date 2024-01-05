@@ -4,6 +4,8 @@ import { Icon, Divider, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
 import { PrimaryButton } from '../components/BasicComponents/PrimaryButton';
+import { colors } from "../assets";
+
 const screenWidth = Dimensions.get('window').width;
 
 type MovieDetails = {
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
     },
     darkness: {
-        backgroundColor: '#C7D6D990',
+        backgroundColor: colors.secondaryWhite + '90',
         width: screenWidth,
         height: 170
     },
@@ -156,8 +158,5 @@ const styles = StyleSheet.create({
         margin: 20,
         flex: 1,
         alignItems: 'center'
-    },
-    genres: {
-
     }
 });

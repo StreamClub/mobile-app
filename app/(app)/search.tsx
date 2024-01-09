@@ -144,6 +144,8 @@ export default function Index() {
         available: true,
         year: '2003',
         score: 4.5,
+        seen: true,
+        inWatchlist: false,
     }
     const movie2: MovieEntry = {
         cover: '/oEbYyyl3w2dptDZCfXr8NHEHFkl.jpg', 
@@ -151,6 +153,8 @@ export default function Index() {
         available: false,
         year: '2003',
         score: 4.5,
+        seen: true,
+        inWatchlist: true,
     }
     const movie3: MovieEntry = {
         cover: '/z9oNYBLNa6f4MyLIkihlDSi1hxe.jpg', 
@@ -158,6 +162,8 @@ export default function Index() {
         available: true,
         year: '2003',
         score: 10,
+        seen: false,
+        inWatchlist: false,
     }
     const movie4: MovieEntry = {
         cover: '/fe80QhoNxp6FnVXdkvSMea73xyj.jpg', 
@@ -165,6 +171,8 @@ export default function Index() {
         available: true,
         year: '1998',
         score: 4.5,
+        seen: false,
+        inWatchlist: true,
     }
     const movie5: MovieEntry = {
         cover: '/5wI2KoZdTwOtZFPyesVRaEEpOOz.jpg', 
@@ -172,6 +180,8 @@ export default function Index() {
         available: false,
         year: '2003',
         score: 4.5,
+        seen: true,
+        inWatchlist: false,
     }
     
     const movieList = [movie1, movie2, movie3, movie4, movie5];

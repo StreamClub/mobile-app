@@ -61,6 +61,9 @@ export default function Index() {
 
     const [movieList, setMovieList] = useState<MovieEntry[]>([]);
 
+    const randomInt = (min: number, max: number) =>
+        Math.floor(Math.random() * (max - min + 1)) + min
+
     const processResponseData = (data: any) => {
         const movieList: MovieEntry[] = []
         const moviesResponse = data.results
@@ -68,11 +71,11 @@ export default function Index() {
             const movieEntry: MovieEntry = {
                 cover: movie.poster_path,
                 title: movie.title,
-                available: true,
+                available: randomInt(0,1) == 1,
                 year: movie.release_date.split('-')[0],
-                score: 5,
-                seen: false,
-                inWatchlist: false,
+                score: randomInt(1,10),
+                seen: randomInt(0,1) == 1,
+                inWatchlist: randomInt(0,1) == 1,
             }
             movieList.push(movieEntry)
         })
@@ -93,7 +96,7 @@ export default function Index() {
     const searchText = (text: string) => {
         console.log('Buscando ' + text + '...');
 
-        const queryParams: QueryParamsBody = { text: text }
+        const queryParams: QueryParamsBody = { query: text }
 
         searchMovies(queryParams, onSuccessSearch, onFailureSearch)
     }

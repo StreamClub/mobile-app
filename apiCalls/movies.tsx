@@ -18,13 +18,16 @@ axios.defaults.baseURL = 'https://capi-xf6o.onrender.com'
 
 // --------- --------- --------- --------- --------- ---------
 export type QueryParamsBody = {
-    text: string,
+    query: string,
 }
 
 export function searchMovies(queryParams: QueryParamsBody, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
-    const config = { params: {query: queryParams.text} }
-    
-    axios.get('/movies/search', config).then(
+    const config = { 
+        headers: {}, 
+        params: queryParams,
+    }
+
+    axios.get(baseURL +'/movies/search', config).then(
         (response) => {
             onSuccess(response)
         }, (error) => {

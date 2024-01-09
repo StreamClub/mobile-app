@@ -142,26 +142,36 @@ export default function Index() {
         cover: '/lfj709InbmljVqAXgUk2qjnujNN.jpg', 
         title: 'Kill Bill Volume 1', 
         available: true,
+        year: '2003',
+        score: 4.5,
     }
     const movie2: MovieEntry = {
         cover: '/oEbYyyl3w2dptDZCfXr8NHEHFkl.jpg', 
         title: 'Kill Bill Volume 2', 
         available: false,
+        year: '2003',
+        score: 4.5,
     }
     const movie3: MovieEntry = {
         cover: '/z9oNYBLNa6f4MyLIkihlDSi1hxe.jpg', 
-        title: 'The Hunger Games: The Ballad of Songbirds & Snakes', 
+        title: 'Los juegos del hambre: balada de pájaros cantores y serpientes', 
         available: true,
+        year: '2003',
+        score: 10,
     }
     const movie4: MovieEntry = {
         cover: '/fe80QhoNxp6FnVXdkvSMea73xyj.jpg', 
         title: 'The Hunger Games: Catching Fire', 
         available: true,
+        year: '1998',
+        score: 4.5,
     }
     const movie5: MovieEntry = {
         cover: '/5wI2KoZdTwOtZFPyesVRaEEpOOz.jpg', 
         title: 'The Hunger Games', 
         available: false,
+        year: '2003',
+        score: 4.5,
     }
     
     const movieList = [movie1, movie2, movie3, movie4, movie5];

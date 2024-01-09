@@ -9,9 +9,10 @@ import { ButtonGroup } from '@rneui/themed'
 
 import { MovieList, MovieEntry } from '../../components/MovieList';
 
+import { QueryParamsBody, searchMovies } from '../../apiCalls/movies';
+
 const MAX_SEARCH_LENGTH = 50;
-
-
+const DELAY_SEARCH = 2000;
 
 export default function Index() {
     const session = useSession();
@@ -28,12 +29,13 @@ export default function Index() {
     const startNewTimer = (newText: string) => {
         setShowLoading(true);
         searchTimerRef.current = setTimeout(() => {
-            console.log('Buscando: ', newText);
-            setShowLoading(false);
-        }, 1000);
+            console.log('[Timer]')
+            searchText(newText)
+        }, DELAY_SEARCH);
     }
 
     const onChangeTextSearched = (newText: string) => {
+        setMovieList([])
         if (newText.length > MAX_SEARCH_LENGTH) 
             return;
         setTextSearched(newText);
@@ -48,6 +50,53 @@ export default function Index() {
 
         startNewTimer(newText);
     };
+
+    const onSubmit = () => {
+        if (textSearched.length < 1) return
+        cancelTimer()
+        console.log('[Submit]');
+        searchText(textSearched)
+
+    }
+
+    const [movieList, setMovieList] = useState<MovieEntry[]>([]);
+
+    const processResponseData = (data: any) => {
+        const movieList: MovieEntry[] = []
+        const moviesResponse = data.results
+        moviesResponse.forEach((movie: any) => {
+            const movieEntry: MovieEntry = {
+                cover: movie.poster_path,
+                title: movie.title,
+                available: true,
+                year: movie.release_date.split('-')[0],
+                score: 5,
+                seen: false,
+                inWatchlist: false,
+            }
+            movieList.push(movieEntry)
+        })
+        setMovieList(movieList)
+    }
+
+    const onSuccessSearch = (response: any) => {
+        console.log('Busqueda exitosa: ');
+        processResponseData(response.data);
+        setShowLoading(false);
+    }
+
+    const onFailureSearch = (error: any) => {
+        console.log(error);
+        setShowLoading(false);
+    }
+
+    const searchText = (text: string) => {
+        console.log('Buscando ' + text + '...');
+
+        const queryParams: QueryParamsBody = { text: text }
+
+        searchMovies(queryParams, onSuccessSearch, onFailureSearch)
+    }
 
     const renderSearchBar = () => {
         return(
@@ -87,6 +136,7 @@ export default function Index() {
                 loadingProps={{
                     color: 'black',
                 }}
+                onSubmitEditing={onSubmit}
             />
         )
     }
@@ -184,11 +234,37 @@ export default function Index() {
         inWatchlist: false,
     }
     
-    const movieList = [movie1, movie2, movie3, movie4, movie5];
+    const _movieList = [movie1, movie2, movie3, movie4, movie5];
     
+    const onMoviePress = (movie: MovieEntry) => {
+        console.log(movie.title + ' pressed');
+    }
+
+    const onSeenPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(movie.title + ' seen pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
+    const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(movie.title + ' watchlist pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
+    const callbacks = {
+        onMoviePress,
+        onSeenPress,
+        onWatchlistPress,
+    }
+
     const renderMovieList = () => {
         return (
-            <MovieList movieList={movieList}/>
+            <MovieList movieList={movieList} callbacks={callbacks}/>
         )
     }
 
@@ -199,9 +275,11 @@ export default function Index() {
             
             {renderSegmentedButton()}
             
-            {/* {renderSearchHistoryTitle()} */}
-
-            {renderMovieList()}
+            {textSearched.length == 0 ?
+                renderSearchHistoryTitle()
+                :
+                renderMovieList()
+            }
         </View>
     )
 }

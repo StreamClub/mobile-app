@@ -14,3 +14,20 @@ export function getMovie(movieId: string, onSuccess: (response: AxiosResponse<an
     });
 }
 
+axios.defaults.baseURL = 'https://capi-xf6o.onrender.com'
+
+// --------- --------- --------- --------- --------- ---------
+export type QueryParamsBody = {
+    text: string,
+}
+
+export function searchMovies(queryParams: QueryParamsBody, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
+    const config = { params: {query: queryParams.text} }
+    
+    axios.get('/movies/search', config).then(
+        (response) => {
+            onSuccess(response)
+        }, (error) => {
+            onFailure(error)
+    });
+}

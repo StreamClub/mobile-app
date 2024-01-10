@@ -52,6 +52,7 @@ export const MovieList = (params: MovieListProps) => {
     // ------------------------------------------------------------
     const renderMovieEntry = (movieEntry: MovieEntry, index: number) => {
         return (
+            <>
             <View
                 key={index}
                 style={styles.movieEntryContainer}
@@ -60,6 +61,8 @@ export const MovieList = (params: MovieListProps) => {
 
                 {renderDetailsSection(movieEntry)}
             </View>
+            <View style={{height: 1, backgroundColor: 'black', width: '90%', marginBottom: 10, alignSelf: 'center'}}></View>
+            </>
         )
     }
 

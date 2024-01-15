@@ -3,7 +3,7 @@ import { View, ImageBackground, StyleSheet, Dimensions, Image } from 'react-nati
 import { Icon, Divider, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
-import { PrimaryButton } from '../components/BasicComponents/PrimaryButton';
+import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 
 const screenWidth = Dimensions.get('window').width;
@@ -64,9 +64,11 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                 <Divider style={styles.divider} />
             </View>
             <View style={styles.buttom}>
-                <PrimaryButton 
+                <CustomButton 
                     buttonText="Ver ahora" 
-                    size='medium' 
+                    buttonSize='medium'
+                    fontSize='medium'
+                    type='primary' 
                     onPress={() => console.log("Que buena peli estoy viendo")} 
                     icon="play"/>
             </View>

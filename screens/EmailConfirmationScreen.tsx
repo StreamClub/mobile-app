@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import { BodyText } from "../components/BasicComponents/BodyText";
 import { TextInput } from "react-native-paper";
-import { PrimaryButton } from "../components/BasicComponents/PrimaryButton";
+import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { colors } from "../assets";
 
 type EmailConfirmParams = {
@@ -40,12 +40,14 @@ export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
         <BodyText body="Volver a enviar código" color={colors.secondaryBlue} />
       </View>
       <View style={styles.column}>
-        <PrimaryButton
+        <CustomButton
           buttonText="Confirmar código"
           onPress={() => {
             params.onSubmit(Number(verificationCode));
           }}
-          size="big"
+          buttonSize="big"
+          fontSize="big"
+          type="primary"
         />
       </View>
     </View>

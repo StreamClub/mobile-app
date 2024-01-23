@@ -22,14 +22,23 @@ const ARTISTS_NAME = 'Artistas'
 const USERS_NAME = 'Usuarios'
 
 const CATEGORIES = [MOVIES_NAME, SERIES_NAME, ARTISTS_NAME, USERS_NAME]
+const INITIAL_CATEGORY = 0
 
-
-export default function Index() {
+export default function Search() {
+    // States
+    // ------------------------------------------------------------
     const session = useSession();
     const [textSearched, setTextSearched] = useState('')
     const searchTimerRef = useRef<NodeJS.Timeout | null>(null);
     const [showLoading, setShowLoading] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
+    const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[INITIAL_CATEGORY]);
+    const [movieList, setMovieList] = useState<MovieEntry[]>([]);
+    // ------------------------------------------------------------
 
+
+    // Text Change and Timer Logic
+    // ------------------------------------------------------------
     const cancelTimer = () => {
         if (searchTimerRef.current) {
             clearTimeout(searchTimerRef.current);
@@ -44,6 +53,13 @@ export default function Index() {
         }, DELAY_SEARCH);
     }
 
+    const onSubmit = () => {
+        if (textSearched.length < 1) return
+        cancelTimer()
+        console.log('[Submit]');
+        searchText(textSearched)
+    }
+    
     const onChangeTextSearched = (newText: string) => {
         setMovieList([])
         if (newText.length > MAX_SEARCH_LENGTH) 
@@ -61,16 +77,26 @@ export default function Index() {
         startNewTimer(newText);
     };
 
-    const onSubmit = () => {
-        if (textSearched.length < 1) return
-        cancelTimer()
-        console.log('[Submit]');
-        searchText(textSearched)
+    const searchText = (text: string) => {
+        console.log('Buscando ' + text + '...');
 
+        const queryParams: SearchParams = { query: text, page: 1}
+
+        if (selectedCategory == MOVIES_NAME) {
+            searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
+        } else if (selectedCategory == SERIES_NAME) {
+            searchSeries(session, queryParams, onSuccessSearch, onFailureSearch)
+        } else if (selectedCategory == ARTISTS_NAME) {
+            searchArtists(session, queryParams, onSuccessSearch, onFailureSearch)
+        } else if (selectedCategory == USERS_NAME) {
+            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
+        }
     }
+    // ------------------------------------------------------------
 
-    const [movieList, setMovieList] = useState<MovieEntry[]>([]);
 
+    // Process Response Data
+    // ------------------------------------------------------------
     const randomInt = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -92,7 +118,11 @@ export default function Index() {
         })
         setMovieList(movieList)
     }
+    // ------------------------------------------------------------
 
+
+    // onSuccess and onFailure callbacks
+    // ------------------------------------------------------------
     const onSuccessSearch = (response: any) => {
         console.log('Busqueda exitosa: ');
 
@@ -109,23 +139,48 @@ export default function Index() {
         console.log(error);
         setShowLoading(false);
     }
+    // ------------------------------------------------------------
 
-    const searchText = (text: string) => {
-        console.log('Buscando ' + text + '...');
 
-        const queryParams: SearchParams = { query: text, page: 1}
+    // OnPress Handlers
+    // ------------------------------------------------------------
+    const onSegmentedButtonPress = (value: number) => {
+        onChangeTextSearched("")
 
-        if (selectedCategory == MOVIES_NAME) {
-            searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
-        } else if (selectedCategory == SERIES_NAME) {
-            searchSeries(session, queryParams, onSuccessSearch, onFailureSearch)
-        } else if (selectedCategory == ARTISTS_NAME) {
-            searchArtists(session, queryParams, onSuccessSearch, onFailureSearch)
-        } else if (selectedCategory == USERS_NAME) {
-            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
-        }
+        setSelectedIndex(value);
+        setSelectedCategory(CATEGORIES[value]);
     }
 
+    const onMoviePress = (movie: MovieEntry) => {
+        console.log(movie.title + ' pressed');
+        
+        const params: MovieDetailsParams = {
+            id: movie.id,
+        }
+
+        router.push({ pathname: '/movie', params});
+    }
+
+    const onSeenPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(movie.title + ' seen pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
+    const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(movie.title + ' watchlist pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+    // ------------------------------------------------------------
+
+
+    // Render functions
+    // ------------------------------------------------------------
     const renderSearchBar = () => {
         return(
             <SearchBar
@@ -168,18 +223,7 @@ export default function Index() {
             />
         )
     }
-
-    const initialCategory = 0
-    const [selectedIndex, setSelectedIndex] = useState(initialCategory);
-    const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[initialCategory]);
-
-    const onSegmentedButtonPress = (value: number) => {
-        onChangeTextSearched("")
-
-        setSelectedIndex(value);
-        setSelectedCategory(CATEGORIES[value]);
-    }
-
+    
     const renderSegmentedButton = () => {
         return (
             <ButtonGroup
@@ -221,45 +265,21 @@ export default function Index() {
             </Text>
         )
     }
-    
-    const onMoviePress = (movie: MovieEntry) => {
-        console.log(movie.title + ' pressed');
-        
-        const params: MovieDetailsParams = {
-            id: movie.id,
-        }
-
-        router.push({ pathname: '/movie', params});
-    }
-
-    const onSeenPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-        console.log(movie.title + ' seen pressed');
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    }
-
-    const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-        console.log(movie.title + ' watchlist pressed');
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    }
-
-    const callbacks = {
-        onMoviePress,
-        onSeenPress,
-        onWatchlistPress,
-    }
 
     const renderMovieList = () => {
+        const callbacks = {
+            onMoviePress,
+            onSeenPress,
+            onWatchlistPress,
+        }
         return (
             <MovieList movieList={movieList} callbacks={callbacks}/>
         )
     }
+    // ------------------------------------------------------------
 
+    // Main render screen
+    // ------------------------------------------------------------
     return (
         <View style={styles.container}>
             

@@ -7,4 +7,5 @@ export type ButtonParams = {
   style?: object;
   icon?: string; 
   type: 'primary' | 'secondary';
+  loading?: boolean;
 }

@@ -38,6 +38,8 @@ export const SignUpScreen = (params: SignUpParams) => {
         setIsPasswordVisible((prev) => !prev);
     };
 
+    const [loading, setLoading] = useState(false);
+
     return (
         <View style={styles.signUpScreen}>
             <BodyText
@@ -137,7 +139,10 @@ export const SignUpScreen = (params: SignUpParams) => {
                 <View style={{ marginHorizontal: 5 }} />
                 <CustomButton
                     buttonText="Siguiente"
-                    onPress={() => params.onNext(email, password, birthDate)}
+                    onPress={() => {
+                        params.onNext(email, password, birthDate)
+                        setLoading(true)
+                    }}
                     disabled={
                         !(
                             email &&
@@ -150,6 +155,7 @@ export const SignUpScreen = (params: SignUpParams) => {
                     fontSize="medium"
                     buttonSize="medium"
                     type='primary'
+                    loading={loading}
                 />
             </View>
         </View>

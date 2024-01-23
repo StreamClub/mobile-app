@@ -8,13 +8,21 @@ import { useState, createRef, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
 import { MovieList, MovieEntry } from '../../components/MovieList';
 
-import { SearchParams, searchMovies } from '../../apiCalls/movies';
+import { SearchParams, searchMovies, searchSeries, searchArtists, searchUsers } from '../../apiCalls/movies';
 import { MovieDetailsParams } from './movie';
 
 import { router } from 'expo-router';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 2000;
+
+const MOVIES_NAME = 'Películas'
+const SERIES_NAME = 'Series'
+const ARTISTS_NAME = 'Artistas'
+const USERS_NAME = 'Usuarios'
+
+const CATEGORIES = [MOVIES_NAME, SERIES_NAME, ARTISTS_NAME, USERS_NAME]
+
 
 export default function Index() {
     const session = useSession();
@@ -66,7 +74,7 @@ export default function Index() {
     const randomInt = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min
 
-    const processResponseData = (data: any) => {
+    const processMovieResponseData = (data: any) => {
         const movieList: MovieEntry[] = []
         const moviesResponse = data.results
         moviesResponse.forEach((movie: any) => {
@@ -87,7 +95,13 @@ export default function Index() {
 
     const onSuccessSearch = (response: any) => {
         console.log('Busqueda exitosa: ');
-        processResponseData(response.data);
+
+        if (selectedCategory == MOVIES_NAME) {
+            processMovieResponseData(response.data);
+        } else {
+            console.log('TODO: Procesar respuesta');
+        
+        }
         setShowLoading(false);
     }
 
@@ -101,7 +115,15 @@ export default function Index() {
 
         const queryParams: SearchParams = { query: text, page: 1}
 
-        searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
+        if (selectedCategory == MOVIES_NAME) {
+            searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
+        } else if (selectedCategory == SERIES_NAME) {
+            searchSeries(session, queryParams, onSuccessSearch, onFailureSearch)
+        } else if (selectedCategory == ARTISTS_NAME) {
+            searchArtists(session, queryParams, onSuccessSearch, onFailureSearch)
+        } else if (selectedCategory == USERS_NAME) {
+            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
+        }
     }
 
     const renderSearchBar = () => {
@@ -147,16 +169,23 @@ export default function Index() {
         )
     }
 
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const initialCategory = 0
+    const [selectedIndex, setSelectedIndex] = useState(initialCategory);
+    const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[initialCategory]);
+
+    const onSegmentedButtonPress = (value: number) => {
+        onChangeTextSearched("")
+
+        setSelectedIndex(value);
+        setSelectedCategory(CATEGORIES[value]);
+    }
 
     const renderSegmentedButton = () => {
         return (
             <ButtonGroup
-                buttons={['Películas', 'Series', 'Artistas', 'Usuarios']}
+                buttons={CATEGORIES}
                 selectedIndex={selectedIndex}
-                onPress={(value) => {
-                    setSelectedIndex(value);
-                }}
+                onPress={onSegmentedButtonPress}
                 containerStyle={{ 
                     marginTop: 20,
                     backgroundColor: 'transparent',

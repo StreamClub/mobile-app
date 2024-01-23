@@ -45,6 +45,7 @@ export const CustomButton = (params: ButtonParams) => {
                 color: 'white',
             }}
             title={params.buttonText}
+            loading={params.loading}
         />
     );
 };

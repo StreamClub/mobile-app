@@ -5,8 +5,7 @@ import { Icon, Button } from 'react-native-elements'
 import { useState, createRef } from 'react'
 import { router } from 'expo-router';
 import { useSession } from '../context/ctx';
-
-import axios from 'axios'
+import { CustomButton } from '../components/BasicComponents/CustomButton'
 import React from 'react'
 
 import { logIn, logInBody } from '../apiCalls/auth'
@@ -15,25 +14,28 @@ export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const session = useSession();
     const signIn = session?.signIn
 
-    axios.defaults.baseURL = 'https://uapi.onrender.com'
-
     const onSuccessLogIn = (response: any) => {
+        setLoading(false)
         const accessToken = response.data.token
         const refreshToken = response.data.refreshToken
         signIn?.(accessToken, refreshToken)
         router.replace('/home');
+        
     }
     
     const onFailureLogIn = (error: any) => {
         console.log(error);
+        setLoading(false)
     }
 
     const onPressSignIn = () => {
         console.log('Iniciando sesión..')
+        setLoading(true)
         const body: logInBody = { email, password }
         logIn(
             body,
@@ -111,19 +113,16 @@ export default function Page() {
     }
 
     const renderSignInButton = () => {
-        return <Button
-            title="Iniciar sesión"
+        return <CustomButton
+            buttonText="Iniciar sesión"
             disabled={signInDisabled()}
-            loading={false}
-            buttonStyle={styles.buttonStyle}
-            titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
-            containerStyle={{
-                marginHorizontal: 50,
-                height: 50,
-                width: 200,
-                marginVertical: 10,
-            }}
-            onPress={onPressSignIn} />
+            onPress={onPressSignIn}
+            fontSize="medium"
+            buttonSize="medium"
+            type='primary'
+            style={{ marginVertical: 10 }}
+            loading={loading}
+        />
     }
 
     const onPressForgotPassword = () => {

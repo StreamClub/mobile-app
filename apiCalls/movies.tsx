@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
 
-const baseURL = 'https://capi-xf6o.onrender.com' //REVISAR EL TEMA DE LA BASE URL
+const baseURL = 'https://papi-4lms.onrender.com' //REVISAR EL TEMA DE LA BASE URL
 const country = "AR" //TODO: Esto hay que cambiarlo
 
 function getBaseConfig(session: ReturnType<typeof useSession>) {
@@ -34,8 +34,6 @@ export function getMovie(
     });
 }
 
-axios.defaults.baseURL = 'https://capi-xf6o.onrender.com'
-
 // --------- --------- --------- --------- --------- ---------
 export type SearchParams = {
     query: string,
@@ -58,4 +56,34 @@ export function searchMovies(
         }, (error) => {
             onFailure(error)
         });
+}
+
+// --------- --------- --------- --------- --------- ---------
+export function searchSeries(
+    session: ReturnType<typeof useSession>,
+    queryParams: SearchParams,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+
+    console.log('[TODO] Buscando series...');
+}
+
+// --------- --------- --------- --------- --------- ---------
+export function searchArtists(
+    session: ReturnType<typeof useSession>,
+    queryParams: SearchParams,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+
+    console.log('[TODO] Buscando artistas...');
+}
+
+// --------- --------- --------- --------- --------- ---------
+export function searchUsers(
+    session: ReturnType<typeof useSession>,
+    queryParams: SearchParams,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+
+    console.log('[TODO] Buscando usuarios...');
 }

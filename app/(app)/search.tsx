@@ -6,10 +6,12 @@ import { SearchBar } from '@rneui/themed';
 import { Icon } from 'react-native-elements';
 import { useState, createRef, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
-
 import { MovieList, MovieEntry } from '../../components/MovieList';
 
-import { QueryParamsBody, searchMovies } from '../../apiCalls/movies';
+import { SearchParams, searchMovies } from '../../apiCalls/movies';
+import { MovieDetailsParams } from './movie';
+
+import { router } from 'expo-router';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 2000;
@@ -69,10 +71,11 @@ export default function Index() {
         const moviesResponse = data.results
         moviesResponse.forEach((movie: any) => {
             const movieEntry: MovieEntry = {
-                cover: movie.poster_path,
+                id: movie.id,
+                poster: movie.poster,
                 title: movie.title,
                 available: randomInt(0,1) == 1,
-                year: movie.release_date.split('-')[0],
+                year: movie.releaseDate.split('-')[0],
                 score: randomInt(1,10),
                 seen: randomInt(0,1) == 1,
                 inWatchlist: randomInt(0,1) == 1,
@@ -96,9 +99,9 @@ export default function Index() {
     const searchText = (text: string) => {
         console.log('Buscando ' + text + '...');
 
-        const queryParams: QueryParamsBody = { query: text }
+        const queryParams: SearchParams = { query: text, page: 1}
 
-        searchMovies(queryParams, onSuccessSearch, onFailureSearch)
+        searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
     }
 
     const renderSearchBar = () => {
@@ -192,6 +195,12 @@ export default function Index() {
     
     const onMoviePress = (movie: MovieEntry) => {
         console.log(movie.title + ' pressed');
+        
+        const params: MovieDetailsParams = {
+            id: movie.id,
+        }
+
+        router.push({ pathname: '/movie', params});
     }
 
     const onSeenPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {

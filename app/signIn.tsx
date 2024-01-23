@@ -86,6 +86,10 @@ export default function Page() {
                 containerStyle={styles.inputContainer}
                 onChangeText={setEmail}
                 onEndEditing={onEndEditingEmail}
+                autoCapitalize='none'
+                autoCorrect={false}
+                textContentType='emailAddress'
+                keyboardType='email-address'
             />
         )
     }
@@ -100,6 +104,8 @@ export default function Page() {
                 onChangeText={setPassword}
                 secureTextEntry={secureTextEntry}
                 containerStyle={styles.inputContainer}
+                autoCapitalize='none'
+                autoCorrect={false}
             />
         )
     }

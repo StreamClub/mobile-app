@@ -20,7 +20,7 @@ export default function Index() {
             <Text> email: {email} </Text>
             <Text> AccessToken: {accessToken} </Text>
             <Text> RefreshToken: {refreshToken} </Text>
-             
+            
             
 
             <Text

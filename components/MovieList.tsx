@@ -7,8 +7,9 @@ import { colors } from '../assets/styles/colors'
 const MAX_TITLE_LENGHT = 50
 
 export type MovieEntry = {
+    id: string,
     title: string,
-    cover: string,
+    poster: string,
     available: boolean,
     year: string,
     score: number,
@@ -52,17 +53,15 @@ export const MovieList = (params: MovieListProps) => {
     // ------------------------------------------------------------
     const renderMovieEntry = (movieEntry: MovieEntry, index: number) => {
         return (
-            <>
-            <View
-                key={index}
-                style={styles.movieEntryContainer}
-            >
-                {renderCoverSection(movieEntry)}
+            <View key={index}>
+                <View style={styles.movieEntryContainer}>
+                    
+                    {renderCoverSection(movieEntry)}
 
-                {renderDetailsSection(movieEntry)}
+                    {renderDetailsSection(movieEntry)}
+                </View>
+                <View style={{height: 1, backgroundColor: 'black', width: '90%', marginBottom: 10, alignSelf: 'center'}}></View>
             </View>
-            <View style={{height: 1, backgroundColor: 'black', width: '90%', marginBottom: 10, alignSelf: 'center'}}></View>
-            </>
         )
     }
 
@@ -75,7 +74,7 @@ export const MovieList = (params: MovieListProps) => {
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
                 <Image
-                    source={{ uri: "https://image.tmdb.org/t/p/original" + movieEntry.cover }}
+                    source={{ uri: "https://image.tmdb.org/t/p/original" + movieEntry.poster }}
                     style={styles.coverImage}
                     resizeMode="contain"
                 />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
 
-axios.defaults.baseURL = 'https://uapi.onrender.com'
+axios.defaults.baseURL = 'https://papi-4lms.onrender.com'
 
 
 // --------- --------- --------- --------- --------- ---------

@@ -5,46 +5,48 @@ import * as Font from "expo-font";
 import { ButtonParams } from "./Types/ButtonParams";
 import { colors } from "../../assets";
 
-export const SecondaryButton = (params: ButtonParams) => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+// export const SecondaryButton = (params: ButtonParams) => {}
 
-  useEffect(() => {
-    const loadFont = async () => {
-      await Font.loadAsync({
-        "Proxima-Nova": require("../../assets/fonts/proxima-nova-regular.otf"),
-      });
-      setFontLoaded(true);
-    };
-    loadFont();
-  }, []);
+// {
+//   const [fontLoaded, setFontLoaded] = useState(false);
 
-  if (!fontLoaded) {
-    return null;
-  }
+//   useEffect(() => {
+//     const loadFont = async () => {
+//       await Font.loadAsync({
+//         "Proxima-Nova": require("../../assets/fonts/proxima-nova-regular.otf"),
+//       });
+//       setFontLoaded(true);
+//     };
+//     loadFont();
+//   }, []);
 
-  const buttonSize = {
-    small: { width: 185, height: 30, fontSize: 24 },
-    medium: { width: 100, height: 20, fontSize: 16 },
-    big: { width: 185, height: 30, fontSize: 24 },
-  }[params.size] || { width: 100, height: 20, fontSize: 16 };
+//   if (!fontLoaded) {
+//     return null;
+//   }
 
-  return (
-    <Button
-      mode="contained"
-      buttonColor={colors.primaryGrey}
-      labelStyle={[styles.secondaryButton, buttonSize]}
-      onPress={params.onPress}
-    >
-      {params.buttonText}
-    </Button>
-  );
-};
+//   const buttonSize = {
+//     small: { width: 185, height: 30, fontSize: 24 },
+//     medium: { width: 100, height: 20, fontSize: 16 },
+//     big: { width: 185, height: 30, fontSize: 24 },
+//   }[params.size] || { width: 100, height: 20, fontSize: 16 };
 
-const styles = StyleSheet.create({
-  secondaryButton: {
-    color: colors.primaryWhite,
-    fontFamily: "Proxima-Nova",
-    textAlign: "center",
-    textAlignVertical: "center",
-  },
-});
+//   return (
+//     <Button
+//       mode="contained"
+//       buttonColor={colors.primaryGrey}
+//       labelStyle={[styles.secondaryButton, buttonSize]}
+//       onPress={params.onPress}
+//     >
+//       {params.buttonText}
+//     </Button>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   secondaryButton: {
+//     color: colors.primaryWhite,
+//     fontFamily: "Proxima-Nova",
+//     textAlign: "center",
+//     textAlignVertical: "center",
+//   },
+// });

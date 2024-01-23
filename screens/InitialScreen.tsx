@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Image } from "react-native";
 import { StyleSheet } from "react-native";
-import { SecondaryButton } from "../components/BasicComponents/SecondaryButton";
-import { PrimaryButton } from "../components/BasicComponents/PrimaryButton";
+// import { SecondaryButton } from "../components/BasicComponents/SecondaryButton";
+import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { router } from "expo-router";
 import { TitleText } from "../components/BasicComponents/TitleText";
 import { colors } from "../assets";
@@ -18,17 +18,21 @@ export const InitialScreen = () => {
         <TitleText body="Bienvenido a Stream Club" />
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton
+        <CustomButton
           buttonText="Iniciar sesión"
           onPress={() => router.push("/signIn")}
-          size="big"
+          fontSize="big"
+          buttonSize="big"
+          type="primary"
         />
       </View>
       <View style={styles.buttonContainer}>
-        <SecondaryButton
+        <CustomButton
           buttonText="Crear cuenta"
           onPress={() => router.push("/signUpStep1")}
-          size="big"
+          fontSize="big"
+          buttonSize="big"
+          type="secondary"
         />
       </View>
     </View>

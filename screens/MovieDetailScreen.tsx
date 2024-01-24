@@ -80,7 +80,7 @@ const renderPlatforms = (params: MovieDetailScreenParams) => {
                     </View>
                 </View>
             </> : 
-            <BodyText size='big' color={colors.primaryRed} body='La pelicula no se encuentra disponible' style={{width: 180, margin: 10}} />    
+            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma' style={{width: 180, margin: 10}} />    
         }
     </View>
     )

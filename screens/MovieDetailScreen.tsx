@@ -24,10 +24,9 @@ type MovieDetailScreenParams = {
     movie: MovieDetails
 }
 
-export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
-    return (
-        <View style={styles.container}>
-            <ImageBackground
+const renderBackgroundImage = (params: MovieDetailScreenParams) => {
+    return(
+        <ImageBackground
                 source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.backdrop }} 
                 style={styles.backdropImage}
                 resizeMode="cover"
@@ -51,29 +50,47 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     />
                 </View>
             </ImageBackground>
-            <View style={styles.platforms}>
+    )
+}
+
+const renderPlatforms = (params: MovieDetailScreenParams) => {
+    return(
+    <View style={styles.platforms}>
+        {params.movie.platforms?
+            <>
                 <BodyText body={"Disponible en:"} size="big"/>
-                <View style={{height: 'auto', width: 180}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
                         {params.movie.platforms.map( (platform, index) => 
                             <Image 
                                 source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
                                 style={styles.platformImage}
                                 key={index} />
-                        )}
+                        )} 
                     </ScrollView>
+                    <Divider style={styles.divider} />
+                    <View style={styles.buttom}>
+                        <CustomButton 
+                            buttonText="Ver ahora" 
+                            buttonSize='medium'
+                            fontSize='medium'
+                            type='primary' 
+                            onPress={() => console.log("Que buena peli estoy viendo")} 
+                            icon="play"/>
+                    </View>
                 </View>
-                <Divider style={styles.divider} />
-            </View>
-            <View style={styles.buttom}>
-                <CustomButton 
-                    buttonText="Ver ahora" 
-                    buttonSize='medium'
-                    fontSize='medium'
-                    type='primary' 
-                    onPress={() => console.log("Que buena peli estoy viendo")} 
-                    icon="play"/>
-            </View>
+            </> : 
+            <BodyText size='big' color={colors.primaryRed} body='La pelicula no se encuentra disponible' style={{width: 180, margin: 10}} />    
+        }
+    </View>
+    )
+}
+
+export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
+    return (
+        <View style={styles.container}>
+            {renderBackgroundImage(params)}
+            {renderPlatforms(params)}
             <View style={styles.description}>
                 <BodyText body={params.movie.overview} />
                 <View style={{height: 60}}>
@@ -81,9 +98,9 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                         {params.movie.genres.map((genre, index) => 
                             <Chip 
                                 key={index} 
-                                style={{margin: 10, backgroundColor: 'transparent', borderColor: 'black', height: 40}}
+                                style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
                                 mode="outlined"
-                                textStyle={{ color: 'black' }}>
+                                textStyle={{ color: colors.primaryBlack }}>
                                     {genre}
                             </Chip>
                         )}
@@ -117,7 +134,7 @@ const styles = StyleSheet.create({
         height: 255,
         marginRight: 10,
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: colors.primaryBlack,
     },
     darkness: {
         backgroundColor: colors.secondaryWhite + '90',
@@ -140,24 +157,25 @@ const styles = StyleSheet.create({
     },
     platforms: {
         marginLeft: 20,
-        marginTop: 5
+        marginTop: 5,
+        height: 160,
+        justifyContent: 'center'
     },
     platformImage: {
         width: 50,
         height: 50,
         margin: 5,
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: colors.primaryBlack,
         borderRadius: 10,
     },
     divider: {
-        backgroundColor: 'black',
+        backgroundColor: colors.primaryBlack,
         width: 150,
         height: 1,
         margin: 10,
     },
     buttom: {
-        marginLeft: 25,
         marginTop: 20
     },
     description: {

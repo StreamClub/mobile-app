@@ -38,7 +38,7 @@ export default function Movie() {
             genres: response.data.genres,
             poster: response.data.poster,
             releaseDate: new Date(response.data.releaseDate),
-            platforms: platforms.map(platform => platform.logoPath),
+            platforms: platforms ? platforms.map(platform => platform.logoPath) : null,
             directors: response.data.directors,
             backdrop: response.data.backdrop,
             runtime: String(response.data.runtime),

@@ -12,6 +12,7 @@ import { SearchParams, searchMovies, searchSeries, searchArtists, searchUsers } 
 import { MovieDetailsParams } from './movie';
 
 import { router } from 'expo-router';
+import { BodyText } from '../../components/BasicComponents/BodyText';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 2000;
@@ -33,7 +34,7 @@ export default function Search() {
     const [showLoading, setShowLoading] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
     const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[INITIAL_CATEGORY]);
-    const [movieList, setMovieList] = useState<MovieEntry[]>([]);
+    const [ movieList, setMovieList] = useState<MovieEntry[]>([]);
     // ------------------------------------------------------------
 
 
@@ -252,17 +253,17 @@ export default function Search() {
 
     const renderSearchHistoryTitle = () => {
         return (
-            <Text
+            <BodyText
                 style={{
                     marginTop: 20,
-                    fontSize: 16,
                     fontWeight: 'bold',
                     alignSelf: 'flex-start',
                     marginLeft: '5%',
                 }}
-            >
-                Busquedas recientes
-            </Text>
+                size="big"
+                color={colors.primaryBlack}
+                body={"Búsquedas recientes" + textSearched}
+            />
         )
     }
 
@@ -273,7 +274,21 @@ export default function Search() {
             onWatchlistPress,
         }
         return (
-            <MovieList movieList={movieList} callbacks={callbacks}/>
+            showLoading? null :
+                ((movieList.length === 0)?
+                <BodyText
+                    style={{
+                        marginTop: 20,
+                        fontWeight: 'bold',
+                        alignSelf: 'flex-start',
+                        marginLeft: '5%',
+                    }}
+                    size="big"
+                    color={colors.primaryBlack}
+                    body={"No se encontraron resultados para: " + textSearched}
+                />
+                : 
+                <MovieList movieList={movieList} callbacks={callbacks}/>)
         )
     }
     // ------------------------------------------------------------

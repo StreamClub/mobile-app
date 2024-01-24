@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
+import React, {useState} from 'react';
+import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent } from 'react-native';
 import { Icon, Divider, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
@@ -25,31 +25,44 @@ type MovieDetailScreenParams = {
 }
 
 const renderBackgroundImage = (params: MovieDetailScreenParams) => {
+    const [titleTextHeight, setTitleTextHeight] = useState(0);
+    
+    const handleTitleTextLayout = (event: LayoutChangeEvent) => {
+        setTitleTextHeight(event.nativeEvent.layout.height);
+    };
+
+    const backgroundSize = 170 + (titleTextHeight/30 - 2)*30
+
     return(
         <ImageBackground
                 source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.backdrop }} 
-                style={styles.backdropImage}
+                style={[styles.backdropImage, {height: backgroundSize}]}
                 resizeMode="cover"
             >
-                <View style={styles.darkness} />
-                <View style={styles.textOverlay}>
-                    <TitleText body={params.movie.title + '(' + params.movie.releaseDate.getFullYear() + ')'} size='big'/>
-                </View>
-                <View style={styles.director}>
-                    <Icon source="movie-open-outline" size={20}/>
-                    <BodyText body={' ' + params.movie.directors[0]} size='big'/>
-                </View>
-                <View style={styles.runtime}>
-                    <Icon source="timer-outline" size={20}/>
-                    <BodyText body={' ' + params.movie.runtime + ' min'} size='big'/>
-                </View>
-                <View style={styles.imageOverlay}>
-                    <Image 
-                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
-                        style={styles.posterImage}   
-                    />
-                </View>
-            </ImageBackground>
+            <View style={[styles.darkness, {height: backgroundSize}]} />
+            <View style={styles.textOverlay}>
+                <TitleText
+                    body={params.movie.title + ' (' + params.movie.releaseDate.getFullYear() + ')'} 
+                    size='big' 
+                    style={{width: screenWidth, /* fontWeight: 'bold' */}} 
+                    onLayout={handleTitleTextLayout}
+                />
+            </View>
+            <View style={[styles.director, {top: backgroundSize - 80}]}>
+                <Icon source="movie-open-outline" size={20} />
+                <BodyText body={' ' + params.movie.directors[0]} size='big' /* style={{fontWeight: 'bold'}} */ />
+            </View>
+            <View style={[styles.runtime, {top: backgroundSize - 45}]}>
+                <Icon source="timer-outline" size={20}/>
+                <BodyText body={' ' + params.movie.runtime + ' min'} size='big' /* style={{fontWeight: 'bold'}} */ />
+            </View>
+            <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
+                <Image 
+                    source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
+                    style={styles.posterImage}   
+                />
+            </View>
+        </ImageBackground>
     )
 }
 
@@ -121,7 +134,8 @@ const styles = StyleSheet.create({
     },
     textOverlay: {
         position: 'absolute',
-        top: 30,
+        top: 10,
+        left: 5,
         alignSelf: 'center',
     },
     imageOverlay: {
@@ -137,9 +151,8 @@ const styles = StyleSheet.create({
         borderColor: colors.primaryBlack,
     },
     darkness: {
-        backgroundColor: colors.secondaryWhite + '90',
-        width: screenWidth,
-        height: 170
+        backgroundColor: colors.secondaryWhite + '99',
+        width: screenWidth
     },
     director: {
         position: 'absolute',

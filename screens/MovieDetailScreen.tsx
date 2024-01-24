@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ImageBackground, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
 import { Icon, Divider, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
@@ -53,13 +53,15 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
             </ImageBackground>
             <View style={styles.platforms}>
                 <BodyText body={"Disponible en:"} size="big"/>
-                <View style={{flexDirection: 'row'}}>
-                    {params.movie.platforms.map( (platform, index) => 
-                        <Image 
-                            source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
-                            style={styles.platformImage}
-                            key={index} />
-                    )}
+                <View style={{height: 'auto', width: 180}}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        {params.movie.platforms.map( (platform, index) => 
+                            <Image 
+                                source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
+                                style={styles.platformImage}
+                                key={index} />
+                        )}
+                    </ScrollView>
                 </View>
                 <Divider style={styles.divider} />
             </View>
@@ -74,16 +76,18 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
             </View>
             <View style={styles.description}>
                 <BodyText body={params.movie.overview} />
-                <View style={{flexDirection: 'row'}}>
-                    {params.movie.genres.map((genre, index) => 
-                        <Chip 
-                            key={index} 
-                            style={{margin: 10, backgroundColor: 'transparent', borderColor: 'black'}}
-                            mode="outlined"
-                            textStyle={{ color: 'black' }}>
-                                {genre}
-                        </Chip>
-                    )}
+                <View style={{height: 60}}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                        {params.movie.genres.map((genre, index) => 
+                            <Chip 
+                                key={index} 
+                                style={{margin: 10, backgroundColor: 'transparent', borderColor: 'black', height: 40}}
+                                mode="outlined"
+                                textStyle={{ color: 'black' }}>
+                                    {genre}
+                            </Chip>
+                        )}
+                    </ScrollView>
                 </View>
             </View>
         </View>

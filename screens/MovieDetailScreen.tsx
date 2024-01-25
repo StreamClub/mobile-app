@@ -44,17 +44,17 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
                 <TitleText
                     body={params.movie.title + ' (' + params.movie.releaseDate.getFullYear() + ')'} 
                     size='big' 
-                    style={{width: screenWidth, /* fontWeight: 'bold' */}} 
+                    style={{width: screenWidth - 10, fontWeight: 'bold'}} 
                     onLayout={handleTitleTextLayout}
                 />
             </View>
             <View style={[styles.director, {top: backgroundSize - 80}]}>
                 <Icon source="movie-open-outline" size={20} />
-                <BodyText body={' ' + params.movie.directors[0]} size='big' /* style={{fontWeight: 'bold'}} */ />
+                <BodyText body={' ' + params.movie.directors[0]} size='big' style={{fontWeight: 'bold'}} />
             </View>
             <View style={[styles.runtime, {top: backgroundSize - 45}]}>
                 <Icon source="timer-outline" size={20}/>
-                <BodyText body={' ' + params.movie.runtime + ' min'} size='big' /* style={{fontWeight: 'bold'}} */ />
+                <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
                 <Image 
@@ -67,9 +67,10 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
 }
 
 const renderPlatforms = (params: MovieDetailScreenParams) => {
+    console.log(params.movie.platforms.length === 0)
     return(
     <View style={styles.platforms}>
-        {params.movie.platforms?
+        {(params.movie.platforms.length === 1)?
             <>
                 <BodyText body={"Disponible en:"} size="big"/>
                 <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
@@ -101,6 +102,7 @@ const renderPlatforms = (params: MovieDetailScreenParams) => {
 
 export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
     return (
+        <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
             {renderPlatforms(params)}
@@ -121,6 +123,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                 </View>
             </View>
         </View>
+        </ScrollView>
     )
 }
 
@@ -151,7 +154,7 @@ const styles = StyleSheet.create({
         borderColor: colors.primaryBlack,
     },
     darkness: {
-        backgroundColor: colors.secondaryWhite + '99',
+        backgroundColor: colors.secondaryWhite + '85',
         width: screenWidth
     },
     director: {

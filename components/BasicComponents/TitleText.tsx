@@ -14,7 +14,7 @@ export const TitleText = (params: TextParams) => {
   }[params.size || 'small'];
 
   return (
-    <Text style={[styles.textStyle, titleSize, { color: textColor }, params.style]} onLayout={params.onLayout}>
+    <Text style={[styles.textStyle, titleSize, { color: textColor }, params.style]} onLayout={params.onLayout} numberOfLines={params.numberOfLines}>
       {params.body}
     </Text>
   );

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, Pressable, ImageSourcePropType, ActivityIndicator } from 'react-native'
+import { ScrollView, View, Image, StyleSheet, Pressable, ImageSourcePropType, ActivityIndicator } from 'react-native'
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
@@ -107,7 +107,7 @@ export const MovieList = (params: MovieListProps) => {
     const renderTitle = (title: string, year: string) => {
         return (
             <View style={{ flex: 0.6, }}>
-                <TitleText body={title} size='small' />
+                <TitleText body={title} size='small' numberOfLines={2}/>
                 <TitleText body={"(" + year + ")"} size='small' />
             </View>
         )

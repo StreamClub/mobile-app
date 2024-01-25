@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView, View, Image, StyleSheet, Pressable, ImageSourcePropType, ActivityIndicator } from 'react-native'
+import { Icon } from 'react-native-paper';
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
@@ -73,11 +74,16 @@ export const MovieList = (params: MovieListProps) => {
                 onPress={() => onMoviePress(movieEntry)}
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
-                <Image
-                    source={{ uri: "https://image.tmdb.org/t/p/original" + movieEntry.poster }}
-                    style={styles.coverImage}
-                    resizeMode="contain"
-                />
+                {movieEntry.poster?
+                    <Image
+                        source={{ uri: "https://image.tmdb.org/t/p/original" + movieEntry.poster }}
+                        style={styles.coverImage}
+                        resizeMode="contain"
+                    /> :
+                    <View style={[styles.coverImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
+                        <Icon source="image-off-outline" size={70}/>
+                    </View>
+                }
             </Pressable>
         )
     }
@@ -108,7 +114,7 @@ export const MovieList = (params: MovieListProps) => {
         return (
             <View style={{ flex: 0.6, }}>
                 <TitleText body={title} size='small' numberOfLines={2}/>
-                <TitleText body={"(" + year + ")"} size='small' />
+                <TitleText body={"(" + (year? year : " ? ") + ")"} size='small' />
             </View>
         )
     }

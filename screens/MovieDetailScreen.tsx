@@ -39,10 +39,13 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
                 style={[styles.backdropImage, {height: backgroundSize}]}
                 resizeMode="cover"
             >
-            <View style={[styles.darkness, {height: backgroundSize}]} />
+            {params.movie.backdrop?
+                <View style={[styles.darkness, {height: backgroundSize}]} /> :
+                <View style={[styles.darkness, {height: backgroundSize, backgroundColor: colors.primarySkyBlue + '85'}]} />
+            }
             <View style={styles.textOverlay}>
                 <TitleText
-                    body={params.movie.title + ' (' + params.movie.releaseDate.getFullYear() + ')'} 
+                    body={params.movie.title + ' (' + (params.movie.releaseDate.getFullYear()? params.movie.releaseDate.getFullYear(): ' ? ') + ')'} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} 
                     onLayout={handleTitleTextLayout}
@@ -57,17 +60,25 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
                 <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
-                <Image 
-                    source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
-                    style={styles.posterImage}   
-                />
+                {params.movie.poster?
+                    <Image 
+                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
+                        style={styles.posterImage}   
+                    /> :
+                    <View style={[styles.posterImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
+                        {/* <Image
+                            source={require("../assets/images/logo.png")}
+                            style={styles.posterImage}
+                        /> */}
+                        <Icon source="image-off-outline" size={90}/>
+                    </View>
+                }
             </View>
         </ImageBackground>
     )
 }
 
 const renderPlatforms = (params: MovieDetailScreenParams) => {
-    console.log(params.movie.platforms.length === 0)
     return(
     <View style={styles.platforms}>
         {(params.movie.platforms.length === 1)?

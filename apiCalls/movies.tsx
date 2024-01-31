@@ -65,7 +65,17 @@ export function searchSeries(
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void) {
 
-    console.log('[TODO] Buscando series...');
+    let config = getBaseConfig(session)
+    config.params = queryParams
+
+
+    axios.get(baseURL + '/series/', config).then(
+        (response) => {
+            console.log(response);
+            onSuccess(response)
+        }, (error) => {
+            onFailure(error)
+        });
 }
 
 // --------- --------- --------- --------- --------- ---------

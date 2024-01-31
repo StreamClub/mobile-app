@@ -1,10 +1,10 @@
-import { Text, View, StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image} from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { colors } from "../../assets";
 import { SearchBar } from '@rneui/themed';
 import { Icon } from 'react-native-elements';
-import { useState, createRef, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
 import { MovieList, MovieEntry } from '../../components/MovieList';
 
@@ -13,6 +13,7 @@ import { MovieDetailsParams } from './movie';
 
 import { router } from 'expo-router';
 import { BodyText } from '../../components/BasicComponents/BodyText';
+import { SeriesList, SerieEntry } from '../../components/SeriesList';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 2000;
@@ -35,6 +36,7 @@ export default function Search() {
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
     const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[INITIAL_CATEGORY]);
     const [ movieList, setMovieList] = useState<MovieEntry[]>([]);
+    const [ seriesList, setSeriesList] = useState<SerieEntry[]>([]);
     // ------------------------------------------------------------
 
 
@@ -119,6 +121,27 @@ export default function Search() {
         })
         setMovieList(movieList)
     }
+
+    const processSeriesResponseData = (data: any) => {
+        const seriesList: SerieEntry[] = [];
+        const seriesResponse = data.results;
+        seriesResponse.forEach((serie: any) => {
+            const serieEntry: SerieEntry = {
+                id: serie.id,
+                poster: serie.poster,
+                title: serie.title,
+                available: serie.available,
+                releaseYear: serie.releaseDate.split('-')[0],
+                score: serie.score.toFixed(2),
+                seen: serie.seen,
+                inWatchlist: serie.inWatchlist,
+                status: serie.status,
+                lastYear: serie.lastEpisodeReleaseDate.split('-')[0]
+            }
+            seriesList.push(serieEntry);
+        })
+        setSeriesList(seriesList);
+    }
     // ------------------------------------------------------------
 
 
@@ -129,9 +152,10 @@ export default function Search() {
 
         if (selectedCategory == MOVIES_NAME) {
             processMovieResponseData(response.data);
+        } else if (selectedCategory == SERIES_NAME) {
+            processSeriesResponseData(response.data);
         } else {
             console.log('TODO: Procesar respuesta');
-        
         }
         setShowLoading(false);
     }
@@ -172,6 +196,32 @@ export default function Search() {
 
     const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         console.log(movie.title + ' watchlist pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
+    const onSeriePress = (serie: SerieEntry) => {
+        console.log(serie.title + ' pressed');
+        
+        /* const params: SerieDetailsParams = {
+            id: serie.id,
+        } */
+
+        //router.push({ pathname: '/movie', params});
+    }
+
+    const onSerieSeenPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(serie.title + ' seen pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
+    const onSerieWatchlistPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(serie.title + ' watchlist pressed');
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
@@ -291,6 +341,31 @@ export default function Search() {
                 <MovieList movieList={movieList} callbacks={callbacks}/>)
         )
     }
+
+    const renderSerieList = () => {
+        const callbacks = {
+            onSeriePress,
+            onSerieSeenPress,
+            onSerieWatchlistPress,
+        }
+        return (
+            showLoading? null :
+                ((seriesList.length === 0)?
+                <BodyText
+                    style={{
+                        marginTop: 20,
+                        fontWeight: 'bold',
+                        alignSelf: 'flex-start',
+                        marginLeft: '5%',
+                    }}
+                    size="big"
+                    color={colors.primaryBlack}
+                    body={"No se encontraron resultados para: " + textSearched}
+                />
+                : 
+                <SeriesList seriesList={seriesList} callbacks={callbacks}/>)
+        )
+    }
     // ------------------------------------------------------------
 
     // Main render screen
@@ -305,7 +380,10 @@ export default function Search() {
             {textSearched.length == 0 ?
                 renderSearchHistoryTitle()
                 :
-                renderMovieList()
+                ((selectedCategory == MOVIES_NAME)? 
+                    renderMovieList() :
+                    renderSerieList()
+                )
             }
         </View>
     )

@@ -15,6 +15,11 @@ export type Season = {
     airDate: Date
 }
 
+type Episode = {
+    photo: string,
+    airDate: Date
+}
+
 type SerieDetails = {
     overview: string,
     poster: string,
@@ -28,7 +33,8 @@ type SerieDetails = {
     totalEpisodes: number,
     totalSeasons: number,
     releaseDate: Date,
-    seasons: Array<Season>
+    seasons: Array<Season>,
+    nextEpisode: Episode
 }
 
 type SerieDetailScreenParams = {
@@ -121,11 +127,11 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
                 <TitleText body='Temporadas:' style={{fontWeight: 'bold'}}/>
                 <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                     {seasons.map( (season, index) => 
-                        <View style={{flexDirection: 'column', margin: 5}}>
+                        <View style={{flexDirection: 'column', margin: 5}} key={index}>
                             <Image 
                                 source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
                                 style={styles.seasonImage}
-                                key={index} /> 
+                            /> 
                             <BodyText body={season.name} size='big' />
                             <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
                         </View>
@@ -137,12 +143,27 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
     )
 }
 
+const renderNextEpisode = (episode: Episode) => {
+    return (
+        <View style={styles.nextEpisode} >
+            <Image 
+                source={{ uri: "https://image.tmdb.org/t/p/original" + episode.photo }} 
+                style={styles.episodePhoto} /> 
+            <View style={{flexDirection: 'column'}}>
+                <BodyText body='Próximo capitulo: ' style={{fontWeight: 'bold'}} size='medium'/>
+                <BodyText body={episode.airDate.getFullYear().toString()}/>
+            </View>
+        </View>
+    )
+}
+
 export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
         <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
             {renderPlatforms(params)}
+            {renderNextEpisode(params.serie.nextEpisode)}
             <View style={styles.description}>
                 <BodyText body={params.serie.overview} />
                 <View style={{height: 60}}>
@@ -244,6 +265,20 @@ const styles = StyleSheet.create({
     seasonImage: {
         width: 150,
         height: 230,
+        borderRadius: 20
+    },
+    nextEpisode: {
+        width: 350,
+        height: 150,
+        backgroundColor: colors.primaryBlue,
+        margin: 20,
+        borderRadius: 20,
+        flexDirection: 'row'
+    },
+    episodePhoto: {
+        width: 150,
+        height: 130,
+        margin: 10,
         borderRadius: 20
     }
 });

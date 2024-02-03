@@ -28,7 +28,8 @@ export default function Serie() {
         totalEpisodes: 0,
         totalSeasons: 0,
         releaseDate: new Date(),
-        seasons: []
+        seasons: [],
+        nextEpisode: {photo: '', airDate: new Date()}
     })
     const params = useLocalSearchParams<SerieDetailsParams>();
     const [serieLoaded, setSerieLoaded] = useState(false)
@@ -55,7 +56,11 @@ export default function Serie() {
                 "name": season.name,
                 "poster": season.poster,
                 "airDate": new Date(season.airDate)
-            })) : []
+            })) : [],
+            nextEpisode: {
+                photo: response.data.nextEpisode.photo,
+                airDate: new Date(response.data.nextEpisode.airDate)
+            }
         };
         setSerie(serieData);
         setSerieLoaded(true);

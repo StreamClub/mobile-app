@@ -151,7 +151,7 @@ const renderNextEpisode = (episode: Episode) => {
                 style={styles.episodePhoto} /> 
             <View style={{flexDirection: 'column'}}>
                 <BodyText body='Próximo capitulo: ' style={{fontWeight: 'bold'}} size='medium'/>
-                <BodyText body={episode.airDate.getFullYear().toString()}/>
+                <BodyText body={'Esteno: ' + episode.airDate.getFullYear().toString()}/>
             </View>
         </View>
     )

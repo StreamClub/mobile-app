@@ -8,61 +8,74 @@ import { colors } from "../assets";
 
 const screenWidth = Dimensions.get('window').width;
 
-type MovieDetails = {
-    title: string,
-    genres: Array<string>,
+export type Season = {
+    id: number,
+    name: string,
     poster: string,
-    releaseDate: Date,
-    platforms: Array<string>,
-    directors: Array<string>,
+    airDate: Date
+}
+
+type SerieDetails = {
+    overview: string,
+    poster: string,
     backdrop: string,
-    runtime: string,
-    overview: string
+    genres: Array<string>,
+    platforms: Array<string>,
+    title: string,
+    status: string,
+    creators: Array<string>,
+    lastAirDate: Date,
+    totalEpisodes: number,
+    totalSeasons: number,
+    releaseDate: Date,
+    seasons: Array<Season>
 }
 
-type MovieDetailScreenParams = {
-    movie: MovieDetails
+type SerieDetailScreenParams = {
+    serie: SerieDetails
 }
 
-const renderBackgroundImage = (params: MovieDetailScreenParams) => {
+const renderBackgroundImage = (params: SerieDetailScreenParams) => {
     const [titleTextHeight, setTitleTextHeight] = useState(0);
     
     const handleTitleTextLayout = (event: LayoutChangeEvent) => {
         setTitleTextHeight(event.nativeEvent.layout.height);
     };
 
-    const backgroundSize = 170 + (titleTextHeight/30 - 2)*30
+    const backgroundSize = 210 + (titleTextHeight/30 - 2)*30
 
     return(
         <ImageBackground
-                source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.backdrop }} 
+                source={{ uri: "https://image.tmdb.org/t/p/original" + params.serie.backdrop }} 
                 style={[styles.backdropImage, {height: backgroundSize}]}
                 resizeMode="cover"
             >
-            {params.movie.backdrop?
+            {params.serie.backdrop?
                 <View style={[styles.darkness, {height: backgroundSize}]} /> :
                 <View style={[styles.darkness, {height: backgroundSize, backgroundColor: colors.primarySkyBlue + '85'}]} />
             }
             <View style={styles.textOverlay}>
                 <TitleText
-                    body={params.movie.title + ' (' + (params.movie.releaseDate.getFullYear()? params.movie.releaseDate.getFullYear(): ' ? ') + ')'} 
+                    body={params.serie.title} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} 
                     onLayout={handleTitleTextLayout}
                 />
-            </View>
-            <View style={[styles.director, {top: backgroundSize - 80}]}>
-                <Icon source="movie-open-outline" size={20} />
-                <BodyText body={' ' + params.movie.directors[0]} size='big' style={{fontWeight: 'bold'}} />
-            </View>
-            <View style={[styles.runtime, {top: backgroundSize - 45}]}>
-                <Icon source="timer-outline" size={20}/>
-                <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />
+                <TitleText
+                    body={
+                        '(' + (params.serie.releaseDate.getFullYear()? params.serie.releaseDate.getFullYear(): ' ? ') + 
+                        ' - ' + (params.serie.releaseDate.getFullYear()? params.serie.lastAirDate.getFullYear(): ' ? ') + ')'} 
+                    size='big' 
+                    style={{width: screenWidth - 10, fontWeight: 'bold'}}
+                />
+                <BodyText body={'Cant. espisodios: ' + params.serie.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
+                <BodyText body={'Cant. temporadas: ' + params.serie.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
+                <BodyText body={'Creador: ' + params.serie.creators[0]} size='medium' style={{fontWeight: 'bold'}} />
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
-                {params.movie.poster?
+                {params.serie.poster?
                     <Image 
-                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
+                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.serie.poster }}
                         style={styles.posterImage}   
                     /> :
                     <View style={[styles.posterImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
@@ -74,15 +87,15 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
     )
 }
 
-const renderPlatforms = (params: MovieDetailScreenParams) => {
+const renderPlatforms = (params: SerieDetailScreenParams) => {
     return(
     <View style={styles.platforms}>
-        {(params.movie.platforms.length >= 1)?
+        {(params.serie.platforms.length >= 1)?
             <>
                 <BodyText body={"Disponible en:"} size="big"/>
                 <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-                        {params.movie.platforms.map( (platform, index) => 
+                        {params.serie.platforms.map( (platform, index) => 
                             <Image 
                                 source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
                                 style={styles.platformImage}
@@ -90,15 +103,7 @@ const renderPlatforms = (params: MovieDetailScreenParams) => {
                         )} 
                     </ScrollView>
                     <Divider style={styles.divider} />
-                    <View style={styles.buttom}>
-                        <CustomButton 
-                            buttonText="Ver ahora" 
-                            buttonSize='medium'
-                            fontSize='medium'
-                            type='primary' 
-                            onPress={() => console.log("Que buena peli estoy viendo")} 
-                            icon="play"/>
-                    </View>
+                    <BodyText body={'Estado: ' + params.serie.status} size='big' color={colors.primaryBlue} style={{fontWeight: 'bold'}}/>
                 </View>
             </> : 
             <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 160, margin: 10}} />    
@@ -107,17 +112,42 @@ const renderPlatforms = (params: MovieDetailScreenParams) => {
     )
 }
 
-export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
+const renderSeasons = (params: SerieDetailScreenParams) => {
+    const seasons = params.serie.seasons;
+    return(
+        <View style={styles.seasons}>
+            {seasons ? 
+            <>
+                <TitleText body='Temporadas:' style={{fontWeight: 'bold'}}/>
+                <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                    {seasons.map( (season, index) => 
+                        <View style={{flexDirection: 'column', margin: 5}}>
+                            <Image 
+                                source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
+                                style={styles.seasonImage}
+                                key={index} /> 
+                            <BodyText body={season.name} size='big' />
+                            <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
+                        </View>
+                    )}
+                </ScrollView>
+            </> : null
+            }
+        </View>
+    )
+}
+
+export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
         <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
             {renderPlatforms(params)}
             <View style={styles.description}>
-                <BodyText body={params.movie.overview} />
+                <BodyText body={params.serie.overview} />
                 <View style={{height: 60}}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        {params.movie.genres.map((genre, index) => 
+                        {params.serie.genres.map((genre, index) => 
                             <Chip 
                                 key={index} 
                                 style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
@@ -129,6 +159,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     </ScrollView>
                 </View>
             </View>
+            {renderSeasons(params)}
         </View>
         </ScrollView>
     )
@@ -140,7 +171,7 @@ const styles = StyleSheet.create({
     },
     backdropImage: {
         width: screenWidth,
-        height: 170
+        height: 210
     },
     textOverlay: {
         position: 'absolute',
@@ -205,5 +236,14 @@ const styles = StyleSheet.create({
         margin: 20,
         flex: 1,
         alignItems: 'center'
+    },
+    seasons: {
+        marginLeft: 20,
+        marginBottom: 20
+    },
+    seasonImage: {
+        width: 150,
+        height: 230,
+        borderRadius: 20
     }
 });

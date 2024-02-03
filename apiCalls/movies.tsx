@@ -59,26 +59,6 @@ export function searchMovies(
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function searchSeries(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void) {
-
-    let config = getBaseConfig(session)
-    config.params = queryParams
-
-
-    axios.get(baseURL + '/series/', config).then(
-        (response) => {
-            console.log(response);
-            onSuccess(response)
-        }, (error) => {
-            onFailure(error)
-        });
-}
-
-// --------- --------- --------- --------- --------- ---------
 export function searchArtists(
     session: ReturnType<typeof useSession>,
     queryParams: SearchParams,

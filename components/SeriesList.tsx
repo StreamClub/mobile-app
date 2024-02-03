@@ -37,8 +37,7 @@ export const SeriesList = (params: SeriesListProps) => {
     // Callbacks calls
     // ------------------------------------------------------------
     const onSeriePress = (serieEntry: SerieEntry) => {
-        console.log(serieEntry.title);
-        //params.callbacks.onSeriePress(serieEntry)
+        params.callbacks.onSeriePress(serieEntry)
     }
 
     const onSeenPress = (serieEntry: SerieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {

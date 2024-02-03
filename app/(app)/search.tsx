@@ -6,14 +6,16 @@ import { SearchBar } from '@rneui/themed';
 import { Icon } from 'react-native-elements';
 import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
-import { MovieList, MovieEntry } from '../../components/MovieList';
-
-import { SearchParams, searchMovies, searchSeries, searchArtists, searchUsers } from '../../apiCalls/movies';
-import { MovieDetailsParams } from './movie';
-
 import { router } from 'expo-router';
 import { BodyText } from '../../components/BasicComponents/BodyText';
+
+import { MovieList, MovieEntry } from '../../components/MovieList';
+import { SearchParams, searchMovies, searchArtists, searchUsers } from '../../apiCalls/movies';
+import { MovieDetailsParams } from './movie';
+
 import { SeriesList, SerieEntry } from '../../components/SeriesList';
+import { SerieDetailsParams } from './serie';
+import { searchSeries } from '../../apiCalls/series';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 2000;
@@ -94,7 +96,7 @@ export default function Search() {
         } else if (selectedCategory == USERS_NAME) {
             searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
         }
-    }
+    };
     // ------------------------------------------------------------
 
 
@@ -205,11 +207,11 @@ export default function Search() {
     const onSeriePress = (serie: SerieEntry) => {
         console.log(serie.title + ' pressed');
         
-        /* const params: SerieDetailsParams = {
+        const params: SerieDetailsParams = {
             id: serie.id,
-        } */
+        }
 
-        //router.push({ pathname: '/movie', params});
+        router.push({ pathname: '/serie', params});
     }
 
     const onSerieSeenPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {

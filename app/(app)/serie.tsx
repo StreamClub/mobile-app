@@ -59,7 +59,8 @@ export default function Serie() {
             })) : [],
             nextEpisode: {
                 photo: response.data.nextEpisode.photo,
-                airDate: new Date(response.data.nextEpisode.airDate)
+                airDate: new Date(response.data.nextEpisode.airDate),
+                name: response.data.nextEpisode.name
             }
         };
         setSerie(serieData);

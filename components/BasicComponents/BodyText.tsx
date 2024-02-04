@@ -20,7 +20,8 @@ export const BodyText = (params: TextParams) => {
   }[params.fontStyle || 'normal'];
 
   return (
-    <Text style={[styles.textStyle, titleSize, fontStyle, { color: textColor }, params.style]}>
+    <Text style={[styles.textStyle, titleSize, fontStyle, { color: textColor }, params.style]}
+        onLayout={params.onLayout} numberOfLines={params.numberOfLines}>
       {params.body}
     </Text>
   );

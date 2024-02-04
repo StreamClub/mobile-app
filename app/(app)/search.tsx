@@ -133,12 +133,12 @@ export default function Search() {
                 poster: serie.poster,
                 title: serie.title,
                 available: serie.available,
-                releaseYear: serie.releaseDate.split('-')[0],
+                releaseYear: (serie.releaseDate? serie.releaseDate.split('-')[0] : '?'),
                 score: serie.score.toFixed(2),
                 seen: serie.seen,
                 inWatchlist: serie.inWatchlist,
                 status: serie.status,
-                lastYear: serie.lastEpisodeReleaseDate.split('-')[0]
+                lastYear: (serie.lastEpisodeReleaseDate? serie.lastEpisodeReleaseDate.split('-')[0] : '?')
             }
             seriesList.push(serieEntry);
         })

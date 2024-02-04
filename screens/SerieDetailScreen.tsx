@@ -17,7 +17,8 @@ export type Season = {
 
 type Episode = {
     photo: string,
-    airDate: Date
+    airDate: Date,
+    name: string
 }
 
 type SerieDetails = {
@@ -70,7 +71,12 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                 <TitleText
                     body={
                         '(' + (params.serie.releaseDate.getFullYear()? params.serie.releaseDate.getFullYear(): ' ? ') + 
-                        ' - ' + (params.serie.releaseDate.getFullYear()? params.serie.lastAirDate.getFullYear(): ' ? ') + ')'} 
+                        ' - ' + 
+                        ((params.serie.status === 'Finalizada')?
+                            ((params.serie.releaseDate.getFullYear()? params.serie.lastAirDate.getFullYear(): ' ? ') + ')') :
+                            'Presente)'
+                        )
+                    } 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}
                 />
@@ -144,14 +150,25 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
 }
 
 const renderNextEpisode = (episode: Episode) => {
+    const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
     return (
         <View style={styles.nextEpisode} >
             <Image 
                 source={{ uri: "https://image.tmdb.org/t/p/original" + episode.photo }} 
                 style={styles.episodePhoto} /> 
-            <View style={{flexDirection: 'column'}}>
+            <View style={{flexDirection: 'column', width: 180}}>
                 <BodyText body='Próximo capitulo: ' style={{fontWeight: 'bold'}} size='medium'/>
-                <BodyText body={'Esteno: ' + episode.airDate.getFullYear().toString()}/>
+                <BodyText body={episode.name} size='medium' numberOfLines={1}/>
+                <BodyText body={formatter.format(episode.airDate)} color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
+                <View style={{ alignSelf: 'flex-end', justifyContent: 'flex-end', flex: 1 }}>
+                    <CustomButton 
+                        buttonText="Ver ahora" 
+                        fontSize='small'
+                        type='primary' 
+                        onPress={() => console.log("Que buena serie estoy viendo")} 
+                        icon="play"
+                        style={{width: 120, margin: 10}}/>
+                </View>
             </View>
         </View>
     )
@@ -270,14 +287,14 @@ const styles = StyleSheet.create({
     nextEpisode: {
         width: 350,
         height: 150,
-        backgroundColor: colors.primaryBlue,
+        backgroundColor: colors.primarySkyBlue,
         margin: 20,
         borderRadius: 20,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flex: 1
     },
     episodePhoto: {
-        width: 150,
-        height: 130,
+        flex: 1,
         margin: 10,
         borderRadius: 20
     }

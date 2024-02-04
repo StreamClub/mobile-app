@@ -57,3 +57,25 @@ export function getSerie(
             onFailure(error)
     });
 }
+
+// --------- --------- --------- --------- --------- ---------
+export function getSeason(
+    session: ReturnType<typeof useSession>,
+    seriesId: string,
+    seasonId: string, 
+    onSuccess: (response: AxiosResponse<any, any>) => void, 
+    onFailure: (error: any) => void
+    ) {
+    
+    let config = getBaseConfig(session)
+    config.params = {
+        "country": country
+    }
+    
+    axios.get(baseURL + '/series/' + seriesId + '/seasons/' + seasonId, config).then(
+        (response) => {
+            onSuccess(response)
+        }, (error) => {
+            onFailure(error)
+    });
+}

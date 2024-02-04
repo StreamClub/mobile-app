@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent } from 'react-native';
+import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent, Pressable } from 'react-native';
 import { Icon, Divider, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
@@ -10,6 +10,7 @@ const screenWidth = Dimensions.get('window').width;
 
 export type Season = {
     id: number,
+    seriesId: number,
     name: string,
     poster: string,
     airDate: Date
@@ -39,7 +40,8 @@ type SerieDetails = {
 }
 
 type SerieDetailScreenParams = {
-    serie: SerieDetails
+    serie: SerieDetails,
+    onSeasonPress: (season: Season) => void;
 }
 
 const renderBackgroundImage = (params: SerieDetailScreenParams) => {
@@ -48,6 +50,9 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
     const handleTitleTextLayout = (event: LayoutChangeEvent) => {
         setTitleTextHeight(event.nativeEvent.layout.height);
     };
+
+    const releaseYear = params.serie.releaseDate? params.serie.releaseDate.getFullYear() : " ? ";
+    const lastYear = params.serie.lastAirDate? params.serie.lastAirDate.getFullYear() : " ? ";
 
     const backgroundSize = 210 + (titleTextHeight/30 - 2)*30
 
@@ -68,7 +73,17 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} 
                     onLayout={handleTitleTextLayout}
                 />
-                <TitleText
+                {(params.serie.status === 'Finalizada' || params.serie.status === 'Cancelada')?
+                <TitleText 
+                    body={"(" + releaseYear + ' - ' + (lastYear? lastYear : " ? ") + ")"} 
+                    size='big' 
+                    style={{width: screenWidth - 10, fontWeight: 'bold'}} /> : null}
+                {params.serie.status === 'Serie en emisión'?
+                <TitleText 
+                    body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} 
+                    size='big' 
+                    style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
+                {/* <TitleText
                     body={
                         '(' + (params.serie.releaseDate.getFullYear()? params.serie.releaseDate.getFullYear(): ' ? ') + 
                         ' - ' + 
@@ -79,7 +94,7 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                     } 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}
-                />
+                /> */}
                 <BodyText body={'Cant. espisodios: ' + params.serie.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Cant. temporadas: ' + params.serie.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Creador: ' + params.serie.creators[0]} size='medium' style={{fontWeight: 'bold'}} />
@@ -114,12 +129,12 @@ const renderPlatforms = (params: SerieDetailScreenParams) => {
                                 key={index} />
                         )} 
                     </ScrollView>
-                    <Divider style={styles.divider} />
-                    <BodyText body={'Estado: ' + params.serie.status} size='big' color={colors.primaryBlue} style={{fontWeight: 'bold'}}/>
                 </View>
             </> : 
-            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 160, margin: 10}} />    
+            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 180, margin: 10}} />    
         }
+        <Divider style={styles.divider} />
+        <BodyText body={'Estado: ' + params.serie.status} size='big' color={colors.primaryBlue} style={{fontWeight: 'bold'}}/>
     </View>
     )
 }
@@ -134,10 +149,12 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                     {seasons.map( (season, index) => 
                         <View style={{flexDirection: 'column', margin: 5}} key={index}>
-                            <Image 
-                                source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
-                                style={styles.seasonImage}
-                            /> 
+                            <Pressable onPress={() => params.onSeasonPress(season)}>
+                                <Image 
+                                    source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
+                                    style={styles.seasonImage}
+                                />
+                            </Pressable>
                             <BodyText body={season.name} size='big' />
                             <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
                         </View>
@@ -251,6 +268,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: 5,
         height: 160,
+        width: 180,
         justifyContent: 'center'
     },
     platformImage: {

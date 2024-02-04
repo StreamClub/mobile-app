@@ -5,13 +5,14 @@ import { useState, useEffect } from "react";
 import { colors } from "../../assets";
 import { getSerie } from '../../apiCalls/series';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-
+import { router } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import { Season, SerieDetailScreen } from '../../screens/SerieDetailScreen';
+import { SeasonDetailsParams } from './season';
 
 export type SerieDetailsParams = {
     id: string;
-  };
+};
 
 export default function Serie() {
     const session = useSession();
@@ -29,7 +30,7 @@ export default function Serie() {
         totalSeasons: 0,
         releaseDate: new Date(),
         seasons: [],
-        nextEpisode: {photo: '', airDate: new Date()}
+        nextEpisode: {photo: '', airDate: new Date(), name: ''}
     })
     const params = useLocalSearchParams<SerieDetailsParams>();
     const [serieLoaded, setSerieLoaded] = useState(false)
@@ -55,7 +56,8 @@ export default function Serie() {
                 "id": season.id,
                 "name": season.name,
                 "poster": season.poster,
-                "airDate": new Date(season.airDate)
+                "airDate": new Date(season.airDate),
+                "seriesId": response.data.id
             })) : [],
             nextEpisode: {
                 photo: response.data.nextEpisode.photo,
@@ -72,16 +74,24 @@ export default function Serie() {
     }
 
     useEffect(() => {
-        const loadMovie = async () => {
+        const loadSerie = async () => {
           await getSerie(session, serieId, onSuccess, onFailure)
         };
-        loadMovie();
+        loadSerie();
     }, []);
+
+    const onSeasonPress = (season: Season) => {
+        const params: SeasonDetailsParams = {
+            seasonId: season.id.toString(),
+            seriesId: season.seriesId.toString()
+        }
+        router.push({ pathname: '/season', params});
+    }
 
     return (
         <View style={styles.container}>
             {serieLoaded ? 
-                <SerieDetailScreen serie={serie} /> : 
+                <SerieDetailScreen serie={serie} onSeasonPress={onSeasonPress}/> : 
                 <LoadingComponent />
             }
         </View>

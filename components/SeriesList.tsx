@@ -103,8 +103,7 @@ export const SeriesList = (params: SeriesListProps) => {
 
         return (
             <Pressable onPress={() => onSeriePress(serieEntry)} style={styles.detailsContainer}>
-                {renderTitle(serieTitle, serieEntry.releaseYear, 
-                    (serieEntry.status == 'Finalizada'? serieEntry.lastYear : "Presente"))}
+                {renderTitle(serieTitle, serieEntry.releaseYear, serieEntry.lastYear, serieEntry.status)}
 
                 {renderSmallText(availableText, serieEntry.status)}
 
@@ -113,11 +112,14 @@ export const SeriesList = (params: SeriesListProps) => {
         )
     }
 
-    const renderTitle = (title: string, releaseYear: string, lastYear: string) => {
+    const renderTitle = (title: string, releaseYear: string, lastYear: string, status: string) => {
         return (
             <View style={{ flex: 0.6, }}>
                 <TitleText body={title} size='small' numberOfLines={2}/>
-                <TitleText body={"(" + (releaseYear? releaseYear : " ? ") + ' - ' + (lastYear? lastYear : " ? ") + ")"} size='small' />
+                {(status === 'Finalizada' || status === 'Cancelada')?
+                <TitleText body={"(" + (releaseYear? releaseYear : " ? ") + ' - ' + (lastYear? lastYear : " ? ") + ")"} size='small' /> : null}
+                {status === 'Serie en emisión'?
+                <TitleText body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} size='small' /> : null}
             </View>
         )
     }

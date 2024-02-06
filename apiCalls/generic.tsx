@@ -42,7 +42,6 @@ function onSuccessRefresh (privateCallParams: any, response: AxiosResponse<any, 
         privateCallParams.onFailure,
         accessToken
     )
-    
 }
 
 function refreshTokens(privateCallParams: any){
@@ -96,7 +95,6 @@ export function privateCall(
         method: method,
         url: baseURL + endpoint,
         responseType: 'json',
-        // headers: { "Authorization": `Bearer ${accessToken}`},
         headers: { "Authorization": `Bearer ${newAccessToken || accessToken}`},
         params: paramsAndData.params,
         data: paramsAndData.data
@@ -114,6 +112,7 @@ export function privateCall(
 // Use for calls that do not require a token
 export function publicCall(
     method: string,
+    //TODO: Eliminar session
     session: ReturnType<typeof useSession>,
     endpoint: string,
     paramsAndData: Params,

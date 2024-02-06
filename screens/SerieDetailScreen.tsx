@@ -155,7 +155,7 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
                                     style={styles.seasonImage}
                                 />
                             </Pressable>
-                            <BodyText body={season.name} size='big' />
+                            <BodyText body={season.name} size='big' style={{width: 150}} numberOfLines={2}/>
                             <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
                         </View>
                     )}

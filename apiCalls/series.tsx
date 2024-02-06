@@ -1,17 +1,8 @@
-import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
+import { privateCall, Params } from './generic';
 
-const baseURL = 'https://papi-4lms.onrender.com' //REVISAR EL TEMA DE LA BASE URL
 const country = "AR" //TODO: Esto hay que cambiarlo
-
-function getBaseConfig(session: ReturnType<typeof useSession>) {
-    const accessToken = session?.accessToken
-    return {
-        headers: {"Authorization" : `Bearer ${accessToken}`},
-        params: {},
-    }
-}
 
 // --------- --------- --------- --------- --------- ---------
 export type SearchParams = {
@@ -25,16 +16,10 @@ export function searchSeries(
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void) {
 
-    let config = getBaseConfig(session)
-    config.params = queryParams
+    const endpoint = '/series/'
+    const params: Params = { params: queryParams }
 
-
-    axios.get(baseURL + '/series/', config).then(
-        (response) => {
-            onSuccess(response)
-        }, (error) => {
-            onFailure(error)
-        });
+    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -45,17 +30,10 @@ export function getSerie(
     onFailure: (error: any) => void
     ) {
     
-    let config = getBaseConfig(session)
-    config.params = {
-        "country": country
-    }
-    
-    axios.get(baseURL + '/series/' + serieId, config).then(
-        (response) => {
-            onSuccess(response)
-        }, (error) => {
-            onFailure(error)
-    });
+    const endpoint = '/series/' + serieId
+    const params: Params = { params: {country: country} }
+
+    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -67,15 +45,8 @@ export function getSeason(
     onFailure: (error: any) => void
     ) {
     
-    let config = getBaseConfig(session)
-    config.params = {
-        "country": country
-    }
-    
-    axios.get(baseURL + '/series/' + seriesId + '/seasons/' + seasonId, config).then(
-        (response) => {
-            onSuccess(response)
-        }, (error) => {
-            onFailure(error)
-    });
+    const endpoint = '/series/' + seriesId + '/seasons/' + seasonId
+    const params: Params = { params: {country: country} }
+
+    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }

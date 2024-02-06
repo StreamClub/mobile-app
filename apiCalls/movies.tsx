@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
-import { privateCall } from './generic';
+import { privateCall, Params } from './generic';
 
 const country = "AR" // Esto hay que cambiarlo
 
@@ -14,7 +14,7 @@ export function getMovie(
     ) {
     
     const endpoint = '/movies/' + movieId
-    const params = { country: country }
+    const params: Params = { params: {country: country} }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
@@ -32,8 +32,9 @@ export function searchMovies(
     onFailure: (error: any) => void) {
 
     const endpoint = '/movies/'
+    const params: Params = { params: queryParams }
 
-    privateCall('GET', session, endpoint, queryParams, onSuccess, onFailure)
+    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 
 }
 
@@ -48,7 +49,7 @@ export function searchArtists(
 
     // TODO: Implementar
     // const endpoint = '....'
-    // const params = { country: country, ...... }
+    // const params: Params = { params: { country: country, ...... } }
 
     // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
@@ -64,7 +65,7 @@ export function searchUsers(
 
     // TODO: Implementar
     // const endpoint = '....'
-    // const params = { country: country, ...... }
+    // const params: Params = { params: { country: country, ...... } }
 
     // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }

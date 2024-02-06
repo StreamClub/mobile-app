@@ -29,9 +29,7 @@ export default function Page() {
         setShowErrorMessage(false);
 
         const { token, refreshToken } = response.data
-        console.log('token', token)
-        console.log('refreshToken', refreshToken)
-        
+
         signIn?.(token, refreshToken)
         router.replace('/home');
     }

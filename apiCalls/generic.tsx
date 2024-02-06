@@ -3,7 +3,6 @@ import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
 import config from '../config.json';
 
-// const baseURL = 'https://papi-4lms.onrender.com' // TODO: REVISAR EL TEMA DE LA BASE URL
 const baseURL = config.api.baseUrl
 
 // --------- --------- --------- --------- --------- ---------

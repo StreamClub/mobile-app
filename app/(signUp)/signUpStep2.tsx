@@ -29,6 +29,8 @@ export default function Page() {
         setShowErrorMessage(false);
 
         const { token, refreshToken } = response.data
+        console.log('token', token)
+        console.log('refreshToken', refreshToken)
         
         signIn?.(token, refreshToken)
         router.replace('/home');
@@ -50,57 +52,11 @@ export default function Page() {
 
         register(
             body,
+            session,
             onSucesssRegister,
             onFailureRegister
         )
     }
-
-    // const _handleCreateAccount = (verificationCode: number) => {
-    //     const body = {
-    //         "email": createAccountBody.email,
-    //         "password": createAccountBody.password,
-    //         "verificationCode": verificationCode
-    //     }
-    //     fetch(config.api.url + "/users/register", {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(body)
-    //     })
-    //     .then(response => {
-    //         if (!response.ok){
-    //             const contentType = response.headers.get('content-type');
-    //             if(contentType && contentType.includes('application/json')) {
-    //                 response.json().then(json => {
-    //                     console.log(json);
-    //                     let err = new Error(json["error"] || "F");
-    //                     throw err;
-    //                 })
-    //                 .catch(error => {
-    //                     console.log(error.message);
-    //                     setShowErrorMessage(true);
-    //                     setShowSuccessMessage(false);
-    //                     setErrorMessage(error.message);
-    //                 })
-    //             }
-    //             else {
-    //                 setShowErrorMessage(true);
-    //                 setShowSuccessMessage(false);
-    //                 setErrorMessage(config.api.defaultErrorMessage);
-    //             }
-    //         } else {
-    //             response.json().then(json => {
-    //                 console.log(json);
-    //                 //signIn?.token(json["token"])
-    //                 setShowSuccessMessage(true);
-    //                 setShowErrorMessage(false);
-    //                 router.push('/home')
-    //             })
-    //         }
-    //     })
-    // }
 
     return (
         <>

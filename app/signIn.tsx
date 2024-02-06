@@ -39,6 +39,7 @@ export default function Page() {
         const body: logInBody = { email, password }
         logIn(
             body,
+            session,
             onSuccessLogIn,
             onFailureLogIn
         )

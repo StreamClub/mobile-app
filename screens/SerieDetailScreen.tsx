@@ -5,6 +5,7 @@ import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
 import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
+import { Actor, CastList } from '../components/CastList';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -36,7 +37,8 @@ type SerieDetails = {
     totalSeasons: number,
     releaseDate: Date,
     seasons: Array<Season>,
-    nextEpisode: Episode
+    nextEpisode: Episode,
+    cast: Array<Actor>
 }
 
 type SerieDetailScreenParams = {
@@ -215,12 +217,17 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
                 </View>
             </View>
             {renderSeasons(params)}
+            <CastList cast={params.serie.cast} style={styles.cast} />
         </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    cast: {
+        marginLeft: 20,
+        marginBottom: 20
+    },
     container: {
         flex: 1,
     },

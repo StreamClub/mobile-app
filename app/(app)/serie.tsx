@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import { Season, SerieDetailScreen } from '../../screens/SerieDetailScreen';
 import { SeasonDetailsParams } from './season';
+import { Actor } from '../../components/CastList';
 
 export type SerieDetailsParams = {
     id: string;
@@ -30,7 +31,8 @@ export default function Serie() {
         totalSeasons: 0,
         releaseDate: new Date(),
         seasons: [],
-        nextEpisode: {photo: '', airDate: new Date(), name: ''}
+        nextEpisode: {photo: '', airDate: new Date(), name: ''},
+        cast: []
     })
     const params = useLocalSearchParams<SerieDetailsParams>();
     const [serieLoaded, setSerieLoaded] = useState(false)
@@ -39,6 +41,7 @@ export default function Serie() {
     const onSuccess = (response: any) => {
         const platforms = response.data.platforms;
         const seasons = response.data.seasons;
+        const cast = response.data.cast;
         const serieData = {
             overview: response.data.overview,
             poster: response.data.poster,
@@ -63,7 +66,12 @@ export default function Serie() {
                 photo: response.data.nextEpisode.photo,
                 airDate: new Date(response.data.nextEpisode.airDate),
                 name: response.data.nextEpisode.name
-            }
+            },
+            cast: cast ? cast.map((actor: Actor) => ({
+                "name": actor.name,
+                "profilePath": actor.profilePath,
+                "character": actor.character
+            })) : []
         };
         setSerie(serieData);
         setSerieLoaded(true);

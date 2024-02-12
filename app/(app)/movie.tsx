@@ -8,6 +8,7 @@ import { LoadingComponent } from '../../components/BasicComponents/LoadingCompon
 import { MovieDetailScreen } from '../../screens/MovieDetailScreen';
 
 import { useLocalSearchParams } from 'expo-router';
+import { Actor } from '../../components/CastList';
 
 export type MovieDetailsParams = {
     id: string;
@@ -32,6 +33,7 @@ export default function Movie() {
 
     const onSuccess = (response: any) => {
         const platforms = response.data.platforms;
+        const cast = response.data.cast;
         console.log("responseMovie " + response.data.title)
         const movieData = {
             title: response.data.title,
@@ -42,7 +44,12 @@ export default function Movie() {
             directors: response.data.directors,
             backdrop: response.data.backdrop,
             runtime: String(response.data.runtime),
-            overview: response.data.overview
+            overview: response.data.overview,
+            cast: cast? cast.map((actor: Actor) => ({
+                "name": actor.name,
+                "profilePath": actor.profilePath,
+                "character": actor.character
+            })) : []
         }
         setMovie(movieData);
         setMovieLoaded(true);

@@ -5,6 +5,7 @@ import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
 import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
+import { Actor, CastList } from '../components/CastList';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -17,7 +18,8 @@ type MovieDetails = {
     directors: Array<string>,
     backdrop: string,
     runtime: string,
-    overview: string
+    overview: string,
+    cast: Array<Actor>
 }
 
 type MovieDetailScreenParams = {
@@ -129,12 +131,17 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     </ScrollView>
                 </View>
             </View>
+            <CastList cast={params.movie.cast} style={styles.castStyle}/>
         </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    castStyle: {
+        marginLeft: 20,
+        marginBottom: 20
+    },
     container: {
         flex: 1,
     },

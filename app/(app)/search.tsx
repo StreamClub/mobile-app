@@ -18,7 +18,7 @@ import { SerieDetailsParams } from './serie';
 import { searchSeries } from '../../apiCalls/series';
 
 const MAX_SEARCH_LENGTH = 50;
-const DELAY_SEARCH = 2000;
+const DELAY_SEARCH = 500;
 
 const MOVIES_NAME = 'Películas'
 const SERIES_NAME = 'Series'
@@ -173,6 +173,7 @@ export default function Search() {
     // OnPress Handlers
     // ------------------------------------------------------------
     const onSegmentedButtonPress = (value: number) => {
+        setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
         setSelectedIndex(value);
         setSelectedCategory(CATEGORIES[value]);
     }

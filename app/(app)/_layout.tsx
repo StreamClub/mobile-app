@@ -11,14 +11,10 @@ export default function AppLayout() {
     const session = useSession()
 
     const accessToken = session?.accessToken
+    const refreshToken = session?.refreshToken
     const isLoading = session?.isLoading
 
-    // Loading Screen
-    if (isLoading) {
-        return <Text>Loading...</Text>;
-    }
-
-    if (!(accessToken)) {
+    if (!(accessToken) && !(refreshToken) && !(isLoading)) {
         return <Redirect href="/" />;
     }
 

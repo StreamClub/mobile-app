@@ -1,17 +1,9 @@
-import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
+import { privateCall, Params } from './generic';
 
-const baseURL = 'https://papi-4lms.onrender.com' //REVISAR EL TEMA DE LA BASE URL
-const country = "AR" //TODO: Esto hay que cambiarlo
+const country = "AR" // TODO: Esto hay que cambiarlo
 
-function getBaseConfig(session: ReturnType<typeof useSession>) {
-    const accessToken = session?.accessToken
-    return {
-        headers: {"Authorization" : `Bearer ${accessToken}`},
-        params: {},
-    }
-}
 
 // --------- --------- --------- --------- --------- ---------
 export function getMovie(
@@ -21,17 +13,10 @@ export function getMovie(
     onFailure: (error: any) => void
     ) {
     
-    let config = getBaseConfig(session)
-    config.params = {
-        "country": country
-    }
-    
-    axios.get(baseURL + '/movies/' + movieId, config).then(
-        (response) => {
-            onSuccess(response)
-        }, (error) => {
-            onFailure(error)
-    });
+    const endpoint = '/movies/' + movieId
+    const params: Params = { params: {country: country} }
+
+    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -46,26 +31,11 @@ export function searchMovies(
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void) {
 
-    let config = getBaseConfig(session)
-    config.params = queryParams
+    const endpoint = '/movies/'
+    const params: Params = { params: queryParams }
 
+    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 
-    axios.get(baseURL + '/movies/', config).then(
-        (response) => {
-            onSuccess(response)
-        }, (error) => {
-            onFailure(error)
-        });
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function searchSeries(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void) {
-
-    console.log('[TODO] Buscando series...');
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -76,6 +46,12 @@ export function searchArtists(
     onFailure: (error: any) => void) {
 
     console.log('[TODO] Buscando artistas...');
+
+    // TODO: Implementar
+    // const endpoint = '....'
+    // const params: Params = { params: { country: country, ...... } }
+
+    // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -86,4 +62,10 @@ export function searchUsers(
     onFailure: (error: any) => void) {
 
     console.log('[TODO] Buscando usuarios...');
+
+    // TODO: Implementar
+    // const endpoint = '....'
+    // const params: Params = { params: { country: country, ...... } }
+
+    // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }

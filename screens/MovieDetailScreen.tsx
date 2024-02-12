@@ -66,10 +66,6 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
                         style={styles.posterImage}   
                     /> :
                     <View style={[styles.posterImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
-                        {/* <Image
-                            source={require("../assets/images/logo.png")}
-                            style={styles.posterImage}
-                        /> */}
                         <Icon source="image-off-outline" size={90}/>
                     </View>
                 }
@@ -81,7 +77,7 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
 const renderPlatforms = (params: MovieDetailScreenParams) => {
     return(
     <View style={styles.platforms}>
-        {(params.movie.platforms.length === 1)?
+        {(params.movie.platforms.length >= 1)?
             <>
                 <BodyText body={"Disponible en:"} size="big"/>
                 <View style={{height: 'auto', width: 180, alignItems: 'center'}}>

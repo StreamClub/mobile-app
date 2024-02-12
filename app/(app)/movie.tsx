@@ -28,7 +28,7 @@ export default function Movie() {
     })
     const params = useLocalSearchParams<MovieDetailsParams>();
     const [movieLoaded, setMovieLoaded] = useState(false)
-    const movieId = params.id //DE KILL BILL CAMBIAR CUANDO SE HAGA LA NAVEGACION
+    const movieId = params.id
 
     const onSuccess = (response: any) => {
         const platforms = response.data.platforms;

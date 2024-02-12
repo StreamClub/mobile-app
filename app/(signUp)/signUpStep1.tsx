@@ -4,6 +4,7 @@ import { Snackbar } from 'react-native-paper';
 import { router } from 'expo-router';
 const config = require('../../config.json');
 
+import { useSession } from '../../context/ctx';
 import { signUp, sendVerificationCodeBody } from '../../apiCalls/auth'
 import { signUpStep2ParamsType } from './signUpStep2'
 
@@ -12,6 +13,8 @@ export default function Page() {
     // const [successMessage, setSuccessMessage] = useState('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    const session = useSession();
 
     var email = ''
     var password = ''
@@ -39,6 +42,7 @@ export default function Page() {
         
         signUp(
             body,
+            session,
             onSuccessSignUp,
             onFailureSignUp
         )

@@ -164,6 +164,7 @@ export default function Search() {
 
     const onFailureSearch = (error: any) => {
         console.log(error);
+        console.log(error.response);
         setShowLoading(false);
     }
     // ------------------------------------------------------------

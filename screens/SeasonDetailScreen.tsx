@@ -147,7 +147,6 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
 
     const openModal = (episode: number) => {
         setOpenedEpisode(episode);
-        console.log(episode);
     }
 
     return(

@@ -173,8 +173,6 @@ export default function Search() {
     // OnPress Handlers
     // ------------------------------------------------------------
     const onSegmentedButtonPress = (value: number) => {
-        onChangeTextSearched("")
-
         setSelectedIndex(value);
         setSelectedCategory(CATEGORIES[value]);
     }

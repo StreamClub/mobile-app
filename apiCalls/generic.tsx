@@ -27,7 +27,7 @@ function onSuccessRefresh (privateCallParams: any, response: AxiosResponse<any, 
     const accessToken = response.data.token
     const refreshToken = response.data.refreshToken
     
-    console.log('Token refreshed')
+    console.log('[Success Refresh]')
     console.log('New access token: ' + accessToken)
     console.log('New refresh token: ' + refreshToken)
 

@@ -13,7 +13,7 @@ export default function Index() {
 
     useEffect(() => {
         if (accessToken && refreshToken) {
-            console.log('accessToken && refreshToken');
+            console.log('[INDEX] accessToken && refreshToken loaded. Redirecting to /home...');
 
             processTokens?.(accessToken, refreshToken);
         }

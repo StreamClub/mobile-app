@@ -10,6 +10,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { Season, SerieDetailScreen } from '../../screens/SerieDetailScreen';
 import { SeasonDetailsParams } from './season';
 import { Actor } from '../../components/CastList';
+import { Content } from '../../components/RecomendsList';
 
 export type SerieDetailsParams = {
     id: string;
@@ -32,7 +33,8 @@ export default function Serie() {
         releaseDate: new Date(),
         seasons: [],
         nextEpisode: {photo: '', airDate: new Date(), name: ''},
-        cast: []
+        cast: [],
+        similar: []
     })
     const params = useLocalSearchParams<SerieDetailsParams>();
     const [serieLoaded, setSerieLoaded] = useState(false)
@@ -42,6 +44,7 @@ export default function Serie() {
         const platforms = response.data.platforms;
         const seasons = response.data.seasons;
         const cast = response.data.cast;
+        const similar = response.data.similar;
         const serieData = {
             overview: response.data.overview,
             poster: response.data.poster,
@@ -71,6 +74,12 @@ export default function Serie() {
                 "name": actor.name,
                 "profilePath": actor.profilePath,
                 "character": actor.character
+            })) : [],
+            similar: similar? similar.map((series: Content) => ({
+                "id": series.id,
+                "title": series.title,
+                "posterPath": series.posterPath,
+                "releaseDate": new Date(series.releaseDate)
             })) : []
         };
         setSerie(serieData);
@@ -96,10 +105,17 @@ export default function Serie() {
         router.push({ pathname: '/season', params});
     }
 
+    const onRedommendPress = (series: Content) => {
+        const newParams: SerieDetailsParams = {
+            id: series.id.toString()
+        };
+        router.replace({ pathname: '/serie', params: newParams});
+    }
+
     return (
         <View style={styles.container}>
             {serieLoaded ? 
-                <SerieDetailScreen serie={serie} onSeasonPress={onSeasonPress}/> : 
+                <SerieDetailScreen serie={serie} onSeasonPress={onSeasonPress} onRecommendPress={onRedommendPress}/> : 
                 <LoadingComponent />
             }
         </View>

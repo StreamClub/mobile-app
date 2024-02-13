@@ -77,12 +77,10 @@ export default function Movie() {
     }, []);
 
     const onRedommendedPress = (movie: Content) => {
-        console.log("Re routing to: " +movie.id);
         const newParams: MovieDetailsParams = {
             id: movie.id.toString()
         };
         router.replace({ pathname: '/movie', params: newParams});
-        console.log("After push");
     }
 
     return (

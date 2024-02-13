@@ -6,6 +6,7 @@ import { BodyText } from '../components/BasicComponents/BodyText';
 import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
+import { Content, RecommendsList } from '../components/RecomendsList';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -38,12 +39,14 @@ type SerieDetails = {
     releaseDate: Date,
     seasons: Array<Season>,
     nextEpisode: Episode,
-    cast: Array<Actor>
+    cast: Array<Actor>,
+    similar: Array<Content>
 }
 
 type SerieDetailScreenParams = {
     serie: SerieDetails,
     onSeasonPress: (season: Season) => void;
+    onRecommendPress: (series: Content) => void;
 }
 
 const renderBackgroundImage = (params: SerieDetailScreenParams) => {
@@ -218,12 +221,21 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
             </View>
             {renderSeasons(params)}
             <CastList cast={params.serie.cast} style={styles.cast} />
+            <RecommendsList 
+                onRecommendPress={params.onRecommendPress} 
+                title='Series similares:'
+                contents={params.serie.similar} 
+                style={styles.recommends} />
         </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    recommends: {
+        marginLeft: 20,
+        marginBottom: 20
+    },
     cast: {
         marginLeft: 20,
         marginBottom: 20

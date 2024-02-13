@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView, View, Image, StyleSheet, Pressable, ImageSourcePropType, ActivityIndicator } from 'react-native'
 import { Icon } from 'react-native-paper';
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
+import { WatchlistButton } from './BasicComponents/WatchlistButton';
 
 const MAX_TITLE_LENGHT = 50
 
@@ -23,7 +24,7 @@ export type SerieEntry = {
 export type SeriesListCallbacks = {
     onSeriePress: (serie: SerieEntry) => void;
     onSerieSeenPress: (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
-    onSerieWatchlistPress: (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    onWatchlistPress: (series: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => void;
 }
 
 type SeriesListProps = {
@@ -45,9 +46,9 @@ export const SeriesList = (params: SeriesListProps) => {
         params.callbacks.onSerieSeenPress(serieEntry, setLoading)
     }
 
-    const onWatchlistPress = (serieEntry: SerieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onWatchlistPress = (serieEntry: SerieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
         if (loading) return
-        params.callbacks.onSerieWatchlistPress(serieEntry, setLoading)
+        params.callbacks.onWatchlistPress(serieEntry, setLoading, setInWatchlist, inWatchlist);
     }
     // ------------------------------------------------------------
 
@@ -99,7 +100,7 @@ export const SeriesList = (params: SeriesListProps) => {
         const availableText = serieEntry.available ? "Disponible en tus plataformas" : ""
         const scoreFormatted = serieEntry.score.toString() + "/10"
         const seenIcon = serieEntry.seen ? require('../assets/icons/unmarkAsSeen.png') : require('../assets/icons/markAsSeen.png')
-        const watchlistIcon = serieEntry.inWatchlist ? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')
+        const [inWatchlist, setInWatchlist] = useState(serieEntry.inWatchlist)
 
         return (
             <Pressable onPress={() => onSeriePress(serieEntry)} style={styles.detailsContainer}>
@@ -107,7 +108,7 @@ export const SeriesList = (params: SeriesListProps) => {
 
                 {renderSmallText(availableText, serieEntry.status)}
 
-                {renderBottomSection(serieEntry, scoreFormatted, seenIcon, watchlistIcon)}
+                {renderBottomSection(serieEntry, scoreFormatted, seenIcon, setInWatchlist, inWatchlist)}
             </Pressable>
         )
     }
@@ -133,7 +134,7 @@ export const SeriesList = (params: SeriesListProps) => {
         )
     }
 
-    const renderBottomSection = (serieEntry: SerieEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, watchlistIcon: ImageSourcePropType) => {
+    const renderBottomSection = (serieEntry: SerieEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
         const [seenLoading, setSeenLoading] = React.useState(false)
         const [watchlistLoading, setWatchlistLoading] = React.useState(false)
         return (
@@ -176,17 +177,10 @@ export const SeriesList = (params: SeriesListProps) => {
 
                 {/* Watchlist Section */}
                 <Pressable 
-                    onPress={() => onWatchlistPress(serieEntry, watchlistLoading, setWatchlistLoading)} 
+                    onPress={() => onWatchlistPress(serieEntry, watchlistLoading, setWatchlistLoading, setInWatchlist, inWatchlist)} 
                     style={styles.iconContainer}
                 >
-                    {watchlistLoading ?
-                        <ActivityIndicator size="small" animating={true} color={colors.primaryRed} style={{marginRight: 7}}/>
-                        :
-                        <Image
-                            source={watchlistIcon}
-                            style={styles.iconsStyle}
-                        />
-                    }
+                    <WatchlistButton inWatchlist={inWatchlist} watchlistLoading={watchlistLoading} iconStyle={styles.iconsStyle} />
                 </Pressable>
                 {/* ------------------------------------------------------------ */}
             </View>

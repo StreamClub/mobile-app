@@ -16,7 +16,7 @@ import { MovieDetailsParams } from './movie';
 import { SeriesList, SerieEntry } from '../../components/SeriesList';
 import { SerieDetailsParams } from './serie';
 import { searchSeries } from '../../apiCalls/series';
-import { handleMovieWatchlistPress } from '../../operations/handleWatchlistPress';
+import { handleMovieWatchlistPress, handleSeriesWatchlistPress } from '../../operations/handleWatchlistPress';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 500;
@@ -211,14 +211,6 @@ export default function Search() {
             setLoading(false);
         }, 1000);
     }
-
-    const onSerieWatchlistPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-        console.log(serie.title + ' watchlist pressed');
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    }
     // ------------------------------------------------------------
 
 
@@ -309,14 +301,14 @@ export default function Search() {
         )
     }
 
-    const onWatchlistPress = (movie: MovieEntry, 
-        setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
-        setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
-        inWatchlist: boolean) => {
-        handleMovieWatchlistPress(movie.id,setLoading, setInWatchlist, inWatchlist, session);
-    }
-
     const renderMovieList = () => {
+        const onWatchlistPress = (movie: MovieEntry, 
+            setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
+            setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
+            inWatchlist: boolean) => {
+            handleMovieWatchlistPress(movie.id,setLoading, setInWatchlist, inWatchlist, session);
+        }
+
         const callbacks = {
             onMoviePress,
             onSeenPress,
@@ -342,10 +334,17 @@ export default function Search() {
     }
 
     const renderSerieList = () => {
+        const onWatchlistPress = (series: SerieEntry, 
+            setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
+            setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
+            inWatchlist: boolean) => {
+            handleSeriesWatchlistPress(series.id,setLoading, setInWatchlist, inWatchlist, session);
+        }
+
         const callbacks = {
             onSeriePress,
             onSerieSeenPress,
-            onSerieWatchlistPress,
+            onWatchlistPress,
         }
         return (
             showLoading? null :

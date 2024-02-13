@@ -25,6 +25,7 @@ type Episode = {
 }
 
 type SerieDetails = {
+    id: string,
     overview: string,
     poster: string,
     backdrop: string,
@@ -40,7 +41,8 @@ type SerieDetails = {
     seasons: Array<Season>,
     nextEpisode: Episode,
     cast: Array<Actor>,
-    similar: Array<Content>
+    similar: Array<Content>,
+    inWatchlist: boolean
 }
 
 type SerieDetailScreenParams = {

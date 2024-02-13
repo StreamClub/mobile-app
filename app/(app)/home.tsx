@@ -26,17 +26,11 @@ export default function Index() {
             <Text
                 style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
                 onPress={() => {
+                    console.log(refreshToken)
                     router.push('/search');
+                    
                 }}>
                 Ventana de Busqueda
-            </Text>
-
-            <Text
-                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
-                onPress={() => {
-                    router.push('/movie');
-                }}>
-                Ventana de Pelicula
             </Text>
 
             <Text

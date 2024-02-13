@@ -7,7 +7,7 @@ import { colors } from '../assets/styles/colors'
 
 const MAX_TITLE_LENGHT = 50
 
-export type SerieEntry = {
+export type SeriesEntry = {
     id: string,
     title: string,
     poster: string,
@@ -21,13 +21,13 @@ export type SerieEntry = {
 }
 
 export type SeriesListCallbacks = {
-    onSeriePress: (serie: SerieEntry) => void;
-    onSerieSeenPress: (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
-    onSerieWatchlistPress: (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    onSeriesPress: (serie: SeriesEntry) => void;
+    onSeriesSeenPress: (serie: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    onSeriesWatchlistPress: (serie: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
 }
 
 type SeriesListProps = {
-    seriesList: SerieEntry[],
+    seriesList: SeriesEntry[],
     callbacks: SeriesListCallbacks,
 }
 
@@ -36,25 +36,25 @@ export const SeriesList = (params: SeriesListProps) => {
 
     // Callbacks calls
     // ------------------------------------------------------------
-    const onSeriePress = (serieEntry: SerieEntry) => {
-        params.callbacks.onSeriePress(serieEntry)
+    const onSeriesPress = (serieEntry: SeriesEntry) => {
+        params.callbacks.onSeriesPress(serieEntry)
     }
 
-    const onSeenPress = (serieEntry: SerieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onSeenPress = (serieEntry: SeriesEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         if (loading) return
-        params.callbacks.onSerieSeenPress(serieEntry, setLoading)
+        params.callbacks.onSeriesSeenPress(serieEntry, setLoading)
     }
 
-    const onWatchlistPress = (serieEntry: SerieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onWatchlistPress = (serieEntry: SeriesEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         if (loading) return
-        params.callbacks.onSerieWatchlistPress(serieEntry, setLoading)
+        params.callbacks.onSeriesWatchlistPress(serieEntry, setLoading)
     }
     // ------------------------------------------------------------
 
 
     // Render functions
     // ------------------------------------------------------------
-    const renderSerieEntry = (serieEntry: SerieEntry, index: number) => {
+    const renderSerieEntry = (serieEntry: SeriesEntry, index: number) => {
         return (
             <View key={index}>
                 <View style={styles.serieEntryContainer}>
@@ -68,12 +68,12 @@ export const SeriesList = (params: SeriesListProps) => {
         )
     }
 
-    const renderCoverSection = (serieEntry: SerieEntry) => {
+    const renderCoverSection = (serieEntry: SeriesEntry) => {
         const coverOutlineStyle = { backgroundColor: serieEntry.available ? colors.secondaryBlue : 'transparent' }
 
         return (
             <Pressable
-                onPress={() => onSeriePress(serieEntry)}
+                onPress={() => onSeriesPress(serieEntry)}
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
                 {serieEntry.poster?
@@ -90,7 +90,7 @@ export const SeriesList = (params: SeriesListProps) => {
         )
     }
 
-    const renderDetailsSection = (serieEntry: SerieEntry) => {
+    const renderDetailsSection = (serieEntry: SeriesEntry) => {
         let serieTitle = serieEntry.title
         if (serieEntry.title.length > MAX_TITLE_LENGHT) {
             serieTitle = serieEntry.title.slice(0, MAX_TITLE_LENGHT).trim() + '...'
@@ -102,7 +102,7 @@ export const SeriesList = (params: SeriesListProps) => {
         const watchlistIcon = serieEntry.inWatchlist ? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')
 
         return (
-            <Pressable onPress={() => onSeriePress(serieEntry)} style={styles.detailsContainer}>
+            <Pressable onPress={() => onSeriesPress(serieEntry)} style={styles.detailsContainer}>
                 {renderTitle(serieTitle, serieEntry.releaseYear, serieEntry.lastYear, serieEntry.status)}
 
                 {renderSmallText(availableText, serieEntry.status)}
@@ -133,7 +133,7 @@ export const SeriesList = (params: SeriesListProps) => {
         )
     }
 
-    const renderBottomSection = (serieEntry: SerieEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, watchlistIcon: ImageSourcePropType) => {
+    const renderBottomSection = (serieEntry: SeriesEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, watchlistIcon: ImageSourcePropType) => {
         const [seenLoading, setSeenLoading] = React.useState(false)
         const [watchlistLoading, setWatchlistLoading] = React.useState(false)
         return (

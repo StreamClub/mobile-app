@@ -4,7 +4,6 @@ import { privateCall, Params } from './generic';
 
 const country = "AR" // TODO: Esto hay que cambiarlo
 
-
 // --------- --------- --------- --------- --------- ---------
 export function getMovie(
     session: ReturnType<typeof useSession>,
@@ -20,22 +19,23 @@ export function getMovie(
 }
 
 // --------- --------- --------- --------- --------- ---------
-export type SearchParams = {
+export type SearchArtistParams = {
     query: string,
     page: number,
 }
 
-export function searchMovies(
+export function searchArtists(
     session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
+    queryParams: SearchArtistParams,
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void) {
 
-    const endpoint = '/movies/'
+    console.log('[TODO] Buscando artistas...');
+
+    const endpoint = '/artists'
     const params: Params = { params: queryParams }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-
 }
 
 // --------- --------- --------- --------- --------- ---------

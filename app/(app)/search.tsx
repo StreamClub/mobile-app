@@ -311,8 +311,9 @@ export default function Search() {
 
     const onWatchlistPress = (movie: MovieEntry, 
         setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
-        setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>) => {
-        handleWatchlistPress(movie,setLoading, setWatchlistIcon, session);
+        setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
+        inWatchlist: boolean) => {
+        handleWatchlistPress(movie,setLoading, setInWatchlist, inWatchlist, session);
     }
 
     const renderMovieList = () => {

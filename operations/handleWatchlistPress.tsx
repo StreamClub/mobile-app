@@ -5,17 +5,18 @@ import { useSession } from "../context/ctx";
 
 export const handleWatchlistPress = (movie: MovieEntry, 
         setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
-        setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>,
+        setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>,
+        inWatchlist: boolean,
         session: ReturnType<typeof useSession>) => {
     const onSuccessAdd = (response: any) => {
         console.log('Agrego a watchlist');
-        setWatchlistIcon(require('../assets/icons/removeFromWatchlist.png'));
+        setWatchlistIcon(true);
         setLoading(false);
     }
     
     const onSuccessRemove = (response: any) => {
         console.log('Borro de watchlist');
-        setWatchlistIcon(require('../assets/icons/addToWatchlist.png'));
+        setWatchlistIcon(false);
         setLoading(false);
     }
    
@@ -24,7 +25,7 @@ export const handleWatchlistPress = (movie: MovieEntry,
         setLoading(false);
     }
     
-    if (!movie.inWatchlist) {
+    if (!inWatchlist) {
         addMovieToWatchlist(session, movie.id, onSuccessAdd, onFailure);
     } else {
         removeMovieFromWatchlist(session, movie.id, onSuccessRemove, onFailure);

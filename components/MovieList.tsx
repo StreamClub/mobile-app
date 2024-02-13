@@ -21,7 +21,7 @@ export type MovieEntry = {
 export type MovieListCallbacks = {
     onMoviePress: (movie: MovieEntry) => void;
     onSeenPress: (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
-    onWatchlistPress: (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>) => void;
+    onWatchlistPress: (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => void;
 }
 
 type MovieListProps = {
@@ -43,9 +43,9 @@ export const MovieList = (params: MovieListProps) => {
         params.callbacks.onSeenPress(movieEntry, setLoading)
     }
 
-    const onWatchlistPress = (movieEntry: MovieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>) => {
+    const onWatchlistPress = (movieEntry: MovieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
         if (loading) return
-        params.callbacks.onWatchlistPress(movieEntry, setLoading, setWatchlistIcon);
+        params.callbacks.onWatchlistPress(movieEntry, setLoading, setInWatchlist, inWatchlist);
     }
     // ------------------------------------------------------------
 
@@ -93,6 +93,7 @@ export const MovieList = (params: MovieListProps) => {
         if (movieEntry.title.length > MAX_TITLE_LENGHT) {
             movieTitle = movieEntry.title.slice(0, MAX_TITLE_LENGHT).trim() + '...'
         }
+        const [inWatchlist, setInWatchlist] = useState(movieEntry.inWatchlist);
         const [watchlistIcon, setWatchlistIcon] = useState(() => {
             return movieEntry.inWatchlist ? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')
         })
@@ -100,7 +101,6 @@ export const MovieList = (params: MovieListProps) => {
         const availableText = movieEntry.available ? "Disponible en tus plataformas" : ""
         const scoreFormatted = movieEntry.score.toString() + "/10"
         const seenIcon = movieEntry.seen ? require('../assets/icons/unmarkAsSeen.png') : require('../assets/icons/markAsSeen.png')
-        //const watchlistIcon = movieEntry.inWatchlist ? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')
 
         return (
             <Pressable onPress={() => onMoviePress(movieEntry)} style={styles.detailsContainer}>
@@ -108,7 +108,7 @@ export const MovieList = (params: MovieListProps) => {
 
                 {renderAvailableText(availableText)}
 
-                {renderBottomSection(movieEntry, scoreFormatted, seenIcon, watchlistIcon, setWatchlistIcon)}
+                {renderBottomSection(movieEntry, scoreFormatted, seenIcon, inWatchlist, setInWatchlist)}
             </Pressable>
         )
     }
@@ -130,7 +130,7 @@ export const MovieList = (params: MovieListProps) => {
         )
     }
 
-    const renderBottomSection = (movieEntry: MovieEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, watchlistIcon: ImageSourcePropType, setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>) => {
+    const renderBottomSection = (movieEntry: MovieEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, inWatchlist: boolean, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>) => {
         const [seenLoading, setSeenLoading] = React.useState(false)
         const [watchlistLoading, setWatchlistLoading] = React.useState(false)
         return (
@@ -173,14 +173,14 @@ export const MovieList = (params: MovieListProps) => {
 
                 {/* Watchlist Section */}
                 <Pressable 
-                    onPress={() => onWatchlistPress(movieEntry, watchlistLoading, setWatchlistLoading, setWatchlistIcon)} 
+                    onPress={() => onWatchlistPress(movieEntry, watchlistLoading, setWatchlistLoading, setInWatchlist, inWatchlist)} 
                     style={styles.iconContainer}
                 >
                     {watchlistLoading ?
                         <ActivityIndicator size="small" animating={true} color={colors.primaryRed} style={{marginRight: 7}}/>
                         :
                         <Image
-                            source={watchlistIcon}
+                            source={inWatchlist? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')}
                             style={styles.iconsStyle}
                         />
                     }

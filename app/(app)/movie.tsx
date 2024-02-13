@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable, Image } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { useState, useEffect } from "react";
@@ -7,9 +7,10 @@ import { getMovie } from '../../apiCalls/movies';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { MovieDetailScreen } from '../../screens/MovieDetailScreen';
 
-import { router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Actor } from '../../components/CastList';
 import { Content } from '../../components/RecomendsList';
+import { IconButton } from 'react-native-paper';
 
 export type MovieDetailsParams = {
     id: string;
@@ -85,6 +86,19 @@ export default function Movie() {
 
     return (
         <View style={styles.container}>
+            <Stack.Screen
+                options={{
+                headerRight: () => 
+                (<>
+                    <IconButton onPress={() => console.log("hola")} icon="plus-circle-outline" size={40}/>
+                    <Pressable>
+                        <Image
+                            source={require('../../assets/icons/addToWatchlist.png')}
+                            style={styles.iconsStyle} />
+                    </Pressable>
+                </>)
+                }}
+            />
             {movieLoaded ? 
                 <MovieDetailScreen movie={movie} onRecommendPress={onRedommendedPress}/> : 
                 <LoadingComponent />
@@ -99,5 +113,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.secondaryWhite,
+    },
+    iconsStyle: {
+        height: 35,
+        aspectRatio: 495 / 512
     },
 });

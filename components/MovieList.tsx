@@ -45,7 +45,7 @@ export const MovieList = (params: MovieListProps) => {
 
     const onWatchlistPress = (movieEntry: MovieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>) => {
         if (loading) return
-        params.callbacks.onWatchlistPress(movieEntry, setLoading, setWatchlistIcon)
+        params.callbacks.onWatchlistPress(movieEntry, setLoading, setWatchlistIcon);
     }
     // ------------------------------------------------------------
 

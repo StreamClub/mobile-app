@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image, ImageSourcePropType} from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { colors } from "../../assets";
@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { BodyText } from '../../components/BasicComponents/BodyText';
 
 import { MovieList, MovieEntry } from '../../components/MovieList';
-import { SearchParams, searchMovies, searchArtists, searchUsers } from '../../apiCalls/movies';
+import { SearchParams, searchMovies, searchArtists, searchUsers, addMovieToWatchlist, removeMovieFromWatchlist } from '../../apiCalls/movies';
 import { MovieDetailsParams } from './movie';
 
 import { SeriesList, SerieEntry } from '../../components/SeriesList';
@@ -102,9 +102,6 @@ export default function Search() {
 
     // Process Response Data
     // ------------------------------------------------------------
-    const randomInt = (min: number, max: number) =>
-        Math.floor(Math.random() * (max - min + 1)) + min
-
     const processMovieResponseData = (data: any) => {
         const movieList: MovieEntry[] = []
         const moviesResponse = data.results
@@ -113,11 +110,11 @@ export default function Search() {
                 id: movie.id,
                 poster: movie.poster,
                 title: movie.title,
-                available: randomInt(0,1) == 1,
+                available: movie.available,
                 year: movie.releaseDate.split('-')[0],
-                score: randomInt(1,10),
-                seen: randomInt(0,1) == 1,
-                inWatchlist: randomInt(0,1) == 1,
+                score: movie.score.toFixed(2),
+                seen: movie.seen,
+                inWatchlist: movie.inWatchlist,
             }
             movieList.push(movieEntry)
         })
@@ -196,12 +193,30 @@ export default function Search() {
         }, 1000);
     }
 
-    const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<ImageSourcePropType>>) => {
         console.log(movie.title + ' watchlist pressed');
-        setLoading(true);
-        setTimeout(() => {
+        const onSuccessAdd = (response: any) => {
+            movie.inWatchlist = true;
             setLoading(false);
-        }, 1000);
+            setWatchlistIcon(require('../../assets/icons/removeFromWatchlist.png'));
+        }
+        const onSuccessRemove = (response: any) => {
+            movie.inWatchlist = true;
+            setLoading(false);
+            setWatchlistIcon(require('../../assets/icons/addToWatchlist.png'));
+        }
+        const onFailure = (error: any) => {
+            console.log(error);
+            setLoading(false);
+        }
+        if (!movie.inWatchlist) {
+            console.log('Agrego a watchlist');
+            addMovieToWatchlist(session, movie.id, onSuccessAdd, onFailure);
+        } else {
+            console.log('Borro de watchlist');
+            removeMovieFromWatchlist(session, movie.id, onSuccessRemove, onFailure);
+        }
+        setLoading(true);
     }
 
     const onSeriePress = (serie: SerieEntry) => {

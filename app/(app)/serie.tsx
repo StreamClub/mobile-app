@@ -50,7 +50,7 @@ export default function Serie() {
             poster: response.data.poster,
             backdrop: response.data.backdrop,
             genres: response.data.genres,
-            platforms: platforms ? platforms.map(platform => platform.logoPath) : [],
+            platforms: platforms ? platforms.map((platform: any) => platform.logoPath) : [],
             title: response.data.title,
             status: response.data.status,
             creators: response.data.createdBy,

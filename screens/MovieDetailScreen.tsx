@@ -11,6 +11,7 @@ import { Content, RecommendsList } from '../components/RecomendsList';
 const screenWidth = Dimensions.get('window').width;
 
 type MovieDetails = {
+    id: string,
     title: string,
     genres: Array<string>,
     poster: string,
@@ -21,7 +22,8 @@ type MovieDetails = {
     runtime: string,
     overview: string,
     cast: Array<Actor>,
-    similar: Array<Content>
+    similar: Array<Content>,
+    inWatchlist: boolean
 }
 
 type MovieDetailScreenParams = {

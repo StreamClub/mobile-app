@@ -4,6 +4,7 @@ import { Icon } from 'react-native-paper';
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
+import { WatchlistButton } from './BasicComponents/WatchlistButton';
 
 const MAX_TITLE_LENGHT = 50
 
@@ -94,10 +95,6 @@ export const MovieList = (params: MovieListProps) => {
             movieTitle = movieEntry.title.slice(0, MAX_TITLE_LENGHT).trim() + '...'
         }
         const [inWatchlist, setInWatchlist] = useState(movieEntry.inWatchlist);
-        const [watchlistIcon, setWatchlistIcon] = useState(() => {
-            return movieEntry.inWatchlist ? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')
-        })
-
         const availableText = movieEntry.available ? "Disponible en tus plataformas" : ""
         const scoreFormatted = movieEntry.score.toString() + "/10"
         const seenIcon = movieEntry.seen ? require('../assets/icons/unmarkAsSeen.png') : require('../assets/icons/markAsSeen.png')
@@ -176,14 +173,7 @@ export const MovieList = (params: MovieListProps) => {
                     onPress={() => onWatchlistPress(movieEntry, watchlistLoading, setWatchlistLoading, setInWatchlist, inWatchlist)} 
                     style={styles.iconContainer}
                 >
-                    {watchlistLoading ?
-                        <ActivityIndicator size="small" animating={true} color={colors.primaryRed} style={{marginRight: 7}}/>
-                        :
-                        <Image
-                            source={inWatchlist? require('../assets/icons/removeFromWatchlist.png') : require('../assets/icons/addToWatchlist.png')}
-                            style={styles.iconsStyle}
-                        />
-                    }
+                    <WatchlistButton iconStyle={styles.iconsStyle} watchlistLoading={watchlistLoading} inWatchlist={inWatchlist}/>
                 </Pressable>
                 {/* ------------------------------------------------------------ */}
             </View>

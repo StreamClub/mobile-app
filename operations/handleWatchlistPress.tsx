@@ -1,22 +1,20 @@
-import { ImageSourcePropType } from "react-native";
 import { addMovieToWatchlist, removeMovieFromWatchlist } from "../apiCalls/movies";
-import { MovieEntry } from "../components/MovieList";
 import { useSession } from "../context/ctx";
 
-export const handleWatchlistPress = (movie: MovieEntry, 
+export const handleMovieWatchlistPress = (movieId: string, 
         setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
-        setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>,
+        setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
         inWatchlist: boolean,
         session: ReturnType<typeof useSession>) => {
     const onSuccessAdd = (response: any) => {
         console.log('Agrego a watchlist');
-        setWatchlistIcon(true);
+        setInWatchlist(true);
         setLoading(false);
     }
     
     const onSuccessRemove = (response: any) => {
         console.log('Borro de watchlist');
-        setWatchlistIcon(false);
+        setInWatchlist(false);
         setLoading(false);
     }
    
@@ -26,9 +24,9 @@ export const handleWatchlistPress = (movie: MovieEntry,
     }
     
     if (!inWatchlist) {
-        addMovieToWatchlist(session, movie.id, onSuccessAdd, onFailure);
+        addMovieToWatchlist(session, movieId, onSuccessAdd, onFailure);
     } else {
-        removeMovieFromWatchlist(session, movie.id, onSuccessRemove, onFailure);
+        removeMovieFromWatchlist(session, movieId, onSuccessRemove, onFailure);
     }
     setLoading(true);
 }

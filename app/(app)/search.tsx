@@ -16,7 +16,7 @@ import { MovieDetailsParams } from './movie';
 import { SeriesList, SerieEntry } from '../../components/SeriesList';
 import { SerieDetailsParams } from './serie';
 import { searchSeries } from '../../apiCalls/series';
-import { handleWatchlistPress } from '../../operations/handleWatchlistPress';
+import { handleMovieWatchlistPress } from '../../operations/handleWatchlistPress';
 
 const MAX_SEARCH_LENGTH = 50;
 const DELAY_SEARCH = 500;
@@ -313,7 +313,7 @@ export default function Search() {
         setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
         setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
         inWatchlist: boolean) => {
-        handleWatchlistPress(movie,setLoading, setInWatchlist, inWatchlist, session);
+        handleMovieWatchlistPress(movie.id,setLoading, setInWatchlist, inWatchlist, session);
     }
 
     const renderMovieList = () => {

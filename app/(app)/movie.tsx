@@ -7,8 +7,9 @@ import { getMovie } from '../../apiCalls/movies';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { MovieDetailScreen } from '../../screens/MovieDetailScreen';
 
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Actor } from '../../components/CastList';
+import { Content } from '../../components/RecomendsList';
 
 export type MovieDetailsParams = {
     id: string;
@@ -25,7 +26,9 @@ export default function Movie() {
         backdrop: '',
         runtime: '',
         platforms: [''],
-        overview: ''
+        overview: '',
+        cast: [],
+        similar: []
     })
     const params = useLocalSearchParams<MovieDetailsParams>();
     const [movieLoaded, setMovieLoaded] = useState(false)
@@ -34,6 +37,7 @@ export default function Movie() {
     const onSuccess = (response: any) => {
         const platforms = response.data.platforms;
         const cast = response.data.cast;
+        const similar = response.data.similar;
         console.log("responseMovie " + response.data.title)
         const movieData = {
             title: response.data.title,
@@ -49,6 +53,12 @@ export default function Movie() {
                 "name": actor.name,
                 "profilePath": actor.profilePath,
                 "character": actor.character
+            })) : [],
+            similar: similar? similar.map((movie: Content) => ({
+                "id": movie.id,
+                "title": movie.title,
+                "posterPath": movie.posterPath,
+                "releaseDate": new Date(movie.releaseDate)
             })) : []
         }
         setMovie(movieData);
@@ -66,10 +76,19 @@ export default function Movie() {
         loadMovie();
     }, []);
 
+    const onRedommendedPress = (movie: Content) => {
+        console.log("Re routing to: " +movie.id);
+        const newParams: MovieDetailsParams = {
+            id: movie.id.toString()
+        };
+        router.replace({ pathname: '/movie', params: newParams});
+        console.log("After push");
+    }
+
     return (
         <View style={styles.container}>
             {movieLoaded ? 
-                <MovieDetailScreen movie={movie} /> : 
+                <MovieDetailScreen movie={movie} onRecommendPress={onRedommendedPress}/> : 
                 <LoadingComponent />
             }
         </View>

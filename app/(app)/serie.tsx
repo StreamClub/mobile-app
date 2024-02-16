@@ -89,9 +89,10 @@ export default function Serie() {
                 "posterPath": series.posterPath,
                 "releaseDate": new Date(series.releaseDate)
             })) : [],
-            inWatchlist: false
+            inWatchlist: response.data.inWatchlist
         };
         setSerie(serieData);
+        setInWatchlist(serieData.inWatchlist);
         setSerieLoaded(true);
     }
 

@@ -68,9 +68,10 @@ export default function Movie() {
                 "posterPath": movie.posterPath,
                 "releaseDate": new Date(movie.releaseDate)
             })) : [],
-            inWatchlist: false
+            inWatchlist: response.data.inWatchlist
         }
         setMovie(movieData);
+        setInWatchlist(movieData.inWatchlist);
         setMovieLoaded(true);
     }
 

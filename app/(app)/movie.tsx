@@ -1,15 +1,18 @@
-import { View, StyleSheet } from 'react-native';
+import { View, Pressable, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { useState, useEffect } from "react";
-import { colors } from "../../assets";
 import { getMovie } from '../../apiCalls/movies';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { MovieDetailScreen } from '../../screens/MovieDetailScreen';
 
-import { router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Actor } from '../../components/CastList';
 import { Content } from '../../components/RecomendsList';
+import { IconButton } from 'react-native-paper';
+import { handleMovieWatchlistPress } from '../../operations/handleWatchlistPress';
+import { colors } from '../../assets';
+import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton';
 
 export type MovieDetailsParams = {
     id: string;
@@ -18,6 +21,7 @@ export type MovieDetailsParams = {
 export default function Movie() {
     const session = useSession();
     const [movie, setMovie] = useState({
+        id: '',
         title: '',
         genres: [''],
         poster: '',
@@ -28,10 +32,13 @@ export default function Movie() {
         platforms: [''],
         overview: '',
         cast: [],
-        similar: []
-    })
+        similar: [],
+        inWatchlist: false
+    });
     const params = useLocalSearchParams<MovieDetailsParams>();
-    const [movieLoaded, setMovieLoaded] = useState(false)
+    const [movieLoaded, setMovieLoaded] = useState(false);
+    const [inWatchlist, setInWatchlist] = useState(movie.inWatchlist);
+    const [loading, setLoading] = useState(false);
     const movieId = params.id
 
     const onSuccess = (response: any) => {
@@ -40,11 +47,12 @@ export default function Movie() {
         const similar = response.data.similar;
         console.log("responseMovie " + response.data.title)
         const movieData = {
+            id: String(response.data.id),
             title: response.data.title,
             genres: response.data.genres,
             poster: response.data.poster,
             releaseDate: new Date(response.data.releaseDate),
-            platforms: platforms ? platforms.map(platform => platform.logoPath) : [],
+            platforms: platforms ? platforms.map((platform: any) => platform.logoPath) : [],
             directors: response.data.directors,
             backdrop: response.data.backdrop,
             runtime: String(response.data.runtime),
@@ -59,9 +67,11 @@ export default function Movie() {
                 "title": movie.title,
                 "posterPath": movie.posterPath,
                 "releaseDate": new Date(movie.releaseDate)
-            })) : []
+            })) : [],
+            inWatchlist: response.data.inWatchlist
         }
         setMovie(movieData);
+        setInWatchlist(movieData.inWatchlist);
         setMovieLoaded(true);
     }
 
@@ -85,6 +95,18 @@ export default function Movie() {
 
     return (
         <View style={styles.container}>
+            <Stack.Screen
+                options={{
+                headerRight: () => 
+                (<>
+                    <IconButton onPress={() => console.log("hola")} icon="plus-circle-outline" size={40}/>
+                    <Pressable
+                        onPress={() => handleMovieWatchlistPress(movie.id, setLoading, setInWatchlist, inWatchlist, session)}>
+                        <WatchlistButton iconStyle={styles.iconsStyle} watchlistLoading={loading} inWatchlist={inWatchlist}/>
+                    </Pressable>
+                </>)
+                }}
+            />
             {movieLoaded ? 
                 <MovieDetailScreen movie={movie} onRecommendPress={onRedommendedPress}/> : 
                 <LoadingComponent />
@@ -99,5 +121,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.secondaryWhite,
+    },
+    iconsStyle: {
+        height: 35,
+        aspectRatio: 495 / 512
     },
 });

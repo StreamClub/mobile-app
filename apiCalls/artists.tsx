@@ -5,15 +5,15 @@ import { privateCall, Params } from './generic';
 const country = "AR" // TODO: Esto hay que cambiarlo
 
 // --------- --------- --------- --------- --------- ---------
-export function getMovie(
+export function getArtist(
     session: ReturnType<typeof useSession>,
-    movieId: string, 
+    artistId: string, 
     onSuccess: (response: AxiosResponse<any, any>) => void, 
     onFailure: (error: any) => void
     ) {
     
-    const endpoint = '/movies/' + movieId
-    const params: Params = { params: {country: country} }
+    const endpoint = '/artists/' + artistId
+    const params: Params = { }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }

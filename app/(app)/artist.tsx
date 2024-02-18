@@ -1,13 +1,13 @@
-import { View, StyleSheet, Text} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { useState, useEffect } from "react";
 import { colors } from "../../assets";
-import { getSerie } from '../../apiCalls/series';
+import { getArtist } from '../../apiCalls/artists';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { router } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
-import { Season, SerieDetailScreen } from '../../screens/SerieDetailScreen';
+import { ArtistDetailScreen, ArtistDetails } from '../../screens/ArtistDetailScreen';
 import { SeasonDetailsParams } from './season';
 import { Actor } from '../../components/CastList';
 
@@ -17,7 +17,7 @@ export type ArtistDetailsParams = {
 
 export default function Serie() {
     const session = useSession();
-    const [artist, setArtist] = useState({
+    const [artist, setArtist] = useState<ArtistDetails>({
         id: 1136406,
         name: "",
         poster: "",
@@ -26,17 +26,14 @@ export default function Serie() {
         deathDate: null,
         gender: "",
         knownFor: "",
-        Credits: [''],
+        // Credits: [''],
     })
     const params = useLocalSearchParams<ArtistDetailsParams>();
     const [artistLoaded, setArtistLoaded] = useState(false)
     const artistId = params.id
 
     const onSuccess = (response: any) => {
-        const platforms = response.data.platforms;
-        const seasons = response.data.seasons;
-        const cast = response.data.cast;
-        const artistData = {
+        const artistData: ArtistDetails = {
             id: response.data.id,
             name: response.data.name,
             poster: response.data.poster,
@@ -45,7 +42,7 @@ export default function Serie() {
             deathDate: response.data.deathDate,
             gender: response.data.gender,
             knownFor: response.data.knownFor,
-            Credits: response.data.Credits,
+            // Credits: response.data.Credits,
         };
         setArtist(artistData);
         setArtistLoaded(true);
@@ -56,22 +53,13 @@ export default function Serie() {
     }
 
     useEffect(() => {
-        // getArtist(session, artistId, onSuccess, onFailure)
+        getArtist(session, artistId, onSuccess, onFailure)
     }, []);
-
-    const onSeasonPress = (season: Season) => {
-        const params: SeasonDetailsParams = {
-            seasonId: season.id.toString(),
-            seriesId: season.seriesId.toString()
-        }
-        router.push({ pathname: '/season', params});
-    }
 
     return (
         <View style={styles.container}>
             {artistLoaded ? 
-                // <ArtistDetailScreen artist={artist} onSeasonPress={onSeasonPress}/> 
-                <Text>Pantalla de artista</Text>
+                <ArtistDetailScreen artist={artist}/> 
                 : 
                 <LoadingComponent />
             }

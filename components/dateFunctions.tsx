@@ -6,9 +6,9 @@ export const formatDate = (date: string) => {
     return formatter.format(new Date(date))
 }
 
-export const calculateAge = (birthDate: string) => {
+export const calculateAge = (birthDate: string, deathDate?: string) => {
     const _birthDate = new Date(birthDate).getTime();
-    const _actualDate = new Date().getTime();
+    const _actualDate = deathDate? new Date(deathDate).getTime() : new Date().getTime();
     var diff =(_actualDate - _birthDate) / 1000;
     diff /= (60 * 60 * 24);
     return Math.abs(Math.round(diff/365.25));

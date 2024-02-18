@@ -80,18 +80,25 @@ export const ArtistList = (params: ArtistListProps) => {
             artistName = artistEntry.name.slice(0, MAX_NAME_LENGHT).trim() + '...'
         }
 
+        const noInformationAvailable = artistEntry.birthDate === null && artistEntry.deathDate === null && artistEntry.birthPlace === null
+
         return (
             <Pressable onPress={() => onArtistPress(artistEntry)} style={styles.detailsContainer}>
                 {renderName(artistName)}
 
-                {renderDetails(artistEntry)}
+                {noInformationAvailable?
+                    <View style={styles.infoContainer}>
+                        <BodyText body="Sin información disponible" size='big' fontStyle='italic' color={colors.secondaryBlue} />
+                    </View>
+                    :
+                    renderDetails(artistEntry)}
             </Pressable>
         )
     }
 
     const renderName = (name: string) => {
         return (
-            <View style={{ flex: 0.3, backgroundColor: 'red'}}>
+            <View style={{ flex: 0.3 }}>
                 <TitleText body={name} size='small' numberOfLines={2}/>
             </View>
         )
@@ -105,22 +112,23 @@ export const ArtistList = (params: ArtistListProps) => {
         let birthDate = formatDate(artistEntry.birthDate)
         let deathDate = formatDate(artistEntry.deathDate)
 
-        if ("2024-10-10") {
-            // console.log("Death date: " + deathDate, typeof deathDate)
-            deathDate += " (" + calculateAge("2024-10-10").toString() + ")"
+        if (artistEntry.deathDate) {
+            deathDate += " (" + calculateAge(artistEntry.birthDate, artistEntry.deathDate) + " años)"
         } else {
-            birthDate += " (" + calculateAge(birthDate).toString() + ")"
+            birthDate += " (" + calculateAge(artistEntry.birthDate) + " años)"
         }
 
+        
+
         return (
-            <View style={{ flex: 0.7, backgroundColor: 'white', alignItems: 'flex-start', justifyContent: 'center' }}>
+            <View style={styles.infoContainer}>
                 {artistEntry.birthDate &&
                     <View style={{flexDirection: 'row', marginBottom: 5, alignItems: 'center'}}>
                         <Image
                             source={birthDateIcon}
                             style={styles.birthDateIconStyle}
                         />
-                        <BodyText body={birthDate} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 10, paddingLeft: 4}} />
+                        <BodyText body={birthDate} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 5, paddingLeft: 4}} />
                     </View>
                 }
                 {artistEntry.deathDate &&
@@ -129,7 +137,7 @@ export const ArtistList = (params: ArtistListProps) => {
                             source={deathDateIcon}
                             style={styles.deathDateIconStyle}
                         />
-                        <BodyText body={deathDate} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 5, paddingLeft: 4}}/>
+                        <BodyText body={deathDate} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 3, paddingLeft: 4}}/>
                     </View>
                 }
                 {artistEntry.birthPlace &&
@@ -138,7 +146,7 @@ export const ArtistList = (params: ArtistListProps) => {
                             source={birthPlaceIcon}
                             style={styles.birthPlaceIconStyle}
                         />
-                        <BodyText body={artistEntry.birthPlace} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 5, paddingLeft: 4}} />
+                        <BodyText body={artistEntry.birthPlace} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 3, paddingLeft: 4, width:175}} />
                     </View>
                 }
             </View>
@@ -189,7 +197,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         padding: 3,
         marginLeft: 10,
-        backgroundColor: 'yellow',
     },
     logoContainer: {
         flex: 0.2,
@@ -201,15 +208,15 @@ const styles = StyleSheet.create({
         aspectRatio: 1
     },
     birthDateIconStyle: {
-        width: 30,
+        width: 25,
         aspectRatio: 487 / 512
     },
     birthPlaceIconStyle: {
-        width: 30,
+        width: 25,
         aspectRatio: 512 / 512
     },
     deathDateIconStyle: {
-        width: 30,
+        width: 25,
         aspectRatio: 512 / 512
     },
     scoreContainer: { 
@@ -221,4 +228,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'flex-end' 
     },
+    infoContainer: { 
+        flex: 0.7, 
+        alignItems: 'flex-start', 
+        justifyContent: 'flex-start',
+    }
 })

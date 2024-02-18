@@ -7,6 +7,11 @@ import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
 
+import { PosterWithDetails } from '../components/PosterWithDetails';
+import { ArtistFilmografy } from '../components/ArtistFilmografy';
+
+import { Credits } from '../components/Types/Credits';
+
 const screenWidth = Dimensions.get('window').width;
 
 export type Season = {
@@ -15,12 +20,6 @@ export type Season = {
     name: string,
     poster: string,
     airDate: Date
-}
-
-type Episode = {
-    photo: string,
-    airDate: Date,
-    name: string
 }
 
 export type ArtistDetails = {
@@ -32,7 +31,7 @@ export type ArtistDetails = {
     deathDate: string | null,
     gender: string,
     knownFor: string,
-    // Credits: response.data.Credits,
+    credits: Credits
 }
 
 
@@ -158,30 +157,6 @@ export type ArtistDetails = {
 //     )
 // }
 
-const renderNextEpisode = (episode: Episode) => {
-    const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-    return (
-        <View style={styles.nextEpisode} >
-            <Image 
-                source={{ uri: "https://image.tmdb.org/t/p/original" + episode.photo }} 
-                style={styles.episodePhoto} /> 
-            <View style={{flexDirection: 'column', width: 180}}>
-                <BodyText body='Próximo capitulo: ' style={{fontWeight: 'bold'}} size='medium'/>
-                <BodyText body={episode.name} size='medium' numberOfLines={1}/>
-                <BodyText body={formatter.format(episode.airDate)} color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
-                <View style={{ alignSelf: 'flex-end', justifyContent: 'flex-end', flex: 1 }}>
-                    <CustomButton 
-                        buttonText="Ver ahora" 
-                        fontSize='small'
-                        type='primary' 
-                        onPress={() => console.log("Que buena serie estoy viendo")} 
-                        icon="play"
-                        style={{width: 120, margin: 10}}/>
-                </View>
-            </View>
-        </View>
-    )
-}
 
 type ArtistDetailScreenParams = {
     artist: ArtistDetails
@@ -189,33 +164,11 @@ type ArtistDetailScreenParams = {
 
 export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
     return (
-        <ScrollView>
-        <View style={styles.container}>
-            <Text>Ventana de detalle de artista</Text>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
+            <Text>Ventana de detalle de artistaasdsad </Text>
             <Text>{params.artist.name}</Text>
             <Text>{params.artist.id}</Text>
-            {/* {renderBackgroundImage(params)}
-            {renderPlatforms(params)}
-            {renderNextEpisode(params.serie.nextEpisode)}
-            <View style={styles.description}>
-                <BodyText body={params.serie.overview} />
-                <View style={{height: 60}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        {params.serie.genres.map((genre, index) => 
-                            <Chip 
-                                key={index} 
-                                style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
-                                mode="outlined"
-                                textStyle={{ color: colors.primaryBlack }}>
-                                    {genre}
-                            </Chip>
-                        )}
-                    </ScrollView>
-                </View>
-            </View>
-            {renderSeasons(params)}
-            <CastList cast={params.serie.cast} style={styles.cast} /> */}
-        </View>
+            <ArtistFilmografy credits={params.artist.credits}/>
         </ScrollView>
     )
 }
@@ -225,8 +178,13 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 20
     },
+    contentContainerStyle: {
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
+        width: screenWidth,
+        backgroundColor: "yellow",
     },
     backdropImage: {
         width: screenWidth,

@@ -26,7 +26,10 @@ export default function Serie() {
         deathDate: null,
         gender: "",
         knownFor: "",
-        // Credits: [''],
+        credits: {
+            cast:[], 
+            crew:[]
+        },
     })
     const params = useLocalSearchParams<ArtistDetailsParams>();
     const [artistLoaded, setArtistLoaded] = useState(false)
@@ -42,7 +45,10 @@ export default function Serie() {
             deathDate: response.data.deathDate,
             gender: response.data.gender,
             knownFor: response.data.knownFor,
-            // Credits: response.data.Credits,
+            credits: {
+                cast: response.data.credits.cast,
+                crew: response.data.credits.crew
+            }
         };
         setArtist(artistData);
         setArtistLoaded(true);

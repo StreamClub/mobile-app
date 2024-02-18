@@ -10,15 +10,18 @@ import { router } from 'expo-router';
 import { BodyText } from '../../components/BasicComponents/BodyText';
 
 import { MovieList, MovieEntry } from '../../components/MovieList';
-import { SearchParams, searchMovies } from '../../apiCalls/movies';
 import { MovieDetailsParams } from './movie';
+import { SearchParams, searchMovies } from '../../apiCalls/movies';
 
 import { SeriesList, SeriesEntry } from '../../components/SeriesList';
 import { SerieDetailsParams } from './serie';
 import { searchSeries } from '../../apiCalls/series';
 
-import { searchArtists } from '../../apiCalls/artists';
 import { ArtistList, ArtistEntry } from '../../components/ArtistList';
+import { ArtistDetailsParams } from './artist';
+import { searchArtists } from '../../apiCalls/artists';
+
+
 import { searchUsers } from '../../apiCalls/users';
 
 const MAX_SEARCH_LENGTH = 50;
@@ -395,6 +398,12 @@ export default function Search() {
 
     const onArtistPress = (artist: any) => {
         console.log(artist.name + ' pressed');
+        
+        const params: ArtistDetailsParams = {
+            id: artist.id,
+        }
+
+        router.push({ pathname: '/artist', params});
     }
 
     const renderArtistList = () => {

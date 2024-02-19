@@ -23,7 +23,7 @@ export default function Serie() {
         poster: "",
         birthDate: "",
         birthPlace: "",
-        deathDate: null,
+        deathDate: "",
         gender: "",
         knownFor: "",
         credits: {

@@ -9,18 +9,11 @@ import { Actor, CastList } from '../components/CastList';
 
 import { PosterWithDetails } from '../components/PosterWithDetails';
 import { ArtistFilmografy } from '../components/ArtistFilmografy';
+import { ArtistBasicInfo, ArtistBasicInfoParams } from '../components/ArtistBasicInfo';
 
 import { Credits } from '../components/Types/Credits';
 
 const screenWidth = Dimensions.get('window').width;
-
-export type Season = {
-    id: number,
-    seriesId: number,
-    name: string,
-    poster: string,
-    airDate: Date
-}
 
 export type ArtistDetails = {
     id: number,
@@ -28,7 +21,7 @@ export type ArtistDetails = {
     poster: string,
     birthDate: string,
     birthPlace: string,
-    deathDate: string | null,
+    deathDate: string,
     gender: string,
     knownFor: string,
     credits: Credits
@@ -163,11 +156,18 @@ type ArtistDetailScreenParams = {
 }
 
 export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
+    const artistBasicInfo: ArtistBasicInfoParams = {
+        name: params.artist.name,
+        poster: params.artist.poster,
+        birthDate: params.artist.birthDate,
+        birthPlace: params.artist.birthPlace,
+        deathDate: params.artist.deathDate,
+        style: {marginTop: 15, marginBottom: 15}
+    }
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-            <Text>Ventana de detalle de artistaasdsad </Text>
-            <Text>{params.artist.name}</Text>
-            <Text>{params.artist.id}</Text>
+            <ArtistBasicInfo {...artistBasicInfo}/>
             <ArtistFilmografy credits={params.artist.credits}/>
         </ScrollView>
     )
@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: screenWidth,
-        backgroundColor: "yellow",
     },
     backdropImage: {
         width: screenWidth,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { colors } from "../assets";
 import { BodyText } from './BasicComponents/BodyText';
+import { TitleText } from './BasicComponents/TitleText';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -19,18 +20,17 @@ export const PosterWithDetails = (params: PosterWithDetailsParams) => {
                 style={styles.poster}
             />
             <BodyText body={params.title} size='big' style={styles.title} numberOfLines={2}/>
-            <BodyText body={params.description} size='medium' color={colors.primaryGrey} style={styles.description}/>
+            <BodyText body={params.description} size='medium' color={colors.primaryGrey} style={styles.description} numberOfLines={2}/>
         </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: colors.primaryGrey,
-        borderWidth: 1,
+        
     },
     poster: {
-        width: screenWidth/2.5,
+        width: screenWidth/2.2,
         aspectRatio: 150/225,
         borderRadius: 10,
         margin: 5,

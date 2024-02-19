@@ -30,8 +30,6 @@ export function searchArtists(
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void) {
 
-    console.log('[TODO] Buscando artistas...');
-
     const endpoint = '/artists'
     const params: Params = { params: queryParams }
 

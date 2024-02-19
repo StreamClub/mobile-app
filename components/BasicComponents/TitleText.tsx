@@ -8,8 +8,8 @@ export const TitleText = (params: TextParams) => {
   const textColor = params.color || colors.primaryBlack;
 
   const titleSize = {
-    big: { fontSize: 30/* , height: 40 */ },
-    medium: { fontSize: 28/* , height: 35 */ },
+    big: { fontSize: 30 },
+    medium: { fontSize: 28 },
     small: { fontSize: 24 },
   }[params.size || 'small'];
 

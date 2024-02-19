@@ -25,7 +25,7 @@ import { searchArtists } from '../../apiCalls/artists';
 import { searchUsers } from '../../apiCalls/users';
 
 const MAX_SEARCH_LENGTH = 50;
-const DELAY_SEARCH = 500;
+const DELAY_SEARCH = 800;
 
 const MOVIES_NAME = 'Películas'
 const SERIES_NAME = 'Series'

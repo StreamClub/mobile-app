@@ -10,16 +10,23 @@ import { router } from 'expo-router';
 import { BodyText } from '../../components/BasicComponents/BodyText';
 
 import { MovieList, MovieEntry } from '../../components/MovieList';
-import { SearchParams, searchMovies, searchArtists, searchUsers, addMovieToWatchlist, removeMovieFromWatchlist } from '../../apiCalls/movies';
+import { SearchParams, searchMovies, addMovieToWatchlist, removeMovieFromWatchlist } from '../../apiCalls/movies';
 import { MovieDetailsParams } from './movie';
 
-import { SeriesList, SerieEntry } from '../../components/SeriesList';
+import { SeriesList, SeriesEntry } from '../../components/SeriesList';
 import { SerieDetailsParams } from './serie';
 import { searchSeries } from '../../apiCalls/series';
 import { handleMovieWatchlistPress, handleSeriesWatchlistPress } from '../../operations/handleWatchlistPress';
 
+import { ArtistList, ArtistEntry } from '../../components/ArtistList';
+import { ArtistDetailsParams } from './artist';
+import { searchArtists } from '../../apiCalls/artists';
+
+
+import { searchUsers } from '../../apiCalls/users';
+
 const MAX_SEARCH_LENGTH = 50;
-const DELAY_SEARCH = 500;
+const DELAY_SEARCH = 800;
 
 const MOVIES_NAME = 'Películas'
 const SERIES_NAME = 'Series'
@@ -39,7 +46,8 @@ export default function Search() {
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
     const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[INITIAL_CATEGORY]);
     const [ movieList, setMovieList] = useState<MovieEntry[]>([]);
-    const [ seriesList, setSeriesList] = useState<SerieEntry[]>([]);
+    const [ seriesList, setSeriesList] = useState<SeriesEntry[]>([]);
+    const [ artistList, setArtistList] = useState<ArtistEntry[]>([]);
     // ------------------------------------------------------------
 
 
@@ -123,10 +131,10 @@ export default function Search() {
     }
 
     const processSeriesResponseData = (data: any) => {
-        const seriesList: SerieEntry[] = [];
+        const seriesList: SeriesEntry[] = [];
         const seriesResponse = data.results;
         seriesResponse.forEach((serie: any) => {
-            const serieEntry: SerieEntry = {
+            const serieEntry: SeriesEntry = {
                 id: serie.id,
                 poster: serie.poster,
                 title: serie.title,
@@ -142,8 +150,25 @@ export default function Search() {
         })
         setSeriesList(seriesList);
     }
-    // ------------------------------------------------------------
 
+    const processArtistResponseData = (data: any) => {
+        const artistList: ArtistEntry[] = [];
+        const artistResponse = data.results;
+        artistResponse.forEach((artist: any) => {
+            const artistEntry: ArtistEntry = {
+                id: artist.id,
+                name: artist.name,
+                poster: artist.poster,
+                birthDate: artist.birthDate,
+                birthPlace: artist.birthPlace,
+                deathDate: artist.deathDate,
+                gender: artist.gender,
+            }
+            artistList.push(artistEntry);
+        })
+        setArtistList(artistList);
+    }
+    // ------------------------------------------------------------
 
     // onSuccess and onFailure callbacks
     // ------------------------------------------------------------
@@ -154,6 +179,8 @@ export default function Search() {
             processMovieResponseData(response.data);
         } else if (selectedCategory == SERIES_NAME) {
             processSeriesResponseData(response.data);
+        } else if (selectedCategory == ARTISTS_NAME) {
+            processArtistResponseData(response.data);
         } else {
             console.log('TODO: Procesar respuesta');
         }
@@ -171,7 +198,9 @@ export default function Search() {
     // OnPress Handlers
     // ------------------------------------------------------------
     const onSegmentedButtonPress = (value: number) => {
-        setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
+        // setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
+        onChangeTextSearched("")
+
         setSelectedIndex(value);
         setSelectedCategory(CATEGORIES[value]);
     }
@@ -194,7 +223,7 @@ export default function Search() {
         }, 1000);
     }
 
-    const onSeriePress = (serie: SerieEntry) => {
+    const onSeriesPress = (serie: SeriesEntry) => {
         console.log(serie.title + ' pressed');
         
         const params: SerieDetailsParams = {
@@ -204,8 +233,16 @@ export default function Search() {
         router.push({ pathname: '/serie', params});
     }
 
-    const onSerieSeenPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onSeriesSeenPress = (serie: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         console.log(serie.title + ' seen pressed');
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
+
+    const onSerieWatchlistPress = (serie: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+        console.log(serie.title + ' watchlist pressed');
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
@@ -301,6 +338,22 @@ export default function Search() {
         )
     }
 
+    const renderNoResulstsFoundMessage = () => {
+        return (
+            <BodyText
+                style={{
+                    marginTop: 20,
+                    fontWeight: 'bold',
+                    alignSelf: 'flex-start',
+                    marginLeft: '5%',
+                }}
+                size="big"
+                color={colors.primaryBlack}
+                body={"No se encontraron resultados para: " + textSearched}
+            />
+        )
+    }
+
     const renderMovieList = () => {
         const onWatchlistPress = (movie: MovieEntry, 
             setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
@@ -333,8 +386,8 @@ export default function Search() {
         )
     }
 
-    const renderSerieList = () => {
-        const onWatchlistPress = (series: SerieEntry, 
+    const renderSeriesList = () => {
+        const onWatchlistPress = (series: SeriesEntry, 
             setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
             setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
             inWatchlist: boolean) => {
@@ -342,32 +395,59 @@ export default function Search() {
         }
 
         const callbacks = {
-            onSeriePress,
-            onSerieSeenPress,
+            onSeriesPress,
+            onSeriesSeenPress,
             onWatchlistPress,
         }
         return (
             showLoading? null :
                 ((seriesList.length === 0)?
-                <BodyText
-                    style={{
-                        marginTop: 20,
-                        fontWeight: 'bold',
-                        alignSelf: 'flex-start',
-                        marginLeft: '5%',
-                    }}
-                    size="big"
-                    color={colors.primaryBlack}
-                    body={"No se encontraron resultados para: " + textSearched}
-                />
-                : 
-                <SeriesList seriesList={seriesList} callbacks={callbacks}/>)
+                    renderNoResulstsFoundMessage()
+                    : 
+                    <SeriesList seriesList={seriesList} callbacks={callbacks}/>
+                )
         )
     }
+
+    const onArtistPress = (artist: any) => {
+        console.log(artist.name + ' pressed');
+        
+        const params: ArtistDetailsParams = {
+            id: artist.id,
+        }
+
+        router.push({ pathname: '/artist', params});
+    }
+
+    const renderArtistList = () => {
+        const callbacks = {
+            onArtistPress
+        }
+        return (
+            showLoading? null :
+                ((artistList.length === 0)?
+                    renderNoResulstsFoundMessage()
+                    : 
+                    <ArtistList artistList={artistList} callbacks={callbacks}/>
+                )
+        )
+    }
+
     // ------------------------------------------------------------
 
     // Main render screen
     // ------------------------------------------------------------
+    
+    const renderResultsList = () => {
+        if (selectedCategory == MOVIES_NAME) {
+            return renderMovieList()
+        } else if (selectedCategory == SERIES_NAME) {
+            return renderSeriesList()
+        } else if (selectedCategory == ARTISTS_NAME) {
+            return renderArtistList()
+        }
+    } 
+    
     return (
         <View style={styles.container}>
             
@@ -378,10 +458,7 @@ export default function Search() {
             {textSearched.length == 0 ?
                 renderSearchHistoryTitle()
                 :
-                ((selectedCategory == MOVIES_NAME)? 
-                    renderMovieList() :
-                    renderSerieList()
-                )
+                renderResultsList()
             }
         </View>
     )

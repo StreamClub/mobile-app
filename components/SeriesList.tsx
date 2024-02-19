@@ -23,9 +23,9 @@ export type SeriesEntry = {
 
 export type SeriesListCallbacks = {
 
-    onSeriePress: (serie: SerieEntry) => void;
-    onSerieSeenPress: (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
-    onWatchlistPress: (series: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => void;
+    onSeriesPress: (series: SeriesEntry) => void;
+    onSeriesSeenPress: (series: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    onWatchlistPress: (series: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => void;
 
 }
 
@@ -39,19 +39,19 @@ export const SeriesList = (params: SeriesListProps) => {
 
     // Callbacks calls
     // ------------------------------------------------------------
-    const onSeriesPress = (serieEntry: SeriesEntry) => {
-        params.callbacks.onSeriesPress(serieEntry)
+    const onSeriesPress = (seriesEntry: SeriesEntry) => {
+        params.callbacks.onSeriesPress(seriesEntry)
     }
 
-    const onSeenPress = (serieEntry: SeriesEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onSeenPress = (seriesEntry: SeriesEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         if (loading) return
-        params.callbacks.onSeriesSeenPress(serieEntry, setLoading)
+        params.callbacks.onSeriesSeenPress(seriesEntry, setLoading)
     }
 
 
-    const onWatchlistPress = (serieEntry: SerieEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
+    const onWatchlistPress = (seriesEntry: SeriesEntry, loading: boolean, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
         if (loading) return
-        params.callbacks.onWatchlistPress(serieEntry, setLoading, setInWatchlist, inWatchlist);
+        params.callbacks.onWatchlistPress(seriesEntry, setLoading, setInWatchlist, inWatchlist);
 
     }
     // ------------------------------------------------------------
@@ -59,31 +59,31 @@ export const SeriesList = (params: SeriesListProps) => {
 
     // Render functions
     // ------------------------------------------------------------
-    const renderSerieEntry = (serieEntry: SeriesEntry, index: number) => {
+    const renderSeriesEntry = (seriesEntry: SeriesEntry, index: number) => {
         return (
             <View key={index}>
-                <View style={styles.serieEntryContainer}>
+                <View style={styles.seriesEntryContainer}>
                     
-                    {renderCoverSection(serieEntry)}
+                    {renderCoverSection(seriesEntry)}
 
-                    {renderDetailsSection(serieEntry)}
+                    {renderDetailsSection(seriesEntry)}
                 </View>
                 <View style={{height: 1, backgroundColor: 'black', width: '90%', marginBottom: 10, alignSelf: 'center'}}></View>
             </View>
         )
     }
 
-    const renderCoverSection = (serieEntry: SeriesEntry) => {
-        const coverOutlineStyle = { backgroundColor: serieEntry.available ? colors.secondaryBlue : 'transparent' }
+    const renderCoverSection = (seriesEntry: SeriesEntry) => {
+        const coverOutlineStyle = { backgroundColor: seriesEntry.available ? colors.secondaryBlue : 'transparent' }
 
         return (
             <Pressable
-                onPress={() => onSeriesPress(serieEntry)}
+                onPress={() => onSeriesPress(seriesEntry)}
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
-                {serieEntry.poster?
+                {seriesEntry.poster?
                     <Image
-                        source={{ uri: "https://image.tmdb.org/t/p/original" + serieEntry.poster }}
+                        source={{ uri: "https://image.tmdb.org/t/p/original" + seriesEntry.poster }}
                         style={styles.coverImage}
                         resizeMode="contain"
                     /> :
@@ -95,24 +95,24 @@ export const SeriesList = (params: SeriesListProps) => {
         )
     }
 
-    const renderDetailsSection = (serieEntry: SeriesEntry) => {
-        let serieTitle = serieEntry.title
-        if (serieEntry.title.length > MAX_TITLE_LENGHT) {
-            serieTitle = serieEntry.title.slice(0, MAX_TITLE_LENGHT).trim() + '...'
+    const renderDetailsSection = (seriesEntry: SeriesEntry) => {
+        let seriesTitle = seriesEntry.title
+        if (seriesEntry.title.length > MAX_TITLE_LENGHT) {
+            seriesTitle = seriesEntry.title.slice(0, MAX_TITLE_LENGHT).trim() + '...'
         }
 
-        const availableText = serieEntry.available ? "Disponible en tus plataformas" : ""
-        const scoreFormatted = serieEntry.score.toString() + "/10"
-        const seenIcon = serieEntry.seen ? require('../assets/icons/unmarkAsSeen.png') : require('../assets/icons/markAsSeen.png')
-        const [inWatchlist, setInWatchlist] = useState(serieEntry.inWatchlist)
+        const availableText = seriesEntry.available ? "Disponible en tus plataformas" : ""
+        const scoreFormatted = seriesEntry.score.toString() + "/10"
+        const seenIcon = seriesEntry.seen ? require('../assets/icons/unmarkAsSeen.png') : require('../assets/icons/markAsSeen.png')
+        const [inWatchlist, setInWatchlist] = useState(seriesEntry.inWatchlist)
 
         return (
-            <Pressable onPress={() => onSeriesPress(serieEntry)} style={styles.detailsContainer}>
-                {renderTitle(serieTitle, serieEntry.releaseYear, serieEntry.lastYear, serieEntry.status)}
+            <Pressable onPress={() => onSeriesPress(seriesEntry)} style={styles.detailsContainer}>
+                {renderTitle(seriesTitle, seriesEntry.releaseYear, seriesEntry.lastYear, seriesEntry.status)}
 
-                {renderSmallText(availableText, serieEntry.status)}
+                {renderSmallText(availableText, seriesEntry.status)}
 
-                {renderBottomSection(serieEntry, scoreFormatted, seenIcon, setInWatchlist, inWatchlist)}
+                {renderBottomSection(seriesEntry, scoreFormatted, seenIcon, setInWatchlist, inWatchlist)}
             </Pressable>
         )
     }
@@ -139,7 +139,7 @@ export const SeriesList = (params: SeriesListProps) => {
     }
 
 
-    const renderBottomSection = (serieEntry: SerieEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
+    const renderBottomSection = (seriesEntry: SeriesEntry, scoreFormatted: string, seenIcon: ImageSourcePropType, setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>, inWatchlist: boolean) => {
         const [seenLoading, setSeenLoading] = React.useState(false)
         const [watchlistLoading, setWatchlistLoading] = React.useState(false)
         return (
@@ -167,7 +167,7 @@ export const SeriesList = (params: SeriesListProps) => {
                 
                 {/* Seen Section */}
                 <Pressable 
-                    onPress={() => onSeenPress(serieEntry, seenLoading, setSeenLoading)} 
+                    onPress={() => onSeenPress(seriesEntry, seenLoading, setSeenLoading)} 
                     style={styles.iconContainer}
                 >
                     {seenLoading ?
@@ -182,7 +182,7 @@ export const SeriesList = (params: SeriesListProps) => {
 
                 {/* Watchlist Section */}
                 <Pressable 
-                    onPress={() => onWatchlistPress(serieEntry, watchlistLoading, setWatchlistLoading, setInWatchlist, inWatchlist)} 
+                    onPress={() => onWatchlistPress(seriesEntry, watchlistLoading, setWatchlistLoading, setInWatchlist, inWatchlist)} 
                     style={styles.iconContainer}
                 >
                     <WatchlistButton inWatchlist={inWatchlist} watchlistLoading={watchlistLoading} iconStyle={styles.iconsStyle} />
@@ -195,19 +195,19 @@ export const SeriesList = (params: SeriesListProps) => {
 
     return (
         <ScrollView
-            style={styles.serieListContainer}
+            style={styles.seriesListContainer}
         >
-            {seriesList.map(renderSerieEntry)}
+            {seriesList.map(renderSeriesEntry)}
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    serieListContainer: {
+    seriesListContainer: {
         width: '97%',
         marginTop: 10,
     },
-    serieEntryContainer: {
+    seriesEntryContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',

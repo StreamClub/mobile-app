@@ -12,7 +12,6 @@ import { BodyText } from '../../components/BasicComponents/BodyText';
 import { MovieList, MovieEntry } from '../../components/MovieList';
 import { SearchParams, searchMovies, addMovieToWatchlist, removeMovieFromWatchlist } from '../../apiCalls/movies';
 import { MovieDetailsParams } from './movie';
-import { SearchParams, searchMovies } from '../../apiCalls/movies';
 
 import { SeriesList, SeriesEntry } from '../../components/SeriesList';
 import { SerieDetailsParams } from './serie';
@@ -242,7 +241,7 @@ export default function Search() {
         }, 1000);
     }
 
-    const onSerieWatchlistPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onSerieWatchlistPress = (serie: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         console.log(serie.title + ' watchlist pressed');
         setLoading(true);
         setTimeout(() => {
@@ -355,22 +354,6 @@ export default function Search() {
         )
     }
 
-    const renderNoResulstsFoundMessage = () => {
-        return (
-            <BodyText
-                style={{
-                    marginTop: 20,
-                    fontWeight: 'bold',
-                    alignSelf: 'flex-start',
-                    marginLeft: '5%',
-                }}
-                size="big"
-                color={colors.primaryBlack}
-                body={"No se encontraron resultados para: " + textSearched}
-            />
-        )
-    }
-
     const renderMovieList = () => {
         const onWatchlistPress = (movie: MovieEntry, 
             setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
@@ -403,8 +386,8 @@ export default function Search() {
         )
     }
 
-    const renderSerieList = () => {
-        const onWatchlistPress = (series: SerieEntry, 
+    const renderSeriesList = () => {
+        const onWatchlistPress = (series: SeriesEntry, 
             setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
             setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
             inWatchlist: boolean) => {
@@ -412,8 +395,8 @@ export default function Search() {
         }
 
         const callbacks = {
-            onSeriePress,
-            onSerieSeenPress,
+            onSeriesPress,
+            onSeriesSeenPress,
             onWatchlistPress,
         }
         return (

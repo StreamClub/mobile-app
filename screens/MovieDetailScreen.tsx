@@ -6,10 +6,12 @@ import { BodyText } from '../components/BasicComponents/BodyText';
 import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
+import { Content, RecommendsList } from '../components/RecomendsList';
 
 const screenWidth = Dimensions.get('window').width;
 
 type MovieDetails = {
+    id: string,
     title: string,
     genres: Array<string>,
     poster: string,
@@ -19,11 +21,14 @@ type MovieDetails = {
     backdrop: string,
     runtime: string,
     overview: string,
-    cast: Array<Actor>
+    cast: Array<Actor>,
+    similar: Array<Content>,
+    inWatchlist: boolean
 }
 
 type MovieDetailScreenParams = {
-    movie: MovieDetails
+    movie: MovieDetails;
+    onRecommendPress: (movie: Content) => void;
 }
 
 const renderBackgroundImage = (params: MovieDetailScreenParams) => {
@@ -132,12 +137,21 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                 </View>
             </View>
             <CastList cast={params.movie.cast} style={styles.castStyle}/>
+            <RecommendsList 
+                contents={params.movie.similar} 
+                style={styles.recommends} 
+                title='Peliculas similares:'
+                onRecommendPress={params.onRecommendPress}/>
         </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    recommends: {
+        marginLeft: 20,
+        marginBottom: 20
+    },
     castStyle: {
         marginLeft: 20,
         marginBottom: 20

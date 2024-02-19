@@ -1,15 +1,19 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { useState, useEffect } from "react";
 import { colors } from "../../assets";
 import { getSerie } from '../../apiCalls/series';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-import { router } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router';
 import { Season, SerieDetailScreen } from '../../screens/SerieDetailScreen';
 import { SeasonDetailsParams } from './season';
 import { Actor } from '../../components/CastList';
+import { Content } from '../../components/RecomendsList';
+import { IconButton } from 'react-native-paper';
+import { handleSeriesWatchlistPress } from '../../operations/handleWatchlistPress';
+import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton';
 
 export type SerieDetailsParams = {
     id: string;
@@ -18,6 +22,7 @@ export type SerieDetailsParams = {
 export default function Serie() {
     const session = useSession();
     const [serie, setSerie] = useState({
+        id: '',
         overview: '',
         poster: '',
         backdrop: '',
@@ -32,22 +37,28 @@ export default function Serie() {
         releaseDate: new Date(),
         seasons: [],
         nextEpisode: {photo: '', airDate: new Date(), name: ''},
-        cast: []
+        cast: [],
+        similar: [],
+        inWatchlist: false
     })
     const params = useLocalSearchParams<SerieDetailsParams>();
-    const [serieLoaded, setSerieLoaded] = useState(false)
+    const [serieLoaded, setSerieLoaded] = useState(false);
+    const [inWatchlist, setInWatchlist] = useState(serie.inWatchlist);
+    const [loading, setLoading] = useState(false);
     const serieId = params.id
 
     const onSuccess = (response: any) => {
         const platforms = response.data.platforms;
         const seasons = response.data.seasons;
         const cast = response.data.cast;
+        const similar = response.data.similar;
         const serieData = {
+            id: String(response.data.id),
             overview: response.data.overview,
             poster: response.data.poster,
             backdrop: response.data.backdrop,
             genres: response.data.genres,
-            platforms: platforms ? platforms.map(platform => platform.logoPath) : [],
+            platforms: platforms ? platforms.map((platform: any) => platform.logoPath) : [],
             title: response.data.title,
             status: response.data.status,
             creators: response.data.createdBy,
@@ -71,9 +82,17 @@ export default function Serie() {
                 "name": actor.name,
                 "profilePath": actor.profilePath,
                 "character": actor.character
-            })) : []
+            })) : [],
+            similar: similar? similar.map((series: Content) => ({
+                "id": series.id,
+                "title": series.title,
+                "posterPath": series.posterPath,
+                "releaseDate": new Date(series.releaseDate)
+            })) : [],
+            inWatchlist: response.data.inWatchlist
         };
         setSerie(serieData);
+        setInWatchlist(serieData.inWatchlist);
         setSerieLoaded(true);
     }
 
@@ -96,10 +115,29 @@ export default function Serie() {
         router.push({ pathname: '/season', params});
     }
 
+    const onRedommendPress = (series: Content) => {
+        const newParams: SerieDetailsParams = {
+            id: series.id.toString()
+        };
+        router.replace({ pathname: '/serie', params: newParams});
+    }
+
     return (
         <View style={styles.container}>
+            <Stack.Screen
+                options={{
+                headerRight: () => 
+                (<>
+                    <IconButton onPress={() => console.log("hola")} icon="plus-circle-outline" size={40}/>
+                    <Pressable
+                        onPress={() => handleSeriesWatchlistPress(serie.id, setLoading, setInWatchlist, inWatchlist, session)}>
+                        <WatchlistButton iconStyle={styles.iconsStyle} watchlistLoading={loading} inWatchlist={inWatchlist}/>
+                    </Pressable>
+                </>)
+                }}
+            />
             {serieLoaded ? 
-                <SerieDetailScreen serie={serie} onSeasonPress={onSeasonPress}/> : 
+                <SerieDetailScreen serie={serie} onSeasonPress={onSeasonPress} onRecommendPress={onRedommendPress}/> : 
                 <LoadingComponent />
             }
         </View>
@@ -112,5 +150,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.secondaryWhite,
+    },
+    iconsStyle: {
+        height: 35,
+        aspectRatio: 495 / 512
     },
 });

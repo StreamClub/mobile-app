@@ -1,7 +1,7 @@
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 
 export default function Index() {
     const session = useSession();

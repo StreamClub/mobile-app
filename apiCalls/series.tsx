@@ -50,3 +50,30 @@ export function getSeason(
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
+
+// --------- --------- --------- --------- --------- ---------
+export function addSeriesToWatchlist(
+    session: ReturnType<typeof useSession>,
+    seriesId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+    const body = {
+        "contentId": seriesId,
+        "contentType": "SERIES"
+    }
+    const params: Params = { data: body }
+    privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure);
+}
+
+export function removeSeriesFromWatchlist(
+    session: ReturnType<typeof useSession>,
+    seriesId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+    const body = {
+        "contentId": seriesId,
+        "contentType": "SERIES"
+    }
+    const params: Params = { data: body }
+    privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure);
+}

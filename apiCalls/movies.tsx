@@ -39,3 +39,28 @@ export function searchMovies(
 }
 
 // --------- --------- --------- --------- --------- ---------
+export function addMovieToWatchlist(
+    session: ReturnType<typeof useSession>,
+    movieId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+    const body = {
+        "contentId": movieId,
+        "contentType": "MOVIE"
+    }
+    const params: Params = { data: body }
+    privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure);
+}
+
+export function removeMovieFromWatchlist(
+    session: ReturnType<typeof useSession>,
+    movieId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) {
+    const body = {
+        "contentId": movieId,
+        "contentType": "MOVIE"
+    }
+    const params: Params = { data: body }
+    privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure);
+}

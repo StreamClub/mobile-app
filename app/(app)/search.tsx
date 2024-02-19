@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image, ImageSourcePropType} from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { colors } from "../../assets";
@@ -10,12 +10,14 @@ import { router } from 'expo-router';
 import { BodyText } from '../../components/BasicComponents/BodyText';
 
 import { MovieList, MovieEntry } from '../../components/MovieList';
+import { SearchParams, searchMovies, addMovieToWatchlist, removeMovieFromWatchlist } from '../../apiCalls/movies';
 import { MovieDetailsParams } from './movie';
 import { SearchParams, searchMovies } from '../../apiCalls/movies';
 
 import { SeriesList, SeriesEntry } from '../../components/SeriesList';
 import { SerieDetailsParams } from './serie';
 import { searchSeries } from '../../apiCalls/series';
+import { handleMovieWatchlistPress, handleSeriesWatchlistPress } from '../../operations/handleWatchlistPress';
 
 import { ArtistList, ArtistEntry } from '../../components/ArtistList';
 import { ArtistDetailsParams } from './artist';
@@ -110,9 +112,6 @@ export default function Search() {
 
     // Process Response Data
     // ------------------------------------------------------------
-    const randomInt = (min: number, max: number) =>
-        Math.floor(Math.random() * (max - min + 1)) + min
-
     const processMovieResponseData = (data: any) => {
         const movieList: MovieEntry[] = []
         const moviesResponse = data.results
@@ -121,11 +120,11 @@ export default function Search() {
                 id: movie.id,
                 poster: movie.poster,
                 title: movie.title,
-                available: randomInt(0,1) == 1,
+                available: movie.available,
                 year: movie.releaseDate.split('-')[0],
-                score: randomInt(1,10),
-                seen: randomInt(0,1) == 1,
-                inWatchlist: randomInt(0,1) == 1,
+                score: movie.score.toFixed(2),
+                seen: movie.seen,
+                inWatchlist: movie.inWatchlist,
             }
             movieList.push(movieEntry)
         })
@@ -225,14 +224,6 @@ export default function Search() {
         }, 1000);
     }
 
-    const onWatchlistPress = (movie: MovieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-        console.log(movie.title + ' watchlist pressed');
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    }
-
     const onSeriesPress = (serie: SeriesEntry) => {
         console.log(serie.title + ' pressed');
         
@@ -251,7 +242,7 @@ export default function Search() {
         }, 1000);
     }
 
-    const onSeriesWatchlistPress = (serie: SeriesEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const onSerieWatchlistPress = (serie: SerieEntry, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
         console.log(serie.title + ' watchlist pressed');
         setLoading(true);
         setTimeout(() => {
@@ -364,7 +355,30 @@ export default function Search() {
         )
     }
 
+    const renderNoResulstsFoundMessage = () => {
+        return (
+            <BodyText
+                style={{
+                    marginTop: 20,
+                    fontWeight: 'bold',
+                    alignSelf: 'flex-start',
+                    marginLeft: '5%',
+                }}
+                size="big"
+                color={colors.primaryBlack}
+                body={"No se encontraron resultados para: " + textSearched}
+            />
+        )
+    }
+
     const renderMovieList = () => {
+        const onWatchlistPress = (movie: MovieEntry, 
+            setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
+            setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
+            inWatchlist: boolean) => {
+            handleMovieWatchlistPress(movie.id,setLoading, setInWatchlist, inWatchlist, session);
+        }
+
         const callbacks = {
             onMoviePress,
             onSeenPress,
@@ -373,18 +387,34 @@ export default function Search() {
         return (
             showLoading? null :
                 ((movieList.length === 0)?
-                    renderNoResulstsFoundMessage()
-                    : 
-                    <MovieList movieList={movieList} callbacks={callbacks}/>
-                )
+                <BodyText
+                    style={{
+                        marginTop: 20,
+                        fontWeight: 'bold',
+                        alignSelf: 'flex-start',
+                        marginLeft: '5%',
+                    }}
+                    size="big"
+                    color={colors.primaryBlack}
+                    body={"No se encontraron resultados para: " + textSearched}
+                />
+                : 
+                <MovieList movieList={movieList} callbacks={callbacks}/>)
         )
     }
 
-    const renderSeriesList = () => {
+    const renderSerieList = () => {
+        const onWatchlistPress = (series: SerieEntry, 
+            setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
+            setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
+            inWatchlist: boolean) => {
+            handleSeriesWatchlistPress(series.id,setLoading, setInWatchlist, inWatchlist, session);
+        }
+
         const callbacks = {
-            onSeriesPress,
-            onSeriesSeenPress,
-            onSeriesWatchlistPress,
+            onSeriePress,
+            onSerieSeenPress,
+            onWatchlistPress,
         }
         return (
             showLoading? null :

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Redirect, Stack } from 'expo-router';
-import { Text } from 'react-native';
+import { Redirect, Stack, router } from 'expo-router';
 
 import { useSession } from '../../context/ctx';
-import { MoviesHeader } from '../../components/MoviesHeader';
+import { colors } from '../../assets';
+import { IconButton } from 'react-native-paper';
 
 export default function AppLayout() {
 
@@ -20,17 +20,19 @@ export default function AppLayout() {
 
     return (
     <>
-        <MoviesHeader />
         <Stack
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: '#f4511e',
+                    backgroundColor: colors.primaryRed
                 },
+                headerTitle: () => router.canGoBack() ? <IconButton 
+                                        onPress={() => router.back()} 
+                                        icon="arrow-left" 
+                                        size={35} 
+                                        iconColor={colors.primaryWhite}/> : null,
                 headerTintColor: '#fff',
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-                headerShown: false,
+                headerShown: true,
+                headerBackVisible: false,
             }}
         />
     </>);

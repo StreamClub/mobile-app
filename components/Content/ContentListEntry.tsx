@@ -8,7 +8,6 @@ import { ContentType } from '../../entities/ContentType'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 
 type ContentListEntryProps = {
-    index: number
     contentEntry: ContentEntry
     onSeriePress: (serieEntry: ContentEntry) => void
     callbacks: ContentListCallbacks
@@ -16,10 +15,10 @@ type ContentListEntryProps = {
 }
 
 export const ContentListEntry = (params: ContentListEntryProps) => {
-    const { index, contentEntry, onSeriePress, contentType } = params
+    const { contentEntry, onSeriePress, contentType } = params
 
     return (
-        <View key={index}>
+        <View>
             <View style={styles.serieEntryContainer}>
                 <ContentCover
                     contentEntry={contentEntry}

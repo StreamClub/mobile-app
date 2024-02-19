@@ -335,7 +335,7 @@ export default function Search() {
         }
 
         const callbacks = {
-            onMoviePress,
+            onContentPress: onMoviePress,
             onSeenPress,
             onWatchlistPress,
         }
@@ -373,8 +373,8 @@ export default function Search() {
         }
 
         const callbacks = {
-            onSeriePress,
-            onSerieSeenPress,
+            onContentPress: onSeriePress,
+            onSeenPress,
             onWatchlistPress,
         }
         return showLoading ? null : seriesList.length === 0 ? (

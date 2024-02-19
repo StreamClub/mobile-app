@@ -37,7 +37,7 @@ export const MovieList = (params: MovieListProps) => {
     const renderMovieEntry = (movieEntry: MovieEntry, index: number) => {
         return (
             <ContentListEntry
-                index={index}
+                key={index}
                 contentEntry={movieEntry}
                 onSeriePress={onMoviePress}
                 callbacks={params.callbacks}

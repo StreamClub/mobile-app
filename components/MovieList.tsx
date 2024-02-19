@@ -37,7 +37,6 @@ export const MovieList = (params: MovieListProps) => {
     const renderMovieEntry = (movieEntry: MovieEntry, index: number) => {
         return (
             <ContentListEntry
-                key={index}
                 index={index}
                 contentEntry={movieEntry}
                 onSeriePress={onMoviePress}

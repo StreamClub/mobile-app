@@ -24,7 +24,6 @@ export const SeriesList = (params: SeriesListProps) => {
     const renderSerieEntry = (serieEntry: SeriesEntry, index: number) => {
         return (
             <ContentListEntry
-                key={index}
                 index={index}
                 contentEntry={serieEntry}
                 onSeriePress={onSeriePress}

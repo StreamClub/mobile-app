@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Pressable } from 'react-native'
 import { WatchlistButton } from '../BasicComponents/WatchlistButton'
 import { SerieEntry } from '../SeriesList'
@@ -6,10 +6,6 @@ import { styles } from './styles/SeriesList.style'
 
 type SeriesWatchlistSectionProps = {
     serieEntry: SerieEntry
-    watchlistLoading: boolean
-    inWatchlist: boolean
-    setWatchlistLoading: React.Dispatch<React.SetStateAction<boolean>>
-    setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>
     onWatchlistPress: (
         serieEntry: SerieEntry,
         loading: boolean,
@@ -20,14 +16,10 @@ type SeriesWatchlistSectionProps = {
 }
 
 export const SeriesWatchlistSection = (params: SeriesWatchlistSectionProps) => {
-    const {
-        serieEntry,
-        watchlistLoading,
-        setWatchlistLoading,
-        setInWatchlist,
-        onWatchlistPress,
-        inWatchlist,
-    } = params
+    const { serieEntry, onWatchlistPress } = params
+
+    const [inWatchlist, setInWatchlist] = useState(serieEntry.inWatchlist)
+    const [watchlistLoading, setWatchlistLoading] = useState(false)
 
     return (
         <>

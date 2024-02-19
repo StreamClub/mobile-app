@@ -14,10 +14,19 @@ type SeriesTitleProps = {
 export const SeriesTitle = (params: SeriesTitleProps) => {
     const { title, status } = params
     const { releaseYear, lastYear } = params.years
+
+    const hasSeriesEnded = (status: string) => {
+        return status === 'Finalizada' || status === 'Cancelada'
+    }
+
+    const isSeriesOngoing = (status: string) => {
+        return status === 'Serie en emisión'
+    }
+
     return (
         <View style={{ flex: 0.6 }}>
             <TitleText body={title} size="small" numberOfLines={2} />
-            {status === 'Finalizada' || status === 'Cancelada' ? (
+            {hasSeriesEnded(status) ? (
                 <TitleText
                     body={
                         '(' +
@@ -29,7 +38,7 @@ export const SeriesTitle = (params: SeriesTitleProps) => {
                     size="small"
                 />
             ) : null}
-            {status === 'Serie en emisión' ? (
+            {isSeriesOngoing(status) ? (
                 <TitleText
                     body={
                         '(' +

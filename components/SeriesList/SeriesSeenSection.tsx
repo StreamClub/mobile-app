@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Image,
     Pressable,
@@ -11,9 +11,6 @@ import { colors } from '../../assets'
 
 type SeriesSeenSectionProps = {
     serieEntry: SerieEntry
-    seenLoading: boolean
-    seenIcon: ImageSourcePropType
-    setSeenLoading: React.Dispatch<React.SetStateAction<boolean>>
     onSeenPress: (
         serieEntry: SerieEntry,
         loading: boolean,
@@ -22,8 +19,11 @@ type SeriesSeenSectionProps = {
 }
 
 export const SeriesSeenSection = (params: SeriesSeenSectionProps) => {
-    const { serieEntry, seenLoading, setSeenLoading, seenIcon, onSeenPress } =
-        params
+    const { serieEntry, onSeenPress } = params
+    const [seenLoading, setSeenLoading] = useState(false)
+    const seenIcon = serieEntry.seen
+        ? require('../../assets/icons/unmarkAsSeen.png')
+        : require('../../assets/icons/markAsSeen.png')
 
     return (
         <>

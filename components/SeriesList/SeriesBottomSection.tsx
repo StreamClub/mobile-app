@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageSourcePropType, View } from 'react-native'
+import { View } from 'react-native'
 import { SeriesQualification } from './SeriesQualification'
 import { SeriesSeenSection } from './SeriesSeenSection'
 import { SeriesWatchlistSection } from './SeriesWatchlistSection'
@@ -8,9 +8,6 @@ import { SerieEntry } from '../SeriesList'
 type SeriesBottomSectionProps = {
     serieEntry: SerieEntry
     scoreFormatted: string
-    seenIcon: ImageSourcePropType
-    inWatchlist: boolean
-    setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>
     onSerieSeenPress: (
         serie: SerieEntry,
         setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,17 +21,8 @@ type SeriesBottomSectionProps = {
 }
 
 export const SeriesBottomSection = (params: SeriesBottomSectionProps) => {
-    const [seenLoading, setSeenLoading] = React.useState(false)
-    const [watchlistLoading, setWatchlistLoading] = React.useState(false)
-    const {
-        serieEntry,
-        scoreFormatted,
-        seenIcon,
-        inWatchlist,
-        setInWatchlist,
-        onSerieSeenPress,
-        onWatchlistPress,
-    } = params
+    const { serieEntry, scoreFormatted, onSerieSeenPress, onWatchlistPress } =
+        params
 
     const onSeenPress = (
         serieEntry: SerieEntry,
@@ -62,17 +50,10 @@ export const SeriesBottomSection = (params: SeriesBottomSectionProps) => {
                 <SeriesQualification score={scoreFormatted} />
                 <SeriesSeenSection
                     serieEntry={serieEntry}
-                    seenLoading={seenLoading}
-                    seenIcon={seenIcon}
-                    setSeenLoading={setSeenLoading}
                     onSeenPress={onSeenPress}
                 />
                 <SeriesWatchlistSection
                     serieEntry={serieEntry}
-                    watchlistLoading={watchlistLoading}
-                    inWatchlist={inWatchlist}
-                    setWatchlistLoading={setWatchlistLoading}
-                    setInWatchlist={setInWatchlist}
                     onWatchlistPress={watchlistPress}
                 />
             </View>

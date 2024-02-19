@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pressable } from 'react-native'
 import { styles } from './styles/SeriesList.style'
 import { SeriesTitle } from './SeriesTitle'
@@ -6,8 +6,9 @@ import { SeriesBottomSection } from './SeriesBottomSection'
 import { SeriesState } from './SeriesState'
 import { SerieEntry } from '../SeriesList'
 import { SeriesListCallbacks } from './SeriesListCallbacks'
+import { formatScore, toAvailableText } from '../../utils'
+import { formatTitle } from '../../utils/formatTitle'
 
-const MAX_TITLE_LENGHT = 50
 type SeriesDetailProps = {
     serieEntry: SerieEntry
     callbacks: SeriesListCallbacks
@@ -15,19 +16,6 @@ type SeriesDetailProps = {
 
 export const SeriesDetail = (params: SeriesDetailProps) => {
     const { serieEntry, callbacks } = params
-    let serieTitle = serieEntry.title
-    if (serieEntry.title.length > MAX_TITLE_LENGHT) {
-        serieTitle = serieEntry.title.slice(0, MAX_TITLE_LENGHT).trim() + '...'
-    }
-
-    const availableText = serieEntry.available
-        ? 'Disponible en tus plataformas'
-        : ''
-    const scoreFormatted = serieEntry.score.toString() + '/10'
-    const seenIcon = serieEntry.seen
-        ? require('../../assets/icons/unmarkAsSeen.png')
-        : require('../../assets/icons/markAsSeen.png')
-    const [inWatchlist, setInWatchlist] = useState(serieEntry.inWatchlist)
 
     const onSeriePress = (serieEntry: SerieEntry) => {
         params.callbacks.onSeriePress(serieEntry)
@@ -40,7 +28,7 @@ export const SeriesDetail = (params: SeriesDetailProps) => {
                 style={styles.detailsContainer}
             >
                 <SeriesTitle
-                    title={serieTitle}
+                    title={formatTitle(serieEntry.title)}
                     years={{
                         releaseYear: serieEntry.releaseYear,
                         lastYear: serieEntry.lastYear,
@@ -50,15 +38,12 @@ export const SeriesDetail = (params: SeriesDetailProps) => {
 
                 <SeriesState
                     status={serieEntry.status}
-                    availableText={availableText}
+                    availableText={toAvailableText(serieEntry.available)}
                 />
 
                 <SeriesBottomSection
                     serieEntry={serieEntry}
-                    scoreFormatted={scoreFormatted}
-                    seenIcon={seenIcon}
-                    inWatchlist={inWatchlist}
-                    setInWatchlist={setInWatchlist}
+                    scoreFormatted={formatScore(serieEntry.score)}
                     onSerieSeenPress={callbacks.onSerieSeenPress}
                     onWatchlistPress={callbacks.onWatchlistPress}
                 />

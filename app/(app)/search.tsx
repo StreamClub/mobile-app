@@ -2,8 +2,6 @@ import { View, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { useSession } from '../../context/ctx'
 import { colors } from '../../assets'
-import { SearchBar } from '@rneui/themed'
-import { Icon } from 'react-native-elements'
 import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
 import { BodyText } from '../../components/BasicComponents/BodyText'
@@ -20,17 +18,17 @@ import { searchSeries } from '../../apiCalls/series'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { SearchList } from '../../components/Search/SearchList'
-
-const MAX_SEARCH_LENGTH = 50
-const DELAY_SEARCH = 500
-
-const MOVIES_NAME = 'Películas'
-const SERIES_NAME = 'Series'
-const ARTISTS_NAME = 'Artistas'
-const USERS_NAME = 'Usuarios'
-
-const CATEGORIES = [MOVIES_NAME, SERIES_NAME, ARTISTS_NAME, USERS_NAME]
-const INITIAL_CATEGORY = 0
+import {
+    ARTISTS_NAME,
+    CATEGORIES,
+    DELAY_SEARCH,
+    INITIAL_CATEGORY,
+    MAX_SEARCH_LENGTH,
+    MOVIES_NAME,
+    SERIES_NAME,
+    USERS_NAME,
+} from '../../constants'
+import { SearchContentBar } from '../../components/Search/SearchBar'
 
 export default function Search() {
     // States
@@ -165,42 +163,6 @@ export default function Search() {
 
     // Render functions
     // ------------------------------------------------------------
-    const renderSearchBar = () => {
-        return (
-            <SearchBar
-                placeholder="Buscar..."
-                containerStyle={{
-                    width: '90%',
-                    backgroundColor: 'transparent',
-                    borderTopWidth: 0,
-                    marginTop: 10,
-                }}
-                searchIcon={
-                    <Image
-                        source={require('../../assets/icons/search.png')}
-                        style={{
-                            aspectRatio: 469 / 512,
-                            height: 20,
-                        }}
-                    />
-                }
-                inputContainerStyle={{
-                    backgroundColor: colors.secondaryWhite,
-                }}
-                inputStyle={{
-                    color: 'black',
-                }}
-                cancelIcon={<Icon name="close" type="ionicon" color="black" />}
-                onChangeText={onChangeTextSearched}
-                value={textSearched}
-                showLoading={showLoading}
-                loadingProps={{
-                    color: 'black',
-                }}
-                onSubmitEditing={onSubmit}
-            />
-        )
-    }
 
     const renderSegmentedButton = () => {
         return (
@@ -273,7 +235,12 @@ export default function Search() {
     // ------------------------------------------------------------
     return (
         <View style={styles.container}>
-            {renderSearchBar()}
+            <SearchContentBar
+                showLoading={showLoading}
+                textSearched={textSearched}
+                onChangeTextSearched={onChangeTextSearched}
+                onSubmit={onSubmit}
+            />
 
             {renderSegmentedButton()}
 

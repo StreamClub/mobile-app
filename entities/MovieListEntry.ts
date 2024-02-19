@@ -7,4 +7,13 @@ export class MovieEntry extends ContentEntry {
         super(movie)
         this.year = movie.year
     }
+
+    public static fromJson(movie: any): MovieEntry {
+        const content = ContentEntry.fromJson(movie)
+        return new MovieEntry({
+            year: movie.releaseDate.split('-')[0],
+            ...content
+        })
+    }
+
 }

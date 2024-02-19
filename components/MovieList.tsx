@@ -2,17 +2,7 @@ import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { ContentType } from '../entities/ContentType'
 import { ContentListEntry } from './Content/ContentListEntry'
-
-export type MovieEntry = {
-    id: string
-    title: string
-    poster: string
-    available: boolean
-    year: string
-    score: number
-    seen: boolean
-    inWatchlist: boolean
-}
+import { MovieEntry } from '../entities/MovieListEntry'
 
 type MovieListProps = {
     movieList: MovieEntry[]

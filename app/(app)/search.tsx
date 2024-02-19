@@ -8,7 +8,7 @@ import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
 import { BodyText } from '../../components/BasicComponents/BodyText'
 
-import { MovieList, MovieEntry } from '../../components/MovieList'
+import { MovieList } from '../../components/MovieList'
 import {
     SearchParams,
     searchMovies,
@@ -18,6 +18,8 @@ import {
 import { SeriesList } from '../../components/SeriesList'
 import { searchSeries } from '../../apiCalls/series'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
+import { MovieEntry } from '../../entities/MovieListEntry'
+import { SearchList } from '../../components/Search/SearchList'
 
 const MAX_SEARCH_LENGTH = 50
 const DELAY_SEARCH = 500
@@ -112,16 +114,7 @@ export default function Search() {
         const movieList: MovieEntry[] = []
         const moviesResponse = data.results
         moviesResponse.forEach((movie: any) => {
-            const movieEntry: MovieEntry = {
-                id: movie.id,
-                poster: movie.poster,
-                title: movie.title,
-                available: movie.available,
-                year: movie.releaseDate.split('-')[0],
-                score: movie.score.toFixed(2),
-                seen: movie.seen,
-                inWatchlist: movie.inWatchlist,
-            }
+            const movieEntry: MovieEntry = MovieEntry.fromJson(movie)
             movieList.push(movieEntry)
         })
         setMovieList(movieList)
@@ -131,22 +124,7 @@ export default function Search() {
         const seriesList: SeriesEntry[] = []
         const seriesResponse = data.results
         seriesResponse.forEach((serie: any) => {
-            const serieEntry: SeriesEntry = {
-                id: serie.id,
-                poster: serie.poster,
-                title: serie.title,
-                available: serie.available,
-                releaseYear: serie.releaseDate
-                    ? serie.releaseDate.split('-')[0]
-                    : '?',
-                score: serie.score.toFixed(2),
-                seen: serie.seen,
-                inWatchlist: serie.inWatchlist,
-                status: serie.status,
-                lastYear: serie.lastEpisodeReleaseDate
-                    ? serie.lastEpisodeReleaseDate.split('-')[0]
-                    : '?',
-            }
+            const serieEntry: SeriesEntry = SeriesEntry.fromJson(serie)
             seriesList.push(serieEntry)
         })
         setSeriesList(seriesList)
@@ -267,38 +245,26 @@ export default function Search() {
     }
 
     const renderMovieList = () => {
-        return showLoading ? null : movieList.length === 0 ? (
-            <BodyText
-                style={{
-                    marginTop: 20,
-                    fontWeight: 'bold',
-                    alignSelf: 'flex-start',
-                    marginLeft: '5%',
-                }}
-                size="big"
-                color={colors.primaryBlack}
-                body={'No se encontraron resultados para: ' + textSearched}
-            />
-        ) : (
-            <MovieList movieList={movieList} />
+        return (
+            <SearchList
+                showLoading={showLoading}
+                seriesList={seriesList}
+                textSearched={textSearched}
+            >
+                <MovieList movieList={movieList} />
+            </SearchList>
         )
     }
 
     const renderSerieList = () => {
-        return showLoading ? null : seriesList.length === 0 ? (
-            <BodyText
-                style={{
-                    marginTop: 20,
-                    fontWeight: 'bold',
-                    alignSelf: 'flex-start',
-                    marginLeft: '5%',
-                }}
-                size="big"
-                color={colors.primaryBlack}
-                body={'No se encontraron resultados para: ' + textSearched}
-            />
-        ) : (
-            <SeriesList seriesList={seriesList} />
+        return (
+            <SearchList
+                showLoading={showLoading}
+                seriesList={seriesList}
+                textSearched={textSearched}
+            >
+                <SeriesList seriesList={seriesList} />
+            </SearchList>
         )
     }
     // ------------------------------------------------------------

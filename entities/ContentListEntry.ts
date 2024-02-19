@@ -17,5 +17,17 @@ export class ContentEntry {
         this.inWatchlist = content.inWatchlist
     }
 
+    public static fromJson(content: any): ContentEntry {
+        return new ContentEntry({
+            id: content.id,
+            poster: content.poster,
+            title: content.title,
+            available: content.available,
+            score: content.score.toFixed(2),
+            seen: content.seen,
+            inWatchlist: content.inWatchlist,
+        })
+    }
+
 }
 

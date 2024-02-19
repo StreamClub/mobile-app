@@ -2,23 +2,23 @@ import React from 'react'
 import { Pressable } from 'react-native'
 import { styles } from './styles/SeriesList.style'
 import { SeriesTitle } from './SeriesTitle'
-import { SeriesBottomSection } from './SeriesBottomSection'
 import { SeriesState } from './SeriesState'
-import { SerieEntry } from '../SeriesList'
-import { SeriesListCallbacks } from './SeriesListCallbacks'
+import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { formatScore, toAvailableText } from '../../utils'
 import { formatTitle } from '../../utils/formatTitle'
+import { BottomSection } from '../Content/BottomSection'
+import { ContentListCallbacks } from '../Content/ContentListCallbacks'
 
 type SeriesDetailProps = {
-    serieEntry: SerieEntry
-    callbacks: SeriesListCallbacks
+    serieEntry: SeriesEntry
+    callbacks: ContentListCallbacks
 }
 
 export const SeriesDetail = (params: SeriesDetailProps) => {
     const { serieEntry, callbacks } = params
 
-    const onSeriePress = (serieEntry: SerieEntry) => {
-        params.callbacks.onSeriePress(serieEntry)
+    const onSeriePress = (serieEntry: SeriesEntry) => {
+        params.callbacks.onContentPress(serieEntry)
     }
 
     return (
@@ -41,10 +41,10 @@ export const SeriesDetail = (params: SeriesDetailProps) => {
                     availableText={toAvailableText(serieEntry.available)}
                 />
 
-                <SeriesBottomSection
-                    serieEntry={serieEntry}
+                <BottomSection
+                    contentEntry={serieEntry}
                     scoreFormatted={formatScore(serieEntry.score)}
-                    onSerieSeenPress={callbacks.onSerieSeenPress}
+                    onSeenPress={callbacks.onSeenPress}
                     onWatchlistPress={callbacks.onWatchlistPress}
                 />
             </Pressable>

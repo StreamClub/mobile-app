@@ -1,27 +1,22 @@
 import React, { useState } from 'react'
-import {
-    Image,
-    Pressable,
-    ActivityIndicator,
-    ImageSourcePropType,
-} from 'react-native'
-import { SerieEntry } from '../SeriesList'
-import { styles } from './styles/SeriesList.style'
+import { Image, Pressable, ActivityIndicator } from 'react-native'
 import { colors } from '../../assets'
+import { styles } from '../SeriesList/styles/SeriesList.style'
+import { ContentEntry } from '../../entities/ContentListEntry'
 
-type SeriesSeenSectionProps = {
-    serieEntry: SerieEntry
+type SeenButtonProps = {
+    contentEntry: ContentEntry
     onSeenPress: (
-        serieEntry: SerieEntry,
+        serieEntry: ContentEntry,
         loading: boolean,
         setLoading: React.Dispatch<React.SetStateAction<boolean>>
     ) => void
 }
 
-export const SeriesSeenSection = (params: SeriesSeenSectionProps) => {
-    const { serieEntry, onSeenPress } = params
+export const SeenSection = (params: SeenButtonProps) => {
+    const { contentEntry, onSeenPress } = params
     const [seenLoading, setSeenLoading] = useState(false)
-    const seenIcon = serieEntry.seen
+    const seenIcon = contentEntry.seen
         ? require('../../assets/icons/unmarkAsSeen.png')
         : require('../../assets/icons/markAsSeen.png')
 
@@ -29,7 +24,7 @@ export const SeriesSeenSection = (params: SeriesSeenSectionProps) => {
         <>
             <Pressable
                 onPress={() =>
-                    onSeenPress(serieEntry, seenLoading, setSeenLoading)
+                    onSeenPress(contentEntry, seenLoading, setSeenLoading)
                 }
                 style={styles.iconContainer}
             >

@@ -3,11 +3,11 @@ import { Image, Pressable } from 'react-native'
 import { BodyText } from '../BasicComponents/BodyText'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 
-type SeriesQualificationProps = {
+type ContentScoreProps = {
     score: string
 }
 
-export const SeriesQualification = (params: SeriesQualificationProps) => {
+export const ContentScore = (params: ContentScoreProps) => {
     const { score } = params
     return (
         <>

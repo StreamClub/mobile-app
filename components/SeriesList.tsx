@@ -1,42 +1,35 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { styles } from './SeriesList/styles/SeriesList.style'
-import { SeriesListCallbacks } from './SeriesList/SeriesListCallbacks'
-import { SeriesListEntry } from './SeriesList/SeriesListEntry'
-
-export type SerieEntry = {
-    id: string
-    title: string
-    poster: string
-    available: boolean
-    releaseYear: string
-    lastYear: string
-    score: number
-    seen: boolean
-    inWatchlist: boolean
-    status: string
-}
+import { SeriesEntry } from '../entities/SeriesListEntry'
+import { ContentEntry } from '../entities/ContentListEntry'
+import { ContentListCallbacks } from './Content/ContentListCallbacks'
+import { ContentListEntry } from './Content/ContentListEntry'
+import { ContentType } from '../entities/ContentType'
 
 type SeriesListProps = {
-    seriesList: SerieEntry[]
-    callbacks: SeriesListCallbacks
+    seriesList: SeriesEntry[]
+    callbacks: ContentListCallbacks
 }
 
 export const SeriesList = (params: SeriesListProps) => {
     const seriesList = params.seriesList
 
-    const onSeriePress = (serieEntry: SerieEntry) => {
-        params.callbacks.onSeriePress(serieEntry)
+    const onSeriePress = (serieEntry: ContentEntry) => {
+        params.callbacks.onContentPress(serieEntry)
     }
 
-    const renderSerieEntry = (serieEntry: SerieEntry, index: number) => {
+    const contentType = new ContentType('series')
+
+    const renderSerieEntry = (serieEntry: SeriesEntry, index: number) => {
         return (
-            <SeriesListEntry
+            <ContentListEntry
                 key={index}
                 index={index}
-                serieEntry={serieEntry}
+                contentEntry={serieEntry}
                 onSeriePress={onSeriePress}
                 callbacks={params.callbacks}
+                contentType={contentType}
             />
         )
     }

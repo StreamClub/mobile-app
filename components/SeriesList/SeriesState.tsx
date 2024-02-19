@@ -2,13 +2,14 @@ import React from 'react'
 import { View } from 'react-native'
 import { BodyText } from '../BasicComponents/BodyText'
 import { colors } from '../../assets'
+import { AvailableText } from '../Content/AvailableText'
 
-type SeriesTitleProps = {
+type SeriesStateProps = {
     status: string
     availableText: string
 }
 
-export const SeriesState = (params: SeriesTitleProps) => {
+export const SeriesState = (params: SeriesStateProps) => {
     const { status, availableText } = params
     return (
         <>
@@ -20,12 +21,7 @@ export const SeriesState = (params: SeriesTitleProps) => {
                     color={colors.primaryBlue}
                     style={{ fontWeight: 'bold' }}
                 />
-                <BodyText
-                    body={availableText}
-                    size="medium"
-                    fontStyle="italic"
-                    color={colors.secondaryBlue}
-                />
+                <AvailableText availableText={availableText} />
             </View>
         </>
     )

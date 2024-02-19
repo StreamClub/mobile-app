@@ -1,13 +1,13 @@
-import { SerieEntry } from '../SeriesList'
+import { ContentEntry } from '../../entities/ContentListEntry'
 
-export type SeriesListCallbacks = {
-    onSeriePress: (serie: SerieEntry) => void
-    onSerieSeenPress: (
-        serie: SerieEntry,
+export type ContentListCallbacks = {
+    onContentPress: (content: ContentEntry) => void
+    onSeenPress: (
+        content: ContentEntry,
         setLoading: React.Dispatch<React.SetStateAction<boolean>>
     ) => void
     onWatchlistPress: (
-        series: SerieEntry,
+        content: ContentEntry,
         setLoading: React.Dispatch<React.SetStateAction<boolean>>,
         setWatchlistIcon: React.Dispatch<React.SetStateAction<boolean>>,
         inWatchlist: boolean

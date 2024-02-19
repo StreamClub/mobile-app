@@ -1,18 +1,18 @@
 import React from 'react'
-import { SerieEntry } from '../SeriesList'
-import { styles } from './styles/SeriesList.style'
 import { View, Image, Pressable } from 'react-native'
 import { Icon } from 'react-native-paper'
 import { colors } from '../../assets'
+import { ContentEntry } from '../../entities/ContentListEntry'
+import { styles } from '../SeriesList/styles/SeriesList.style'
 
-type SeriesCoverProps = {
-    seriesEntry: SerieEntry
-    onSeriesPress: (serie: SerieEntry) => void
+type ContentCoverProps = {
+    contentEntry: ContentEntry
+    onContentPress: (content: ContentEntry) => void
 }
 
-export const SeriesCover = (params: SeriesCoverProps) => {
+export const ContentCover = (params: ContentCoverProps) => {
     const coverOutlineStyle = {
-        backgroundColor: params.seriesEntry.available
+        backgroundColor: params.contentEntry.available
             ? colors.secondaryBlue
             : 'transparent',
     }
@@ -20,15 +20,15 @@ export const SeriesCover = (params: SeriesCoverProps) => {
     return (
         <>
             <Pressable
-                onPress={() => params.onSeriesPress(params.seriesEntry)}
+                onPress={() => params.onContentPress(params.contentEntry)}
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
-                {params.seriesEntry.poster ? (
+                {params.contentEntry.poster ? (
                     <Image
                         source={{
                             uri:
                                 'https://image.tmdb.org/t/p/original' +
-                                params.seriesEntry.poster,
+                                params.contentEntry.poster,
                         }}
                         style={styles.coverImage}
                         resizeMode="contain"

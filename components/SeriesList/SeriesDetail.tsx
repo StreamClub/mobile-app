@@ -7,7 +7,7 @@ import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { formatScore, toAvailableText } from '../../utils'
 import { formatTitle } from '../../utils/formatTitle'
 import { BottomSection } from '../Content/BottomSection'
-import { ContentListCallbacks } from '../Content/ContentListCallbacks'
+import { ContentListCallbacks } from '../../entities/ContentListCallbacks'
 
 type SeriesDetailProps = {
     serieEntry: SeriesEntry

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { useSession } from '../../context/ctx'
 import { colors } from '../../assets'
@@ -6,7 +6,6 @@ import { SearchBar } from '@rneui/themed'
 import { Icon } from 'react-native-elements'
 import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
-import { router } from 'expo-router'
 import { BodyText } from '../../components/BasicComponents/BodyText'
 
 import { MovieList, MovieEntry } from '../../components/MovieList'
@@ -15,19 +14,9 @@ import {
     searchMovies,
     searchArtists,
     searchUsers,
-    addMovieToWatchlist,
-    removeMovieFromWatchlist,
 } from '../../apiCalls/movies'
-import { MovieDetailsParams } from './movie'
-
 import { SeriesList } from '../../components/SeriesList'
-import { SerieDetailsParams } from './serie'
 import { searchSeries } from '../../apiCalls/series'
-import {
-    handleMovieWatchlistPress,
-    handleSeriesWatchlistPress,
-} from '../../operations/handleWatchlistPress'
-import { ContentEntry } from '../../entities/ContentListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 
 const MAX_SEARCH_LENGTH = 50
@@ -194,47 +183,6 @@ export default function Search() {
         setSelectedCategory(CATEGORIES[value])
     }
 
-    const onMoviePress = (movie: ContentEntry) => {
-        console.log(movie.title + ' pressed')
-
-        const params: MovieDetailsParams = {
-            id: movie.id,
-        }
-
-        router.push({ pathname: '/movie', params })
-    }
-
-    const onSeenPress = (
-        movie: ContentEntry,
-        setLoading: React.Dispatch<React.SetStateAction<boolean>>
-    ) => {
-        console.log(movie.title + ' seen pressed')
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 1000)
-    }
-
-    const onSeriePress = (serie: ContentEntry) => {
-        console.log(serie.title + ' pressed')
-
-        const params: SerieDetailsParams = {
-            id: serie.id,
-        }
-
-        router.push({ pathname: '/serie', params })
-    }
-
-    const onSerieSeenPress = (
-        serie: ContentEntry,
-        setLoading: React.Dispatch<React.SetStateAction<boolean>>
-    ) => {
-        console.log(serie.title + ' seen pressed')
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 1000)
-    }
     // ------------------------------------------------------------
 
     // Render functions
@@ -319,26 +267,6 @@ export default function Search() {
     }
 
     const renderMovieList = () => {
-        const onWatchlistPress = (
-            movie: ContentEntry,
-            setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-            setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
-            inWatchlist: boolean
-        ) => {
-            handleMovieWatchlistPress(
-                movie.id,
-                setLoading,
-                setInWatchlist,
-                inWatchlist,
-                session
-            )
-        }
-
-        const callbacks = {
-            onContentPress: onMoviePress,
-            onSeenPress,
-            onWatchlistPress,
-        }
         return showLoading ? null : movieList.length === 0 ? (
             <BodyText
                 style={{
@@ -352,31 +280,11 @@ export default function Search() {
                 body={'No se encontraron resultados para: ' + textSearched}
             />
         ) : (
-            <MovieList movieList={movieList} callbacks={callbacks} />
+            <MovieList movieList={movieList} />
         )
     }
 
     const renderSerieList = () => {
-        const onWatchlistPress = (
-            series: ContentEntry,
-            setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-            setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
-            inWatchlist: boolean
-        ) => {
-            handleSeriesWatchlistPress(
-                series.id,
-                setLoading,
-                setInWatchlist,
-                inWatchlist,
-                session
-            )
-        }
-
-        const callbacks = {
-            onContentPress: onSeriePress,
-            onSeenPress,
-            onWatchlistPress,
-        }
         return showLoading ? null : seriesList.length === 0 ? (
             <BodyText
                 style={{
@@ -390,7 +298,7 @@ export default function Search() {
                 body={'No se encontraron resultados para: ' + textSearched}
             />
         ) : (
-            <SeriesList seriesList={seriesList} callbacks={callbacks} />
+            <SeriesList seriesList={seriesList} />
         )
     }
     // ------------------------------------------------------------

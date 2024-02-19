@@ -9,33 +9,27 @@ import { ContentEntry } from '../../entities/ContentListEntry'
 import { SeriesBody } from '../SeriesList/SeriesBody'
 import { MovieBody } from '../Movie/MovieBody'
 import { MovieEntry } from '../MovieList'
-import { ContentListCallbacks } from './ContentListCallbacks'
+import { useContentEntryPressed } from '../../hooks/useContentEntryPressed'
 
 type ContentDetailProps = {
     contentEntry: ContentEntry
-    callbacks: ContentListCallbacks
     contentType: ContentType
 }
 
 export const ContentDetail = (params: ContentDetailProps) => {
-    const { contentEntry, callbacks, contentType } = params
+    const { contentEntry, contentType } = params
 
-    const onPress = (serieEntry: ContentEntry) => {
-        params.callbacks.onContentPress(serieEntry)
-    }
+    const { onPress } = useContentEntryPressed(contentEntry, contentType)
 
     return (
         <>
             <Pressable
-                onPress={() => onPress(contentEntry)}
+                onPress={() => onPress()}
                 style={styles.detailsContainer}
             >
                 {contentType.isSeries() ? (
                     <>
-                        <SeriesBody
-                            serieEntry={contentEntry as SeriesEntry}
-                            callbacks={callbacks}
-                        />
+                        <SeriesBody serieEntry={contentEntry as SeriesEntry} />
                     </>
                 ) : (
                     <>
@@ -45,9 +39,8 @@ export const ContentDetail = (params: ContentDetailProps) => {
 
                 <BottomSection
                     contentEntry={contentEntry}
+                    contentType={contentType}
                     scoreFormatted={formatScore(contentEntry.score)}
-                    onSeenPress={callbacks.onSeenPress}
-                    onWatchlistPress={callbacks.onWatchlistPress}
                 />
             </Pressable>
         </>

@@ -4,10 +4,12 @@ import { Icon } from 'react-native-paper'
 import { colors } from '../../assets'
 import { ContentEntry } from '../../entities/ContentListEntry'
 import { styles } from '../SeriesList/styles/SeriesList.style'
+import { useContentEntryPressed } from '../../hooks/useContentEntryPressed'
+import { ContentType } from '../../entities/ContentType'
 
 type ContentCoverProps = {
     contentEntry: ContentEntry
-    onContentPress: (content: ContentEntry) => void
+    contentType: ContentType
 }
 
 export const ContentCover = (params: ContentCoverProps) => {
@@ -17,10 +19,15 @@ export const ContentCover = (params: ContentCoverProps) => {
             : 'transparent',
     }
 
+    const { onPress } = useContentEntryPressed(
+        params.contentEntry,
+        params.contentType
+    )
+
     return (
         <>
             <Pressable
-                onPress={() => params.onContentPress(params.contentEntry)}
+                onPress={() => onPress()}
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
                 {params.contentEntry.poster ? (

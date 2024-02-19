@@ -1,8 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
-import { ContentEntry } from '../entities/ContentListEntry'
 import { ContentType } from '../entities/ContentType'
-import { ContentListCallbacks } from './Content/ContentListCallbacks'
 import { ContentListEntry } from './Content/ContentListEntry'
 
 export type MovieEntry = {
@@ -18,19 +16,11 @@ export type MovieEntry = {
 
 type MovieListProps = {
     movieList: MovieEntry[]
-    callbacks: ContentListCallbacks
 }
 
 export const MovieList = (params: MovieListProps) => {
     const movieList = params.movieList
     const contentType = new ContentType('movie')
-
-    // Callbacks calls
-    // ------------------------------------------------------------
-    const onMoviePress = (movieEntry: ContentEntry) => {
-        params.callbacks.onContentPress(movieEntry)
-    }
-    // ------------------------------------------------------------
 
     // Render functions
     // ------------------------------------------------------------
@@ -39,8 +29,6 @@ export const MovieList = (params: MovieListProps) => {
             <ContentListEntry
                 key={index}
                 contentEntry={movieEntry}
-                onSeriePress={onMoviePress}
-                callbacks={params.callbacks}
                 contentType={contentType}
             />
         )

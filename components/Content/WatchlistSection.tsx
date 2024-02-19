@@ -1,44 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pressable } from 'react-native'
 import { WatchlistButton } from '../BasicComponents/WatchlistButton'
-import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 import { ContentEntry } from '../../entities/ContentListEntry'
+import { ContentType } from '../../entities/ContentType'
+import { useWatchlistPress } from '../../hooks/useWatchlistPress'
 
 type WatchlistButtonProps = {
     contentEntry: ContentEntry
-    onWatchlistPress: (
-        serieEntry: ContentEntry,
-        loading: boolean,
-        setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-        setInWatchlist: React.Dispatch<React.SetStateAction<boolean>>,
-        inWatchlist: boolean
-    ) => void
+    contentType: ContentType
 }
 
 export const WatchlistSection = (params: WatchlistButtonProps) => {
-    const { contentEntry, onWatchlistPress } = params
+    const { contentEntry, contentType } = params
 
-    const [inWatchlist, setInWatchlist] = useState(contentEntry.inWatchlist)
-    const [watchlistLoading, setWatchlistLoading] = useState(false)
+    const { onPress, inWatchlist, loading } = useWatchlistPress(
+        contentEntry,
+        contentType
+    )
 
     return (
         <>
-            <Pressable
-                onPress={() =>
-                    onWatchlistPress(
-                        contentEntry,
-                        watchlistLoading,
-                        setWatchlistLoading,
-                        setInWatchlist,
-                        inWatchlist
-                    )
-                }
-                style={styles.iconContainer}
-            >
+            <Pressable onPress={() => onPress()} style={styles.iconContainer}>
                 <WatchlistButton
                     inWatchlist={inWatchlist}
-                    watchlistLoading={watchlistLoading}
+                    watchlistLoading={loading}
                     iconStyle={styles.iconsStyle}
                 />
             </Pressable>

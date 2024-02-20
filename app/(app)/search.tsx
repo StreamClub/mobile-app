@@ -28,6 +28,7 @@ import { ContentList } from '../../components/Content/ContentList'
 import { ContentEntry } from '../../entities/ContentListEntry'
 import { useMovieEntryList } from '../../hooks/useMovieEntryList'
 import { useSeriesEntryList } from '../../hooks/useSeriesEntryList'
+import { SegmentedButton } from '../../components/Search/SegmentedButton'
 
 export default function Search() {
     // States
@@ -165,32 +166,6 @@ export default function Search() {
     // Render functions
     // ------------------------------------------------------------
 
-    const renderSegmentedButton = () => {
-        return (
-            <ButtonGroup
-                buttons={CATEGORIES}
-                selectedIndex={selectedIndex}
-                onPress={onSegmentedButtonPress}
-                containerStyle={{
-                    marginTop: 20,
-                    backgroundColor: 'transparent',
-                    borderColor: 'black',
-                    borderRadius: 20,
-                }}
-                buttonContainerStyle={{
-                    borderColor: 'black',
-                }}
-                selectedButtonStyle={{
-                    backgroundColor: colors.primaryRed,
-                }}
-                textStyle={{
-                    color: 'black',
-                    fontSize: 14,
-                }}
-            />
-        )
-    }
-
     const renderSearchHistoryTitle = () => {
         return (
             <BodyText
@@ -283,7 +258,10 @@ export default function Search() {
                 onSubmit={onSubmit}
             />
 
-            {renderSegmentedButton()}
+            <SegmentedButton
+                selectedIndex={selectedIndex}
+                onSegmentedButtonPress={onSegmentedButtonPress}
+            />
 
             {textSearched.length == 0
                 ? renderSearchHistoryTitle()

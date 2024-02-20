@@ -275,7 +275,7 @@ export default function Search() {
             id: artist.id,
         }
 
-        router.push({ pathname: '/serie', params })
+        router.push({ pathname: '/artist', params })
     }
 
     const renderArtistList = () => {

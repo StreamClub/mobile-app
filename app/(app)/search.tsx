@@ -5,7 +5,6 @@ import { colors } from '../../assets'
 import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
 import { BodyText } from '../../components/BasicComponents/BodyText'
-
 import { MovieList } from '../../components/MovieList'
 import { SearchParams, searchMovies } from '../../apiCalls/movies'
 import { SeriesList } from '../../components/SeriesList'

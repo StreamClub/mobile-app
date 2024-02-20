@@ -2,8 +2,7 @@ import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useSession } from '../../context/ctx'
 import { colors } from '../../assets'
-import { useState, useRef } from 'react'
-import { ButtonGroup } from '@rneui/themed'
+import { useState } from 'react'
 import { BodyText } from '../../components/BasicComponents/BodyText'
 import { SearchParams, searchMovies } from '../../apiCalls/movies'
 import { searchSeries } from '../../apiCalls/series'
@@ -11,7 +10,6 @@ import { SearchList } from '../../components/Search/SearchList'
 import {
     ARTISTS_NAME,
     CATEGORIES,
-    DELAY_SEARCH,
     INITIAL_CATEGORY,
     MAX_SEARCH_LENGTH,
     MOVIES_NAME,
@@ -29,13 +27,13 @@ import { ContentEntry } from '../../entities/ContentListEntry'
 import { useMovieEntryList } from '../../hooks/useMovieEntryList'
 import { useSeriesEntryList } from '../../hooks/useSeriesEntryList'
 import { SegmentedButton } from '../../components/Search/SegmentedButton'
+import { useTimer } from '../../hooks/useTimer'
 
 export default function Search() {
     // States
     // ------------------------------------------------------------
     const session = useSession()
     const [textSearched, setTextSearched] = useState('')
-    const searchTimerRef = useRef<NodeJS.Timeout | null>(null)
     const [showLoading, setShowLoading] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
     const [selectedCategory, setSelectedCategory] = useState(
@@ -48,19 +46,6 @@ export default function Search() {
 
     // Text Change and Timer Logic
     // ------------------------------------------------------------
-    const cancelTimer = () => {
-        if (searchTimerRef.current) {
-            clearTimeout(searchTimerRef.current)
-        }
-    }
-
-    const startNewTimer = (newText: string) => {
-        setShowLoading(true)
-        searchTimerRef.current = setTimeout(() => {
-            console.log('[Timer]')
-            searchText(newText)
-        }, DELAY_SEARCH)
-    }
 
     const onSubmit = () => {
         if (textSearched.length < 1) return
@@ -104,6 +89,8 @@ export default function Search() {
             searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
         }
     }
+
+    const { cancelTimer, startNewTimer } = useTimer(setShowLoading, searchText)
     // ------------------------------------------------------------
 
     // Process Response Data

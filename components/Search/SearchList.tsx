@@ -4,17 +4,17 @@ import { BodyText } from '../BasicComponents/BodyText'
 
 type SearchListProps = {
     showLoading: boolean
-    seriesList: any
+    contentList: any
     textSearched: string
     children?: ReactNode
 }
 
 export const SearchList = (params: SearchListProps) => {
-    const { showLoading, seriesList, textSearched, children } = params
+    const { showLoading, contentList, textSearched, children } = params
 
     return (
         <>
-            {showLoading ? null : seriesList.length === 0 ? (
+            {showLoading ? null : contentList.length === 0 ? (
                 <BodyText
                     style={{
                         marginTop: 20,

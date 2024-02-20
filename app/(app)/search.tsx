@@ -28,6 +28,8 @@ import { searchArtists } from '../../apiCalls/artists'
 import { ArtistList, ArtistEntry } from '../../components/ArtistList'
 import { router } from 'expo-router'
 import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
+import { ContentList } from '../../components/Content/ContentList'
+import { ContentEntry } from '../../entities/ContentListEntry'
 
 export default function Search() {
     // States
@@ -243,26 +245,17 @@ export default function Search() {
         )
     }
 
-    const renderMovieList = () => {
+    const renderContentList = (contentList: ContentEntry[]) => {
         return (
             <SearchList
                 showLoading={showLoading}
-                seriesList={seriesList}
+                contentList={contentList}
                 textSearched={textSearched}
             >
-                <MovieList movieList={movieList} />
-            </SearchList>
-        )
-    }
-
-    const renderSeriesList = () => {
-        return (
-            <SearchList
-                showLoading={showLoading}
-                seriesList={seriesList}
-                textSearched={textSearched}
-            >
-                <SeriesList seriesList={seriesList} />
+                <ContentList
+                    contentType={selectedCategory}
+                    contentEntry={contentList}
+                />
             </SearchList>
         )
     }
@@ -295,9 +288,9 @@ export default function Search() {
 
     const renderResultsList = () => {
         if (selectedCategory == MOVIES_NAME) {
-            return renderMovieList()
+            return renderContentList(movieList)
         } else if (selectedCategory == SERIES_NAME) {
-            return renderSeriesList()
+            return renderContentList(seriesList)
         } else if (selectedCategory == ARTISTS_NAME) {
             return renderArtistList()
         }

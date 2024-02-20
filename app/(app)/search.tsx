@@ -35,7 +35,6 @@ export default function Search() {
     const session = useSession()
     const [textSearched, setTextSearched] = useState('')
     const [showLoading, setShowLoading] = useState(false)
-    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
     const [selectedCategory, setSelectedCategory] = useState(
         CATEGORIES[INITIAL_CATEGORY]
     )
@@ -137,16 +136,6 @@ export default function Search() {
         console.log(error.response)
         setShowLoading(false)
     }
-    // ------------------------------------------------------------
-
-    // OnPress Handlers
-    // ------------------------------------------------------------
-    const onSegmentedButtonPress = (value: number) => {
-        // setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
-        onChangeTextSearched('')
-        setSelectedIndex(value)
-        setSelectedCategory(CATEGORIES[value])
-    }
 
     // ------------------------------------------------------------
 
@@ -246,8 +235,8 @@ export default function Search() {
             />
 
             <SegmentedButton
-                selectedIndex={selectedIndex}
-                onSegmentedButtonPress={onSegmentedButtonPress}
+                setSelectedCategory={setSelectedCategory}
+                onChangeTextSearched={onChangeTextSearched}
             />
 
             {textSearched.length == 0

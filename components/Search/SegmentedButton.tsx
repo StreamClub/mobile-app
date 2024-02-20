@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { colors } from '../../assets'
-import { CATEGORIES } from '../../constants'
+import { CATEGORIES, INITIAL_CATEGORY } from '../../constants'
 import { ButtonGroup } from '@rneui/themed'
 
 type SegmentedButtonProps = {
-    selectedIndex: number
-    onSegmentedButtonPress: (index: number) => void
+    setSelectedCategory: (category: string) => void
+    onChangeTextSearched: (text: string) => void
 }
 
 export const SegmentedButton = (params: SegmentedButtonProps) => {
-    const { selectedIndex, onSegmentedButtonPress } = params
+    const { onChangeTextSearched, setSelectedCategory } = params
+    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
+
+    const onPress = (value: number) => {
+        // setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
+        onChangeTextSearched('')
+        setSelectedIndex(value)
+        setSelectedCategory(CATEGORIES[value])
+    }
 
     return (
         <ButtonGroup
             buttons={CATEGORIES}
             selectedIndex={selectedIndex}
-            onPress={onSegmentedButtonPress}
+            onPress={onPress}
             containerStyle={{
                 marginTop: 20,
                 backgroundColor: 'transparent',

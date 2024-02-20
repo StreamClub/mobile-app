@@ -36,38 +36,6 @@ export function searchMovies(
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function searchArtists(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    console.log('[TODO] Buscando artistas...')
-
-    // TODO: Implementar
-    // const endpoint = '....'
-    // const params: Params = { params: { country: country, ...... } }
-
-    // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function searchUsers(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    console.log('[TODO] Buscando usuarios...')
-
-    // TODO: Implementar
-    // const endpoint = '....'
-    // const params: Params = { params: { country: country, ...... } }
-
-    // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
 export function addMovieToWatchlist(
     session: ReturnType<typeof useSession>,
     movieId: string,

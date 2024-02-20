@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useSession } from '../../context/ctx'
 import { colors } from '../../assets'
@@ -7,12 +7,7 @@ import { ButtonGroup } from '@rneui/themed'
 import { BodyText } from '../../components/BasicComponents/BodyText'
 
 import { MovieList } from '../../components/MovieList'
-import {
-    SearchParams,
-    searchMovies,
-    searchArtists,
-    searchUsers,
-} from '../../apiCalls/movies'
+import { SearchParams, searchMovies } from '../../apiCalls/movies'
 import { SeriesList } from '../../components/SeriesList'
 import { searchSeries } from '../../apiCalls/series'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
@@ -29,6 +24,11 @@ import {
     USERS_NAME,
 } from '../../constants'
 import { SearchContentBar } from '../../components/Search/SearchBar'
+import { searchUsers } from '../../apiCalls/users'
+import { searchArtists } from '../../apiCalls/artists'
+import { ArtistList, ArtistEntry } from '../../components/ArtistList'
+import { router } from 'expo-router'
+import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
 
 export default function Search() {
     // States
@@ -43,6 +43,7 @@ export default function Search() {
     )
     const [movieList, setMovieList] = useState<MovieEntry[]>([])
     const [seriesList, setSeriesList] = useState<SeriesEntry[]>([])
+    const [artistList, setArtistList] = useState<ArtistEntry[]>([])
     // ------------------------------------------------------------
 
     // Text Change and Timer Logic
@@ -127,6 +128,24 @@ export default function Search() {
         })
         setSeriesList(seriesList)
     }
+
+    const processArtistResponseData = (data: any) => {
+        const artistList: ArtistEntry[] = []
+        const artistResponse = data.results
+        artistResponse.forEach((artist: any) => {
+            const artistEntry: ArtistEntry = {
+                id: artist.id,
+                name: artist.name,
+                poster: artist.poster,
+                birthDate: artist.birthDate,
+                birthPlace: artist.birthPlace,
+                deathDate: artist.deathDate,
+                gender: artist.gender,
+            }
+            artistList.push(artistEntry)
+        })
+        setArtistList(artistList)
+    }
     // ------------------------------------------------------------
 
     // onSuccess and onFailure callbacks
@@ -138,6 +157,8 @@ export default function Search() {
             processMovieResponseData(response.data)
         } else if (selectedCategory == SERIES_NAME) {
             processSeriesResponseData(response.data)
+        } else if (selectedCategory == ARTISTS_NAME) {
+            processArtistResponseData(response.data)
         } else {
             console.log('TODO: Procesar respuesta')
         }
@@ -154,7 +175,8 @@ export default function Search() {
     // OnPress Handlers
     // ------------------------------------------------------------
     const onSegmentedButtonPress = (value: number) => {
-        setShowLoading(true) //TODO: REVISAR, NUNCA TERMINA DE CARGAR
+        // setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
+        onChangeTextSearched('')
         setSelectedIndex(value)
         setSelectedCategory(CATEGORIES[value])
     }
@@ -206,6 +228,22 @@ export default function Search() {
         )
     }
 
+    const renderNoResultsFoundMessage = () => {
+        return (
+            <BodyText
+                style={{
+                    marginTop: 20,
+                    fontWeight: 'bold',
+                    alignSelf: 'flex-start',
+                    marginLeft: '5%',
+                }}
+                size="big"
+                color={colors.primaryBlack}
+                body={'No se encontraron resultados para: ' + textSearched}
+            />
+        )
+    }
+
     const renderMovieList = () => {
         return (
             <SearchList
@@ -218,7 +256,7 @@ export default function Search() {
         )
     }
 
-    const renderSerieList = () => {
+    const renderSeriesList = () => {
         return (
             <SearchList
                 showLoading={showLoading}
@@ -229,10 +267,43 @@ export default function Search() {
             </SearchList>
         )
     }
+
+    const onArtistPress = (artist: any) => {
+        console.log(artist.name + ' pressed')
+
+        const params: ArtistDetailsParams = {
+            id: artist.id,
+        }
+
+        router.push({ pathname: '/serie', params })
+    }
+
+    const renderArtistList = () => {
+        const callbacks = {
+            onArtistPress,
+        }
+        return showLoading ? null : artistList.length === 0 ? (
+            renderNoResultsFoundMessage()
+        ) : (
+            <ArtistList artistList={artistList} callbacks={callbacks} />
+        )
+    }
+
     // ------------------------------------------------------------
 
     // Main render screen
     // ------------------------------------------------------------
+
+    const renderResultsList = () => {
+        if (selectedCategory == MOVIES_NAME) {
+            return renderMovieList()
+        } else if (selectedCategory == SERIES_NAME) {
+            return renderSeriesList()
+        } else if (selectedCategory == ARTISTS_NAME) {
+            return renderArtistList()
+        }
+    }
+
     return (
         <View style={styles.container}>
             <SearchContentBar
@@ -246,9 +317,7 @@ export default function Search() {
 
             {textSearched.length == 0
                 ? renderSearchHistoryTitle()
-                : selectedCategory == MOVIES_NAME
-                ? renderMovieList()
-                : renderSerieList()}
+                : renderResultsList()}
         </View>
     )
 }

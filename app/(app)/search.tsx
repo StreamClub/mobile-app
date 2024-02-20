@@ -5,12 +5,8 @@ import { colors } from '../../assets'
 import { useState, useRef } from 'react'
 import { ButtonGroup } from '@rneui/themed'
 import { BodyText } from '../../components/BasicComponents/BodyText'
-import { MovieList } from '../../components/MovieList'
 import { SearchParams, searchMovies } from '../../apiCalls/movies'
-import { SeriesList } from '../../components/SeriesList'
 import { searchSeries } from '../../apiCalls/series'
-import { SeriesEntry } from '../../entities/SeriesListEntry'
-import { MovieEntry } from '../../entities/MovieListEntry'
 import { SearchList } from '../../components/Search/SearchList'
 import {
     ARTISTS_NAME,
@@ -30,6 +26,8 @@ import { router } from 'expo-router'
 import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
 import { ContentList } from '../../components/Content/ContentList'
 import { ContentEntry } from '../../entities/ContentListEntry'
+import { useMovieEntryList } from '../../hooks/useMovieEntryList'
+import { useSeriesEntryList } from '../../hooks/useSeriesEntryList'
 
 export default function Search() {
     // States
@@ -42,8 +40,8 @@ export default function Search() {
     const [selectedCategory, setSelectedCategory] = useState(
         CATEGORIES[INITIAL_CATEGORY]
     )
-    const [movieList, setMovieList] = useState<MovieEntry[]>([])
-    const [seriesList, setSeriesList] = useState<SeriesEntry[]>([])
+    const { movieList, setMovieListEntries } = useMovieEntryList()
+    const { seriesList, setSeriesListEntries } = useSeriesEntryList()
     const [artistList, setArtistList] = useState<ArtistEntry[]>([])
     // ------------------------------------------------------------
 
@@ -71,7 +69,6 @@ export default function Search() {
     }
 
     const onChangeTextSearched = (newText: string) => {
-        setMovieList([])
         if (newText.length > MAX_SEARCH_LENGTH) return
         setTextSearched(newText)
 
@@ -110,25 +107,6 @@ export default function Search() {
 
     // Process Response Data
     // ------------------------------------------------------------
-    const processMovieResponseData = (data: any) => {
-        const movieList: MovieEntry[] = []
-        const moviesResponse = data.results
-        moviesResponse.forEach((movie: any) => {
-            const movieEntry: MovieEntry = MovieEntry.fromJson(movie)
-            movieList.push(movieEntry)
-        })
-        setMovieList(movieList)
-    }
-
-    const processSeriesResponseData = (data: any) => {
-        const seriesList: SeriesEntry[] = []
-        const seriesResponse = data.results
-        seriesResponse.forEach((serie: any) => {
-            const serieEntry: SeriesEntry = SeriesEntry.fromJson(serie)
-            seriesList.push(serieEntry)
-        })
-        setSeriesList(seriesList)
-    }
 
     const processArtistResponseData = (data: any) => {
         const artistList: ArtistEntry[] = []
@@ -155,9 +133,9 @@ export default function Search() {
         console.log('Busqueda exitosa: ')
 
         if (selectedCategory == MOVIES_NAME) {
-            processMovieResponseData(response.data)
+            setMovieListEntries(response.data)
         } else if (selectedCategory == SERIES_NAME) {
-            processSeriesResponseData(response.data)
+            setSeriesListEntries(response.data)
         } else if (selectedCategory == ARTISTS_NAME) {
             processArtistResponseData(response.data)
         } else {

@@ -1,7 +1,7 @@
 import { StyleSheet} from 'react-native'
 
 export const styles = StyleSheet.create({
-    serieListContainer: {
+    seriesListContainer: {
         width: '97%',
         marginTop: 10,
     },

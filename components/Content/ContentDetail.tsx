@@ -8,8 +8,8 @@ import { styles } from '../SeriesList/styles/SeriesList.style'
 import { ContentEntry } from '../../entities/ContentListEntry'
 import { SeriesBody } from '../SeriesList/SeriesBody'
 import { MovieBody } from '../Movie/MovieBody'
-import { MovieEntry } from '../MovieList'
 import { useContentEntryPressed } from '../../hooks/useContentEntryPressed'
+import { MovieEntry } from '../../entities/MovieListEntry'
 
 type ContentDetailProps = {
     contentEntry: ContentEntry

@@ -10,7 +10,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { Actor } from '../../components/CastList'
 import { Content } from '../../components/RecomendsList'
 import { IconButton } from 'react-native-paper'
-import { handleMovieWatchlistPress } from '../../operations/handleWatchlistPress'
+import { handleMovieWatchlistPress } from '../../utils/handleWatchlistPress'
 import { colors } from '../../assets'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
 

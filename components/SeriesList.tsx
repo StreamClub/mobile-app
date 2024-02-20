@@ -13,19 +13,19 @@ export const SeriesList = (params: SeriesListProps) => {
     const seriesList = params.seriesList
     const contentType = new ContentType('series')
 
-    const renderSerieEntry = (serieEntry: SeriesEntry, index: number) => {
+    const renderSeriesEntry = (seriesEntry: SeriesEntry, index: number) => {
         return (
             <ContentListEntry
                 key={index}
-                contentEntry={serieEntry}
+                contentEntry={seriesEntry}
                 contentType={contentType}
             />
         )
     }
 
     return (
-        <ScrollView style={styles.serieListContainer}>
-            {seriesList.map(renderSerieEntry)}
+        <ScrollView style={styles.seriesListContainer}>
+            {seriesList.map(renderSeriesEntry)}
         </ScrollView>
     )
 }

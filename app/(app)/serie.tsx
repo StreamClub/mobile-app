@@ -12,7 +12,7 @@ import { SeasonDetailsParams } from './season'
 import { Actor } from '../../components/CastList'
 import { Content } from '../../components/RecomendsList'
 import { IconButton } from 'react-native-paper'
-import { handleSeriesWatchlistPress } from '../../operations/handleWatchlistPress'
+import { handleSeriesWatchlistPress } from '../../utils/handleWatchlistPress'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 

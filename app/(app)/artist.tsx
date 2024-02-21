@@ -1,37 +1,34 @@
-import { View, StyleSheet } from 'react-native';
-import React from 'react';
-import { useSession } from '../../context/ctx';
-import { useState, useEffect } from "react";
-import { colors } from "../../assets";
-import { getArtist } from '../../apiCalls/artists';
-import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-import { router } from 'expo-router';
-import { useLocalSearchParams } from 'expo-router';
-import { ArtistDetailScreen, ArtistDetails } from '../../screens/ArtistDetailScreen';
-import { SeasonDetailsParams } from './season';
-import { Actor } from '../../components/CastList';
-
-export type ArtistDetailsParams = {
-    id: string;
-};
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import { useSession } from '../../context/ctx'
+import { useState, useEffect } from 'react'
+import { colors } from '../../assets'
+import { getArtist } from '../../apiCalls/artists'
+import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
+import { useLocalSearchParams } from 'expo-router'
+import {
+    ArtistDetailScreen,
+    ArtistDetails,
+} from '../../screens/ArtistDetailScreen'
+import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
 
 export default function Serie() {
-    const session = useSession();
+    const session = useSession()
     const [artist, setArtist] = useState<ArtistDetails>({
         id: 1136406,
-        name: "",
-        poster: "",
-        birthDate: "",
-        birthPlace: "",
-        deathDate: "",
-        gender: "",
-        knownFor: "",
+        name: '',
+        poster: '',
+        birthDate: '',
+        birthPlace: '',
+        deathDate: '',
+        gender: '',
+        knownFor: '',
         credits: {
-            cast:[], 
-            crew:[]
+            cast: [],
+            crew: [],
         },
     })
-    const params = useLocalSearchParams<ArtistDetailsParams>();
+    const params = useLocalSearchParams<ArtistDetailsParams>()
     const [artistLoaded, setArtistLoaded] = useState(false)
     const artistId = params.id
 
@@ -47,28 +44,28 @@ export default function Serie() {
             knownFor: response.data.knownFor,
             credits: {
                 cast: response.data.credits.cast,
-                crew: response.data.credits.crew
-            }
-        };
-        setArtist(artistData);
-        setArtistLoaded(true);
+                crew: response.data.credits.crew,
+            },
+        }
+        setArtist(artistData)
+        setArtistLoaded(true)
     }
 
     const onFailure = (error: any) => {
-        console.log(error);
+        console.log(error)
     }
 
     useEffect(() => {
         getArtist(session, artistId, onSuccess, onFailure)
-    }, []);
+    }, [])
 
     return (
         <View style={styles.container}>
-            {artistLoaded ? 
-                <ArtistDetailScreen artist={artist}/> 
-                : 
+            {artistLoaded ? (
+                <ArtistDetailScreen artist={artist} />
+            ) : (
                 <LoadingComponent />
-            }
+            )}
         </View>
     )
 }
@@ -80,4 +77,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: colors.secondaryWhite,
     },
-});
+})

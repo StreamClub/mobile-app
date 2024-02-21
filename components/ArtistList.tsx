@@ -1,30 +1,38 @@
 import React from 'react'
-import { ScrollView, View, Image, StyleSheet, Pressable, ImageSourcePropType, ActivityIndicator } from 'react-native'
-import { Icon } from 'react-native-paper';
+import {
+    ScrollView,
+    View,
+    Image,
+    StyleSheet,
+    Pressable,
+    ImageSourcePropType,
+    ActivityIndicator,
+} from 'react-native'
+import { Icon } from 'react-native-paper'
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
-import { formatDate, calculateAge } from './dateFunctions'
+import { formatDate, calculateAge } from '../utils/dateUtils'
 
 const MAX_NAME_LENGHT = 45
 
 export type ArtistEntry = {
-    id: string,
-    name: string,
-    poster: string,
-    birthDate: string,
-    birthPlace: string,
-    deathDate: string,
-    gender: string,
+    id: string
+    name: string
+    poster: string
+    birthDate: string
+    birthPlace: string
+    deathDate: string
+    gender: string
 }
 
 export type ArtistListCallbacks = {
-    onArtistPress: (artist: ArtistEntry) => void;
+    onArtistPress: (artist: ArtistEntry) => void
 }
 
 type ArtistListProps = {
-    artistList: ArtistEntry[],
-    callbacks: ArtistListCallbacks,
+    artistList: ArtistEntry[]
+    callbacks: ArtistListCallbacks
 }
 
 export const ArtistList = (params: ArtistListProps) => {
@@ -37,19 +45,25 @@ export const ArtistList = (params: ArtistListProps) => {
     }
     // ------------------------------------------------------------
 
-
     // Render functions
     // ------------------------------------------------------------
     const renderArtistEntry = (artistEntry: ArtistEntry, index: number) => {
         return (
             <View key={index}>
                 <View style={styles.artistEntryContainer}>
-                    
                     {renderCoverSection(artistEntry)}
 
                     {renderDetailsSection(artistEntry)}
                 </View>
-                <View style={{height: 1, backgroundColor: 'black', width: '90%', marginBottom: 10, alignSelf: 'center'}}></View>
+                <View
+                    style={{
+                        height: 1,
+                        backgroundColor: 'black',
+                        width: '90%',
+                        marginBottom: 10,
+                        alignSelf: 'center',
+                    }}
+                ></View>
             </View>
         )
     }
@@ -60,16 +74,30 @@ export const ArtistList = (params: ArtistListProps) => {
                 onPress={() => onArtistPress(artistEntry)}
                 style={styles.imageContainer}
             >
-                {artistEntry.poster?
+                {artistEntry.poster ? (
                     <Image
-                        source={{ uri: "https://image.tmdb.org/t/p/original" + artistEntry.poster }}
+                        source={{
+                            uri:
+                                'https://image.tmdb.org/t/p/original' +
+                                artistEntry.poster,
+                        }}
                         style={styles.coverImage}
                         resizeMode="contain"
-                    /> :
-                    <View style={[styles.coverImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
-                        <Icon source="account" size={70}/>
+                    />
+                ) : (
+                    <View
+                        style={[
+                            styles.coverImage,
+                            {
+                                backgroundColor: colors.primarySkyBlue,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            },
+                        ]}
+                    >
+                        <Icon source="account" size={70} />
                     </View>
-                }
+                )}
             </Pressable>
         )
     }
@@ -77,21 +105,34 @@ export const ArtistList = (params: ArtistListProps) => {
     const renderDetailsSection = (artistEntry: ArtistEntry) => {
         let artistName = artistEntry.name
         if (artistEntry.name.length > MAX_NAME_LENGHT) {
-            artistName = artistEntry.name.slice(0, MAX_NAME_LENGHT).trim() + '...'
+            artistName =
+                artistEntry.name.slice(0, MAX_NAME_LENGHT).trim() + '...'
         }
 
-        const noInformationAvailable = artistEntry.birthDate === null && artistEntry.deathDate === null && artistEntry.birthPlace === null
+        const noInformationAvailable =
+            artistEntry.birthDate === null &&
+            artistEntry.deathDate === null &&
+            artistEntry.birthPlace === null
 
         return (
-            <Pressable onPress={() => onArtistPress(artistEntry)} style={styles.detailsContainer}>
+            <Pressable
+                onPress={() => onArtistPress(artistEntry)}
+                style={styles.detailsContainer}
+            >
                 {renderName(artistName)}
 
-                {noInformationAvailable?
+                {noInformationAvailable ? (
                     <View style={styles.infoContainer}>
-                        <BodyText body="Sin información disponible" size='big' fontStyle='italic' color={colors.secondaryBlue} />
+                        <BodyText
+                            body="Sin información disponible"
+                            size="big"
+                            fontStyle="italic"
+                            color={colors.secondaryBlue}
+                        />
                     </View>
-                    :
-                    renderDetails(artistEntry)}
+                ) : (
+                    renderDetails(artistEntry)
+                )}
             </Pressable>
         )
     }
@@ -99,7 +140,7 @@ export const ArtistList = (params: ArtistListProps) => {
     const renderName = (name: string) => {
         return (
             <View style={{ flex: 0.3 }}>
-                <TitleText body={name} size='small' numberOfLines={2}/>
+                <TitleText body={name} size="small" numberOfLines={2} />
             </View>
         )
     }
@@ -113,42 +154,71 @@ export const ArtistList = (params: ArtistListProps) => {
         let deathDate = formatDate(artistEntry.deathDate)
 
         if (artistEntry.deathDate) {
-            deathDate += " (" + calculateAge(artistEntry.birthDate, artistEntry.deathDate) + " años)"
+            deathDate +=
+                ' (' +
+                calculateAge(artistEntry.birthDate, artistEntry.deathDate) +
+                ' años)'
         } else {
-            birthDate += " (" + calculateAge(artistEntry.birthDate) + " años)"
+            birthDate += ' (' + calculateAge(artistEntry.birthDate) + ' años)'
         }
-
-        
 
         return (
             <View style={styles.infoContainer}>
-                {artistEntry.birthDate &&
-                    <View style={{flexDirection: 'row', marginBottom: 5, alignItems: 'center'}}>
+                {artistEntry.birthDate && (
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            marginBottom: 5,
+                            alignItems: 'center',
+                        }}
+                    >
                         <Image
                             source={birthDateIcon}
                             style={styles.birthDateIconStyle}
                         />
-                        <BodyText body={birthDate} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 5, paddingLeft: 4}} />
+                        <BodyText
+                            body={birthDate}
+                            size="medium"
+                            fontStyle="italic"
+                            color={colors.secondaryBlue}
+                            style={{ paddingTop: 5, paddingLeft: 4 }}
+                        />
                     </View>
-                }
-                {artistEntry.deathDate &&
-                    <View style={{flexDirection: 'row', marginBottom: 5}}>
+                )}
+                {artistEntry.deathDate && (
+                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                         <Image
                             source={deathDateIcon}
                             style={styles.deathDateIconStyle}
                         />
-                        <BodyText body={deathDate} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 3, paddingLeft: 4}}/>
+                        <BodyText
+                            body={deathDate}
+                            size="medium"
+                            fontStyle="italic"
+                            color={colors.secondaryBlue}
+                            style={{ paddingTop: 3, paddingLeft: 4 }}
+                        />
                     </View>
-                }
-                {artistEntry.birthPlace &&
-                    <View style={{flexDirection: 'row', marginBottom: 5}}>
+                )}
+                {artistEntry.birthPlace && (
+                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                         <Image
                             source={birthPlaceIcon}
                             style={styles.birthPlaceIconStyle}
                         />
-                        <BodyText body={artistEntry.birthPlace} size='medium' fontStyle='italic' color={colors.secondaryBlue} style={{paddingTop: 3, paddingLeft: 4, width:175}} />
+                        <BodyText
+                            body={artistEntry.birthPlace}
+                            size="medium"
+                            fontStyle="italic"
+                            color={colors.secondaryBlue}
+                            style={{
+                                paddingTop: 3,
+                                paddingLeft: 4,
+                                width: 175,
+                            }}
+                        />
                     </View>
-                }
+                )}
             </View>
         )
     }
@@ -156,9 +226,7 @@ export const ArtistList = (params: ArtistListProps) => {
     // ------------------------------------------------------------
 
     return (
-        <ScrollView
-            style={styles.artistListContainer}
-        >
+        <ScrollView style={styles.artistListContainer}>
             {artistList.map(renderArtistEntry)}
         </ScrollView>
     )
@@ -205,32 +273,32 @@ const styles = StyleSheet.create({
     },
     logoStyle: {
         height: 60,
-        aspectRatio: 1
+        aspectRatio: 1,
     },
     birthDateIconStyle: {
         width: 25,
-        aspectRatio: 487 / 512
+        aspectRatio: 487 / 512,
     },
     birthPlaceIconStyle: {
         width: 25,
-        aspectRatio: 512 / 512
+        aspectRatio: 512 / 512,
     },
     deathDateIconStyle: {
         width: 25,
-        aspectRatio: 512 / 512
+        aspectRatio: 512 / 512,
     },
-    scoreContainer: { 
-        flex: 0.4, 
-        justifyContent: 'center' 
+    scoreContainer: {
+        flex: 0.4,
+        justifyContent: 'center',
     },
-    iconContainer: { 
-        flex: 0.20, 
-        justifyContent: 'center', 
-        alignItems: 'flex-end' 
+    iconContainer: {
+        flex: 0.2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
     },
-    infoContainer: { 
-        flex: 0.7, 
-        alignItems: 'flex-start', 
+    infoContainer: {
+        flex: 0.7,
+        alignItems: 'flex-start',
         justifyContent: 'flex-start',
-    }
+    },
 })

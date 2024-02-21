@@ -4,4 +4,6 @@ export type TextParams = {
   style?: object,
   size?: 'big' | 'medium' | 'small';
   fontStyle?: 'italic' | 'normal';
+  onLayout?: (...params: any[]) => void;
+  numberOfLines?: number;
 }

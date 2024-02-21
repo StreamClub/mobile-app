@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "https://uapi.onrender.com",
+    "baseUrl": "https://papi-4lms.onrender.com",
     "defaultErrorMessage": "Algo salió mal... :("
   },
   "signUp": {

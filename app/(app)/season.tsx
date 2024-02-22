@@ -6,16 +6,19 @@ import { useState, useEffect } from "react";
 import { useSession } from '../../context/ctx';
 import { getSeason } from '../../apiCalls/series';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-import { Episode, SeasonDetailScreen } from '../../screens/SeasonDetailScreen';
+import { SeasonDetailScreen } from '../../screens/SeasonDetailScreen';
+import { Episode } from '../../components/Types/Episodes';
 
 export type SeasonDetailsParams = {
     seriesId: string;
     seasonId: string;
+    platforms: string;
 };
 
 export default function Season() {
     const session = useSession();
     const params = useLocalSearchParams<SeasonDetailsParams>();
+    const platforms = JSON.parse(params.platforms);
     const [season, setSeason] = useState({
         airDate: new Date(),
         name: '',
@@ -38,7 +41,8 @@ export default function Season() {
                 "name": episode.name,
                 "overview": episode.overview,
                 "runtime": episode.runtime,
-                "poster": episode.poster
+                "poster": episode.poster,
+                "platforms": platforms
             })) : []
         };
         setSeason(seasonData);

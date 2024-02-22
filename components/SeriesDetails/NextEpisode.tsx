@@ -3,15 +3,9 @@ import { styles } from './styles/SeriesDetails.styles';
 import { View, Image } from 'react-native';
 import { BodyText } from '../BasicComponents/BodyText';
 import { colors } from '../../assets';
-import { CustomButton } from '../BasicComponents/CustomButton';
 import { SeeContentButtom } from '../Content/SeeContentButtom';
 import { Platform } from '../Types/Platforms';
-
-type Episode = {
-    photo: string,
-    airDate: Date,
-    name: string
-}
+import { Episode } from '../Types/Episodes';
 
 type NextEpisodeEntry = {
     episode: Episode,
@@ -23,7 +17,7 @@ export const NextEpisode = (params: NextEpisodeEntry) => {
     return (
         <View style={styles.nextEpisode} >
             <Image 
-                source={{ uri: "https://image.tmdb.org/t/p/original" + params.episode.photo }} 
+                source={{ uri: "https://image.tmdb.org/t/p/original" + params.episode.poster }} 
                 style={styles.episodePhoto} /> 
             <View style={{flexDirection: 'column', width: 180}}>
                 <BodyText body='Próximo capitulo: ' style={{fontWeight: 'bold'}} size='medium'/>

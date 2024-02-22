@@ -1,8 +1,5 @@
 import { StyleSheet} from 'react-native'
-import { getScreenSize } from '../../../utils/screenUtils';
 import { colors } from '../../../assets';
-
-const screenWidth = getScreenSize().width;
 
 export const styles = StyleSheet.create({
     platforms: {

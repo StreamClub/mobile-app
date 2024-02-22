@@ -3,13 +3,13 @@ import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, Layou
 import { Icon, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
-import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
 import { Platform } from '../components/Types/Platforms';
 import { SeriesPlatforms } from '../components/SeriesDetails/SeriesPlatforms';
 import { NextEpisode } from '../components/SeriesDetails/NextEpisode';
+import { Episode } from '../components/Types/Episodes';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -18,13 +18,8 @@ export type Season = {
     seriesId: number,
     name: string,
     poster: string,
-    airDate: Date
-}
-
-type Episode = {
-    photo: string,
     airDate: Date,
-    name: string
+    platforms: Array<Platform>
 }
 
 type SerieDetails = {

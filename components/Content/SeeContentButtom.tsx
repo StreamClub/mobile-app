@@ -4,9 +4,9 @@ import { Linking, View, Image, Pressable } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import { colors } from '../../assets';
 import { BodyText } from '../BasicComponents/BodyText';
-import { Platform } from '../MovieDetails/MoviePlatforms';
 import { styles } from './styles/Content.styles';
 import { Icon } from 'react-native-paper';
+import { Platform } from '../Types/Platforms';
 
 type SeeContentButtomEntry = {
     platforms: Array<Platform>
@@ -25,8 +25,8 @@ export const SeeContentButtom = (params: SeeContentButtomEntry) => {
         <>
             <CustomButton 
                 buttonText="Ver ahora" 
-                buttonSize='medium'
-                fontSize='medium'
+                buttonSize="medium"
+                fontSize="medium"
                 type='primary' 
                 onPress={handleRedirect} 
                 icon="play"/>

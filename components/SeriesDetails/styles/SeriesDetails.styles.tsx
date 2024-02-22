@@ -25,5 +25,19 @@ export const styles = StyleSheet.create({
         width: 150,
         height: 1,
         margin: 10,
+    },
+    nextEpisode: {
+        width: 350,
+        height: 150,
+        backgroundColor: colors.primarySkyBlue,
+        margin: 20,
+        borderRadius: 20,
+        flexDirection: 'row',
+        flex: 1
+    },
+    episodePhoto: {
+        flex: 1,
+        margin: 10,
+        borderRadius: 20
     }
 });

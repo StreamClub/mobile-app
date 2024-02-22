@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent, Pressable } from 'react-native';
-import { Icon, Divider, Chip } from 'react-native-paper';
+import { Icon, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
 import { CustomButton } from '../components/BasicComponents/CustomButton';
@@ -9,6 +9,7 @@ import { Actor, CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
 import { Platform } from '../components/Types/Platforms';
 import { SeriesPlatforms } from '../components/SeriesDetails/SeriesPlatforms';
+import { NextEpisode } from '../components/SeriesDetails/NextEpisode';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -138,7 +139,7 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
     )
 }
 
-const renderNextEpisode = (episode: Episode) => {
+/* const renderNextEpisode = (episode: Episode) => {
     const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
     return (
         <View style={styles.nextEpisode} >
@@ -161,7 +162,7 @@ const renderNextEpisode = (episode: Episode) => {
             </View>
         </View>
     )
-}
+} */
 
 export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
@@ -169,7 +170,7 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
         <View style={styles.container}>
             {renderBackgroundImage(params)}
             <SeriesPlatforms platforms={params.serie.platforms} status={params.serie.status} />
-            {renderNextEpisode(params.serie.nextEpisode)}
+            <NextEpisode episode={params.serie.nextEpisode} platforms={params.serie.platforms}/>
             <View style={styles.description}>
                 <BodyText body={params.serie.overview} />
                 <View style={{height: 60}}>
@@ -286,20 +287,6 @@ const styles = StyleSheet.create({
     seasonImage: {
         width: 150,
         height: 230,
-        borderRadius: 20
-    },
-    nextEpisode: {
-        width: 350,
-        height: 150,
-        backgroundColor: colors.primarySkyBlue,
-        margin: 20,
-        borderRadius: 20,
-        flexDirection: 'row',
-        flex: 1
-    },
-    episodePhoto: {
-        flex: 1,
-        margin: 10,
         borderRadius: 20
     }
 });

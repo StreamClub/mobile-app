@@ -15,6 +15,7 @@ import { IconButton } from 'react-native-paper'
 import { handleSeriesWatchlistPress } from '../../utils/handleWatchlistPress'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import { Platform } from '../../components/Types/Platforms'
 
 export default function Serie() {
     const session = useSession()
@@ -24,7 +25,7 @@ export default function Serie() {
         poster: '',
         backdrop: '',
         genres: [''],
-        platforms: [''],
+        platforms: [],
         title: '',
         status: '',
         creators: [''],
@@ -36,7 +37,7 @@ export default function Serie() {
         nextEpisode: { photo: '', airDate: new Date(), name: '' },
         cast: [],
         similar: [],
-        inWatchlist: false,
+        inWatchlist: false
     })
     const params = useLocalSearchParams<ContentDetailsParams>()
     const [serieLoaded, setSerieLoaded] = useState(false)
@@ -56,7 +57,11 @@ export default function Serie() {
             backdrop: response.data.backdrop,
             genres: response.data.genres,
             platforms: platforms
-                ? platforms.map((platform: any) => platform.logoPath)
+                ? platforms.map((platform: Platform) => ({
+                    logoPath: platform.logoPath,
+                    providerName: platform.providerName,
+                    link: platform.link,
+                }))
                 : [],
             title: response.data.title,
             status: response.data.status,

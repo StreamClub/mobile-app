@@ -9,7 +9,7 @@ import { Overlay } from '@rneui/themed';
 
 export type Episode = {
     airDate: Date;
-    episodeNumber: number;
+    episodeId: number;
     name: string;
     overview: string;
     runtime: number;
@@ -83,7 +83,7 @@ const renderEpisode = (episode: Episode, index: number, openEpisode: (episode: n
                     source={{ uri: "https://image.tmdb.org/t/p/original" + episode.poster }} 
                     style={styles.episodePoster} /> 
                 <View style={{flexDirection: 'column', width: 190, marginRight: 5}}>
-                    <BodyText body={episode.episodeNumber + '. ' + episode.name} numberOfLines={2} style={{fontWeight: 'bold', flex: 1}} size='medium'/>
+                    <BodyText body={episode.episodeId + '. ' + episode.name} numberOfLines={2} style={{fontWeight: 'bold', flex: 1}} size='medium'/>
                     <BodyText body={formatter.format(episode.airDate)} color={colors.primaryGrey} style={{fontWeight: 'bold'}} size='small'/>
                     <View style={{flexDirection: 'row'}}>
                         <Icon source="timer-outline" size={20}/>
@@ -113,7 +113,7 @@ const renderEpisodeDetails = (episode: Episode) => {
                 source={{ uri: "https://image.tmdb.org/t/p/original" + episode.poster }} 
                 style={{height: 150, width: "100%", borderRadius: 20}} /> 
             <BodyText 
-                body={episode.episodeNumber + '. ' + episode.name} 
+                body={episode.episodeId + '. ' + episode.name} 
                 size="big" 
                 style={{fontWeight: 'bold', marginTop: 10}}/>
             <View style={{flexDirection: 'row', margin: 10}}>

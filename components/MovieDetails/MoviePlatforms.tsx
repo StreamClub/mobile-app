@@ -6,12 +6,7 @@ import { Divider } from 'react-native-paper';
 import { styles } from './styles/MovieDetails.style';
 import { colors } from '../../assets';
 import { ContentPlaforms } from '../Content/ContentPlatforms';
-
-export type Platform = {
-    logoPath: string,
-    providerName: string,
-    link: string
-}
+import { Platform } from '../Types/Platforms';
 
 export type PlatformsEntry = {
     platforms: Array<Platform>

@@ -7,6 +7,8 @@ import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
+import { Platform } from '../components/Types/Platforms';
+import { SeriesPlatforms } from '../components/SeriesDetails/SeriesPlatforms';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -30,7 +32,7 @@ type SerieDetails = {
     poster: string,
     backdrop: string,
     genres: Array<string>,
-    platforms: Array<string>,
+    platforms: Array<Platform>,
     title: string,
     status: string,
     creators: Array<string>,
@@ -90,18 +92,6 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                     body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
-                {/* <TitleText
-                    body={
-                        '(' + (params.serie.releaseDate.getFullYear()? params.serie.releaseDate.getFullYear(): ' ? ') + 
-                        ' - ' + 
-                        ((params.serie.status === 'Finalizada')?
-                            ((params.serie.releaseDate.getFullYear()? params.serie.lastAirDate.getFullYear(): ' ? ') + ')') :
-                            'Presente)'
-                        )
-                    } 
-                    size='big' 
-                    style={{width: screenWidth - 10, fontWeight: 'bold'}}
-                /> */}
                 <BodyText body={'Cant. espisodios: ' + params.serie.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Cant. temporadas: ' + params.serie.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Creador: ' + params.serie.creators[0]} size='medium' style={{fontWeight: 'bold'}} />
@@ -118,31 +108,6 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                 }
             </View>
         </ImageBackground>
-    )
-}
-
-const renderPlatforms = (params: SerieDetailScreenParams) => {
-    return(
-    <View style={styles.platforms}>
-        {(params.serie.platforms.length >= 1)?
-            <>
-                <BodyText body={"Disponible en:"} size="big"/>
-                <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-                        {params.serie.platforms.map( (platform, index) => 
-                            <Image 
-                                source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
-                                style={styles.platformImage}
-                                key={index} />
-                        )} 
-                    </ScrollView>
-                </View>
-            </> : 
-            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 180, margin: 10}} />    
-        }
-        <Divider style={styles.divider} />
-        <BodyText body={'Estado: ' + params.serie.status} size='big' color={colors.primaryBlue} style={{fontWeight: 'bold'}}/>
-    </View>
     )
 }
 
@@ -203,7 +168,7 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
         <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
-            {renderPlatforms(params)}
+            <SeriesPlatforms platforms={params.serie.platforms} status={params.serie.status} />
             {renderNextEpisode(params.serie.nextEpisode)}
             <View style={styles.description}>
                 <BodyText body={params.serie.overview} />

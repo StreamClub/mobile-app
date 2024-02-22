@@ -34,7 +34,7 @@ export default function Season() {
             poster: response.data.poster,
             episodes: episodes? episodes.map((episode: Episode) => ({
                 "airDate": new Date(episode.airDate),
-                "episodeNumber": episode.episodeNumber,
+                "episodeId": episode.episodeId,
                 "name": episode.name,
                 "overview": episode.overview,
                 "runtime": episode.runtime,

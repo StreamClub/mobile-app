@@ -7,7 +7,8 @@ import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
 import { SeeContentButtom } from '../components/Content/SeeContentButtom';
-import { MoviePlatforms, Platform } from '../components/MovieDetails/MoviePlatforms';
+import { MoviePlatforms } from '../components/MovieDetails/MoviePlatforms';
+import { Platform } from '../components/Types/Platforms';
 
 const screenWidth = Dimensions.get('window').width;
 

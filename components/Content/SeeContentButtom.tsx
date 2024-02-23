@@ -7,6 +7,7 @@ import { BodyText } from '../BasicComponents/BodyText';
 import { styles } from './styles/Content.styles';
 import { Icon } from 'react-native-paper';
 import { Platform } from '../Types/Platforms';
+import { TitleText } from '../BasicComponents/TitleText';
 
 type SeeContentButtomEntry = {
     platforms: Array<Platform>
@@ -34,6 +35,7 @@ export const SeeContentButtom = (params: SeeContentButtomEntry) => {
                 isVisible={openPlatforms} 
                 onBackdropPress={() => setOpenPlatforms(false)} 
                 overlayStyle={{backgroundColor: colors.primarySkyBlue, margin: 20, borderRadius: 20, width: 280}}>
+                <TitleText body={"Ver en:" } style={{margin: 5}} size='small'/>
                 {params.platforms.map((platform, index) => (
                     <Pressable onPress={() => handleRedirect(platform.link)} key={index} >
                         <View style={styles.platformRedirectContainer}>
@@ -41,7 +43,6 @@ export const SeeContentButtom = (params: SeeContentButtomEntry) => {
                                 source={{ uri: "https://image.tmdb.org/t/p/original" + platform.logoPath }} 
                                 style={styles.platformImage} />
                             <View style={{flexDirection: 'column', flex: 1}}>
-                                <BodyText body={"Ver en:" } style={{fontWeight: 'bold'}}/>
                                 <BodyText body={platform.providerName} numberOfLines={1}/>
                             </View>
                             <View style={{ justifyContent: 'flex-end'}}>

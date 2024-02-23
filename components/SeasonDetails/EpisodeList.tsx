@@ -5,7 +5,6 @@ import { formatDate } from '../../utils/dateUtils';
 import { BodyText } from '../BasicComponents/BodyText';
 import { colors } from '../../assets';
 import { Icon } from 'react-native-paper';
-import { CustomButton } from '../BasicComponents/CustomButton';
 import { Episode } from '../Types/Episodes';
 import { EpisodeOverlay } from './EpisodeOverlay';
 import { Overlay } from 'react-native-elements';

@@ -13,6 +13,7 @@ import { IconButton } from 'react-native-paper'
 import { handleMovieWatchlistPress } from '../../utils/handleWatchlistPress'
 import { colors } from '../../assets'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
+import { Platform } from '../../components/MovieDetails/MoviePlatforms'
 
 export type MovieDetailsParams = {
     id: string
@@ -29,7 +30,7 @@ export default function Movie() {
         directors: [''],
         backdrop: '',
         runtime: '',
-        platforms: [''],
+        platforms: [],
         overview: '',
         cast: [],
         similar: [],
@@ -53,7 +54,11 @@ export default function Movie() {
             poster: response.data.poster,
             releaseDate: new Date(response.data.releaseDate),
             platforms: platforms
-                ? platforms.map((platform: any) => platform.logoPath)
+                ? platforms.map((platform: Platform) => ({
+                    logoPath: platform.logoPath,
+                    providerName: platform.providerName,
+                    link: platform.link,
+                }))
                 : [],
             directors: response.data.directors,
             backdrop: response.data.backdrop,

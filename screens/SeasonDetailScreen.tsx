@@ -3,18 +3,10 @@ import { View, StyleSheet, Image, ScrollView, LayoutChangeEvent, Pressable } fro
 import { Icon } from 'react-native-paper';
 import { colors } from "../assets";
 import { BodyText } from '../components/BasicComponents/BodyText';
-import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { Overlay } from '@rneui/themed';
-
-export type Episode = {
-    airDate: Date;
-    episodeNumber: number;
-    name: string;
-    overview: string;
-    runtime: number;
-    poster: string;
-}
+import { Episode } from '../components/Types/Episodes';
+import { EpisodeList } from '../components/SeasonDetails/EpisodeList';
 
 type SeasonDetails = {
     airDate: Date;
@@ -73,81 +65,8 @@ const renderSeasonInfo = (season: SeasonDetails) => {
     )
 }
 
-
-const renderEpisode = (episode: Episode, index: number, openEpisode: (episode: number) => void) => {
-    const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-    return (
-        <Pressable onPress={() => openEpisode(index)} style={styles.episode} key={index}>
-            <View style={styles.episode} >
-                <Image 
-                    source={{ uri: "https://image.tmdb.org/t/p/original" + episode.poster }} 
-                    style={styles.episodePoster} /> 
-                <View style={{flexDirection: 'column', width: 190, marginRight: 5}}>
-                    <BodyText body={episode.episodeNumber + '. ' + episode.name} numberOfLines={2} style={{fontWeight: 'bold', flex: 1}} size='medium'/>
-                    <BodyText body={formatter.format(episode.airDate)} color={colors.primaryGrey} style={{fontWeight: 'bold'}} size='small'/>
-                    <View style={{flexDirection: 'row'}}>
-                        <Icon source="timer-outline" size={20}/>
-                        <BodyText body={' ' + episode.runtime + ' min'} size='small' />
-                    </View>
-                    <View style={{ alignSelf: 'flex-end', justifyContent: 'flex-end', flex: 1}}>
-                        <CustomButton 
-                            buttonText="Ver ahora" 
-                            fontSize='small'
-                            type='primary' 
-                            onPress={() => console.log("Que buena serie estoy viendo")} 
-                            icon="play"
-                            style={{width: 120, margin: 10}}/>
-                    </View>
-                </View>
-            </View>
-        </Pressable>
-    )
-}
-
-const renderEpisodeDetails = (episode: Episode) => {
-    const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-    
-    return(
-        <View style={{margin: 5}}>
-            <Image 
-                source={{ uri: "https://image.tmdb.org/t/p/original" + episode.poster }} 
-                style={{height: 150, width: "100%", borderRadius: 20}} /> 
-            <BodyText 
-                body={episode.episodeNumber + '. ' + episode.name} 
-                size="big" 
-                style={{fontWeight: 'bold', marginTop: 10}}/>
-            <View style={{flexDirection: 'row', margin: 10}}>
-                <Icon source="timer-outline" size={20}/>
-                <BodyText body={' ' + episode.runtime + ' min'} size='medium' />
-                <View style={{ flex: 1 }} >
-                    <BodyText 
-                        body={formatter.format(episode.airDate)} 
-                        color={colors.primaryGrey} 
-                        style={{fontWeight: 'bold', alignSelf: 'flex-end' }} 
-                        size='medium'/>
-                </View>
-            </View>
-            <BodyText body={episode.overview} />
-            <View style={{ alignSelf: 'flex-end'}}>
-                <CustomButton 
-                    buttonText="Ver ahora" 
-                    fontSize='small'
-                    type='primary' 
-                    onPress={() => console.log("Que buena serie estoy viendo")} 
-                    icon="play"
-                    style={{width: 120, margin: 10}}/>
-            </View>
-        </View>
-    )
-}
-
 export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
     const episodes = params.season.episodes;
-    const [openedEpisode, setOpenedEpisode] = useState(-1);
-
-    const openModal = (episode: number) => {
-        setOpenedEpisode(episode);
-    }
 
     return(
         <ScrollView>
@@ -155,15 +74,9 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
             <TitleText body={'Capítulos (' + episodes.length + '):'} style={{marginLeft: 20, marginTop: 20, fontWeight: 'bold'}}/>
             <View style={{alignItems: 'center', marginBottom: 20}}>
                 {episodes ? episodes.map(
-                    (episode: Episode, index: number) => renderEpisode(episode, index, openModal)
+                    (episode: Episode, index: number) => <EpisodeList episode={episode} episodeNumber={index} key={index} />
                 ) : null}
             </View>
-            <Overlay 
-                isVisible={openedEpisode >= 0} 
-                onBackdropPress={() => setOpenedEpisode(-1)} 
-                overlayStyle={{backgroundColor: colors.primarySkyBlue, margin: 20, borderRadius: 20}}>
-                {openedEpisode >= 0 ? renderEpisodeDetails(episodes[openedEpisode]) : null }
-            </Overlay>
         </ScrollView>
     );
 }
@@ -190,19 +103,5 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         marginTop: 20
-    },
-    episode: {
-        width: 350,
-        height: 170,
-        backgroundColor: colors.primarySkyBlue,
-        margin: 5,
-        borderRadius: 20,
-        flexDirection: 'row',
-        flex: 1
-    },
-    episodePoster: {
-        flex: 1,
-        margin: 5,
-        borderRadius: 20
     }
 })

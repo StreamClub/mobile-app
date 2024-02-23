@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent, Pressable } from 'react-native';
-import { Icon, Divider, Chip } from 'react-native-paper';
+import { Icon, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
-import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
 import { Actor, CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
+import { Platform } from '../components/Types/Platforms';
+import { SeriesPlatforms } from '../components/SeriesDetails/SeriesPlatforms';
+import { NextEpisode } from '../components/SeriesDetails/NextEpisode';
+import { Episode } from '../components/Types/Episodes';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -15,13 +18,8 @@ export type Season = {
     seriesId: number,
     name: string,
     poster: string,
-    airDate: Date
-}
-
-type Episode = {
-    photo: string,
     airDate: Date,
-    name: string
+    platforms: Array<Platform>
 }
 
 type SerieDetails = {
@@ -30,7 +28,7 @@ type SerieDetails = {
     poster: string,
     backdrop: string,
     genres: Array<string>,
-    platforms: Array<string>,
+    platforms: Array<Platform>,
     title: string,
     status: string,
     creators: Array<string>,
@@ -90,18 +88,6 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                     body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
-                {/* <TitleText
-                    body={
-                        '(' + (params.serie.releaseDate.getFullYear()? params.serie.releaseDate.getFullYear(): ' ? ') + 
-                        ' - ' + 
-                        ((params.serie.status === 'Finalizada')?
-                            ((params.serie.releaseDate.getFullYear()? params.serie.lastAirDate.getFullYear(): ' ? ') + ')') :
-                            'Presente)'
-                        )
-                    } 
-                    size='big' 
-                    style={{width: screenWidth - 10, fontWeight: 'bold'}}
-                /> */}
                 <BodyText body={'Cant. espisodios: ' + params.serie.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Cant. temporadas: ' + params.serie.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Creador: ' + params.serie.creators[0]} size='medium' style={{fontWeight: 'bold'}} />
@@ -118,31 +104,6 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
                 }
             </View>
         </ImageBackground>
-    )
-}
-
-const renderPlatforms = (params: SerieDetailScreenParams) => {
-    return(
-    <View style={styles.platforms}>
-        {(params.serie.platforms.length >= 1)?
-            <>
-                <BodyText body={"Disponible en:"} size="big"/>
-                <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-                        {params.serie.platforms.map( (platform, index) => 
-                            <Image 
-                                source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
-                                style={styles.platformImage}
-                                key={index} />
-                        )} 
-                    </ScrollView>
-                </View>
-            </> : 
-            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 180, margin: 10}} />    
-        }
-        <Divider style={styles.divider} />
-        <BodyText body={'Estado: ' + params.serie.status} size='big' color={colors.primaryBlue} style={{fontWeight: 'bold'}}/>
-    </View>
     )
 }
 
@@ -173,7 +134,7 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
     )
 }
 
-const renderNextEpisode = (episode: Episode) => {
+/* const renderNextEpisode = (episode: Episode) => {
     const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
     return (
         <View style={styles.nextEpisode} >
@@ -196,15 +157,15 @@ const renderNextEpisode = (episode: Episode) => {
             </View>
         </View>
     )
-}
+} */
 
 export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
         <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
-            {renderPlatforms(params)}
-            {renderNextEpisode(params.serie.nextEpisode)}
+            <SeriesPlatforms platforms={params.serie.platforms} status={params.serie.status} />
+            <NextEpisode episode={params.serie.nextEpisode} platforms={params.serie.platforms}/>
             <View style={styles.description}>
                 <BodyText body={params.serie.overview} />
                 <View style={{height: 60}}>
@@ -321,20 +282,6 @@ const styles = StyleSheet.create({
     seasonImage: {
         width: 150,
         height: 230,
-        borderRadius: 20
-    },
-    nextEpisode: {
-        width: 350,
-        height: 150,
-        backgroundColor: colors.primarySkyBlue,
-        margin: 20,
-        borderRadius: 20,
-        flexDirection: 'row',
-        flex: 1
-    },
-    episodePhoto: {
-        flex: 1,
-        margin: 10,
         borderRadius: 20
     }
 });

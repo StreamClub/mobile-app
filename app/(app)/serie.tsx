@@ -15,6 +15,7 @@ import { IconButton } from 'react-native-paper'
 import { handleSeriesWatchlistPress } from '../../utils/handleWatchlistPress'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import { Platform } from '../../components/Types/Platforms'
 
 export default function Serie() {
     const session = useSession()
@@ -24,7 +25,7 @@ export default function Serie() {
         poster: '',
         backdrop: '',
         genres: [''],
-        platforms: [''],
+        platforms: [],
         title: '',
         status: '',
         creators: [''],
@@ -33,10 +34,10 @@ export default function Serie() {
         totalSeasons: 0,
         releaseDate: new Date(),
         seasons: [],
-        nextEpisode: { photo: '', airDate: new Date(), name: '' },
+        nextEpisode: {poster: "", airDate: new Date(), name: ""},
         cast: [],
         similar: [],
-        inWatchlist: false,
+        inWatchlist: false
     })
     const params = useLocalSearchParams<ContentDetailsParams>()
     const [serieLoaded, setSerieLoaded] = useState(false)
@@ -56,7 +57,11 @@ export default function Serie() {
             backdrop: response.data.backdrop,
             genres: response.data.genres,
             platforms: platforms
-                ? platforms.map((platform: any) => platform.logoPath)
+                ? platforms.map((platform: Platform) => ({
+                    logoPath: platform.logoPath,
+                    providerName: platform.providerName,
+                    link: platform.link,
+                }))
                 : [],
             title: response.data.title,
             status: response.data.status,
@@ -72,10 +77,17 @@ export default function Serie() {
                       poster: season.poster,
                       airDate: new Date(season.airDate),
                       seriesId: response.data.id,
+                      platforms: platforms
+                        ? platforms.map((platform: Platform) => ({
+                            logoPath: platform.logoPath,
+                            providerName: platform.providerName,
+                            link: platform.link,
+                        }))
+                        : []
                   }))
                 : [],
             nextEpisode: {
-                photo: response.data.nextEpisode.photo,
+                poster: response.data.nextEpisode.photo,
                 airDate: new Date(response.data.nextEpisode.airDate),
                 name: response.data.nextEpisode.name,
             },
@@ -116,6 +128,7 @@ export default function Serie() {
         const params: SeasonDetailsParams = {
             seasonId: season.id.toString(),
             seriesId: season.seriesId.toString(),
+            platforms: JSON.stringify(season.platforms)
         }
         router.push({ pathname: '/season', params })
     }

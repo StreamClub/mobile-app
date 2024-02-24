@@ -4,6 +4,7 @@ import { colors } from '../../assets'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 import { ContentEntry } from '../../entities/ContentListEntry'
 import { useSeenPress } from '../../hooks/useSeenPress'
+import { LocalIcon } from '../Types/LocalIcon'
 
 type SeenButtonProps = {
     contentEntry: ContentEntry
@@ -12,8 +13,8 @@ type SeenButtonProps = {
 export const SeenSection = (params: SeenButtonProps) => {
     const { contentEntry } = params
     const seenIcon = contentEntry.seen
-        ? require('../../assets/icons/unmarkAsSeen.png')
-        : require('../../assets/icons/markAsSeen.png')
+        ? LocalIcon.markAsUnseen
+        : LocalIcon.markAsSeen
     const { onPress, loading } = useSeenPress(contentEntry)
 
     return (

@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Image } from "react-native";
 import { StyleSheet } from "react-native";
-// import { SecondaryButton } from "../components/BasicComponents/SecondaryButton";
 import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { router } from "expo-router";
 import { TitleText } from "../components/BasicComponents/TitleText";

@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Image, StyleSheet, Dimensions} from 'react-native';
 import { BodyText } from './BodyText';
 import { colors } from '../../assets/styles/colors';
+import { LocalIcon } from '../Types/LocalIcon';
 
-const screenWidth = Dimensions.get('window').width;
 
 export type IconWithTextParams = {
-    icon: any,
+    icon: LocalIcon,
     text: string,
     style?: any,
 }

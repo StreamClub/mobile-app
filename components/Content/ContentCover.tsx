@@ -6,6 +6,7 @@ import { ContentEntry } from '../../entities/ContentListEntry'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 import { useContentEntryPressed } from '../../hooks/useContentEntryPressed'
 import { ContentType } from '../../entities/ContentType'
+import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage'
 
 type ContentCoverProps = {
     contentEntry: ContentEntry
@@ -30,30 +31,11 @@ export const ContentCover = (params: ContentCoverProps) => {
                 onPress={() => onPress()}
                 style={[styles.imageContainer, coverOutlineStyle]}
             >
-                {params.contentEntry.poster ? (
-                    <Image
-                        source={{
-                            uri:
-                                'https://image.tmdb.org/t/p/original' +
-                                params.contentEntry.poster,
-                        }}
-                        style={styles.coverImage}
-                        resizeMode="contain"
-                    />
-                ) : (
-                    <View
-                        style={[
-                            styles.coverImage,
-                            {
-                                backgroundColor: colors.primarySkyBlue,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            },
-                        ]}
-                    >
-                        <Icon source="image-off-outline" size={70} />
-                    </View>
-                )}
+                <TmdbImage
+                    resource={params.contentEntry.poster}
+                    type={TmdbImageType.Cover}
+                    style={styles.coverImage}
+                />
             </Pressable>
         </>
     )

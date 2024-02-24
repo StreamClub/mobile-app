@@ -3,6 +3,7 @@ import React from 'react'
 import { colors } from '../../assets'
 import { SearchBar } from '@rneui/themed'
 import { Icon } from 'react-native-elements'
+import { LocalIcon } from '../Types/LocalIcon'
 
 type SearchBarProps = {
     showLoading: boolean
@@ -24,7 +25,7 @@ export const SearchContentBar = (params: SearchBarProps) => {
             }}
             searchIcon={
                 <Image
-                    source={require('../../assets/icons/search.png')}
+                    source={LocalIcon.search}
                     style={{
                         aspectRatio: 469 / 512,
                         height: 20,

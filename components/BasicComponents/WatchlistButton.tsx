@@ -2,6 +2,7 @@ import React from 'react'
 import { Image } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import { colors } from '../../assets'
+import { LocalIcon } from '../Types/LocalIcon'
 
 type WatchlistButtonParams = {
     watchlistLoading: boolean
@@ -21,8 +22,8 @@ export const WatchlistButton = (params: WatchlistButtonParams) => {
         <Image
             source={
                 params.inWatchlist
-                    ? require('../../assets/icons/removeFromWatchlist.png')
-                    : require('../../assets/icons/addToWatchlist.png')
+                    ? LocalIcon.removeFromWatchlist
+                    : LocalIcon.addToWatchlist
             }
             style={params.iconStyle}
         />

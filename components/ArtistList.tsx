@@ -14,6 +14,7 @@ import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
 import { formatDate, calculateAge } from '../utils/dateManager'
 import { IconWithText, IconWithTextParams } from './BasicComponents/IconWithText'
+import { LocalIcon } from './Types/LocalIcon'
 
 const MAX_NAME_LENGHT = 45
 
@@ -160,15 +161,15 @@ export const ArtistList = (params: ArtistListProps) => {
         }
 
         const birthDateParams: IconWithTextParams = {
-            icon: require('../assets/icons/birth.png'),
+            icon: LocalIcon.birth,
             text: birthDate,
         }
         const deathDateParams: IconWithTextParams = {
-            icon: require('../assets/icons/death.png'),
+            icon: LocalIcon.death,
             text: deathDate,
         }
         const birthPlaceParams: IconWithTextParams = {
-            icon: require('../assets/icons/location.png'),
+            icon: LocalIcon.location,
             text: artistEntry.birthPlace,
         }
 

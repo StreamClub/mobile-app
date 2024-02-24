@@ -3,6 +3,7 @@
     "baseUrl": "https://papi-4lms.onrender.com",
     "defaultErrorMessage": "Algo salió mal... :("
   },
+  "tmdbBaseUrl": "https://image.tmdb.org/t/p/original",
   "signUp": {
     "invalidEmaiError": "Ingrese un email válido.",
     "passwordsNotMatch": "Las contraseñas deben ser iguales."

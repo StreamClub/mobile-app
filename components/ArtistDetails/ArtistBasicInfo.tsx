@@ -15,30 +15,12 @@ import { IconCollectionEntry } from '../Types/IconCollection'
 import { IconCollection } from '../BasicComponents/IconCollection'
 import { Icon } from 'react-native-paper'
 import { formatDate, calculateAge } from '../../utils/dateManager'
+import { getMediaFromExternalId } from '../../utils/socialMediaManager'
 import { ExternalIds } from '../Types/ExternalId'
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage'
 import { LocalIcon } from '../Types/LocalIcon'
 
 const screenWidth = Dimensions.get('window').width
-
-const getMediaFromExternalId = (externalIds: ExternalIds): IconCollectionEntry[] => {
-    const medias: IconCollectionEntry[] = []
-    if (externalIds.instagramId) {
-        const link = 'https://www.instagram.com/' + externalIds.instagramId
-        medias.push({ 
-            icon: LocalIcon.instagram, 
-            link: link 
-        })
-    }
-    if (externalIds.twitterId) {
-        const link = 'https://twitter.com/' + externalIds.twitterId
-        medias.push({ 
-            icon: LocalIcon.twitter, 
-            link: link
-        })
-    }
-    return medias
-}
 
 export type ArtistBasicInfoParams = {
     name: string

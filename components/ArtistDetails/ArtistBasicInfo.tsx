@@ -7,12 +7,12 @@ import {
     Dimensions,
     Text,
 } from 'react-native'
-import { colors } from '../assets'
-import { BodyText } from './BasicComponents/BodyText'
-import { TitleText } from './BasicComponents/TitleText'
-import { IconWithText, IconWithTextParams } from './IconWithText'
+import { colors } from '../../assets'
+import { BodyText } from '../BasicComponents/BodyText'
+import { TitleText } from '../BasicComponents/TitleText'
+import { IconWithText, IconWithTextParams } from '../IconWithText'
 import { Icon } from 'react-native-paper'
-import { formatDate, calculateAge } from '../utils/dateUtils'
+import { formatDate, calculateAge } from '../../utils/dateManager'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -27,17 +27,17 @@ export type ArtistBasicInfoParams = {
 
 export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
     const birthDateParams: IconWithTextParams = {
-        icon: require('../assets/icons/birth.png'),
+        icon: require('../../assets/icons/birth.png'),
         text: formatDate(params.birthDate),
         style: { marginBottom: 15 },
     }
     const deathDateParams: IconWithTextParams = {
-        icon: require('../assets/icons/death.png'),
+        icon: require('../../assets/icons/death.png'),
         text: formatDate(params.deathDate),
         style: { marginBottom: 15 },
     }
     const birthPlaceParams: IconWithTextParams = {
-        icon: require('../assets/icons/location.png'),
+        icon: require('../../assets/icons/location.png'),
         text: params.birthPlace,
     }
 

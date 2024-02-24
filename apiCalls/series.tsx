@@ -17,8 +17,8 @@ export function searchSeries(
     onFailure: (error: any) => void
 ) {
     const endpoint = '/series/'
-    const params: Params = { params: queryParams }
-
+    const params: Params = { params: {...queryParams, country: country } }
+    
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
 

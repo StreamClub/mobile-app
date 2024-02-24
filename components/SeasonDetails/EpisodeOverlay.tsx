@@ -3,7 +3,7 @@ import { Episode } from "../Types/Episodes"
 import { View, Image } from 'react-native';
 import { BodyText } from '../BasicComponents/BodyText';
 import { Icon } from 'react-native-paper';
-import { formatDate } from '../../utils/dateUtils';
+import { formatDate } from '../../utils/dateManager';
 import { colors } from '../../assets';
 import { CustomButton } from '../BasicComponents/CustomButton';
 import { SeeContentButtom } from '../Content/SeeContentButtom';

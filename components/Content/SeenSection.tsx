@@ -4,17 +4,16 @@ import { colors } from '../../assets'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 import { ContentEntry } from '../../entities/ContentListEntry'
 import { useSeenPress } from '../../hooks/useSeenPress'
+import { ContentType } from '../../entities/ContentType'
 
 type SeenButtonProps = {
-    contentEntry: ContentEntry
+    contentEntry: ContentEntry,
+    contentType: ContentType
 }
 
 export const SeenSection = (params: SeenButtonProps) => {
-    const { contentEntry } = params
-    const seenIcon = contentEntry.seen
-        ? require('../../assets/icons/unmarkAsSeen.png')
-        : require('../../assets/icons/markAsSeen.png')
-    const { onPress, loading } = useSeenPress(contentEntry)
+    const { contentEntry, contentType } = params
+    const { onPress, seen, loading } = useSeenPress(contentEntry, contentType)
 
     return (
         <>
@@ -27,7 +26,11 @@ export const SeenSection = (params: SeenButtonProps) => {
                         style={{ marginRight: 7 }}
                     />
                 ) : (
-                    <Image source={seenIcon} style={styles.iconsStyle} />
+                    <Image 
+                        source={seen ? 
+                        require('../../assets/icons/unmarkAsSeen.png')
+                        : require('../../assets/icons/markAsSeen.png')}
+                        style={styles.iconsStyle} />
                 )}
             </Pressable>
         </>

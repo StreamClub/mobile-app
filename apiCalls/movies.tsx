@@ -64,3 +64,22 @@ export function removeMovieFromWatchlist(
     const params: Params = { data: body }
     privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
 }
+
+// --------- --------- --------- --------- --------- ---------
+export function markMovieAsSeen(
+    session: ReturnType<typeof useSession>,
+    movieId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) { 
+    privateCall('PUT', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
+}
+
+export function unmarkMovieAsSeen(
+    session: ReturnType<typeof useSession>,
+    movieId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) {
+    privateCall('DELETE', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
+}

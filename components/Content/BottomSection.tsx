@@ -19,7 +19,7 @@ export const BottomSection = (params: BottomSectionProps) => {
             <View style={{ flex: 0.25, flexDirection: 'row', width: '100%' }}>
                 <ContentScore score={scoreFormatted} />
 
-                <SeenSection contentEntry={contentEntry} />
+                <SeenSection contentEntry={contentEntry} contentType={contentType} />
 
                 <WatchlistSection
                     contentEntry={contentEntry}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions} from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Pressable, Linking, TouchableOpacity } from 'react-native';
 import { BodyText } from './BodyText';
 import { colors } from '../../assets/styles/colors';
 import { IconCollectionEntry } from '../Types/IconCollection';
@@ -10,12 +10,14 @@ export type IconCollectionParams = {
 
 
 const renderIcon = (entry: IconCollectionEntry, index: number) => {
+    const link = entry.link
     return (
-        <Image
-            key={index}
-            source={entry.icon}
-            style={styles.iconStyle}
-        />
+        <TouchableOpacity  key={index} onPress={() => {Linking.openURL(link)}} style={styles.imageContainer}>
+            <Image
+                source={entry.icon}
+                style={styles.iconStyle}
+            />
+        </TouchableOpacity >
     )
 }
 
@@ -34,8 +36,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: "100%",
     },
+    imageContainer: {
+        width: 40, 
+        height: 40
+    },
     iconStyle: {
-        width: 40,
-        aspectRatio: 512 / 512,
+        width: "100%",
+        height: "100%",
     }
 })

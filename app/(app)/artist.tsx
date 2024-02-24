@@ -9,7 +9,7 @@ import { useLocalSearchParams } from 'expo-router'
 import {
     ArtistDetailScreen,
     ArtistDetails,
-} from '../../screens/ArtistDetailScreen'
+} from '../../components/ArtistDetails/ArtistDetailScreen'
 import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
 
 export default function Serie() {
@@ -27,6 +27,10 @@ export default function Serie() {
             cast: [],
             crew: [],
         },
+        externalIds: {
+            instagramId: null,
+            twitterId: null,
+        }
     })
     const params = useLocalSearchParams<ArtistDetailsParams>()
     const [artistLoaded, setArtistLoaded] = useState(false)
@@ -46,6 +50,10 @@ export default function Serie() {
                 cast: response.data.credits.cast,
                 crew: response.data.credits.crew,
             },
+            externalIds: {
+                instagramId: response.data.externalIds.instagramId,
+                twitterId: response.data.externalIds.twitterId,
+            }
         }
         setArtist(artistData)
         setArtistLoaded(true)

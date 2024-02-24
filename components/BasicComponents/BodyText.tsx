@@ -9,9 +9,9 @@ export const BodyText = (params: TextParams) => {
     const textColor = params.color || colors.primaryBlack
 
     const titleSize = {
-        big: { fontSize: 16 /* height: 24 */ },
-        medium: { fontSize: 14 /*height: 20*/ },
-        small: { fontSize: 12 /*height: 18*/ },
+        big: { fontSize: 16 },
+        medium: { fontSize: 14 },
+        small: { fontSize: 12 },
     }[params.size || 'small']
 
     const fontStyle = {

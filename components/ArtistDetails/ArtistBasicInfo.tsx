@@ -16,7 +16,8 @@ import { IconCollection } from '../BasicComponents/IconCollection'
 import { Icon } from 'react-native-paper'
 import { formatDate, calculateAge } from '../../utils/dateManager'
 import { ExternalIds } from '../Types/ExternalId'
-
+import { TmdbImage } from '../BasicComponents/TmdbImage'
+import { TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -98,30 +99,11 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
             </View>
             <View style={{flex: 0.5}}>
             <View style={styles.imageContainer}>
-                {params.poster ? (
-                    <Image
-                        source={{
-                            uri:
-                                'https://image.tmdb.org/t/p/original' +
-                                params.poster,
-                        }}
-                        style={styles.image}
-                        resizeMode="contain"
-                    />
-                ) : (
-                    <View
-                        style={[
-                            styles.image,
-                            {
-                                backgroundColor: colors.primarySkyBlue,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            },
-                        ]}
-                    >
-                        <Icon source="account" size={70} />
-                    </View>
-                )}
+                <TmdbImage
+                    resource={params.poster}
+                    type={TmdbImageType.Profile}
+                    style={styles.image}
+                />
             </View>
                 {true && <IconCollection collection={medias} />}
             </View>

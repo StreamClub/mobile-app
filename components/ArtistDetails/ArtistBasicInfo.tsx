@@ -16,8 +16,8 @@ import { IconCollection } from '../BasicComponents/IconCollection'
 import { Icon } from 'react-native-paper'
 import { formatDate, calculateAge } from '../../utils/dateManager'
 import { ExternalIds } from '../Types/ExternalId'
-import { TmdbImage } from '../BasicComponents/TmdbImage'
-import { TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage'
+import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage'
+import { LocalIcon } from '../Types/LocalIcon'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -26,14 +26,14 @@ const getMediaFromExternalId = (externalIds: ExternalIds): IconCollectionEntry[]
     if (externalIds.instagramId) {
         const link = 'https://www.instagram.com/' + externalIds.instagramId
         medias.push({ 
-            icon: require('../../assets/icons/instagram.png'), 
+            icon: LocalIcon.instagram, 
             link: link 
         })
     }
     if (externalIds.twitterId) {
         const link = 'https://twitter.com/' + externalIds.twitterId
         medias.push({ 
-            icon: require('../../assets/icons/twitter.png'), 
+            icon: LocalIcon.twitter, 
             link: link
         })
     }
@@ -52,17 +52,17 @@ export type ArtistBasicInfoParams = {
 
 export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
     const birthDateParams: IconWithTextParams = {
-        icon: require('../../assets/icons/birth.png'),
+        icon: LocalIcon.birth,
         text: formatDate(params.birthDate),
         style: { marginBottom: 15 },
     }
     const deathDateParams: IconWithTextParams = {
-        icon: require('../../assets/icons/death.png'),
+        icon: LocalIcon.death,
         text: formatDate(params.deathDate),
         style: { marginBottom: 15 },
     }
     const birthPlaceParams: IconWithTextParams = {
-        icon: require('../../assets/icons/location.png'),
+        icon: LocalIcon.location,
         text: params.birthPlace,
     }
 
@@ -83,7 +83,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                         fontWeight: "bold"
                     }}
                 />
-                <View style={{ paddingTop: 20, flex: 1 }}>
+                <View style={{ paddingTop: 20, flex: 1, width:"100%"}}>
                     {params.birthDate && <IconWithText {...birthDateParams} />}
                     {params.deathDate && <IconWithText {...deathDateParams} />}
                     {params.birthPlace && (
@@ -92,7 +92,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                     <BodyText 
                         body={seeBioLeyend}
                         size="medium"
-                        style={{color: colors.primaryBlue, fontWeight: "bold", marginLeft: 30, marginTop:10, textDecorationLine: 'underline',}}
+                        style={{color: colors.primaryBlue, fontWeight: "bold", marginLeft: 30, marginTop:10, textDecorationLine: 'underline'}}
                         
                     />
                 </View>
@@ -101,7 +101,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
             <View style={styles.imageContainer}>
                 <TmdbImage
                     resource={params.poster}
-                    type={TmdbImageType.Profile}
+                    type={TmdbImageType.Person}
                     style={styles.image}
                 />
             </View>

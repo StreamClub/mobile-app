@@ -8,8 +8,8 @@ import { Icon } from 'react-native-paper'
 const defaultIconSize = 70
 
 export enum TmdbImageType {
-    Poster= "account",
-    Profile= "account",
+    Cover= "image-off-outline",
+    Person= "account",
 }
 
 

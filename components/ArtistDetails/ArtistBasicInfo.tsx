@@ -11,11 +11,33 @@ import { colors } from '../../assets'
 import { BodyText } from '../BasicComponents/BodyText'
 import { TitleText } from '../BasicComponents/TitleText'
 import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText'
+import { IconCollectionEntry } from '../Types/IconCollection'
+import { IconCollection } from '../BasicComponents/IconCollection'
 import { Icon } from 'react-native-paper'
 import { formatDate, calculateAge } from '../../utils/dateManager'
+import { ExternalIds } from '../Types/ExternalId'
 
 
 const screenWidth = Dimensions.get('window').width
+
+const getMediaFromExternalId = (externalIds: ExternalIds): IconCollectionEntry[] => {
+    const medias: IconCollectionEntry[] = []
+    if (externalIds.instagramId) {
+        const link = 'https://www.instagram.com/' + externalIds.instagramId
+        medias.push({ 
+            icon: require('../../assets/icons/instagram.png'), 
+            link: link 
+        })
+    }
+    if (externalIds.twitterId) {
+        const link = 'https://twitter.com/' + externalIds.twitterId
+        medias.push({ 
+            icon: require('../../assets/icons/twitter.png'), 
+            link: link
+        })
+    }
+    return medias
+}
 
 export type ArtistBasicInfoParams = {
     name: string
@@ -23,6 +45,7 @@ export type ArtistBasicInfoParams = {
     birthDate: string
     birthPlace: string
     deathDate: string
+    externalIds: ExternalIds
     style?: any
 }
 
@@ -42,6 +65,10 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
         text: params.birthPlace,
     }
 
+    const seeBioLeyend = "Ver biografía"
+
+    const medias = getMediaFromExternalId(params.externalIds)
+
     return (
         <View style={[{ flexDirection: 'row' }, params.style]}>
             <View style={{ flex: 0.5, alignItems: 'center' }}>
@@ -52,6 +79,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                         width: screenWidth / 2,
                         paddingLeft: 20,
                         marginBottom: 20,
+                        fontWeight: "bold"
                     }}
                 />
                 <View style={{ paddingTop: 20, flex: 1 }}>
@@ -60,8 +88,15 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                     {params.birthPlace && (
                         <IconWithText {...birthPlaceParams} />
                     )}
+                    <BodyText 
+                        body={seeBioLeyend}
+                        size="medium"
+                        style={{color: colors.primaryBlue, fontWeight: "bold", marginLeft: 30, marginTop:10, textDecorationLine: 'underline',}}
+                        
+                    />
                 </View>
             </View>
+            <View style={{flex: 0.5}}>
             <View style={styles.imageContainer}>
                 {params.poster ? (
                     <Image
@@ -88,6 +123,8 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                     </View>
                 )}
             </View>
+                {true && <IconCollection collection={medias} />}
+            </View>
         </View>
     )
 }
@@ -98,7 +135,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     imageContainer: {
-        flex: 0.5,
+        
         alignItems: 'center',
         justifyContent: 'center',
         height: 300,

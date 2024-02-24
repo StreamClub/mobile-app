@@ -13,6 +13,7 @@ import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
 import { formatDate, calculateAge } from '../utils/dateManager'
+import { IconWithText, IconWithTextParams } from './BasicComponents/IconWithText'
 
 const MAX_NAME_LENGHT = 45
 
@@ -139,20 +140,16 @@ export const ArtistList = (params: ArtistListProps) => {
 
     const renderName = (name: string) => {
         return (
-            <View style={{ flex: 0.3 }}>
+            <View style={styles.nameContainer}>
                 <TitleText body={name} size="small" numberOfLines={2} />
             </View>
         )
     }
 
     const renderDetails = (artistEntry: ArtistEntry) => {
-        const birthDateIcon = require('../assets/icons/birth.png')
-        const birthPlaceIcon = require('../assets/icons/location.png')
-        const deathDateIcon = require('../assets/icons/death.png')
-
         let birthDate = formatDate(artistEntry.birthDate)
         let deathDate = formatDate(artistEntry.deathDate)
-
+        
         if (artistEntry.deathDate) {
             deathDate +=
                 ' (' +
@@ -162,63 +159,24 @@ export const ArtistList = (params: ArtistListProps) => {
             birthDate += ' (' + calculateAge(artistEntry.birthDate) + ' años)'
         }
 
+        const birthDateParams: IconWithTextParams = {
+            icon: require('../assets/icons/birth.png'),
+            text: birthDate,
+        }
+        const deathDateParams: IconWithTextParams = {
+            icon: require('../assets/icons/death.png'),
+            text: deathDate,
+        }
+        const birthPlaceParams: IconWithTextParams = {
+            icon: require('../assets/icons/location.png'),
+            text: artistEntry.birthPlace,
+        }
+
         return (
             <View style={styles.infoContainer}>
-                {artistEntry.birthDate && (
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginBottom: 5,
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Image
-                            source={birthDateIcon}
-                            style={styles.birthDateIconStyle}
-                        />
-                        <BodyText
-                            body={birthDate}
-                            size="medium"
-                            fontStyle="italic"
-                            color={colors.secondaryBlue}
-                            style={{ paddingTop: 5, paddingLeft: 4 }}
-                        />
-                    </View>
-                )}
-                {artistEntry.deathDate && (
-                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-                        <Image
-                            source={deathDateIcon}
-                            style={styles.deathDateIconStyle}
-                        />
-                        <BodyText
-                            body={deathDate}
-                            size="medium"
-                            fontStyle="italic"
-                            color={colors.secondaryBlue}
-                            style={{ paddingTop: 3, paddingLeft: 4 }}
-                        />
-                    </View>
-                )}
-                {artistEntry.birthPlace && (
-                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-                        <Image
-                            source={birthPlaceIcon}
-                            style={styles.birthPlaceIconStyle}
-                        />
-                        <BodyText
-                            body={artistEntry.birthPlace}
-                            size="medium"
-                            fontStyle="italic"
-                            color={colors.secondaryBlue}
-                            style={{
-                                paddingTop: 3,
-                                paddingLeft: 4,
-                                width: 175,
-                            }}
-                        />
-                    </View>
-                )}
+                {artistEntry.birthDate && <IconWithText {...birthDateParams} />}
+                {artistEntry.deathDate && <IconWithText {...deathDateParams} />}
+                {artistEntry.birthPlace && (<IconWithText {...birthPlaceParams} />)}  
             </View>
         )
     }
@@ -295,6 +253,9 @@ const styles = StyleSheet.create({
         flex: 0.2,
         justifyContent: 'center',
         alignItems: 'flex-end',
+    },
+    nameContainer: {
+        flex: 0.3,
     },
     infoContainer: {
         flex: 0.7,

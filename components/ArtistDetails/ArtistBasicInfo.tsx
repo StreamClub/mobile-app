@@ -10,9 +10,10 @@ import {
 import { colors } from '../../assets'
 import { BodyText } from '../BasicComponents/BodyText'
 import { TitleText } from '../BasicComponents/TitleText'
-import { IconWithText, IconWithTextParams } from '../IconWithText'
+import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText'
 import { Icon } from 'react-native-paper'
 import { formatDate, calculateAge } from '../../utils/dateManager'
+
 
 const screenWidth = Dimensions.get('window').width
 
@@ -109,9 +110,5 @@ const styles = StyleSheet.create({
         height: '100%',
         borderRadius: 10,
         margin: 10,
-    },
-    description: {
-        width: 150,
-        color: colors.primaryGrey,
     },
 })

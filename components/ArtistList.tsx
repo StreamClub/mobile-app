@@ -12,7 +12,7 @@ import { Icon } from 'react-native-paper'
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
-import { formatDate, calculateAge } from '../utils/dateUtils'
+import { formatDate, calculateAge } from '../utils/dateManager'
 
 const MAX_NAME_LENGHT = 45
 

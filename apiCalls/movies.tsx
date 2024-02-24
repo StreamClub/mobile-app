@@ -30,7 +30,7 @@ export function searchMovies(
     onFailure: (error: any) => void
 ) {
     const endpoint = '/movies/'
-    const params: Params = { params: queryParams }
+    const params: Params = { params: {...queryParams, country: country } }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
@@ -47,6 +47,7 @@ export function addMovieToWatchlist(
         contentType: 'movie',
     }
     const params: Params = { data: body }
+    
     privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure)
 }
 

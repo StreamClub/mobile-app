@@ -1,8 +1,8 @@
 import React from 'react';
 import {  StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { colors } from "../assets";
-import { ArtistFilmografy } from '../components/ArtistFilmografy';
-import { ArtistBasicInfo, ArtistBasicInfoParams } from '../components/ArtistBasicInfo';
+import { ArtistFilmografy } from '../components/ArtistDetails/ArtistFilmografy';
+import { ArtistBasicInfo, ArtistBasicInfoParams } from '../components/ArtistDetails/ArtistBasicInfo';
 
 import { Credits } from '../components/Types/Credits';
 

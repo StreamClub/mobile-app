@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, View, Image } from "react-native";
 import { styles } from "./styles/SeasonDetails.styles";
-import { formatDate } from '../../utils/dateUtils';
+import { formatDate } from '../../utils/dateManager';
 import { BodyText } from '../BasicComponents/BodyText';
 import { colors } from '../../assets';
 import { Icon } from 'react-native-paper';

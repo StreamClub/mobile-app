@@ -1,5 +1,3 @@
-import React from 'react'
-
 const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
 export const formatDate = (date: string) => {

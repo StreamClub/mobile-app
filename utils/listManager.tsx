@@ -1,11 +1,7 @@
-export const createTuples = (list: any[]) => {
-    var tuples = [];
-    for (var i = 0; i < list.length; i += 2) {
-        if (i + 1 < list.length) {
-            tuples.push([list[i], list[i + 1]]);
-        } else {
-            tuples.push([list[i]]);
-        }
+export const createTuples = (list: any[], tupleSize: number= 2) => {
+    const tuples = [];
+    for (let i = 0; i < list.length; i += tupleSize) {
+        tuples.push(list.slice(i, i + tupleSize));
     }
     return tuples;
-}
+};

@@ -1,4 +1,4 @@
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { router, Stack } from 'expo-router';
@@ -31,6 +31,15 @@ export default function Index() {
                     
                 }}>
                 Ventana de Busqueda
+            </Text>
+
+            <Text
+                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                onPress={() => {
+                    router.push('/profile');
+                    
+                }}>
+                Perfil
             </Text>
 
             <Text

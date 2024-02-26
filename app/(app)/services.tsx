@@ -1,27 +1,22 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { WatchlistEntry } from '../../components/Types/Watchlist'
-import { getWatchlist, getWatchlistParams } from '../../apiCalls/profile'
-import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/ProfileScreen'
+import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
 
-export default function Profile() {
+export default function Services() {
     const session = useSession()
     const userId = session?.userId
 
     const [loading, setLoading] = useState(true)
-    const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
-
-    const profileParams: ProfileScreenParams = {
-        watchlist: watchlist,
-    }
+    // const [services, setServices] = useState<Service[]>([])
 
     const onSuccess = (response: any) => {
-        const watchlist:WatchlistEntry[] = response.data.results
-        setWatchlist(watchlist)
+        // const services:ServiceEntry[] = response.data.results
+        
+        // setServices(watchlist)
         setLoading(false)
     }
 
@@ -30,10 +25,10 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        const params: getWatchlistParams = {
+        const params: getUserServicesParams = {
             userId: userId? userId : 0,
         }
-        getWatchlist(session, params, onSuccess, onFailure)
+        getUserServices(session, params, onSuccess, onFailure)
     }, [])
 
     return (
@@ -41,7 +36,8 @@ export default function Profile() {
             {loading ? 
                 <LoadingComponent />
             :
-                <ProfileScreen {...profileParams}/>   
+                <Text>Pantalla de servicios</Text>
+                // <ServicesScreen {...profileParams}/>   
             }
         </View>
     )
@@ -53,9 +49,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.secondaryWhite,
-    },
-    iconsStyle: {
-        height: 35,
-        aspectRatio: 495 / 512,
     },
 })

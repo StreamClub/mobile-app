@@ -43,6 +43,15 @@ export default function Index() {
             </Text>
 
             <Text
+                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                onPress={() => {
+                    router.push('/services');
+                    
+                }}>
+                Servicios
+            </Text>
+
+            <Text
                 style={{ marginVertical: 20, textDecorationLine: 'underline', color: 'blue'}}
                 onPress={() => {
                     signOut?.();

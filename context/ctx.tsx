@@ -12,7 +12,7 @@ const AuthContext = React.createContext<{
     
     // Context data is declared here
     // ---------- ---------- ---------- ---------- ----------
-    username: string,
+    userId: number,
     email: string,
     // ---------- ---------- ---------- ---------- ----------
 } | null> (null);
@@ -41,7 +41,7 @@ export function SessionProvider(props: SessionProviderProps) {
 
     // Context data seters are declared here
     // ---------- ---------- ---------- ---------- ----------
-    const [username, setUsername] = React.useState<string>("");
+    const [userId, setUserId] = React.useState<number>(0);
     const [email, setEmail] = React.useState<string>("");
     // ---------- ---------- ---------- ---------- ----------
 
@@ -53,7 +53,7 @@ export function SessionProvider(props: SessionProviderProps) {
 
         // Context data is initialized here
         // ---------- ---------- ---------- ---------- ----------
-        setUsername(payload.username);
+        setUserId(payload.userId);
         setEmail(payload.email);
         // ---------- ---------- ---------- ---------- ----------
     }
@@ -78,7 +78,7 @@ export function SessionProvider(props: SessionProviderProps) {
 
         // Context data is shared from here
         // ---------- ---------- ---------- ---------- ----------
-        username, 
+        userId, 
         email,
         // ---------- ---------- ---------- ---------- ----------
     }

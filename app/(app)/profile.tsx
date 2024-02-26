@@ -10,6 +10,8 @@ import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/Pro
 
 export default function Profile() {
     const session = useSession()
+    const userId = session?.userId
+
     const [loading, setLoading] = useState(true)
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
 
@@ -29,7 +31,7 @@ export default function Profile() {
 
     useEffect(() => {
         const params: getWatchlistParams = {
-            userId: 21,
+            userId: userId? userId : 0,
         }
         getWatchlist(session, params, onSuccess, onFailure)
     }, [])

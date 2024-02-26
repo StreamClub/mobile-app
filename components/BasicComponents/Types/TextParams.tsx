@@ -6,4 +6,5 @@ export type TextParams = {
   fontStyle?: 'italic' | 'normal';
   onLayout?: (...params: any[]) => void;
   numberOfLines?: number;
+  max_length?: number;
 }

@@ -19,6 +19,11 @@ export const BodyText = (params: TextParams) => {
         normal: { fontStyle: 'normal' },
     }[params.fontStyle || 'normal']
 
+    const text = params.max_length ?
+        params.body.slice(0, params.max_length).trim() + '...'
+        :
+        params.body
+
     return (
         <Text
             style={[
@@ -31,7 +36,7 @@ export const BodyText = (params: TextParams) => {
             onLayout={params.onLayout}
             numberOfLines={params.numberOfLines}
         >
-            {params.body}
+            {text}
         </Text>
     )
 }

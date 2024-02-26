@@ -5,18 +5,20 @@ import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
+import { ServiceEntry } from '../../components/Types/Services'
+import { ServicesScreen } from '../../components/Services/ServicesScreen'
 
 export default function Services() {
     const session = useSession()
     const userId = session?.userId
 
     const [loading, setLoading] = useState(true)
-    // const [services, setServices] = useState<Service[]>([])
+    const [userServices, setUserServices] = useState<ServiceEntry[]>([])
 
     const onSuccess = (response: any) => {
-        // const services:ServiceEntry[] = response.data.results
+        const _userServices:ServiceEntry[] = response.data.results
         
-        // setServices(watchlist)
+        setUserServices(_userServices)
         setLoading(false)
     }
 
@@ -36,8 +38,7 @@ export default function Services() {
             {loading ? 
                 <LoadingComponent />
             :
-                <Text>Pantalla de servicios</Text>
-                // <ServicesScreen {...profileParams}/>   
+                <ServicesScreen userServices={userServices}/>   
             }
         </View>
     )

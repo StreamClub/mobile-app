@@ -1,6 +1,6 @@
 export class ContentType {
     public type: string
-    constructor(type: 'movie' | 'series') {
+    constructor(type: 'movie' | 'series' | 'season' | 'episode') {
         this.type = type
     }
 
@@ -10,5 +10,13 @@ export class ContentType {
 
     public isSeries(): boolean {
         return this.type === 'series'
+    }
+
+    public isSeason(): boolean {
+        return this.type === 'season'
+    }
+
+    public isEpisode(): boolean {
+        return this.type === 'episode'
     }
 }

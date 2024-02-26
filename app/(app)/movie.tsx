@@ -7,13 +7,12 @@ import { LoadingComponent } from '../../components/BasicComponents/LoadingCompon
 import { MovieDetailScreen } from '../../screens/MovieDetailScreen'
 
 import { Stack, router, useLocalSearchParams } from 'expo-router'
-import { Actor } from '../../components/CastList'
 import { Content } from '../../components/RecomendsList'
 import { IconButton } from 'react-native-paper'
 import { handleMovieWatchlistPress } from '../../utils/handleWatchlistPress'
 import { colors } from '../../assets'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
-import { Platform } from '../../components/MovieDetails/MoviePlatforms'
+import { useMovieDetail } from '../../hooks/useMovieDetails'
 
 export type MovieDetailsParams = {
     id: string
@@ -21,69 +20,19 @@ export type MovieDetailsParams = {
 
 export default function Movie() {
     const session = useSession()
-    const [movie, setMovie] = useState({
-        id: '',
-        title: '',
-        genres: [''],
-        poster: '',
-        releaseDate: new Date(),
-        directors: [''],
-        backdrop: '',
-        runtime: '',
-        platforms: [],
-        overview: '',
-        cast: [],
-        similar: [],
-        inWatchlist: false,
-    })
+    const {movie, setMovie} = useMovieDetail()
     const params = useLocalSearchParams<MovieDetailsParams>()
     const [movieLoaded, setMovieLoaded] = useState(false)
-    const [inWatchlist, setInWatchlist] = useState(movie.inWatchlist)
+    const [inWatchlist, setInWatchlist] = useState(movie? movie.inWatchlist : false)
     const [loading, setLoading] = useState(false)
     const movieId = params.id
 
     const onSuccess = (response: any) => {
-        const platforms = response.data.platforms
-        const cast = response.data.cast
-        const similar = response.data.similar
-        console.log('responseMovie ' + response.data.title)
-        const movieData = {
-            id: String(response.data.id),
-            title: response.data.title,
-            genres: response.data.genres,
-            poster: response.data.poster,
-            releaseDate: new Date(response.data.releaseDate),
-            platforms: platforms
-                ? platforms.map((platform: Platform) => ({
-                    logoPath: platform.logoPath,
-                    providerName: platform.providerName,
-                    link: platform.link,
-                }))
-                : [],
-            directors: response.data.directors,
-            backdrop: response.data.backdrop,
-            runtime: String(response.data.runtime),
-            overview: response.data.overview,
-            cast: cast
-                ? cast.map((actor: Actor) => ({
-                      name: actor.name,
-                      profilePath: actor.profilePath,
-                      character: actor.character,
-                  }))
-                : [],
-            similar: similar
-                ? similar.map((movie: Content) => ({
-                      id: movie.id,
-                      title: movie.title,
-                      posterPath: movie.posterPath,
-                      releaseDate: new Date(movie.releaseDate),
-                  }))
-                : [],
-            inWatchlist: response.data.inWatchlist,
-        }
-        setMovie(movieData)
-        setInWatchlist(movieData.inWatchlist)
-        setMovieLoaded(true)
+        console.log('responseMovie ' + response.data.title);
+        setMovie(response.data);
+        console.log(movie);
+        setInWatchlist(movie? movie.inWatchlist : false);
+        setMovieLoaded(true);
     }
 
     const onFailure = (error: any) => {
@@ -116,14 +65,14 @@ export default function Movie() {
                                 size={40}
                             />
                             <Pressable
-                                onPress={() =>
+                                onPress={() => movie?
                                     handleMovieWatchlistPress(
                                         movie.id,
                                         setLoading,
                                         setInWatchlist,
                                         inWatchlist,
                                         session
-                                    )
+                                    ) : console.log("Movie not loaded")
                                 }
                             >
                                 <WatchlistButton
@@ -136,7 +85,7 @@ export default function Movie() {
                     ),
                 }}
             />
-            {movieLoaded ? (
+            {movie && movieLoaded ? (
                 <MovieDetailScreen
                     movie={movie}
                     onRecommendPress={onRedommendedPress}

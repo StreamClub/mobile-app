@@ -47,9 +47,13 @@ export default function Services() {
     }, [])
 
     const onFailureDelete = (error: any) => {
-        console.log(error)
-        const _userServices = userServices.concat(serviceSelected)
-        setUserServices(_userServices)
+        
+            const params: getUserServicesParams = {
+                userId: userId? userId : 0,
+            }
+            getUserServices(session, params, onSuccess, onFailure)
+            getAllServices(session, onSuccessGetAllServices, onFailure)
+        
     }
 
     const onSuccessDelete = (response: any) => {
@@ -70,16 +74,13 @@ export default function Services() {
 
     const onSuccessPut = (response: any) => {
         console.log("Item added")
-        const params: getUserServicesParams = {
-            userId: userId? userId : 0,
-        }
-        getUserServices(session, params, onSuccess, onFailure)
     }
 
     const onCheckService = (service: ServiceEntry, checked: Boolean) => {
         console.log(service.providerName + " checked")
 
         if (checked) {
+            setUserServices([service, ...userServices])
             const params: putUserServiceParams = {
                 providerId: service.providerId
             }

@@ -1,5 +1,5 @@
 import { CastMember } from "./CastMember";
-import { Content } from "./Content";
+import { Content } from "../Content";
 import { Platform } from "./Platform";
 import { SimilarContent } from "./SimilarContent";
 

@@ -5,7 +5,7 @@ import { WatchlistButton } from '../../components/BasicComponents/WatchlistButto
 import { useSession } from '../../context/ctx'
 import { styles } from './styles/MovieDetails.style'
 import { SeenSection } from '../Content/SeenSection'
-import { MovieDetail } from '../../entities/MovieDetailEntry'
+import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
 import { ContentType } from '../../entities/ContentType'
 
 type MovieParams = {

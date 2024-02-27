@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MovieDetail } from '../entities/MovieDetailEntry'
+import { MovieDetail } from '../entities/Details/MovieDetailEntry'
 
 export const useMovieDetail = () => {
     const [movie, setMovieState] = useState<MovieDetail>()

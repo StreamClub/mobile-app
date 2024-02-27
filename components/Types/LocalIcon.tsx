@@ -11,4 +11,5 @@ export enum LocalIcon {
     search = require('../../assets/icons/search.png'),
     left = require('../../assets/icons/left.png'),
     right = require('../../assets/icons/right.png'),
+    x = require('../../assets/icons/x.png'),
 }

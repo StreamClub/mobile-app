@@ -9,16 +9,22 @@ import { CarouselEntry, CarouselParams } from './Types/CarouselParams';
 const EDGE_PROXIMITY_THRESHOLD = 40;
 const FADING_MILISECONDS = 500
 
-const renderService = (item: CarouselEntry, index: number, itemStyle: object, type: TmdbImageType) => {
-    const params: TmdbImageParams = {
+const renderService = (item: CarouselEntry, index: number, params: CarouselParams) => {
+    const _params: TmdbImageParams = {
         resource: item.tmdbResource,
-        type: type,
-        style: itemStyle,
+        type: params.type,
+        style: params.itemStyle,
     }
 
     return (
-        <Pressable key={index} onPress={() => console.log("item pressed")}>
-            <TmdbImage {...params}/>
+        <Pressable key={index} onPress={() => params.onItemPressed(item.itemData)} style={{position: "relative"}}>
+            {params.renderX && 
+                <Image 
+                    source={LocalIcon.x} 
+                    style={{position: "absolute", top: 5, right: 5, width: 15, height: 15, zIndex: 1}}
+                />
+            }
+            <TmdbImage {..._params}/>
         </Pressable>
     )
 }
@@ -100,7 +106,7 @@ export const Carousel = (params: CarouselParams) => {
                 onScroll={onScroll}
                 onLayout={onLayout}
             >
-                {params.items.map((item, index) => renderService(item, index, params.itemStyle, params.type))}
+                {params.items.map((item, index) => renderService(item, index, params))}
             </ScrollView>
 
             <Animated.View style={[styles.sideIconContainerRight, {opacity: opacityRight, height: sideContainerHeight}]}>

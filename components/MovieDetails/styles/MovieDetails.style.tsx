@@ -83,5 +83,9 @@ export const styles = StyleSheet.create({
         margin: 20,
         flex: 1,
         alignItems: 'center'
-    }
+    },
+    iconsStyle: {
+        height: 35,
+        aspectRatio: 495 / 512,
+    },
 });

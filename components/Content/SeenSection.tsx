@@ -2,12 +2,12 @@ import React from 'react'
 import { Image, Pressable, ActivityIndicator } from 'react-native'
 import { colors } from '../../assets'
 import { styles } from '../SeriesList/styles/SeriesList.style'
-import { ContentEntry } from '../../entities/ContentListEntry'
 import { useSeenPress } from '../../hooks/useSeenPress'
 import { ContentType } from '../../entities/ContentType'
+import { Content } from '../../entities/Content'
 
 type SeenButtonProps = {
-    contentEntry: ContentEntry,
+    contentEntry: Content,
     contentType: ContentType
 }
 

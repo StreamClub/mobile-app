@@ -7,7 +7,6 @@ export const useMovieDetail = () => {
     const setMovie = (data: any) => {
         const movieEntry = MovieDetail.fromJson(data)
         setMovieState(movieEntry);
-        console.log(movieEntry.similar)
     }
 
     return { movie, setMovie }

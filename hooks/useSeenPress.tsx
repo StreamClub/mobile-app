@@ -3,12 +3,12 @@ import { ContentEntry } from '../entities/ContentListEntry'
 import { ContentType } from '../entities/ContentType'
 import { markMovieAsSeen, unmarkMovieAsSeen } from '../apiCalls/movies'
 import { useSession } from '../context/ctx'
+import { Content } from '../entities/Content'
 
-export const useSeenPress = (contentEntry: ContentEntry, contentType: ContentType) => {
+export const useSeenPress = (contentEntry: Content, contentType: ContentType) => {
     const [loading, setLoading] = useState(false)
-    const [seen, setSeen] = useState(contentEntry.inWatchlist)
+    const [seen, setSeen] = useState(contentEntry.seen)
     const session = useSession()
-
     const onSuccessAdd = (response: any) => {
         console.log('Marco como visto');
         setSeen(true);

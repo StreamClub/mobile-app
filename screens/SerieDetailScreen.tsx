@@ -11,6 +11,7 @@ import { NextEpisode } from '../components/SeriesDetails/NextEpisode';
 import { Season } from '../entities/Details/Series/Season';
 import { SeriesDetail } from '../entities/Details/Series/SeriesDetailEntry';
 import { Platform } from '../entities/Details/Platform';
+import { SeasonsList } from '../components/SeriesDetails/SeasonsList';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -80,7 +81,7 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
     )
 }
 
-const renderSeasons = (params: SerieDetailScreenParams) => {
+/* const renderSeasons = (params: SerieDetailScreenParams) => {
     const seasons = params.series.seasons;
     return(
         <View style={styles.seasons}>
@@ -105,7 +106,7 @@ const renderSeasons = (params: SerieDetailScreenParams) => {
             }
         </View>
     )
-}
+} */
 
 export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
@@ -113,7 +114,9 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
         <View style={styles.container}>
             {renderBackgroundImage(params)}
             <SeriesPlatforms platforms={params.series.platforms} status={params.series.status} />
-            <NextEpisode episode={params.series.nextEpisode} platforms={params.series.platforms}/>
+            {params.series.nextEpisode? 
+                <NextEpisode episode={params.series.nextEpisode} platforms={params.series.platforms}/>
+                : null}
             <View style={styles.description}>
                 <BodyText body={params.series.overview} />
                 <View style={{height: 60}}>
@@ -130,7 +133,8 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
                     </ScrollView>
                 </View>
             </View>
-            {renderSeasons(params)}
+            <SeasonsList seasons={params.series.seasons} platforms={params.series.platforms} />
+            {/* {renderSeasons(params)} */}
             <CastList cast={params.series.cast} style={styles.cast} />
             <RecommendsList 
                 onRecommendPress={params.onRecommendPress} 
@@ -194,27 +198,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flexDirection: 'row'
     },
-    platforms: {
-        marginLeft: 20,
-        marginTop: 5,
-        height: 160,
-        width: 180,
-        justifyContent: 'center'
-    },
-    platformImage: {
-        width: 50,
-        height: 50,
-        margin: 5,
-        borderWidth: 2,
-        borderColor: colors.primaryBlack,
-        borderRadius: 10,
-    },
-    divider: {
-        backgroundColor: colors.primaryBlack,
-        width: 150,
-        height: 1,
-        margin: 10,
-    },
     buttom: {
         marginTop: 20
     },
@@ -223,13 +206,4 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center'
     },
-    seasons: {
-        marginLeft: 20,
-        marginBottom: 20
-    },
-    seasonImage: {
-        width: 150,
-        height: 230,
-        borderRadius: 20
-    }
 });

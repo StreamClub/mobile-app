@@ -77,3 +77,23 @@ export function removeSeriesFromWatchlist(
     const params: Params = { data: body }
     privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
 }
+
+// --------- --------- --------- --------- --------- ---------
+export function markSeriesAsSeen(
+    session: ReturnType<typeof useSession>,
+    seriesId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) { 
+    privateCall('PUT', session, '/seenContent/series/' + seriesId, {}, onSuccess, onFailure);
+}
+
+export function unmarkSeriesAsSeen(
+    session: ReturnType<typeof useSession>,
+    seriesId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) {
+    privateCall('DELETE', session, '/seenContent/series/' + seriesId, {}, onSuccess, onFailure);
+}
+

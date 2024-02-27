@@ -4,6 +4,7 @@ import { ContentType } from '../entities/ContentType'
 import { markMovieAsSeen, unmarkMovieAsSeen } from '../apiCalls/movies'
 import { useSession } from '../context/ctx'
 import { Content } from '../entities/Content'
+import { markSeriesAsSeen, unmarkSeriesAsSeen } from '../apiCalls/series'
 
 export const useSeenPress = (contentEntry: Content, contentType: ContentType) => {
     const [loading, setLoading] = useState(false)
@@ -35,7 +36,12 @@ export const useSeenPress = (contentEntry: Content, contentType: ContentType) =>
                   onSuccessAdd,
                   onFailure
               )
-            : console.log("Es serie")
+            : markSeriesAsSeen(
+                session,
+                contentEntry.id,
+                onSuccessAdd,
+                onFailure
+            )
     }
 
     const unmarkContentAsSeen = () => {
@@ -46,7 +52,12 @@ export const useSeenPress = (contentEntry: Content, contentType: ContentType) =>
                   onSuccessRemove,
                   onFailure
               )
-            : console.log("Es serie")
+            : unmarkSeriesAsSeen(
+                session,
+                contentEntry.id,
+                onSuccessAdd,
+                onFailure
+            )
     }
 
     const onPress = () => {

@@ -1,42 +1,41 @@
 import React, { useState } from 'react'
 import { Pressable, View, } from 'react-native'
-import { handleMovieWatchlistPress } from '../../utils/handleWatchlistPress'
+import { handleSeriesWatchlistPress } from '../../utils/handleWatchlistPress'
 import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
 import { useSession } from '../../context/ctx'
-import { styles } from './styles/MovieDetails.style'
+import { styles } from './styles/SeriesDetails.styles'
 import { SeenSection } from '../Content/SeenSection'
-import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
 import { ContentType } from '../../entities/ContentType'
+import { SeriesDetail } from '../../entities/Details/Series/SeriesDetailEntry'
 
-type MovieHeaderParams = {
-    movie?: MovieDetail
+type SeriesHeaderParams = {
+    series?: SeriesDetail
 }
 
-export const MovieHeader = (params: MovieHeaderParams) => {
+export const SeriesHeader = (params: SeriesHeaderParams) => {
     const [loading, setLoading] = useState(false)
     const session = useSession()
-    const movie = params.movie;
-    const [inWatchlist, setInWatchlist] = useState(movie? movie.inWatchlist : false)
-    const contentType = new ContentType('movie')
-    console.log(movie?.seen);
-    if (!movie){
+    const series = params.series;
+    const [inWatchlist, setInWatchlist] = useState(series? series.inWatchlist : false)
+    const contentType = new ContentType('series')
+    if (!series){
         return null
     }
     return (
         <>
             <View style={{margin: 10}}>
-                <SeenSection contentEntry={movie} contentType={contentType} />
+                <SeenSection contentEntry={series} contentType={contentType} />
             </View>
             <View style={{margin: 10}}>
                 <Pressable
-                    onPress={() => movie?
-                        handleMovieWatchlistPress(
-                            movie.id,
+                    onPress={() => 
+                        handleSeriesWatchlistPress(
+                            series.id,
                             setLoading,
                             setInWatchlist,
                             inWatchlist,
                             session
-                        ) : console.log("Movie not loaded")
+                        )
                     }
                 >
                     <WatchlistButton

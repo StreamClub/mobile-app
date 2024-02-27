@@ -9,7 +9,7 @@ export class SeriesDetail extends ContentDetail {
     public totalEpisodes: number;
     public totalSeasons: number;
     public seasons: Season[];
-    public nextEpisode: Episode;
+    public nextEpisode: Episode | null;
 
     constructor(series: SeriesDetail) {
         super(series);
@@ -31,7 +31,7 @@ export class SeriesDetail extends ContentDetail {
             totalEpisodes: json.numberOfEpisodes,
             totalSeasons: json.numberOfSeasons,
             seasons: json.seasons.map((item: any) => Season.fromJson(item, json.id)),
-            nextEpisode: Episode.fromJson(json.nextEpisode),
+            nextEpisode: json.nextEpisode? Episode.fromJson(json.nextEpisode) : null,
             ...content
         })
     }

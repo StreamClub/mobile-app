@@ -36,5 +36,18 @@ export const styles = StyleSheet.create({
         flex: 1,
         margin: 10,
         borderRadius: 20
+    },
+    iconsStyle: {
+        height: 35,
+        aspectRatio: 495 / 512,
+    },
+    seasons: {
+        marginLeft: 20,
+        marginBottom: 20
+    },
+    seasonImage: {
+        width: 150,
+        height: 230,
+        borderRadius: 20
     }
 });

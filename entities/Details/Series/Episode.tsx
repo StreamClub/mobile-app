@@ -20,7 +20,6 @@ export class Episode {
     }
 
     public static fromJson(json: any): Episode {
-        console.log(json.photo)
         return new Episode({
             airDate: new Date(json.airDate),
             episodeId: json.episodeId,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect }from 'react';
-import {  StyleSheet, Text, ScrollView, Dimensions } from 'react-native';
+import {  StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { colors } from "../../assets";
 import { ServiceEntry } from '../Types/Services';
 import { Carousel } from '../BasicComponents/Carousel';
@@ -8,7 +8,7 @@ import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 import { TmdbImageType } from '../BasicComponents/TmdbImage';
 import { getAllServices } from '../../apiCalls/services';
-import { ServiceList } from './ServiceList';
+import { ServiceList, ServiceListParams } from './ServiceList';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -16,10 +16,10 @@ const titleText = "Selecciona tus servicios de streaming"
 
 export type ServicesScreenCallbacks = {
     onUserServicePressed: (service: ServiceEntry) => void
-    onCheckService: (service: ServiceEntry) => void
+    onCheckService: (service: ServiceEntry, checked: Boolean) => void
 }
 
-type ServicesScreenParams = {
+export type ServicesScreenParams = {
     userServices: ServiceEntry[]
     allServices: ServiceEntry[]
     callbacks: ServicesScreenCallbacks
@@ -40,11 +40,18 @@ export const ServicesScreen = (params: ServicesScreenParams) => {
         setServices(_services)
     }, [params.userServices])
     
-    
+    const serviceListParams: ServiceListParams = {
+        userServices: params.userServices,
+        allServices: params.allServices,
+        onServicePressed: params.callbacks.onCheckService
+    }
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-            <BodyText body={titleText} size="big" style={{marginLeft: 10, marginVertical: 10, alignSelf: "flex-start"}}/>
+        <View style={styles.container}>
+
+        
+        <View style={styles.topContainer}>
+        <BodyText body={titleText} size="big" style={{marginLeft: 10, marginVertical: 10, alignSelf: "flex-start", fontWeight: 'bold'}}/>
             <Carousel 
                 items={services} 
                 itemStyle={styles.serviceLogo}
@@ -53,18 +60,23 @@ export const ServicesScreen = (params: ServicesScreenParams) => {
                 onItemPressed={params.callbacks.onUserServicePressed}
                 renderX
             />
-
-            <ServiceList services={params.allServices} onServicePressed={params.callbacks.onCheckService}/>
-        </ScrollView>
+        </View>
+        <View style={styles.bottomContainer}>
+            <ServiceList {...serviceListParams}/>
+        </View>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    contentContainerStyle: {
-        alignItems: 'center',
-    },
     container: {
         flex: 1,
+    },
+    topContainer: {
+        flex: 0.3,
+    },
+    bottomContainer: {
+        flex: 0.7,
     },
     carousel: {
         width: screenWidth,

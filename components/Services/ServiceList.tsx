@@ -4,30 +4,68 @@ import { colors } from "../../assets";
 import { ServiceEntry } from '../Types/Services';
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage';
 import { LocalIcon } from '../Types/LocalIcon';
+import { BodyText } from '../BasicComponents/BodyText';
+import { TitleText } from '../BasicComponents/TitleText';
+import { CheckBox } from '@rneui/themed';
+
+const isServiceSelected = (service: ServiceEntry, userServices: ServiceEntry[]) => {
+    return userServices.some((userService) => userService.providerId === service.providerId);
+}
 
 const renderServiceEntry = (service: ServiceEntry, index: number, params: ServiceListParams) => {
+    const [checked, setChecked] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(false);
+
+    useEffect(() => {
+        setChecked(isServiceSelected(service, params.userServices))
+        setDisabled(false)
+    }, [params.userServices])
+
     const _params: TmdbImageParams = {
         resource: service.logoPath,
         type: TmdbImageType.Cover,
-        style: styles.logoStyle,
+        style: styles.logo,
+    }
+
+    const toggleCheckbox = () => {
+        params.onServicePressed(service, !checked)
+        setDisabled(true)
+        setChecked(!checked);
     }
 
     return (
-        // <Pressable key={index} onPress={() => params.onItemPressed(item.itemData)} style={{position: "relative"}}>
-            <TmdbImage {..._params}/>
-        // </Pressable>
+        <View key={index} style={{flexDirection: 'row'}}>
+            <View style={{flex:0.3}}><TmdbImage {..._params}/></View>
+            <TitleText body={service.providerName} size="small" style={styles.title}/>
+            <View style={{flex:0.2, alignItems:'center', justifyContent: 'center'}}>
+            <CheckBox
+                checked={checked}
+                disabled={disabled}
+                onPress={toggleCheckbox}
+                iconType="material-community"
+                size={30}
+                checkedColor={colors.primaryBlack}
+                uncheckedColor={colors.primaryGrey}
+                checkedIcon="checkbox-outline"
+                uncheckedIcon={'checkbox-blank-outline'}
+                containerStyle={{backgroundColor: "trasparent"}}
+                /> 
+            </View>
+
+        </View>
     )
 }
 
 export type ServiceListParams= {
-    services: ServiceEntry[]
-    onServicePressed: (service: ServiceEntry) => void
+    userServices: ServiceEntry[]
+    allServices: ServiceEntry[]
+    onServicePressed: (service: ServiceEntry, checked: Boolean) => void
 }
 
 export const ServiceList = (params: ServiceListParams) => {
     return (
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-            {params.services.map((service, index) => renderServiceEntry(service, index, params))}
+            {params.allServices.map((service, index) => renderServiceEntry(service, index, params))}
         </ScrollView>
 
     )
@@ -37,14 +75,16 @@ export const ServiceList = (params: ServiceListParams) => {
 const styles = StyleSheet.create({
     contentContainerStyle: {
         alignItems: 'flex-start',
-        backgroundColor: "white",
-        width: 200,
     },
-    logoStyle: {
-        height: 100,
+    logo: {
+        height: 80,
         aspectRatio: 1,
-        borderRadius: 25,
+        borderRadius: 15,
         margin: 10,
+    },
+    title: {
+        alignSelf: "center",
+        flex: 0.5
     },
 });
 

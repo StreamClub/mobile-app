@@ -4,9 +4,9 @@ import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { getUserServices, getUserServicesParams, deleteUserService, deleteUserServiceParams, getAllServices } from '../../apiCalls/services'
+import { getUserServices, getUserServicesParams, deleteUserService, deleteUserServiceParams, getAllServices, putUserService, putUserServiceParams } from '../../apiCalls/services'
 import { ServiceEntry } from '../../components/Types/Services'
-import { ServicesScreen } from '../../components/Services/ServicesScreen'
+import { ServicesScreen, ServicesScreenParams } from '../../components/Services/ServicesScreen'
 import { ServicesScreenCallbacks } from '../../components/Services/ServicesScreen'
 
 export default function Services() {
@@ -68,8 +68,25 @@ export default function Services() {
         deleteUserService(session, params, onSuccessDelete, onFailureDelete)
     }
 
-    const onCheckService = (service: ServiceEntry) => {
+    const onSuccessPut = (response: any) => {
+        console.log("Item added")
+        const params: getUserServicesParams = {
+            userId: userId? userId : 0,
+        }
+        getUserServices(session, params, onSuccess, onFailure)
+    }
+
+    const onCheckService = (service: ServiceEntry, checked: Boolean) => {
         console.log(service.providerName + " checked")
+
+        if (checked) {
+            const params: putUserServiceParams = {
+                providerId: service.providerId
+            }
+            putUserService(session, params, onSuccessPut, onFailure)
+        } else {
+            onUserServicePressed(service)
+        }
     }
 
     const callbacks: ServicesScreenCallbacks = {
@@ -77,12 +94,18 @@ export default function Services() {
         onCheckService: onCheckService
     }
 
+    const serviceScreenParams: ServicesScreenParams = {
+        userServices: userServices,
+        allServices: allServices,
+        callbacks: callbacks
+    }
+
     return (
         <View style={styles.container}>
             {loading ? 
                 <LoadingComponent />
             :
-                <ServicesScreen userServices={userServices} allServices={allServices} callbacks={callbacks}/>   
+                <ServicesScreen {...serviceScreenParams}/>   
             }
         </View>
     )

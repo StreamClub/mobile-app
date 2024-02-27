@@ -7,6 +7,7 @@ import { LoadingComponent } from '../../components/BasicComponents/LoadingCompon
 import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
 import { ServiceEntry } from '../../components/Types/Services'
 import { ServicesScreen } from '../../components/Services/ServicesScreen'
+import { ServicesScreenCallbacks } from '../../components/Services/ServicesScreen'
 
 export default function Services() {
     const session = useSession()
@@ -33,12 +34,20 @@ export default function Services() {
         getUserServices(session, params, onSuccess, onFailure)
     }, [])
 
+    const onUserServicePressed = (service: ServiceEntry) => {
+        console.log(service.providerName + " pressed")
+    }
+
+    const callbacks: ServicesScreenCallbacks = {
+        onUserServicePressed: onUserServicePressed
+    }
+
     return (
         <View style={styles.container}>
             {loading ? 
                 <LoadingComponent />
             :
-                <ServicesScreen userServices={userServices}/>   
+                <ServicesScreen userServices={userServices} callbacks={callbacks}/>   
             }
         </View>
     )

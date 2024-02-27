@@ -7,17 +7,21 @@ import { colors } from '../../assets';
 import { Icon } from 'react-native-paper';
 import { EpisodeOverlay } from './EpisodeOverlay';
 import { Overlay } from 'react-native-elements';
-import { SeeContentButtom } from '../Content/SeeContentButtom';
 import { Episode } from '../../entities/Details/Series/Episode';
+import { SeenSection } from '../Content/SeenSection';
+import { ContentType } from '../../entities/ContentType';
 
 type EpisodeListEntry = {
     episode: Episode,
-    episodeNumber: number
+    episodeNumber: number,
+    seasonId: number,
+    seriesId: number
 }
 
 export const EpisodeList = (params: EpisodeListEntry) => {
     const [openModal, setOpenModal] = useState(false);
     const episode = params.episode;
+    const contentType = new ContentType('episode')
 
     return(
         <Pressable onPress={() => setOpenModal(true)} style={styles.episode} >
@@ -33,8 +37,13 @@ export const EpisodeList = (params: EpisodeListEntry) => {
                         <BodyText body={' ' + episode.runtime + ' min'} size='small' />
                     </View>
                     <View style={{ alignSelf: 'flex-end', justifyContent: 'flex-end', flex: 1, margin: 5}}>
-                        {episode.platforms?
-                            <SeeContentButtom platforms={episode.platforms} /> : null
+                        {episode.episodeId?
+                            <SeenSection 
+                                seenState={episode.seen? episode.seen : false} 
+                                contentId={episode.episodeId.toString()} 
+                                seriesId={params.seriesId.toString()}
+                                seasonId={params.seasonId.toString()}
+                                contentType={contentType} /> : null
                         }
                     </View>
                 </View>

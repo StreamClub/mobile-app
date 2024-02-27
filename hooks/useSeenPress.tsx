@@ -35,10 +35,10 @@ export const useSeenPress = (seenState: boolean, contentId: string, contentType:
             markSeriesAsSeen(session,contentId,onSuccessAdd,onFailure)
         }
         if (contentType.isSeason() && seriesId) {
-            markSeasonAsSeen(session,contentId,seriesId,onSuccessAdd,onSuccessRemove)
+            markSeasonAsSeen(session,contentId,seriesId,onSuccessAdd,onFailure)
         }
         if (contentType.isEpisode() && seriesId && seasonId) {
-            markEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessAdd,onSuccessRemove)
+            markEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessAdd,onFailure)
         }
     }
 
@@ -50,10 +50,10 @@ export const useSeenPress = (seenState: boolean, contentId: string, contentType:
             unmarkSeriesAsSeen(session,contentId,onSuccessAdd,onFailure)
         }
         if (contentType.isSeason() && seriesId) {
-            unmarkSeasonAsSeen(session,contentId,seriesId,onSuccessAdd,onSuccessRemove)
+            unmarkSeasonAsSeen(session,contentId,seriesId,onSuccessRemove,onFailure)
         }
         if (contentType.isEpisode() && seriesId && seasonId) {
-            unmarkEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessAdd,onSuccessRemove)
+            unmarkEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessRemove,onFailure)
         }
     }
 

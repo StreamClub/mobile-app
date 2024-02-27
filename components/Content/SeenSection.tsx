@@ -20,12 +20,12 @@ export const SeenSection = (params: SeenButtonProps) => {
 
     return (
         <>
-            <Pressable onPress={() => onPress()} style={styles.iconContainer}>
+            <Pressable onPress={() => onPress()}>
                 {loading ? (
                     <ActivityIndicator
                         size="small"
                         animating={true}
-                        color={colors.primaryRed}
+                        color={colors.primaryBlue}
                         style={{ marginRight: 7 }}
                     />
                 ) : (

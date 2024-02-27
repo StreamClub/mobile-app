@@ -67,7 +67,8 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
             <TitleText body={'Capítulos (' + episodes.length + '):'} style={{marginLeft: 20, marginTop: 20, fontWeight: 'bold'}}/>
             <View style={{alignItems: 'center', marginBottom: 20}}>
                 {episodes ? episodes.map(
-                    (episode: Episode, index: number) => <EpisodeList episode={episode} episodeNumber={index} key={index} />
+                    (episode: Episode, index: number) => 
+                    <EpisodeList seasonId={params.season.id} seriesId={params.season.seriesId} episode={episode} episodeNumber={index} key={index} />
                 ) : null}
             </View>
         </ScrollView>

@@ -127,8 +127,8 @@ export function markEpisodeAsSeen(
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void
 ) { 
-    privateCall('PUT', session, '/seenContent/series/' + seriesId + '/seasons' + seasonId + '/episode/' + episodeId,
-         {}, onSuccess, onFailure);
+    const url = '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episodes/' + episodeId;
+    privateCall('PUT', session, url, {}, onSuccess, onFailure);
 }
 
 export function unmarkEpisodeAsSeen(
@@ -139,6 +139,6 @@ export function unmarkEpisodeAsSeen(
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void
 ) {
-    privateCall('DELETE', session, '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episode/' + episodeId,
-         {}, onSuccess, onFailure);
+    const url = '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episodes/' + episodeId;
+    privateCall('DELETE', session, url, {}, onSuccess, onFailure);
 }

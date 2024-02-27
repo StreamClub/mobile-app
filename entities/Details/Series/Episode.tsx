@@ -7,7 +7,7 @@ export class Episode {
     public overview?: string;
     public runtime?: number;
     public poster: string;
-    public platforms?: Platform[];
+    public seen?: boolean;
 
     constructor(episode: Episode) {
         this.airDate = episode.airDate;
@@ -15,8 +15,8 @@ export class Episode {
         this.name = episode.name;
         this.poster = episode.poster;
         this.overview = episode.overview;
-        this.platforms = episode.platforms;
         this.runtime = episode.runtime;
+        this.seen = episode.seen;
     }
 
     public static fromJson(json: any): Episode {
@@ -27,7 +27,7 @@ export class Episode {
             overview: json.overview,
             runtime: json.runtime,
             poster: json.photo? json.photo : json.poster,
-            platforms: json.platforms? json.platforms.map((item: any) => Platform.fromJson(item)) : null
+            seen: json.seen
         });
     }
 }

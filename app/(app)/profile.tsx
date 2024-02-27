@@ -38,23 +38,6 @@ export default function Profile() {
 
     return (
         <View style={styles.container}>
-            {/* <Stack.Screen
-                options={{
-                    headerRight: () => (
-                        <Pressable
-                            onPress={() =>
-                                console.log('icon Press')
-                            }
-                        >
-                            <WatchlistButton
-                                iconStyle={styles.iconsStyle}
-                                watchlistLoading={loading}
-                                inWatchlist={inWatchlist}
-                            />
-                        </Pressable>
-                    ),
-                }}
-            /> */}
             {loading ? 
                 <LoadingComponent />
             :

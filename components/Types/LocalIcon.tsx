@@ -9,4 +9,6 @@ export enum LocalIcon {
     markAsSeen = require('../../assets/icons/markAsSeen.png'),
     markAsUnseen = require('../../assets/icons/markAsUnseen.png'),
     search = require('../../assets/icons/search.png'),
+    left = require('../../assets/icons/left.png'),
+    right = require('../../assets/icons/right.png'),
 }

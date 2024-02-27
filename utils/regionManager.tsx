@@ -1,3 +1,3 @@
-const getRegion = () => {
+export const getRegion = () => {
     return 'AR';
 }

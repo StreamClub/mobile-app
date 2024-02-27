@@ -4,17 +4,20 @@ import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
+import { getUserServices, getUserServicesParams, deleteUserService, deleteUserServiceParams, getAllServices, putUserService, putUserServiceParams } from '../../apiCalls/services'
 import { ServiceEntry } from '../../components/Types/Services'
-import { ServicesScreen } from '../../components/Services/ServicesScreen'
+import { ServicesScreen, ServicesScreenParams } from '../../components/Services/ServicesScreen'
 import { ServicesScreenCallbacks } from '../../components/Services/ServicesScreen'
 
 export default function Services() {
     const session = useSession()
     const userId = session?.userId
 
+    let serviceSelected: ServiceEntry = {} as ServiceEntry
+
     const [loading, setLoading] = useState(true)
     const [userServices, setUserServices] = useState<ServiceEntry[]>([])
+    const [allServices, setAllServices] = useState<ServiceEntry[]>([])
 
     const onSuccess = (response: any) => {
         const _userServices:ServiceEntry[] = response.data.results
@@ -24,7 +27,15 @@ export default function Services() {
     }
 
     const onFailure = (error: any) => {
-        console.log(error)
+        console.log({error})
+    }
+
+    const onSuccessGetAllServices = (response: any) => {
+        console.log("All services loaded")
+        const _allServices:ServiceEntry[] = response.data.streamServices
+        console.log(_allServices)
+        setAllServices(_allServices)
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -32,14 +43,62 @@ export default function Services() {
             userId: userId? userId : 0,
         }
         getUserServices(session, params, onSuccess, onFailure)
+        getAllServices(session, onSuccessGetAllServices, onFailure)
     }, [])
+
+    const onFailureDelete = (error: any) => {
+        
+            const params: getUserServicesParams = {
+                userId: userId? userId : 0,
+            }
+            getUserServices(session, params, onSuccess, onFailure)
+            getAllServices(session, onSuccessGetAllServices, onFailure)
+        
+    }
+
+    const onSuccessDelete = (response: any) => {
+        console.log("Item deleted")
+    }
 
     const onUserServicePressed = (service: ServiceEntry) => {
         console.log(service.providerName + " pressed")
+        const params: deleteUserServiceParams = {
+            providerId: service.providerId
+        }
+        serviceSelected = service
+
+        const _userServices = userServices.filter(service => service.providerId !== serviceSelected.providerId)
+        setUserServices(_userServices)
+        deleteUserService(session, params, onSuccessDelete, onFailureDelete)
+    }
+
+    const onSuccessPut = (response: any) => {
+        console.log("Item added")
+    }
+
+    const onCheckService = (service: ServiceEntry, checked: Boolean) => {
+        console.log(service.providerName + " checked")
+
+        if (checked) {
+            setUserServices([service, ...userServices])
+            const params: putUserServiceParams = {
+                providerId: service.providerId
+            }
+            putUserService(session, params, onSuccessPut, onFailure)
+        } else {
+            onUserServicePressed(service)
+        }
     }
 
     const callbacks: ServicesScreenCallbacks = {
-        onUserServicePressed: onUserServicePressed
+        onUserServicePressed: onUserServicePressed,
+        onCheckService: onCheckService
+    }
+
+    const serviceScreenParams: ServicesScreenParams = {
+        userServices: userServices,
+        allServices: allServices,
+        callbacks: callbacks
     }
 
     return (
@@ -47,7 +106,7 @@ export default function Services() {
             {loading ? 
                 <LoadingComponent />
             :
-                <ServicesScreen userServices={userServices} callbacks={callbacks}/>   
+                <ServicesScreen {...serviceScreenParams}/>   
             }
         </View>
     )

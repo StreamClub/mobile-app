@@ -18,4 +18,5 @@ export type CarouselParams = {
     onItemPressed: (item: any) => void;
     itemStyle: ImageStyleWithHeight;
     containerStyle?: ImageStyle;
+    renderX?: boolean;
 };

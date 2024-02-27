@@ -4,6 +4,7 @@ export class Season {
     public name: string;
     public poster: string;
     public airDate: Date;
+    public seen: boolean;
 
     constructor(season: Season) {
         this.id = season.id;
@@ -11,6 +12,7 @@ export class Season {
         this.name = season.name;
         this.poster = season.poster;
         this.airDate = season.airDate;
+        this.seen = season.seen;
     }
 
     public static fromJson(json: any, seriesId: number): Season {
@@ -20,6 +22,7 @@ export class Season {
             name: json.name,
             poster: json.poster,
             airDate: new Date(json.airDate),
+            seen: false
         });
     }
 }

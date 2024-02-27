@@ -97,3 +97,48 @@ export function unmarkSeriesAsSeen(
     privateCall('DELETE', session, '/seenContent/series/' + seriesId, {}, onSuccess, onFailure);
 }
 
+// --------- --------- --------- --------- --------- ---------
+export function markSeasonAsSeen(
+    session: ReturnType<typeof useSession>,
+    seasonId: string,
+    seriesId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) { 
+    privateCall('PUT', session, '/seenContent/series/' + seriesId + '/seasons/' + seasonId, {}, onSuccess, onFailure);
+}
+
+export function unmarkSeasonAsSeen(
+    session: ReturnType<typeof useSession>,
+    seasonId: string,
+    seriesId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) {
+    privateCall('DELETE', session, '/seenContent/series/' + seriesId + '/seasons/' + seasonId, {}, onSuccess, onFailure);
+}
+
+// --------- --------- --------- --------- --------- ---------
+export function markEpisodeAsSeen(
+    session: ReturnType<typeof useSession>,
+    episodeId: string,
+    seriesId: string,
+    seasonId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) { 
+    privateCall('PUT', session, '/seenContent/series/' + seriesId + '/seasons' + seasonId + '/episode/' + episodeId,
+         {}, onSuccess, onFailure);
+}
+
+export function unmarkEpisodeAsSeen(
+    session: ReturnType<typeof useSession>,
+    episodeId: string,
+    seriesId: string,
+    seasonId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) {
+    privateCall('DELETE', session, '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episode/' + episodeId,
+         {}, onSuccess, onFailure);
+}

@@ -5,22 +5,15 @@ import { colors } from "../assets";
 import { BodyText } from '../components/BasicComponents/BodyText';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { Overlay } from '@rneui/themed';
-import { Episode } from '../components/Types/Episodes';
 import { EpisodeList } from '../components/SeasonDetails/EpisodeList';
-
-type SeasonDetails = {
-    airDate: Date;
-    name: string;
-    overview: string;
-    poster: string;
-    episodes: Array<Episode>;
-};
+import { SeasonDetail } from '../entities/Details/Series/SeasonDetail';
+import { Episode } from '../entities/Details/Series/Episode';
 
 type SeasonDetailsScreenParams = {
-    season: SeasonDetails;
+    season: SeasonDetail;
 }
 
-const renderSeasonInfo = (season: SeasonDetails) => {
+const renderSeasonInfo = (season: SeasonDetail) => {
     const [titleTextHeight, setTitleTextHeight] = useState(0);
     const [openOverview, setOpenOverview] = useState(false);
     

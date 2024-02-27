@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import { ContentEntry } from '../entities/ContentListEntry'
 import { ContentType } from '../entities/ContentType'
 import { markMovieAsSeen, unmarkMovieAsSeen } from '../apiCalls/movies'
 import { useSession } from '../context/ctx'
-import { Content } from '../entities/Content'
-import { markSeriesAsSeen, unmarkSeriesAsSeen } from '../apiCalls/series'
+import { markEpisodeAsSeen, markSeasonAsSeen, markSeriesAsSeen, unmarkEpisodeAsSeen, unmarkSeasonAsSeen, unmarkSeriesAsSeen } from '../apiCalls/series'
 
-export const useSeenPress = (contentEntry: Content, contentType: ContentType) => {
+export const useSeenPress = (seenState: boolean, contentId: string, contentType: ContentType, 
+                            seriesId?: string, seasonId?: string) => {
     const [loading, setLoading] = useState(false)
-    const [seen, setSeen] = useState(contentEntry.seen)
+    const [seen, setSeen] = useState(seenState)
     const session = useSession()
     const onSuccessAdd = (response: any) => {
         console.log('Marco como visto');
@@ -29,35 +28,33 @@ export const useSeenPress = (contentEntry: Content, contentType: ContentType) =>
     }
 
     const markContentAsSeen = () => {
-        contentType.isMovie()
-            ? markMovieAsSeen(
-                  session,
-                  contentEntry.id,
-                  onSuccessAdd,
-                  onFailure
-              )
-            : markSeriesAsSeen(
-                session,
-                contentEntry.id,
-                onSuccessAdd,
-                onFailure
-            )
+        if(contentType.isMovie()) {
+            markMovieAsSeen(session,contentId,onSuccessAdd,onFailure)
+        }
+        if (contentType.isSeries()) {
+            markSeriesAsSeen(session,contentId,onSuccessAdd,onFailure)
+        }
+        if (contentType.isSeason() && seriesId) {
+            markSeasonAsSeen(session,contentId,seriesId,onSuccessAdd,onSuccessRemove)
+        }
+        if (contentType.isEpisode() && seriesId && seasonId) {
+            markEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessAdd,onSuccessRemove)
+        }
     }
 
     const unmarkContentAsSeen = () => {
-        contentType.isMovie()
-            ? unmarkMovieAsSeen(
-                  session,
-                  contentEntry.id,
-                  onSuccessRemove,
-                  onFailure
-              )
-            : unmarkSeriesAsSeen(
-                session,
-                contentEntry.id,
-                onSuccessAdd,
-                onFailure
-            )
+        if(contentType.isMovie()) {
+            unmarkMovieAsSeen(session,contentId,onSuccessAdd,onFailure)
+        }
+        if (contentType.isSeries()) {
+            unmarkSeriesAsSeen(session,contentId,onSuccessAdd,onFailure)
+        }
+        if (contentType.isSeason() && seriesId) {
+            unmarkSeasonAsSeen(session,contentId,seriesId,onSuccessAdd,onSuccessRemove)
+        }
+        if (contentType.isEpisode() && seriesId && seasonId) {
+            unmarkEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessAdd,onSuccessRemove)
+        }
     }
 
     const onPress = () => {

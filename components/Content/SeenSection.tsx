@@ -7,13 +7,16 @@ import { ContentType } from '../../entities/ContentType'
 import { Content } from '../../entities/Content'
 
 type SeenButtonProps = {
-    contentEntry: Content,
+    seenState: boolean,
+    contentId: string,
+    seriesId?: string,
+    seasonId?: string,
     contentType: ContentType
 }
 
 export const SeenSection = (params: SeenButtonProps) => {
-    const { contentEntry, contentType } = params
-    const { onPress, seen, loading } = useSeenPress(contentEntry, contentType)
+    const { seenState, contentId, contentType, seriesId, seasonId } = params
+    const { onPress, seen, loading } = useSeenPress(seenState, contentId, contentType, seriesId, seasonId)
 
     return (
         <>

@@ -25,7 +25,7 @@ export const MovieHeader = (params: MovieHeaderParams) => {
     return (
         <>
             <View style={{margin: 10}}>
-                <SeenSection contentEntry={movie} contentType={contentType} />
+                <SeenSection seenState={movie.seen} contentId={movie.id} contentType={contentType} />
             </View>
             <View style={{margin: 10}}>
                 <Pressable

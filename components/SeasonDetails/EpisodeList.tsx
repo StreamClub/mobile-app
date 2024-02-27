@@ -5,10 +5,10 @@ import { formatDate } from '../../utils/dateManager';
 import { BodyText } from '../BasicComponents/BodyText';
 import { colors } from '../../assets';
 import { Icon } from 'react-native-paper';
-import { Episode } from '../Types/Episodes';
 import { EpisodeOverlay } from './EpisodeOverlay';
 import { Overlay } from 'react-native-elements';
 import { SeeContentButtom } from '../Content/SeeContentButtom';
+import { Episode } from '../../entities/Details/Series/Episode';
 
 type EpisodeListEntry = {
     episode: Episode,

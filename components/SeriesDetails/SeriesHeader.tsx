@@ -24,7 +24,7 @@ export const SeriesHeader = (params: SeriesHeaderParams) => {
     return (
         <>
             <View style={{margin: 10}}>
-                <SeenSection contentEntry={series} contentType={contentType} />
+                <SeenSection seenState={series.seen} contentId={series.id} contentType={contentType} />
             </View>
             <View style={{margin: 10}}>
                 <Pressable

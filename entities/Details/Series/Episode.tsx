@@ -26,7 +26,7 @@ export class Episode {
             name: json.name,
             overview: json.overview,
             runtime: json.runtime,
-            poster: json.photo,
+            poster: json.photo? json.photo : json.poster,
             platforms: json.platforms? json.platforms.map((item: any) => Platform.fromJson(item)) : null
         });
     }

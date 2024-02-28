@@ -1,35 +1,18 @@
 import React, {useState} from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent } from 'react-native';
-import { Icon, Divider, Chip } from 'react-native-paper';
+import { Icon, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
 import { colors } from "../assets";
-import { Actor, CastList } from '../components/CastList';
+import { CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
-import { SeeContentButtom } from '../components/Content/SeeContentButtom';
 import { MoviePlatforms } from '../components/MovieDetails/MoviePlatforms';
-import { Platform } from '../components/Types/Platforms';
+import { MovieDetail } from '../entities/Details/MovieDetailEntry';
 
 const screenWidth = Dimensions.get('window').width;
 
-type MovieDetails = {
-    id: string,
-    title: string,
-    genres: Array<string>,
-    poster: string,
-    releaseDate: Date,
-    platforms: Array<Platform>,
-    directors: Array<string>,
-    backdrop: string,
-    runtime: string,
-    overview: string,
-    cast: Array<Actor>,
-    similar: Array<Content>,
-    inWatchlist: boolean
-}
-
 type MovieDetailScreenParams = {
-    movie: MovieDetails;
+    movie: MovieDetail;
     onRecommendPress: (movie: Content) => void;
 }
 
@@ -41,6 +24,8 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
     };
 
     const backgroundSize = 170 + (titleTextHeight/30 - 2)*30
+
+    console.log(params.movie.releaseDate);
 
     return(
         <ImageBackground

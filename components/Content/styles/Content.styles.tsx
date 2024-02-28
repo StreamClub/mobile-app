@@ -18,5 +18,10 @@ export const styles = StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    iconContainer: { 
+        flex: 0.20, 
+        justifyContent: 'center', 
+        alignItems: 'flex-end' 
+    },
 });

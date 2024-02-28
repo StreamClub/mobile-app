@@ -38,16 +38,12 @@ export default function Season() {
         loadSerie();
     }, []);
 
-    if(!season) {
-        return null;
-    }
-
     return(
         <View style={styles.container}>
             <Stack.Screen
                 options={{
                     headerRight: () => (
-                        <SeasonHeader seen={season.seen} seasonId={season.id} seriesId={season.seriesId} />
+                        <SeasonHeader season={season} />
                     ) ,
                 }}
             />

@@ -4,7 +4,6 @@ import { colors } from '../../assets'
 import { styles } from '../SeriesList/styles/SeriesList.style'
 import { useSeenPress } from '../../hooks/useSeenPress'
 import { ContentType } from '../../entities/ContentType'
-import { Content } from '../../entities/Content'
 
 type SeenButtonProps = {
     seenState: boolean,

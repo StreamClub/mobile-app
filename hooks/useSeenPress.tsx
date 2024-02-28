@@ -44,10 +44,10 @@ export const useSeenPress = (seenState: boolean, contentId: string, contentType:
 
     const unmarkContentAsSeen = () => {
         if(contentType.isMovie()) {
-            unmarkMovieAsSeen(session,contentId,onSuccessAdd,onFailure)
+            unmarkMovieAsSeen(session,contentId,onSuccessRemove,onFailure)
         }
         if (contentType.isSeries()) {
-            unmarkSeriesAsSeen(session,contentId,onSuccessAdd,onFailure)
+            unmarkSeriesAsSeen(session,contentId,onSuccessRemove,onFailure)
         }
         if (contentType.isSeason() && seriesId) {
             unmarkSeasonAsSeen(session,contentId,seriesId,onSuccessRemove,onFailure)

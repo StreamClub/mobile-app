@@ -6,21 +6,23 @@ import { useSession } from '../../context/ctx'
 import { styles } from './styles/SeasonDetails.styles'
 import { SeenSection } from '../Content/SeenSection'
 import { ContentType } from '../../entities/ContentType'
+import { Season } from '../../entities/Details/Series/Season'
 
 type SeasonHeaderParams = {
-    seen: boolean,
-    seasonId: number,
-    seriesId: number
+    season?: Season,
 }
 
 export const SeasonHeader = (params: SeasonHeaderParams) => {
     const contentType = new ContentType('season')
+    if (!params.season){
+        return null
+    }
     return (
         <View style={{margin: 10}}>
             <SeenSection 
-                seenState={params.seen} 
-                contentId={params.seasonId.toString()} 
-                seriesId={params.seriesId.toString()}
+                seenState={params.season.seen} 
+                contentId={params.season.id.toString()} 
+                seriesId={params.season.seriesId.toString()}
                 contentType={contentType} />
         </View>
     )

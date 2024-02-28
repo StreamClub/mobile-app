@@ -33,8 +33,6 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
 
     const backgroundSize = 210 + (titleTextHeight/30 - 2)*30
 
-    console.log(params.series.createdBy);
-
     return(
         <ImageBackground
                 source={{ uri: "https://image.tmdb.org/t/p/original" + params.series.backdrop }} 
@@ -81,33 +79,6 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
     )
 }
 
-/* const renderSeasons = (params: SerieDetailScreenParams) => {
-    const seasons = params.series.seasons;
-    return(
-        <View style={styles.seasons}>
-            {seasons ? 
-            <>
-                <TitleText body='Temporadas:' style={{fontWeight: 'bold'}}/>
-                <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                    {seasons.map( (season, index) => 
-                        <View style={{flexDirection: 'column', margin: 5}} key={index}>
-                            <Pressable onPress={() => params.onSeasonPress(season, params.series.platforms)}>
-                                <Image 
-                                    source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
-                                    style={styles.seasonImage}
-                                />
-                            </Pressable>
-                            <BodyText body={season.name} size='big' style={{width: 150}} numberOfLines={2}/>
-                            <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
-                        </View>
-                    )}
-                </ScrollView>
-            </> : null
-            }
-        </View>
-    )
-} */
-
 export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
         <ScrollView>
@@ -134,7 +105,6 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
                 </View>
             </View>
             <SeasonsList seasons={params.series.seasons} platforms={params.series.platforms} />
-            {/* {renderSeasons(params)} */}
             <CastList cast={params.series.cast} style={styles.cast} />
             <RecommendsList 
                 onRecommendPress={params.onRecommendPress} 

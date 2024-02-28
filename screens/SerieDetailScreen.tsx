@@ -154,23 +154,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondaryWhite + '85',
         width: screenWidth
     },
-    director: {
-        position: 'absolute',
-        top: 90,
-        alignSelf: 'flex-start',
-        marginLeft: 10,
-        flexDirection: 'row'
-    },
-    runtime: {
-        position: 'absolute',
-        top: 125,
-        alignSelf: 'flex-start',
-        marginLeft: 10,
-        flexDirection: 'row'
-    },
-    buttom: {
-        marginTop: 20
-    },
     description: {
         margin: 20,
         flex: 1,

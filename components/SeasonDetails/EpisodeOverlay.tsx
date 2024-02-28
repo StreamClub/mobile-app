@@ -1,12 +1,10 @@
 import React from 'react';
-import { Episode } from "../Types/Episodes"
 import { View, Image } from 'react-native';
 import { BodyText } from '../BasicComponents/BodyText';
 import { Icon } from 'react-native-paper';
 import { formatDate } from '../../utils/dateManager';
 import { colors } from '../../assets';
-import { CustomButton } from '../BasicComponents/CustomButton';
-import { SeeContentButtom } from '../Content/SeeContentButtom';
+import { Episode } from '../../entities/Details/Series/Episode';
 
 type EpisodeOverlayEntry = {
     episode: Episode
@@ -35,11 +33,6 @@ export const EpisodeOverlay = (params: EpisodeOverlayEntry) => {
                 </View>
             </View>
             <BodyText body={episode.overview? episode.overview : ""} />
-            <View style={{ alignSelf: 'flex-end'}}>
-                {episode.platforms?
-                    <SeeContentButtom platforms={episode.platforms} /> : null
-                }
-            </View>
         </View>
     )
 }

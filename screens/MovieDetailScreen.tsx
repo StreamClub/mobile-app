@@ -8,6 +8,7 @@ import { CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
 import { MoviePlatforms } from '../components/MovieDetails/MoviePlatforms';
 import { MovieDetail } from '../entities/Details/MovieDetailEntry';
+import { TmdbImage, TmdbImageType } from '../components/BasicComponents/TmdbImage';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -54,15 +55,10 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
                 <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
-                {params.movie.poster?
-                    <Image 
-                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.movie.poster }}
-                        style={styles.posterImage}   
-                    /> :
-                    <View style={[styles.posterImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
-                        <Icon source="image-off-outline" size={90}/>
-                    </View>
-                }
+                <TmdbImage 
+                    resource={params.movie.poster} 
+                    type={TmdbImageType.Cover} 
+                    style={styles.posterImage} />
             </View>
         </ImageBackground>
     )
@@ -102,6 +98,18 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    description: {
+        margin: 20,
+        flex: 1,
+        alignItems: 'center'
+    },
+    backdropImage: {
+        width: screenWidth,
+        height: 170
+    },
     recommends: {
         marginLeft: 20,
         marginBottom: 20
@@ -110,24 +118,6 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 20
     },
-    container: {
-        flex: 1,
-    },
-    backdropImage: {
-        width: screenWidth,
-        height: 170
-    },
-    textOverlay: {
-        position: 'absolute',
-        top: 10,
-        left: 5,
-        alignSelf: 'center',
-    },
-    imageOverlay: {
-        position: 'absolute',
-        top: 90,
-        alignSelf: 'flex-end'
-    },
     posterImage: {
         width: 170,
         height: 255,
@@ -135,9 +125,20 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: colors.primaryBlack,
     },
+    textOverlay: {
+        position: 'absolute',
+        top: 10,
+        left: 5,
+        alignSelf: 'center',
+    },
     darkness: {
         backgroundColor: colors.secondaryWhite + '85',
         width: screenWidth
+    },
+    imageOverlay: {
+        position: 'absolute',
+        top: 90,
+        alignSelf: 'flex-end'
     },
     director: {
         position: 'absolute',
@@ -153,32 +154,4 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flexDirection: 'row'
     },
-    platforms: {
-        marginLeft: 20,
-        marginTop: 5,
-        height: 160,
-        justifyContent: 'center'
-    },
-    platformImage: {
-        width: 50,
-        height: 50,
-        margin: 5,
-        borderWidth: 2,
-        borderColor: colors.primaryBlack,
-        borderRadius: 10,
-    },
-    divider: {
-        backgroundColor: colors.primaryBlack,
-        width: 150,
-        height: 1,
-        margin: 10,
-    },
-    buttom: {
-        marginTop: 20
-    },
-    description: {
-        margin: 20,
-        flex: 1,
-        alignItems: 'center'
-    }
 });

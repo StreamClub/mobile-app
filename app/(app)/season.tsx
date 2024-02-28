@@ -9,6 +9,7 @@ import { LoadingComponent } from '../../components/BasicComponents/LoadingCompon
 import { SeasonDetailScreen } from '../../screens/SeasonDetailScreen';
 import { useSeasonDetail } from '../../hooks/useSeasonDetails';
 import { SeasonHeader } from '../../components/SeasonDetails/SeasonHeader';
+import { Platform } from '../../entities/Details/Platform';
 
 export type SeasonDetailsParams = {
     seriesId: string;
@@ -21,6 +22,7 @@ export default function Season() {
     const params = useLocalSearchParams<SeasonDetailsParams>();
     const {season, setSeason} = useSeasonDetail();
     const [seasonLoaded, setSeasonLoaded] = useState(false)
+    const platforms = JSON.parse(params.platforms).map((item: any) => Platform.fromJson(item));
 
     const onSuccess = (response: any) => {
         setSeason(response.data, Number(params.seriesId));
@@ -48,7 +50,7 @@ export default function Season() {
                 }}
             />
             {seasonLoaded && season ? 
-                <SeasonDetailScreen season={season}/> : 
+                <SeasonDetailScreen season={season} platforms={platforms}/> : 
                 <LoadingComponent />
             }
         </View>

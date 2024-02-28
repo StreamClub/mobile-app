@@ -8,6 +8,7 @@ import { colors } from '../../assets';
 import { Platform } from '../../entities/Details/Platform';
 import { SeasonDetailsParams } from '../../app/(app)/season';
 import { router } from 'expo-router';
+import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage';
 
 type SeasonsListParams = {
     seasons: Season[],
@@ -34,10 +35,10 @@ export const SeasonsList = (params: SeasonsListParams) => {
                     {params.seasons.map( (season, index) => 
                         <View style={{flexDirection: 'column', margin: 5}} key={index}>
                             <Pressable onPress={() => onSeasonPress(season, params.platforms)}>
-                                <Image 
-                                    source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
-                                    style={styles.seasonImage}
-                                />
+                                <TmdbImage
+                                    resource={season.poster}
+                                    type={TmdbImageType.Cover}
+                                    style={styles.seasonImage} />
                             </Pressable>
                             <BodyText body={season.name} size='big' style={{width: 150}} numberOfLines={2}/>
                             <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>

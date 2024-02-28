@@ -5,9 +5,12 @@ import { EpisodeList } from '../components/SeasonDetails/EpisodeList';
 import { SeasonDetail } from '../entities/Details/Series/SeasonDetail';
 import { Episode } from '../entities/Details/Series/Episode';
 import { SeasonInfo } from '../components/SeasonDetails/SeasonInfo';
+import { Platform } from '../entities/Details/Platform';
+import { SeeContentButtom } from '../components/Content/SeeContentButtom';
 
 type SeasonDetailsScreenParams = {
     season: SeasonDetail;
+    platforms: Platform[];
 }
 
 export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
@@ -15,7 +18,12 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
 
     return(
         <ScrollView>
-            <SeasonInfo season={params.season} />
+            <SeasonInfo season={params.season}/>
+            {params.platforms.length > 0?
+                <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20 }} >
+                    <SeeContentButtom platforms={params.platforms} text="Ver serie" />
+                </View> : null
+            }
             <TitleText body={'Capítulos (' + episodes.length + '):'} style={{marginLeft: 20, marginTop: 20, fontWeight: 'bold'}}/>
             <View style={{alignItems: 'center', marginBottom: 20}}>
                 {episodes ? episodes.map(

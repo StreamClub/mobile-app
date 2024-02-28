@@ -10,6 +10,7 @@ import { Overlay } from 'react-native-elements';
 import { Episode } from '../../entities/Details/Series/Episode';
 import { SeenSection } from '../Content/SeenSection';
 import { ContentType } from '../../entities/ContentType';
+import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage';
 
 type EpisodeListEntry = {
     episode: Episode,
@@ -26,9 +27,10 @@ export const EpisodeList = (params: EpisodeListEntry) => {
     return(
         <Pressable onPress={() => setOpenModal(true)} style={styles.episode} >
             <View style={styles.episode} >
-                <Image 
-                    source={{ uri: "https://image.tmdb.org/t/p/original" + episode.poster }} 
-                    style={styles.episodePoster} /> 
+                <TmdbImage 
+                    resource={episode.poster} 
+                    type={TmdbImageType.Cover} 
+                    style={styles.episodePoster} />
                 <View style={{flexDirection: 'column', width: 190, marginRight: 5}}>
                     <BodyText body={episode.episodeId + '. ' + episode.name} numberOfLines={2} style={{fontWeight: 'bold', flex: 1}} size='medium'/>
                     <BodyText body={formatDate(episode.airDate.toDateString())} color={colors.primaryGrey} style={{fontWeight: 'bold'}} size='small'/>

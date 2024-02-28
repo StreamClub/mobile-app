@@ -27,7 +27,7 @@ export const SeasonInfo = (params: SeasonInfoParams) => {
                     type={TmdbImageType.Cover} 
                     style={styles.poster} />
             </View>
-            <View style={styles.info}>
+            <View style={[styles.info, {height: (255 - titleTextHeight)}]}>
                 <BodyText body={season.name} style={{fontWeight: 'bold'}} 
                 size='big' onLayout={handleTitleTextLayout}/>
                 <Pressable 

@@ -38,16 +38,7 @@ export default function Serie() {
         }
         loadSerie()
     }, [])
-
-    const onSeasonPress = (season: Season, platforms: Platform[]) => {
-        const params: SeasonDetailsParams = {
-            seasonId: season.id.toString(),
-            seriesId: season.seriesId.toString(),
-            platforms: JSON.stringify(platforms)
-        }
-        router.push({ pathname: '/season', params })
-    }
-
+    
     const onRedommendPress = (series: Content) => {
         const newParams: ContentDetailsParams = {
             id: series.id.toString(),
@@ -67,7 +58,6 @@ export default function Serie() {
             {serieLoaded && series ? (
                 <SerieDetailScreen
                     series={series}
-                    onSeasonPress={onSeasonPress}
                     onRecommendPress={onRedommendPress}
                 />
             ) : (

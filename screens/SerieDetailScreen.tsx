@@ -17,7 +17,6 @@ const screenWidth = Dimensions.get('window').width;
 
 type SerieDetailScreenParams = {
     series: SeriesDetail,
-    onSeasonPress: (season: Season, platforms: Platform[]) => void;
     onRecommendPress: (series: Content) => void;
 }
 

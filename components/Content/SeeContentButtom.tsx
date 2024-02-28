@@ -6,11 +6,12 @@ import { colors } from '../../assets';
 import { BodyText } from '../BasicComponents/BodyText';
 import { styles } from './styles/Content.styles';
 import { Icon } from 'react-native-paper';
-import { Platform } from '../Types/Platforms';
 import { TitleText } from '../BasicComponents/TitleText';
+import { Platform } from '../../entities/Details/Platform';
 
 type SeeContentButtomEntry = {
-    platforms: Array<Platform>
+    platforms: Platform[];
+    text?: string;
 }
 
 export const SeeContentButtom = (params: SeeContentButtomEntry) => {
@@ -25,7 +26,7 @@ export const SeeContentButtom = (params: SeeContentButtomEntry) => {
     return(
         <>
             <CustomButton 
-                buttonText="Ver ahora" 
+                buttonText={params.text? params.text : "Ver ahora"}
                 buttonSize="medium"
                 fontSize="medium"
                 type='primary' 

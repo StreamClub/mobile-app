@@ -36,6 +36,7 @@ export const styles = StyleSheet.create({
     info: {
         flex: 1,
         flexDirection: 'column',
-        marginTop: 20
+        marginTop: 20,
+        height: 255
     }
 })

@@ -3,6 +3,9 @@
     "baseUrl": "https://papi-4lms.onrender.com",
     "defaultErrorMessage": "Algo salió mal... :("
   },
+  "tmdbBaseUrl": "https://image.tmdb.org/t/p/original",
+  "instragramBaseUrl": "https://www.instagram.com/",
+  "twitterBaseUrl": "https://twitter.com/",
   "signUp": {
     "invalidEmaiError": "Ingrese un email válido.",
     "passwordsNotMatch": "Las contraseñas deben ser iguales."

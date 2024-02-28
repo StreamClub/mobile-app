@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import { Image, Pressable, StyleSheet, View, Text , Dimensions} from 'react-native';
-import { colors } from "../assets";
-import { BodyText } from './BasicComponents/BodyText';
-import { Credits, CastEntry, CrewEntry } from './Types/Credits';
-import { PosterWithDetails, PosterWithDetailsParams } from './PosterWithDetails';
-import { createTuples } from './utils';
-import { TitleText } from './BasicComponents/TitleText';
+import { colors } from "../../assets";
+import { BodyText } from '../BasicComponents/BodyText';
+import { Credits, CastEntry, CrewEntry } from '../Types/Credits';
+import { PosterWithDetails, PosterWithDetailsParams } from '../PosterWithDetails';
+import { createTuples } from '../../utils/listManager';
+import { TitleText } from '../BasicComponents/TitleText';
 import { Icon } from 'react-native-paper';
 
 export type ArtistFilmografyParams = {

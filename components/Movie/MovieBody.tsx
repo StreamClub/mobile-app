@@ -2,7 +2,7 @@ import React from 'react'
 import { formatTitle } from '../../utils/formatTitle'
 import { MovieTitle } from './MovieTitle'
 import { MovieState } from './MovieState'
-import { MovieEntry } from '../MovieList'
+import { MovieEntry } from '../../entities/MovieListEntry'
 
 type MovieBodyProps = {
     movieEntry: MovieEntry

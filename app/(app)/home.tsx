@@ -1,4 +1,4 @@
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import React from 'react';
 import { useSession } from '../../context/ctx';
 import { router, Stack } from 'expo-router';
@@ -6,7 +6,7 @@ import { router, Stack } from 'expo-router';
 export default function Index() {
     const session = useSession();
     const signOut = session?.signOut
-    const username = session?.username
+    const userId = session?.userId
     const email = session?.email
     const accessToken = session?.accessToken
     const refreshToken = session?.refreshToken
@@ -16,7 +16,7 @@ export default function Index() {
             <Text> Sesión iniciada </Text>
             <Text> Bienvenido </Text>
 
-            <Text> userName: {username} </Text>
+            <Text> userId: {userId} </Text>
             <Text> email: {email} </Text>
             <Text> AccessToken: {accessToken} </Text>
             <Text> RefreshToken: {refreshToken} </Text>
@@ -31,6 +31,24 @@ export default function Index() {
                     
                 }}>
                 Ventana de Busqueda
+            </Text>
+
+            <Text
+                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                onPress={() => {
+                    router.push('/profile');
+                    
+                }}>
+                Perfil
+            </Text>
+
+            <Text
+                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                onPress={() => {
+                    router.push('/services');
+                    
+                }}>
+                Servicios
             </Text>
 
             <Text

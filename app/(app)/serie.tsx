@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
@@ -7,97 +7,24 @@ import { getSerie } from '../../apiCalls/series'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
-import { Season, SerieDetailScreen } from '../../screens/SerieDetailScreen'
+import { SerieDetailScreen } from '../../screens/SerieDetailScreen'
 import { SeasonDetailsParams } from './season'
-import { Actor } from '../../components/CastList'
 import { Content } from '../../components/RecomendsList'
-import { IconButton } from 'react-native-paper'
-import { handleSeriesWatchlistPress } from '../../utils/handleWatchlistPress'
-import { WatchlistButton } from '../../components/BasicComponents/WatchlistButton'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import { useSeriesDetails } from '../../hooks/useSeriesDetails'
+import { Season } from '../../entities/Details/Series/Season'
+import { Platform } from '../../entities/Details/Platform'
+import { SeriesHeader } from '../../components/SeriesDetails/SeriesHeader'
 
 export default function Serie() {
     const session = useSession()
-    const [serie, setSerie] = useState({
-        id: '',
-        overview: '',
-        poster: '',
-        backdrop: '',
-        genres: [''],
-        platforms: [''],
-        title: '',
-        status: '',
-        creators: [''],
-        lastAirDate: new Date(),
-        totalEpisodes: 0,
-        totalSeasons: 0,
-        releaseDate: new Date(),
-        seasons: [],
-        nextEpisode: { photo: '', airDate: new Date(), name: '' },
-        cast: [],
-        similar: [],
-        inWatchlist: false,
-    })
+    const {series, setSeries} = useSeriesDetails()
     const params = useLocalSearchParams<ContentDetailsParams>()
     const [serieLoaded, setSerieLoaded] = useState(false)
-    const [inWatchlist, setInWatchlist] = useState(serie.inWatchlist)
-    const [loading, setLoading] = useState(false)
     const serieId = params.id
 
     const onSuccess = (response: any) => {
-        const platforms = response.data.platforms
-        const seasons = response.data.seasons
-        const cast = response.data.cast
-        const similar = response.data.similar
-        const serieData = {
-            id: String(response.data.id),
-            overview: response.data.overview,
-            poster: response.data.poster,
-            backdrop: response.data.backdrop,
-            genres: response.data.genres,
-            platforms: platforms
-                ? platforms.map((platform: any) => platform.logoPath)
-                : [],
-            title: response.data.title,
-            status: response.data.status,
-            creators: response.data.createdBy,
-            lastAirDate: new Date(response.data.lastAirDate),
-            totalEpisodes: response.data.numberOfEpisodes,
-            totalSeasons: response.data.numberOfSeasons,
-            releaseDate: new Date(response.data.releaseDate),
-            seasons: seasons
-                ? seasons.map((season: Season) => ({
-                      id: season.id,
-                      name: season.name,
-                      poster: season.poster,
-                      airDate: new Date(season.airDate),
-                      seriesId: response.data.id,
-                  }))
-                : [],
-            nextEpisode: {
-                photo: response.data.nextEpisode.photo,
-                airDate: new Date(response.data.nextEpisode.airDate),
-                name: response.data.nextEpisode.name,
-            },
-            cast: cast
-                ? cast.map((actor: Actor) => ({
-                      name: actor.name,
-                      profilePath: actor.profilePath,
-                      character: actor.character,
-                  }))
-                : [],
-            similar: similar
-                ? similar.map((series: Content) => ({
-                      id: series.id,
-                      title: series.title,
-                      posterPath: series.posterPath,
-                      releaseDate: new Date(series.releaseDate),
-                  }))
-                : [],
-            inWatchlist: response.data.inWatchlist,
-        }
-        setSerie(serieData)
-        setInWatchlist(serieData.inWatchlist)
+        setSeries(response.data)
         setSerieLoaded(true)
     }
 
@@ -112,10 +39,11 @@ export default function Serie() {
         loadSerie()
     }, [])
 
-    const onSeasonPress = (season: Season) => {
+    const onSeasonPress = (season: Season, platforms: Platform[]) => {
         const params: SeasonDetailsParams = {
             seasonId: season.id.toString(),
             seriesId: season.seriesId.toString(),
+            platforms: JSON.stringify(platforms)
         }
         router.push({ pathname: '/season', params })
     }
@@ -132,36 +60,13 @@ export default function Serie() {
             <Stack.Screen
                 options={{
                     headerRight: () => (
-                        <>
-                            <IconButton
-                                onPress={() => console.log('hola')}
-                                icon="plus-circle-outline"
-                                size={40}
-                            />
-                            <Pressable
-                                onPress={() =>
-                                    handleSeriesWatchlistPress(
-                                        serie.id,
-                                        setLoading,
-                                        setInWatchlist,
-                                        inWatchlist,
-                                        session
-                                    )
-                                }
-                            >
-                                <WatchlistButton
-                                    iconStyle={styles.iconsStyle}
-                                    watchlistLoading={loading}
-                                    inWatchlist={inWatchlist}
-                                />
-                            </Pressable>
-                        </>
+                        <SeriesHeader series={series} />
                     ),
                 }}
             />
-            {serieLoaded ? (
+            {serieLoaded && series ? (
                 <SerieDetailScreen
-                    serie={serie}
+                    series={series}
                     onSeasonPress={onSeasonPress}
                     onRecommendPress={onRedommendPress}
                 />

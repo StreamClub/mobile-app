@@ -1,33 +1,18 @@
 import React, {useState} from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent } from 'react-native';
-import { Icon, Divider, Chip } from 'react-native-paper';
+import { Icon, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
-import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
-import { Actor, CastList } from '../components/CastList';
+import { CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
+import { MoviePlatforms } from '../components/MovieDetails/MoviePlatforms';
+import { MovieDetail } from '../entities/Details/MovieDetailEntry';
 
 const screenWidth = Dimensions.get('window').width;
 
-type MovieDetails = {
-    id: string,
-    title: string,
-    genres: Array<string>,
-    poster: string,
-    releaseDate: Date,
-    platforms: Array<string>,
-    directors: Array<string>,
-    backdrop: string,
-    runtime: string,
-    overview: string,
-    cast: Array<Actor>,
-    similar: Array<Content>,
-    inWatchlist: boolean
-}
-
 type MovieDetailScreenParams = {
-    movie: MovieDetails;
+    movie: MovieDetail;
     onRecommendPress: (movie: Content) => void;
 }
 
@@ -39,6 +24,8 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
     };
 
     const backgroundSize = 170 + (titleTextHeight/30 - 2)*30
+
+    console.log(params.movie.releaseDate);
 
     return(
         <ImageBackground
@@ -81,45 +68,12 @@ const renderBackgroundImage = (params: MovieDetailScreenParams) => {
     )
 }
 
-const renderPlatforms = (params: MovieDetailScreenParams) => {
-    return(
-    <View style={styles.platforms}>
-        {(params.movie.platforms.length >= 1)?
-            <>
-                <BodyText body={"Disponible en:"} size="big"/>
-                <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-                        {params.movie.platforms.map( (platform, index) => 
-                            <Image 
-                                source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
-                                style={styles.platformImage}
-                                key={index} />
-                        )} 
-                    </ScrollView>
-                    <Divider style={styles.divider} />
-                    <View style={styles.buttom}>
-                        <CustomButton 
-                            buttonText="Ver ahora" 
-                            buttonSize='medium'
-                            fontSize='medium'
-                            type='primary' 
-                            onPress={() => console.log("Que buena peli estoy viendo")} 
-                            icon="play"/>
-                    </View>
-                </View>
-            </> : 
-            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 160, margin: 10}} />    
-        }
-    </View>
-    )
-}
-
 export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
     return (
         <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
-            {renderPlatforms(params)}
+            <MoviePlatforms platforms={params.movie.platforms} />
             <View style={styles.description}>
                 <BodyText body={params.movie.overview} />
                 <View style={{height: 60}}>

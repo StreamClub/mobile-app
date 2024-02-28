@@ -30,7 +30,7 @@ export function searchMovies(
     onFailure: (error: any) => void
 ) {
     const endpoint = '/movies/'
-    const params: Params = { params: queryParams }
+    const params: Params = { params: {...queryParams, country: country } }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
 }
@@ -47,6 +47,7 @@ export function addMovieToWatchlist(
         contentType: 'movie',
     }
     const params: Params = { data: body }
+    
     privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure)
 }
 
@@ -62,4 +63,23 @@ export function removeMovieFromWatchlist(
     }
     const params: Params = { data: body }
     privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
+}
+
+// --------- --------- --------- --------- --------- ---------
+export function markMovieAsSeen(
+    session: ReturnType<typeof useSession>,
+    movieId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) { 
+    privateCall('PUT', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
+}
+
+export function unmarkMovieAsSeen(
+    session: ReturnType<typeof useSession>,
+    movieId: string,
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void
+) {
+    privateCall('DELETE', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
 }

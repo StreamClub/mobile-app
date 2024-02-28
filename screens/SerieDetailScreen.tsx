@@ -1,53 +1,23 @@
 import React, {useState} from 'react';
 import { View, ImageBackground, StyleSheet, Dimensions, Image, ScrollView, LayoutChangeEvent, Pressable } from 'react-native';
-import { Icon, Divider, Chip } from 'react-native-paper';
+import { Icon, Chip } from 'react-native-paper';
 import { TitleText } from '../components/BasicComponents/TitleText';
 import { BodyText } from '../components/BasicComponents/BodyText';
-import { CustomButton } from '../components/BasicComponents/CustomButton';
 import { colors } from "../assets";
-import { Actor, CastList } from '../components/CastList';
+import { CastList } from '../components/CastList';
 import { Content, RecommendsList } from '../components/RecomendsList';
+import { SeriesPlatforms } from '../components/SeriesDetails/SeriesPlatforms';
+import { NextEpisode } from '../components/SeriesDetails/NextEpisode';
+import { Season } from '../entities/Details/Series/Season';
+import { SeriesDetail } from '../entities/Details/Series/SeriesDetailEntry';
+import { Platform } from '../entities/Details/Platform';
+import { SeasonsList } from '../components/SeriesDetails/SeasonsList';
 
 const screenWidth = Dimensions.get('window').width;
 
-export type Season = {
-    id: number,
-    seriesId: number,
-    name: string,
-    poster: string,
-    airDate: Date
-}
-
-type Episode = {
-    photo: string,
-    airDate: Date,
-    name: string
-}
-
-type SerieDetails = {
-    id: string,
-    overview: string,
-    poster: string,
-    backdrop: string,
-    genres: Array<string>,
-    platforms: Array<string>,
-    title: string,
-    status: string,
-    creators: Array<string>,
-    lastAirDate: Date,
-    totalEpisodes: number,
-    totalSeasons: number,
-    releaseDate: Date,
-    seasons: Array<Season>,
-    nextEpisode: Episode,
-    cast: Array<Actor>,
-    similar: Array<Content>,
-    inWatchlist: boolean
-}
-
 type SerieDetailScreenParams = {
-    serie: SerieDetails,
-    onSeasonPress: (season: Season) => void;
+    series: SeriesDetail,
+    onSeasonPress: (season: Season, platforms: Platform[]) => void;
     onRecommendPress: (series: Content) => void;
 }
 
@@ -58,58 +28,46 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
         setTitleTextHeight(event.nativeEvent.layout.height);
     };
 
-    const releaseYear = params.serie.releaseDate? params.serie.releaseDate.getFullYear() : " ? ";
-    const lastYear = params.serie.lastAirDate? params.serie.lastAirDate.getFullYear() : " ? ";
+    const releaseYear = params.series.releaseDate? params.series.releaseDate.getFullYear() : " ? ";
+    const lastYear = params.series.lastAirDate? params.series.lastAirDate.getFullYear() : " ? ";
 
     const backgroundSize = 210 + (titleTextHeight/30 - 2)*30
 
     return(
         <ImageBackground
-                source={{ uri: "https://image.tmdb.org/t/p/original" + params.serie.backdrop }} 
+                source={{ uri: "https://image.tmdb.org/t/p/original" + params.series.backdrop }} 
                 style={[styles.backdropImage, {height: backgroundSize}]}
                 resizeMode="cover"
             >
-            {params.serie.backdrop?
+            {params.series.backdrop?
                 <View style={[styles.darkness, {height: backgroundSize}]} /> :
                 <View style={[styles.darkness, {height: backgroundSize, backgroundColor: colors.primarySkyBlue + '85'}]} />
             }
             <View style={styles.textOverlay}>
                 <TitleText
-                    body={params.serie.title} 
+                    body={params.series.title} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} 
                     onLayout={handleTitleTextLayout}
                 />
-                {(params.serie.status === 'Finalizada' || params.serie.status === 'Cancelada')?
+                {(params.series.status === 'Finalizada' || params.series.status === 'Cancelada')?
                 <TitleText 
                     body={"(" + releaseYear + ' - ' + (lastYear? lastYear : " ? ") + ")"} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} /> : null}
-                {params.serie.status === 'Serie en emisión'?
+                {params.series.status === 'Serie en emisión'?
                 <TitleText 
                     body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
-                {/* <TitleText
-                    body={
-                        '(' + (params.serie.releaseDate.getFullYear()? params.serie.releaseDate.getFullYear(): ' ? ') + 
-                        ' - ' + 
-                        ((params.serie.status === 'Finalizada')?
-                            ((params.serie.releaseDate.getFullYear()? params.serie.lastAirDate.getFullYear(): ' ? ') + ')') :
-                            'Presente)'
-                        )
-                    } 
-                    size='big' 
-                    style={{width: screenWidth - 10, fontWeight: 'bold'}}
-                /> */}
-                <BodyText body={'Cant. espisodios: ' + params.serie.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
-                <BodyText body={'Cant. temporadas: ' + params.serie.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
-                <BodyText body={'Creador: ' + params.serie.creators[0]} size='medium' style={{fontWeight: 'bold'}} />
+                <BodyText body={'Cant. espisodios: ' + params.series.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
+                <BodyText body={'Cant. temporadas: ' + params.series.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
+                <BodyText body={'Creador: ' + params.series.createdBy[0]} size='medium' style={{fontWeight: 'bold'}} />
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
-                {params.serie.poster?
+                {params.series.poster?
                     <Image 
-                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.serie.poster }}
+                        source={{ uri: "https://image.tmdb.org/t/p/original" + params.series.poster }}
                         style={styles.posterImage}   
                     /> :
                     <View style={[styles.posterImage, {backgroundColor: colors.primarySkyBlue, alignItems: 'center', justifyContent: 'center'}]}>
@@ -121,95 +79,20 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
     )
 }
 
-const renderPlatforms = (params: SerieDetailScreenParams) => {
-    return(
-    <View style={styles.platforms}>
-        {(params.serie.platforms.length >= 1)?
-            <>
-                <BodyText body={"Disponible en:"} size="big"/>
-                <View style={{height: 'auto', width: 180, alignItems: 'center'}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-                        {params.serie.platforms.map( (platform, index) => 
-                            <Image 
-                                source={{ uri: "https://image.tmdb.org/t/p/original" + platform }} 
-                                style={styles.platformImage}
-                                key={index} />
-                        )} 
-                    </ScrollView>
-                </View>
-            </> : 
-            <BodyText size='big' color={colors.primaryRed} body='No disponible en ninguna plataforma.' style={{width: 180, margin: 10}} />    
-        }
-        <Divider style={styles.divider} />
-        <BodyText body={'Estado: ' + params.serie.status} size='big' color={colors.primaryBlue} style={{fontWeight: 'bold'}}/>
-    </View>
-    )
-}
-
-const renderSeasons = (params: SerieDetailScreenParams) => {
-    const seasons = params.serie.seasons;
-    return(
-        <View style={styles.seasons}>
-            {seasons ? 
-            <>
-                <TitleText body='Temporadas:' style={{fontWeight: 'bold'}}/>
-                <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                    {seasons.map( (season, index) => 
-                        <View style={{flexDirection: 'column', margin: 5}} key={index}>
-                            <Pressable onPress={() => params.onSeasonPress(season)}>
-                                <Image 
-                                    source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }} 
-                                    style={styles.seasonImage}
-                                />
-                            </Pressable>
-                            <BodyText body={season.name} size='big' style={{width: 150}} numberOfLines={2}/>
-                            <BodyText body={season.airDate.getFullYear().toString()} size='medium' color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
-                        </View>
-                    )}
-                </ScrollView>
-            </> : null
-            }
-        </View>
-    )
-}
-
-const renderNextEpisode = (episode: Episode) => {
-    const formatter = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-    return (
-        <View style={styles.nextEpisode} >
-            <Image 
-                source={{ uri: "https://image.tmdb.org/t/p/original" + episode.photo }} 
-                style={styles.episodePhoto} /> 
-            <View style={{flexDirection: 'column', width: 180}}>
-                <BodyText body='Próximo capitulo: ' style={{fontWeight: 'bold'}} size='medium'/>
-                <BodyText body={episode.name} size='medium' numberOfLines={1}/>
-                <BodyText body={formatter.format(episode.airDate)} color={colors.primaryGrey} style={{fontWeight: 'bold'}}/>
-                <View style={{ alignSelf: 'flex-end', justifyContent: 'flex-end', flex: 1 }}>
-                    <CustomButton 
-                        buttonText="Ver ahora" 
-                        fontSize='small'
-                        type='primary' 
-                        onPress={() => console.log("Que buena serie estoy viendo")} 
-                        icon="play"
-                        style={{width: 120, margin: 10}}/>
-                </View>
-            </View>
-        </View>
-    )
-}
-
 export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
     return (
         <ScrollView>
         <View style={styles.container}>
             {renderBackgroundImage(params)}
-            {renderPlatforms(params)}
-            {renderNextEpisode(params.serie.nextEpisode)}
+            <SeriesPlatforms platforms={params.series.platforms} status={params.series.status} />
+            {params.series.nextEpisode? 
+                <NextEpisode episode={params.series.nextEpisode} platforms={params.series.platforms}/>
+                : null}
             <View style={styles.description}>
-                <BodyText body={params.serie.overview} />
+                <BodyText body={params.series.overview} />
                 <View style={{height: 60}}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        {params.serie.genres.map((genre, index) => 
+                        {params.series.genres.map((genre, index) => 
                             <Chip 
                                 key={index} 
                                 style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
@@ -221,12 +104,12 @@ export const SerieDetailScreen = (params: SerieDetailScreenParams) => {
                     </ScrollView>
                 </View>
             </View>
-            {renderSeasons(params)}
-            <CastList cast={params.serie.cast} style={styles.cast} />
+            <SeasonsList seasons={params.series.seasons} platforms={params.series.platforms} />
+            <CastList cast={params.series.cast} style={styles.cast} />
             <RecommendsList 
                 onRecommendPress={params.onRecommendPress} 
                 title='Series similares:'
-                contents={params.serie.similar} 
+                contents={params.series.similar} 
                 style={styles.recommends} />
         </View>
         </ScrollView>
@@ -285,27 +168,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flexDirection: 'row'
     },
-    platforms: {
-        marginLeft: 20,
-        marginTop: 5,
-        height: 160,
-        width: 180,
-        justifyContent: 'center'
-    },
-    platformImage: {
-        width: 50,
-        height: 50,
-        margin: 5,
-        borderWidth: 2,
-        borderColor: colors.primaryBlack,
-        borderRadius: 10,
-    },
-    divider: {
-        backgroundColor: colors.primaryBlack,
-        width: 150,
-        height: 1,
-        margin: 10,
-    },
     buttom: {
         marginTop: 20
     },
@@ -314,27 +176,4 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center'
     },
-    seasons: {
-        marginLeft: 20,
-        marginBottom: 20
-    },
-    seasonImage: {
-        width: 150,
-        height: 230,
-        borderRadius: 20
-    },
-    nextEpisode: {
-        width: 350,
-        height: 150,
-        backgroundColor: colors.primarySkyBlue,
-        margin: 20,
-        borderRadius: 20,
-        flexDirection: 'row',
-        flex: 1
-    },
-    episodePhoto: {
-        flex: 1,
-        margin: 10,
-        borderRadius: 20
-    }
 });

@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { colors } from "../assets";
 import { BodyText } from './BasicComponents/BodyText';
-import { TitleText } from './BasicComponents/TitleText';
 
 const screenWidth = Dimensions.get('window').width;
 

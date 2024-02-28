@@ -2,12 +2,12 @@ import React from 'react'
 import { Pressable } from 'react-native'
 import { WatchlistButton } from '../BasicComponents/WatchlistButton'
 import { styles } from '../SeriesList/styles/SeriesList.style'
-import { ContentEntry } from '../../entities/ContentListEntry'
 import { ContentType } from '../../entities/ContentType'
 import { useWatchlistPress } from '../../hooks/useWatchlistPress'
+import { Content } from '../../entities/Content'
 
 type WatchlistButtonProps = {
-    contentEntry: ContentEntry
+    contentEntry: Content
     contentType: ContentType
 }
 

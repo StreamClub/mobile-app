@@ -3,16 +3,16 @@ import {
     removeMovieFromWatchlist,
 } from '../apiCalls/movies'
 import { useSession } from '../context/ctx'
-import { ContentEntry } from '../entities/ContentListEntry'
 import { useState } from 'react'
 import { ContentType } from '../entities/ContentType'
 import {
     addSeriesToWatchlist,
     removeSeriesFromWatchlist,
 } from '../apiCalls/series'
+import { Content } from '../entities/Content'
 
 export const useWatchlistPress = (
-    contentEntry: ContentEntry,
+    contentEntry: Content,
     contentType: ContentType
 ) => {
     const [inWatchlist, setInWatchlist] = useState(contentEntry.inWatchlist)

@@ -7,12 +7,18 @@ import {
     Dimensions,
     Text,
 } from 'react-native'
-import { colors } from '../assets'
-import { BodyText } from './BasicComponents/BodyText'
-import { TitleText } from './BasicComponents/TitleText'
-import { IconWithText, IconWithTextParams } from './IconWithText'
+import { colors } from '../../assets'
+import { BodyText } from '../BasicComponents/BodyText'
+import { TitleText } from '../BasicComponents/TitleText'
+import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText'
+import { IconCollectionEntry } from '../Types/IconCollection'
+import { IconCollection } from '../BasicComponents/IconCollection'
 import { Icon } from 'react-native-paper'
-import { formatDate, calculateAge } from '../utils/dateUtils'
+import { formatDate, calculateAge } from '../../utils/dateManager'
+import { getMediaFromExternalId } from '../../utils/socialMediaManager'
+import { ExternalIds } from '../Types/ExternalId'
+import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage'
+import { LocalIcon } from '../Types/LocalIcon'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -22,24 +28,29 @@ export type ArtistBasicInfoParams = {
     birthDate: string
     birthPlace: string
     deathDate: string
+    externalIds: ExternalIds
     style?: any
 }
 
 export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
     const birthDateParams: IconWithTextParams = {
-        icon: require('../assets/icons/birth.png'),
+        icon: LocalIcon.birth,
         text: formatDate(params.birthDate),
         style: { marginBottom: 15 },
     }
     const deathDateParams: IconWithTextParams = {
-        icon: require('../assets/icons/death.png'),
+        icon: LocalIcon.death,
         text: formatDate(params.deathDate),
         style: { marginBottom: 15 },
     }
     const birthPlaceParams: IconWithTextParams = {
-        icon: require('../assets/icons/location.png'),
+        icon: LocalIcon.location,
         text: params.birthPlace,
     }
+
+    const seeBioLeyend = "Ver biografía"
+
+    const medias = getMediaFromExternalId(params.externalIds)
 
     return (
         <View style={[{ flexDirection: 'row' }, params.style]}>
@@ -51,41 +62,32 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                         width: screenWidth / 2,
                         paddingLeft: 20,
                         marginBottom: 20,
+                        fontWeight: "bold"
                     }}
                 />
-                <View style={{ paddingTop: 20, flex: 1 }}>
+                <View style={{ paddingTop: 20, flex: 1, width:"100%"}}>
                     {params.birthDate && <IconWithText {...birthDateParams} />}
                     {params.deathDate && <IconWithText {...deathDateParams} />}
                     {params.birthPlace && (
                         <IconWithText {...birthPlaceParams} />
                     )}
+                    <BodyText 
+                        body={seeBioLeyend}
+                        size="medium"
+                        style={{color: colors.primaryBlue, fontWeight: "bold", marginLeft: 30, marginTop:10, textDecorationLine: 'underline'}}
+                        
+                    />
                 </View>
             </View>
+            <View style={{flex: 0.5}}>
             <View style={styles.imageContainer}>
-                {params.poster ? (
-                    <Image
-                        source={{
-                            uri:
-                                'https://image.tmdb.org/t/p/original' +
-                                params.poster,
-                        }}
-                        style={styles.image}
-                        resizeMode="contain"
-                    />
-                ) : (
-                    <View
-                        style={[
-                            styles.image,
-                            {
-                                backgroundColor: colors.primarySkyBlue,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            },
-                        ]}
-                    >
-                        <Icon source="account" size={70} />
-                    </View>
-                )}
+                <TmdbImage
+                    resource={params.poster}
+                    type={TmdbImageType.Person}
+                    style={styles.image}
+                />
+            </View>
+                {true && <IconCollection collection={medias} />}
             </View>
         </View>
     )
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     imageContainer: {
-        flex: 0.5,
+        
         alignItems: 'center',
         justifyContent: 'center',
         height: 300,
@@ -109,9 +111,5 @@ const styles = StyleSheet.create({
         height: '100%',
         borderRadius: 10,
         margin: 10,
-    },
-    description: {
-        width: 150,
-        color: colors.primaryGrey,
     },
 })

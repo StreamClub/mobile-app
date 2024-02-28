@@ -1,47 +1,29 @@
 import React from 'react';
 import { View, StyleSheet } from "react-native";
 import { colors } from "../../assets";
-import { useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { useState, useEffect } from "react";
 import { useSession } from '../../context/ctx';
 import { getSeason } from '../../apiCalls/series';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-import { Episode, SeasonDetailScreen } from '../../screens/SeasonDetailScreen';
+import { SeasonDetailScreen } from '../../screens/SeasonDetailScreen';
+import { useSeasonDetail } from '../../hooks/useSeasonDetails';
+import { SeasonHeader } from '../../components/SeasonDetails/SeasonHeader';
 
 export type SeasonDetailsParams = {
     seriesId: string;
     seasonId: string;
+    platforms: string;
 };
 
 export default function Season() {
     const session = useSession();
     const params = useLocalSearchParams<SeasonDetailsParams>();
-    const [season, setSeason] = useState({
-        airDate: new Date(),
-        name: '',
-        overview: '',
-        poster: '',
-        episodes: []
-    });
+    const {season, setSeason} = useSeasonDetail();
     const [seasonLoaded, setSeasonLoaded] = useState(false)
 
     const onSuccess = (response: any) => {
-        const episodes = response.data.episodes;
-        const seasonData = {
-            airDate: new Date(response.data.airDate),
-            name: response.data.name,
-            overview: response.data.overview,
-            poster: response.data.poster,
-            episodes: episodes? episodes.map((episode: Episode) => ({
-                "airDate": new Date(episode.airDate),
-                "episodeNumber": episode.episodeNumber,
-                "name": episode.name,
-                "overview": episode.overview,
-                "runtime": episode.runtime,
-                "poster": episode.poster
-            })) : []
-        };
-        setSeason(seasonData);
+        setSeason(response.data, Number(params.seriesId));
         setSeasonLoaded(true);
     }
 
@@ -58,7 +40,14 @@ export default function Season() {
 
     return(
         <View style={styles.container}>
-            {seasonLoaded ? 
+            <Stack.Screen
+                options={{
+                    headerRight: () => (
+                        <SeasonHeader season={season} />
+                    ) ,
+                }}
+            />
+            {seasonLoaded && season ? 
                 <SeasonDetailScreen season={season}/> : 
                 <LoadingComponent />
             }

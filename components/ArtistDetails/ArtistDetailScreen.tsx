@@ -1,10 +1,11 @@
 import React from 'react';
 import {  StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { colors } from "../assets";
-import { ArtistFilmografy } from '../components/ArtistFilmografy';
-import { ArtistBasicInfo, ArtistBasicInfoParams } from '../components/ArtistBasicInfo';
+import { colors } from "../../assets";
+import { ArtistFilmografy } from './ArtistFilmografy';
+import { ArtistBasicInfo, ArtistBasicInfoParams } from './ArtistBasicInfo';
+import { ExternalIds } from '../Types/ExternalId';
 
-import { Credits } from '../components/Types/Credits';
+import { Credits } from '../Types/Credits';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -18,6 +19,7 @@ export type ArtistDetails = {
     gender: string,
     knownFor: string,
     credits: Credits
+    externalIds: ExternalIds
 }
 
 type ArtistDetailScreenParams = {
@@ -31,6 +33,7 @@ export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
         birthDate: params.artist.birthDate,
         birthPlace: params.artist.birthPlace,
         deathDate: params.artist.deathDate,
+        externalIds: params.artist.externalIds,
         style: {marginTop: 15, marginBottom: 15}
     }
 

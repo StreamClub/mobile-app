@@ -1,29 +1,34 @@
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions} from 'react-native';
-import { BodyText } from './BasicComponents/BodyText';
-import { colors } from '../assets/styles/colors';
+import { BodyText } from './BodyText';
+import { colors } from '../../assets/styles/colors';
+import { LocalIcon } from '../Types/LocalIcon';
 
-const screenWidth = Dimensions.get('window').width;
 
 export type IconWithTextParams = {
-    icon: any,
+    icon: LocalIcon,
     text: string,
     style?: any,
 }
 
 export const IconWithText = (params: IconWithTextParams) => {
     return (
-        <View style={[{flexDirection: 'row', alignItems: 'center'}, params.style]}>
+        <View style={[styles.container, params.style]}>
             <Image
                 source={params.icon}
                 style={styles.iconStyle}
             />
-            <BodyText body={params.text} size='big' color={colors.secondaryBlue} style={{paddingTop: 5, paddingLeft: 4, width: screenWidth/2.5}} />
+            <BodyText body={params.text} size='medium' color={colors.primaryBlack} style={{paddingTop: 5, width: "85%", paddingLeft: 10}} />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: "100%"
+    },
     iconStyle: {
         width: 25,
         aspectRatio: 487 / 512,

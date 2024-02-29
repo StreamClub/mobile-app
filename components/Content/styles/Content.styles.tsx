@@ -24,4 +24,11 @@ export const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'flex-end' 
     },
+    director: {
+        position: 'absolute',
+        top: 90,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+        flexDirection: 'row'
+    },
 });

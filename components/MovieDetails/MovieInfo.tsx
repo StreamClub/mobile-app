@@ -8,7 +8,7 @@ import { MovieDetail } from '../../entities/Details/MovieDetailEntry';
 import { styles } from './styles/MovieDetails.style';
 import { colors } from '../../assets';
 import { getScreenSize } from '../../utils/screenUtils';
-import { ContentDirectors } from '../Content/ContentDirectos';
+import { MovieDirectors } from './MovieDirectors';
 
 type MovieInfoParams = {
     movie: MovieDetail
@@ -42,7 +42,7 @@ export const MovieInfo = (params: MovieInfoParams) => {
                     onLayout={handleTitleTextLayout}
                 />
             </View>
-            <ContentDirectors directors={params.movie.directors} titleTextHeight={titleTextHeight} />
+            <MovieDirectors directors={params.movie.directors} titleTextHeight={titleTextHeight} />
             <View style={[styles.runtime, {top: backgroundSize - 45}]}>
                 <Icon source="timer-outline" size={20}/>
                 <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />

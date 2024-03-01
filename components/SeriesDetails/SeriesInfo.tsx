@@ -7,6 +7,7 @@ import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 import { getScreenSize } from '../../utils/screenUtils';
 import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage';
+import { SeriesCreators } from './SeriesCreators';
 
 type SeriesInfoParams = {
     series: SeriesDetail;
@@ -53,7 +54,7 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
                 <BodyText body={'Cant. espisodios: ' + params.series.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
                 <BodyText body={'Cant. temporadas: ' + params.series.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
-                <BodyText body={'Creador: ' + params.series.createdBy[0]} size='medium' style={{fontWeight: 'bold'}} />
+                <SeriesCreators creators={params.series.createdBy} />
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
                 <TmdbImage

@@ -23,7 +23,7 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
     const releaseYear = params.series.releaseDate? params.series.releaseDate.getFullYear() : " ? ";
     const lastYear = params.series.lastAirDate? params.series.lastAirDate.getFullYear() : " ? ";
     const screenWidth = getScreenSize().width;
-    const backgroundSize = 210 + (titleTextHeight/30 - 2)*30
+    const backgroundSize = 230 + (titleTextHeight/30 - 2)*30
 
     return(
         <ImageBackground
@@ -52,9 +52,11 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
                     body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
-                <BodyText body={'Cant. espisodios: ' + params.series.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
-                <BodyText body={'Cant. temporadas: ' + params.series.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
-                <SeriesCreators creators={params.series.createdBy} />
+                <View style={{width: screenWidth - 190}}>
+                    <BodyText body={'Cant. espisodios: ' + params.series.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
+                    <BodyText body={'Cant. temporadas: ' + params.series.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
+                    <SeriesCreators creators={params.series.createdBy} />
+                </View>
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
                 <TmdbImage

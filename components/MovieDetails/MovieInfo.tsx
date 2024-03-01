@@ -36,16 +36,19 @@ export const MovieInfo = (params: MovieInfoParams) => {
             }
             <View style={styles.textOverlay}>
                 <TitleText
-                    body={params.movie.title + ' (' + (params.movie.releaseDate.getFullYear()? params.movie.releaseDate.getFullYear(): ' ? ') + ')'} 
+                    body={params.movie.title + 
+                        (params.movie.releaseDate.getFullYear()? ' (' + params.movie.releaseDate.getFullYear() + ')' : '')} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} 
                     onLayout={handleTitleTextLayout}
                 />
-            </View>
-            <MovieDirectors directors={params.movie.directors} titleTextHeight={titleTextHeight} />
-            <View style={[styles.runtime, {top: backgroundSize - 45}]}>
-                <Icon source="timer-outline" size={20}/>
-                <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />
+                <View style={{width: screenWidth - 190, marginTop: 10}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Icon source="timer-outline" size={20}/>
+                        <BodyText body={' ' + params.movie.runtime + ' min'} size='big' style={{fontWeight: 'bold'}} />
+                    </View>
+                    <MovieDirectors directors={params.movie.directors} titleTextHeight={titleTextHeight} />
+                </View>
             </View>
             <View style={[styles.imageOverlay, {top: backgroundSize - 90}]}>
                 <TmdbImage 

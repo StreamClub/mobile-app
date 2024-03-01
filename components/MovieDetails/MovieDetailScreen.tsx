@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, ScrollView, } from 'react-native';
 import { Chip } from 'react-native-paper';
-import { BodyText } from '../components/BasicComponents/BodyText';
-import { colors } from "../assets";
-import { CastList } from '../components/CastList';
-import { Content, RecommendsList } from '../components/RecomendsList';
-import { MoviePlatforms } from '../components/MovieDetails/MoviePlatforms';
-import { MovieDetail } from '../entities/Details/MovieDetailEntry';
-import { MovieInfo } from '../components/MovieDetails/MovieInfo';
+import { BodyText } from '../BasicComponents/BodyText';
+import { colors } from "../../assets";
+import { CastList } from '../CastList';
+import { Content, RecommendsList } from '../RecommendsList';
+import { MoviePlatforms } from './MoviePlatforms';
+import { MovieDetail } from '../../entities/Details/MovieDetailEntry';
+import { MovieInfo } from './MovieInfo';
 
 type MovieDetailScreenParams = {
     movie: MovieDetail;

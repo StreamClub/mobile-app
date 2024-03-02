@@ -23,5 +23,13 @@ export class Content {
         })
     }
 
+    public static serialize(content: Content): any {
+        return {
+            id: content.id,
+            poster: content.poster,
+            title: content.title,
+            seen: content.seen,
+            inWatchlist: content.inWatchlist,
+        }
+    }
 }
-

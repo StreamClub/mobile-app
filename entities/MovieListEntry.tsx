@@ -1,4 +1,4 @@
-import { ContentEntry } from "./ContentListEntry"
+import { ContentEntry } from './ContentListEntry'
 
 export class MovieEntry extends ContentEntry {
     public year: string
@@ -12,8 +12,14 @@ export class MovieEntry extends ContentEntry {
         const content = ContentEntry.fromJson(movie)
         return new MovieEntry({
             year: movie.releaseDate.split('-')[0],
-            ...content
+            ...content,
         })
     }
 
+    public static serialize(movie: MovieEntry): any {
+        return {
+            ...ContentEntry.serialize(movie),
+            year: movie.year,
+        }
+    }
 }

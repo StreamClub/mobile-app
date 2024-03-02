@@ -1,5 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { CATEGORIES, INITIAL_CATEGORY } from '../../constants'
+import { MovieEntry } from '../../entities/MovieListEntry'
+import { SeriesEntry } from '../../entities/SeriesListEntry'
+import { ArtistEntry } from '../../entities/ArtistListEntry'
 
 const searchContentSlice = createSlice({
     name: 'searchContent',
@@ -7,7 +10,7 @@ const searchContentSlice = createSlice({
         category: CATEGORIES[INITIAL_CATEGORY],
         textSearched: '',
         loading: false,
-        results: [],
+        results: [] as (MovieEntry | SeriesEntry | ArtistEntry)[],
     },
     reducers: {
         setCategory(state, action: PayloadAction<string>) {
@@ -19,7 +22,10 @@ const searchContentSlice = createSlice({
         setLoading(state, action: PayloadAction<boolean>) {
             state.loading = action.payload
         },
-        setResults(state, action: PayloadAction<any>) {
+        setResults(
+            state,
+            action: PayloadAction<MovieEntry[] | SeriesEntry[] | ArtistEntry[]>
+        ) {
             state.results = action.payload
         },
     },

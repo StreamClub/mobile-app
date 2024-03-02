@@ -28,4 +28,16 @@ export class ArtistEntry {
             gender: artist.gender,
         })
     }
+
+    public static serialize(artist: ArtistEntry): any {
+        return {
+            id: artist.id,
+            name: artist.name,
+            poster: artist.poster,
+            birthDate: artist.birthDate,
+            birthPlace: artist.birthPlace,
+            deathDate: artist.deathDate,
+            gender: artist.gender,
+        }
+    }
 }

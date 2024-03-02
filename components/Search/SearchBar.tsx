@@ -15,6 +15,10 @@ import { setLoading, setResults } from '../../store/slices/searchContentSlice'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import { useDataToSerieEntryList } from '../../hooks/search/useSeriesEntryList'
 import { useSearchContent } from '../../hooks/search/useSearchContent'
+import { serializeSearchResults } from '../../utils/serializeSearchResults'
+import { MovieEntry } from '../../entities/MovieListEntry'
+import { SeriesEntry } from '../../entities/SeriesListEntry'
+import { ArtistEntry } from '../../entities/ArtistListEntry'
 
 type SearchBarProps = {}
 
@@ -30,16 +34,16 @@ export const SearchContentBar = (params: SearchBarProps) => {
     // ------------------------------------------------------------
     const onSuccessSearch = (response: any) => {
         console.log('Busqueda exitosa: ')
-
+        let parsedResponse = [] as (MovieEntry | SeriesEntry | ArtistEntry)[]
         switch (category) {
             case MOVIES_NAME:
-                dispatch(setResults(toMovieListEntries(response.data)))
+                parsedResponse = toMovieListEntries(response.data)
                 break
             case SERIES_NAME:
-                dispatch(setResults(toSeriesListEntries(response.data)))
+                parsedResponse = toSeriesListEntries(response.data)
                 break
             case ARTISTS_NAME:
-                dispatch(setResults(toArtistListEntries(response.data)))
+                parsedResponse = toArtistListEntries(response.data)
                 break
             case USERS_NAME:
                 console.log('TODO: Procesar respuesta')
@@ -47,6 +51,8 @@ export const SearchContentBar = (params: SearchBarProps) => {
             default:
                 break
         }
+        const serializedData = serializeSearchResults(parsedResponse, category)
+        dispatch(setResults(serializedData))
         dispatch(setLoading(false))
     }
 

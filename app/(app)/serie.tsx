@@ -8,17 +8,14 @@ import { LoadingComponent } from '../../components/BasicComponents/LoadingCompon
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
 import { SerieDetailScreen } from '../../screens/SerieDetailScreen'
-import { SeasonDetailsParams } from './season'
 import { Content } from '../../components/RecomendsList'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { useSeriesDetails } from '../../hooks/useSeriesDetails'
-import { Season } from '../../entities/Details/Series/Season'
-import { Platform } from '../../entities/Details/Platform'
-import { SeriesHeader } from '../../components/SeriesDetails/SeriesHeader'
+import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader'
 
 export default function Serie() {
     const session = useSession()
-    const {series, setSeries} = useSeriesDetails()
+    const { series, setSeries } = useSeriesDetails()
     const params = useLocalSearchParams<ContentDetailsParams>()
     const [serieLoaded, setSerieLoaded] = useState(false)
     const serieId = params.id
@@ -38,7 +35,7 @@ export default function Serie() {
         }
         loadSerie()
     }, [])
-    
+
     const onRedommendPress = (series: Content) => {
         const newParams: ContentDetailsParams = {
             id: series.id.toString(),
@@ -50,9 +47,7 @@ export default function Serie() {
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerRight: () => (
-                        <SeriesHeader series={series} />
-                    ),
+                    headerRight: () => <SeriesHeader series={series} />,
                 }}
             />
             {serieLoaded && series ? (

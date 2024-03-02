@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable } from 'react-native'
 import { WatchlistButton } from '../BasicComponents/WatchlistButton'
-import { styles } from '../SeriesList/styles/SeriesList.style'
+import { styles } from '../Series/SeriesList/styles/SeriesList.style'
 import { ContentType } from '../../entities/ContentType'
 import { useWatchlistPress } from '../../hooks/useWatchlistPress'
 import { Content } from '../../entities/Content'

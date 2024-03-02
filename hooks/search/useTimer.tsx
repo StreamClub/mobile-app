@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { DELAY_SEARCH } from '../constants'
+import { DELAY_SEARCH } from '../../constants'
 
 export const useTimer = (
     setShowLoading: (loading: boolean) => void,

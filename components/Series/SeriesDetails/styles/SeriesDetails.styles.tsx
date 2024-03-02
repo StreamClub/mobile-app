@@ -1,5 +1,5 @@
-import { StyleSheet} from 'react-native'
-import { colors } from '../../../assets';
+import { StyleSheet } from 'react-native'
+import { colors } from '../../../../assets'
 
 export const styles = StyleSheet.create({
     platforms: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         height: 160,
         width: 180,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     platformImage: {
         width: 50,
@@ -30,12 +30,12 @@ export const styles = StyleSheet.create({
         margin: 20,
         borderRadius: 20,
         flexDirection: 'row',
-        flex: 1
+        flex: 1,
     },
     episodePhoto: {
         flex: 1,
         margin: 10,
-        borderRadius: 20
+        borderRadius: 20,
     },
     iconsStyle: {
         height: 35,
@@ -43,11 +43,11 @@ export const styles = StyleSheet.create({
     },
     seasons: {
         marginLeft: 20,
-        marginBottom: 20
+        marginBottom: 20,
     },
     seasonImage: {
         width: 150,
         height: 230,
-        borderRadius: 20
-    }
-});
+        borderRadius: 20,
+    },
+})

@@ -1,8 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
-import { BodyText } from '../BasicComponents/BodyText'
-import { colors } from '../../assets'
-import { AvailableText } from '../Content/AvailableText'
+import { BodyText } from '../../BasicComponents/BodyText'
+import { colors } from '../../../assets'
+import { AvailableText } from '../../Content/AvailableText'
 
 type SeriesStateProps = {
     status: string

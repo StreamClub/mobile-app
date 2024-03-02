@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { TitleText } from '../BasicComponents/TitleText'
+import { TitleText } from '../../BasicComponents/TitleText'
 import React from 'react'
 
 type SeriesTitleProps = {

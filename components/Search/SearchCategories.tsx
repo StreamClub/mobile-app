@@ -3,20 +3,20 @@ import { colors } from '../../assets'
 import { CATEGORIES, INITIAL_CATEGORY } from '../../constants'
 import { ButtonGroup } from '@rneui/themed'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
-import { setCategory } from '../../store/slices/searchContentSlice'
+import {
+    setCategory,
+    setTextSearched,
+} from '../../store/slices/searchContentSlice'
 
-type SegmentedButtonProps = {
-    onChangeTextSearched: (text: string) => void
-}
+type SearchCategories = {}
 
-export const SegmentedButton = (params: SegmentedButtonProps) => {
+export const SearchCategories = (params: SearchCategories) => {
     const dispatch = useAppDispatch()
-    const { onChangeTextSearched } = params
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
 
     const onPress = (value: number) => {
         // setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
-        onChangeTextSearched('')
+        dispatch(setTextSearched(''))
         setSelectedIndex(value)
         dispatch(setCategory(CATEGORIES[value]))
     }

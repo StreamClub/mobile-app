@@ -1,9 +1,9 @@
 import React from 'react'
 import { SeriesTitle } from './SeriesTitle'
 import { SeriesState } from './SeriesState'
-import { SeriesEntry } from '../../entities/SeriesListEntry'
-import { toAvailableText } from '../../utils'
-import { formatTitle } from '../../utils/formatTitle'
+import { SeriesEntry } from '../../../entities/SeriesListEntry'
+import { toAvailableText } from '../../../utils'
+import { formatTitle } from '../../../utils/formatTitle'
 
 type SeriesBodyProps = {
     serieEntry: SeriesEntry

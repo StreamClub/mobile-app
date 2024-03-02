@@ -1,9 +1,9 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
-import { styles } from './SeriesList/styles/SeriesList.style'
-import { SeriesEntry } from '../entities/SeriesListEntry'
-import { ContentListEntry } from './Content/ContentListEntry'
-import { ContentType } from '../entities/ContentType'
+import { styles } from './styles/SeriesList.style'
+import { SeriesEntry } from '../../../entities/SeriesListEntry'
+import { ContentListEntry } from '../../Content/ContentListEntry'
+import { ContentType } from '../../../entities/ContentType'
 
 type SeriesListProps = {
     seriesList: SeriesEntry[]

@@ -42,20 +42,6 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.secondaryWhite + '85',
         width: screenWidth
     },
-    director: {
-        position: 'absolute',
-        top: 90,
-        alignSelf: 'flex-start',
-        marginLeft: 10,
-        flexDirection: 'row'
-    },
-    runtime: {
-        position: 'absolute',
-        top: 125,
-        alignSelf: 'flex-start',
-        marginLeft: 10,
-        flexDirection: 'row'
-    },
     platforms: {
         marginLeft: 20,
         marginTop: 5,

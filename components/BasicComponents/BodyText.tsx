@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
-import * as Font from 'expo-font'
 import { TextParams } from './Types/TextParams'
 import { colors } from '../../assets'
 

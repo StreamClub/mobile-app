@@ -22,32 +22,49 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
         <View style={styles.container}>
             <SeriesInfo series={params.series} />
             <SeriesPlatforms platforms={params.series.platforms} status={params.series.status} />
-            {params.series.nextEpisode? 
-                <NextEpisode episode={params.series.nextEpisode} platforms={params.series.platforms}/>
-                : null}
-            <View style={styles.description}>
-                <BodyText body={params.series.overview} />
-                <View style={{height: 60}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        {params.series.genres.map((genre, index) => 
-                            <Chip 
-                                key={index} 
-                                style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
-                                mode="outlined"
-                                textStyle={{ color: colors.primaryBlack }}>
-                                    {genre}
-                            </Chip>
-                        )}
-                    </ScrollView>
+            {params.series.nextEpisode?
+                <NextEpisode episode={params.series.nextEpisode} platforms={params.series.platforms}/> :
+                <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+                    <BodyText
+                        body='Felicitaciones! Viste todos los capítulos.'
+                        size='big'
+                        color={colors.primaryBlue} />
                 </View>
+            }
+            <View style={styles.description}>
+                {params.series.overview?
+                    <BodyText body={params.series.overview} /> :
+                    <BodyText body="Sin descripción" color={colors.primaryRed} size='medium' /> 
+                }
+                {params.series.genres.length > 0?
+                    <View style={{height: 60}}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                            {params.series.genres.map((genre, index) => 
+                                <Chip 
+                                    key={index} 
+                                    style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
+                                    mode="outlined"
+                                    textStyle={{ color: colors.primaryBlack }}>
+                                        {genre}
+                                </Chip>
+                            )}
+                        </ScrollView>
+                    </View> : null
+                }
             </View>
-            <SeasonsList seasons={params.series.seasons} platforms={params.series.platforms} />
-            <CastList cast={params.series.cast} style={styles.cast} />
-            <RecommendsList 
-                onRecommendPress={params.onRecommendPress} 
-                title='Series similares:'
-                contents={params.series.similar} 
-                style={styles.recommends} />
+            {params.series.seasons.length > 0?
+                <SeasonsList seasons={params.series.seasons} platforms={params.series.platforms} /> : null
+            }
+            {params.series.cast.length > 0?
+                <CastList cast={params.series.cast} style={styles.cast} /> : null
+            }
+            {params.series.similar.length > 0?
+                <RecommendsList 
+                    onRecommendPress={params.onRecommendPress} 
+                    title='Series similares:'
+                    contents={params.series.similar} 
+                    style={styles.recommends} /> : null
+            }
         </View>
         </ScrollView>
     )

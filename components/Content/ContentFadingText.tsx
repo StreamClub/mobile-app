@@ -36,16 +36,19 @@ export const ContentFadingText = (params: ContentFadingTextParams) => {
         return () => clearInterval(interval);
     }, []);
 
-    console.log(params.text);
     return (
-        
-            params.text.length > 1?
-                <Animated.View style={{opacity: fadeAnim}}>
-                    <BodyText 
-                        body={' ' + params.text[directorIndex]} 
-                        size={params.size} 
-                        style={{fontWeight: 'bold'}} />
-                </Animated.View> :
-                <BodyText body={' ' + params.text[0]} size='big' style={{fontWeight: 'bold'}} />
+        params.text.length > 1?
+            <Animated.View style={{opacity: fadeAnim, flex: 1}}>
+                <BodyText 
+                    body={' ' + params.text[directorIndex]} 
+                    size={params.size} 
+                    style={{fontWeight: 'bold'}} 
+                    numberOfLines={2} />
+            </Animated.View> :
+            <BodyText 
+                body={' ' + params.text[0]} 
+                size={params.size} 
+                style={{fontWeight: 'bold', flex: 1}}
+                numberOfLines={2} />
     )
 }

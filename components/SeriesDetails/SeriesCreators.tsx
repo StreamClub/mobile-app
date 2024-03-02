@@ -8,10 +8,11 @@ type SeriesCreatorsParams = {
 }
 
 export const SeriesCreators = (params: SeriesCreatorsParams) => {
+    const creators = params.creators[0]? params.creators : ['sin datos'];
     return (
         <View style={{flexDirection: 'row'}}>
-            <BodyText body={'Creador: '} size='medium' style={{fontWeight: 'bold'}} />
-            <ContentFadingText text={params.creators} size='medium' />
+            <BodyText body={'Creador:'} size='medium' style={{fontWeight: 'bold'}} />
+            <ContentFadingText text={creators} size='medium' />
         </View>
     )
 }

@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         left: 5,
-        alignSelf: 'center',
+        alignSelf: 'center'
     },
     posterImage: {
         width: 170,

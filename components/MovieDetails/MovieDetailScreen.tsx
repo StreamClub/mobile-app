@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, ScrollView, } from 'react-native';
+import { View, StyleSheet, ScrollView, } from 'react-native';
 import { Chip } from 'react-native-paper';
-import { BodyText } from '../BasicComponents/BodyText';
-import { colors } from "../../assets";
-import { CastList } from '../CastList';
-import { Content, RecommendsList } from '../RecommendsList';
-import { MoviePlatforms } from './MoviePlatforms';
 import { MovieDetail } from '../../entities/Details/MovieDetailEntry';
+import { Content, RecommendsList } from '../RecommendsList';
 import { MovieInfo } from './MovieInfo';
+import { MoviePlatforms } from './MoviePlatforms';
+import { BodyText } from '../BasicComponents/BodyText';
+import { colors } from '../../assets';
+import { CastList } from '../CastList';
 
 type MovieDetailScreenParams = {
     movie: MovieDetail;
@@ -21,27 +21,36 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
             <MovieInfo movie={params.movie} />
             <MoviePlatforms platforms={params.movie.platforms} />
             <View style={styles.description}>
-                <BodyText body={params.movie.overview} />
-                <View style={{height: 60}}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                        {params.movie.genres.map((genre, index) => 
-                            <Chip 
-                                key={index} 
-                                style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
-                                mode="outlined"
-                                textStyle={{ color: colors.primaryBlack }}>
-                                    {genre}
-                            </Chip>
-                        )}
-                    </ScrollView>
-                </View>
+                {params.movie.overview?
+                    <BodyText body={params.movie.overview} /> :
+                    <BodyText body="Sin descripción" color={colors.primaryRed} size='medium' /> 
+                }
+                {params.movie.genres.length > 0?
+                    <View style={{height: 60}}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+                            {params.movie.genres.map((genre, index) => 
+                                <Chip 
+                                    key={index} 
+                                    style={{margin: 10, backgroundColor: 'transparent', borderColor: colors.primaryBlack, height: 40}}
+                                    mode="outlined"
+                                    textStyle={{ color: colors.primaryBlack }}>
+                                        {genre}
+                                </Chip>
+                            )}
+                        </ScrollView>
+                    </View> : null
+                }
             </View>
-            <CastList cast={params.movie.cast} style={styles.castStyle}/>
-            <RecommendsList 
-                contents={params.movie.similar} 
-                style={styles.recommends} 
-                title='Peliculas similares:'
-                onRecommendPress={params.onRecommendPress}/>
+            {params.movie.cast.length > 0?
+                <CastList cast={params.movie.cast} style={styles.castStyle}/> : null
+            }
+            {params.movie.similar.length > 0?
+                <RecommendsList 
+                    contents={params.movie.similar} 
+                    style={styles.recommends} 
+                    title='Peliculas similares:'
+                    onRecommendPress={params.onRecommendPress}/> : null
+            }
         </View>
         </ScrollView>
     )

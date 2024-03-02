@@ -10,7 +10,7 @@ const searchContentSlice = createSlice({
         category: CATEGORIES[INITIAL_CATEGORY],
         textSearched: '',
         loading: false,
-        results: [] as (MovieEntry | SeriesEntry | ArtistEntry)[],
+        results: [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[],
     },
     reducers: {
         setCategory(state, action: PayloadAction<string>) {

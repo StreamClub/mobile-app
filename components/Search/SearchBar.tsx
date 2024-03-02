@@ -20,9 +20,7 @@ import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 
-type SearchBarProps = {}
-
-export const SearchContentBar = (params: SearchBarProps) => {
+export const SearchContentBar = () => {
     const { textSearched, loading, category } = useAppSelector(
         (state) => state.searchContent
     )
@@ -34,7 +32,7 @@ export const SearchContentBar = (params: SearchBarProps) => {
     // ------------------------------------------------------------
     const onSuccessSearch = (response: any) => {
         console.log('Busqueda exitosa: ')
-        let parsedResponse = [] as (MovieEntry | SeriesEntry | ArtistEntry)[]
+        let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[]
         switch (category) {
             case MOVIES_NAME:
                 parsedResponse = toMovieListEntries(response.data)

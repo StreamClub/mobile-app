@@ -5,14 +5,15 @@ import { MovieEntry } from '../../entities/MovieListEntry'
 import { ARTISTS_NAME, MOVIES_NAME, SERIES_NAME } from '../../constants'
 import { SeriesList } from '../SeriesList'
 import { MovieList } from '../MovieList'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
 
 type ContentListProps = {
-    contentType: string
     contentEntry: ContentEntry[]
 }
 
 export const ContentList = (params: ContentListProps) => {
-    switch (params.contentType) {
+    const { category } = useAppSelector((state) => state.searchContent)
+    switch (category) {
         case SERIES_NAME:
             return (
                 <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />

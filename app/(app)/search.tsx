@@ -28,16 +28,16 @@ import { useMovieEntryList } from '../../hooks/useMovieEntryList'
 import { useSeriesEntryList } from '../../hooks/useSeriesEntryList'
 import { SegmentedButton } from '../../components/Search/SegmentedButton'
 import { useTimer } from '../../hooks/useTimer'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
 
 export default function Search() {
     // States
     // ------------------------------------------------------------
     const session = useSession()
+    const { category } = useAppSelector((state) => state.searchContent)
     const [textSearched, setTextSearched] = useState('')
     const [showLoading, setShowLoading] = useState(false)
-    const [selectedCategory, setSelectedCategory] = useState(
-        CATEGORIES[INITIAL_CATEGORY]
-    )
+
     const { movieList, setMovieListEntries } = useMovieEntryList()
     const { seriesList, setSeriesListEntries } = useSeriesEntryList()
     const [artistList, setArtistList] = useState<ArtistEntry[]>([])
@@ -73,18 +73,18 @@ export default function Search() {
 
         const queryParams: SearchParams = { query: text, page: 1 }
 
-        if (selectedCategory == MOVIES_NAME) {
+        if (category == MOVIES_NAME) {
             searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
-        } else if (selectedCategory == SERIES_NAME) {
+        } else if (category == SERIES_NAME) {
             searchSeries(session, queryParams, onSuccessSearch, onFailureSearch)
-        } else if (selectedCategory == ARTISTS_NAME) {
+        } else if (category == ARTISTS_NAME) {
             searchArtists(
                 session,
                 queryParams,
                 onSuccessSearch,
                 onFailureSearch
             )
-        } else if (selectedCategory == USERS_NAME) {
+        } else if (category == USERS_NAME) {
             searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
         }
     }
@@ -119,11 +119,11 @@ export default function Search() {
     const onSuccessSearch = (response: any) => {
         console.log('Busqueda exitosa: ')
 
-        if (selectedCategory == MOVIES_NAME) {
+        if (category == MOVIES_NAME) {
             setMovieListEntries(response.data)
-        } else if (selectedCategory == SERIES_NAME) {
+        } else if (category == SERIES_NAME) {
             setSeriesListEntries(response.data)
-        } else if (selectedCategory == ARTISTS_NAME) {
+        } else if (category == ARTISTS_NAME) {
             processArtistResponseData(response.data)
         } else {
             console.log('TODO: Procesar respuesta')
@@ -181,10 +181,7 @@ export default function Search() {
                 contentList={contentList}
                 textSearched={textSearched}
             >
-                <ContentList
-                    contentType={selectedCategory}
-                    contentEntry={contentList}
-                />
+                <ContentList contentEntry={contentList} />
             </SearchList>
         )
     }
@@ -216,11 +213,11 @@ export default function Search() {
     // ------------------------------------------------------------
 
     const renderResultsList = () => {
-        if (selectedCategory == MOVIES_NAME) {
+        if (category == MOVIES_NAME) {
             return renderContentList(movieList)
-        } else if (selectedCategory == SERIES_NAME) {
+        } else if (category == SERIES_NAME) {
             return renderContentList(seriesList)
-        } else if (selectedCategory == ARTISTS_NAME) {
+        } else if (category == ARTISTS_NAME) {
             return renderArtistList()
         }
     }
@@ -234,10 +231,7 @@ export default function Search() {
                 onSubmit={onSubmit}
             />
 
-            <SegmentedButton
-                setSelectedCategory={setSelectedCategory}
-                onChangeTextSearched={onChangeTextSearched}
-            />
+            <SegmentedButton onChangeTextSearched={onChangeTextSearched} />
 
             {textSearched.length == 0
                 ? renderSearchHistoryTitle()

@@ -25,7 +25,7 @@ export const EpisodeList = (params: EpisodeListEntry) => {
     const contentType = new ContentType('episode')
 
     return(
-        <Pressable onPress={() => setOpenModal(true)} style={styles.episode} >
+        <Pressable onPress={() => params.episode.overview? setOpenModal(true) : null } style={styles.episode} >
             <View style={styles.episode} >
                 <TmdbImage 
                     resource={episode.poster} 

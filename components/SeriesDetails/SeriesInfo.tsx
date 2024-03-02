@@ -20,8 +20,10 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
         setTitleTextHeight(event.nativeEvent.layout.height);
     };
 
-    const releaseYear = params.series.releaseDate? params.series.releaseDate.getFullYear() : " ? ";
-    const lastYear = params.series.lastAirDate? params.series.lastAirDate.getFullYear() : " ? ";
+    const releaseYear = params.series.releaseDate? params.series.releaseDate.getFullYear() : "Desconocido";
+    const lastYear = params.series.lastAirDate? params.series.lastAirDate.getFullYear() : "Desconocido";
+    const totalEpisodes = params.series.totalEpisodes? params.series.totalEpisodes : "sin datos";
+    const totalSeasons = params.series.totalSeasons? params.series.totalSeasons : "sin datos";
     const screenWidth = getScreenSize().width;
     const backgroundSize = 230 + (titleTextHeight/30 - 2)*30
 
@@ -44,17 +46,17 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
                 />
                 {(params.series.status === 'Finalizada' || params.series.status === 'Cancelada')?
                 <TitleText 
-                    body={"(" + releaseYear + ' - ' + (lastYear? lastYear : " ? ") + ")"} 
+                    body={"(" + releaseYear + ' - ' + lastYear + ")"} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}} /> : null}
                 {params.series.status === 'Serie en emisión'?
                 <TitleText 
-                    body={"(" + (releaseYear? releaseYear : " ? ") + ' - Presente)'} 
+                    body={"(" + releaseYear + ' - Presente)'} 
                     size='big' 
                     style={{width: screenWidth - 10, fontWeight: 'bold'}}/> : null}
                 <View style={{width: screenWidth - 190}}>
-                    <BodyText body={'Cant. espisodios: ' + params.series.totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
-                    <BodyText body={'Cant. temporadas: ' + params.series.totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
+                    <BodyText body={'Cant. espisodios: ' + totalEpisodes} size='medium' style={{fontWeight: 'bold'}} />
+                    <BodyText body={'Cant. temporadas: ' + totalSeasons} size='medium' style={{fontWeight: 'bold'}} />
                     <SeriesCreators creators={params.series.createdBy} />
                 </View>
             </View>

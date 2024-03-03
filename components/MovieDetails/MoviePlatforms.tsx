@@ -1,11 +1,11 @@
 import React from 'react'
 import { BodyText } from '../BasicComponents/BodyText'
 import { View } from 'react-native'
-import { SeeContentButtom } from '../Content/SeeContentButtom'
+import { SeeContentButton } from '../Content/SeeContentButton'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/MovieDetails.style'
 import { colors } from '../../assets'
-import { ContentPlaforms } from '../Content/ContentPlatforms'
+import { ContentPlatforms } from '../Content/ContentPlatforms'
 import { Platform } from '../../entities/Details/Platform'
 
 export type PlatformsEntry = {
@@ -25,14 +25,14 @@ export const MoviePlatforms = (params: PlatformsEntry) => {
                             alignItems: 'center',
                         }}
                     >
-                        <ContentPlaforms
+                        <ContentPlatforms
                             logos={params.platforms.map(
                                 (platform) => platform.logoPath
                             )}
                         />
                         <Divider style={styles.divider} />
                         <View style={styles.buttom}>
-                            <SeeContentButtom platforms={params.platforms} />
+                            <SeeContentButton platforms={params.platforms} />
                         </View>
                     </View>
                 </>

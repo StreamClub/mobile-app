@@ -3,7 +3,7 @@ import { BodyText } from '../../BasicComponents/BodyText'
 import { View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { colors } from '../../../assets'
-import { ContentPlaforms } from '../../Content/ContentPlatforms'
+import { ContentPlatforms } from '../../Content/ContentPlatforms'
 import { styles } from './styles/SeriesDetails.styles'
 import { Platform } from '../../../entities/Details/Platform'
 
@@ -25,7 +25,7 @@ export const SeriesPlatforms = (params: PlatformsEntry) => {
                             alignItems: 'center',
                         }}
                     >
-                        <ContentPlaforms
+                        <ContentPlatforms
                             logos={params.platforms.map(
                                 (platform) => platform.logoPath
                             )}
@@ -37,7 +37,7 @@ export const SeriesPlatforms = (params: PlatformsEntry) => {
                     size="big"
                     color={colors.primaryRed}
                     body="No disponible en ninguna plataforma."
-                    style={{ width: 180, margin: 10 }}
+                    style={{ margin: 10 }}
                 />
             )}
             <Divider style={styles.divider} />

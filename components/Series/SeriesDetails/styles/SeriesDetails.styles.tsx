@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: 5,
         height: 160,
-        width: 180,
+        width: screenWidth - 185,
         justifyContent: 'center',
     },
     platformImage: {

@@ -82,7 +82,7 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
                 ) : null}
                 <View style={{ width: screenWidth - 190 }}>
                     <BodyText
-                        body={'Cant. espisodios: ' + totalEpisodes}
+                        body={'Cant. episodios: ' + totalEpisodes}
                         size="medium"
                         style={{ fontWeight: 'bold' }}
                     />

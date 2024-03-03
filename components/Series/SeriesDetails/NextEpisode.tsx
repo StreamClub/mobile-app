@@ -3,7 +3,7 @@ import { styles } from './styles/SeriesDetails.styles'
 import { View } from 'react-native'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
-import { SeeContentButtom } from '../../Content/SeeContentButtom'
+import { SeeContentButton } from '../../Content/SeeContentButton'
 import { TmdbImage, TmdbImageType } from '../../BasicComponents/TmdbImage'
 import { Episode } from '../../../entities/Details/Series/Episode'
 import { Platform } from '../../../entities/Details/Platform'
@@ -51,7 +51,7 @@ export const NextEpisode = (params: NextEpisodeEntry) => {
                             margin: 10,
                         }}
                     >
-                        <SeeContentButtom platforms={params.platforms} />
+                        <SeeContentButton platforms={params.platforms} />
                     </View>
                 ) : null}
             </View>

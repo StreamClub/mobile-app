@@ -4,7 +4,7 @@ import { TitleText } from '../components/BasicComponents/TitleText'
 import { SeasonDetail } from '../entities/Details/Series/SeasonDetail'
 import { Episode } from '../entities/Details/Series/Episode'
 import { Platform } from '../entities/Details/Platform'
-import { SeeContentButtom } from '../components/Content/SeeContentButtom'
+import { SeeContentButton } from '../components/Content/SeeContentButton'
 import { SeasonInfo } from '../components/Series/SeasonDetails/SeasonInfo'
 import { EpisodeList } from '../components/Series/SeasonDetails/EpisodeList'
 
@@ -27,7 +27,7 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
                         marginTop: 20,
                     }}
                 >
-                    <SeeContentButtom
+                    <SeeContentButton
                         platforms={params.platforms}
                         text="Ver serie"
                     />

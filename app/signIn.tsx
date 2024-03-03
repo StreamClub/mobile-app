@@ -8,12 +8,17 @@ import { CustomButton } from '../components/BasicComponents/CustomButton'
 import React from 'react'
 
 import { logIn, logInBody } from '../apiCalls/auth'
+import { useAppDispatch } from '../hooks/redux/useAppDispatch'
+import { setErrorMessage, setShowError } from '../store/slices/errorResponseSlice'
+import { ErrorHandler } from '../components/BasicComponents/ErrorHandler'
+import { useErrorHandler } from '../hooks/useErrorHandler'
 
 export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
+    const {setError} = useErrorHandler()
 
     const session = useSession()
     const signIn = session?.signIn
@@ -27,8 +32,8 @@ export default function Page() {
     }
 
     const onFailureLogIn = (error: any) => {
-        console.log(error)
-        setLoading(false)
+        setError(error);
+        setLoading(false);
     }
 
     const onPressSignIn = () => {
@@ -145,7 +150,7 @@ export default function Page() {
             {renderPasswordInput()}
             {renderSignInButton()}
             {renderForgotPasswordText()}
-
+            <ErrorHandler />
             {/* {signInFailed && renderErrorMessage()} */}
         </View>
     )

@@ -1,10 +1,9 @@
 import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
-import { Link } from 'expo-router'
 import { Input } from 'react-native-elements'
-import { Icon, Button } from 'react-native-elements'
+import { Icon } from 'react-native-elements'
 import { useState, createRef } from 'react'
-import { router } from 'expo-router';
-import { useSession } from '../context/ctx';
+import { router } from 'expo-router'
+import { useSession } from '../context/ctx'
 import { CustomButton } from '../components/BasicComponents/CustomButton'
 import React from 'react'
 
@@ -16,7 +15,7 @@ export default function Page() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const session = useSession();
+    const session = useSession()
     const signIn = session?.signIn
 
     const onSuccessLogIn = (response: any) => {
@@ -24,12 +23,11 @@ export default function Page() {
         const accessToken = response.data.token
         const refreshToken = response.data.refreshToken
         signIn?.(accessToken, refreshToken)
-        router.replace('/home');
-        
+        router.replace('/home')
     }
-    
+
     const onFailureLogIn = (error: any) => {
-        console.log(error);
+        console.log(error)
         setLoading(false)
     }
 
@@ -37,12 +35,7 @@ export default function Page() {
         console.log('Iniciando sesión..')
         setLoading(true)
         const body: logInBody = { email, password }
-        logIn(
-            body,
-            session,
-            onSuccessLogIn,
-            onFailureLogIn
-        )
+        logIn(body, session, onSuccessLogIn, onFailureLogIn)
     }
 
     const onPressOpenEye = () => {
@@ -54,12 +47,14 @@ export default function Page() {
     }
 
     const emailIsValid = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
     }
 
     const signInDisabled = () => {
-        return email.length === 0 || password.length === 0 || !emailIsValid(email)
+        return (
+            email.length === 0 || password.length === 0 || !emailIsValid(email)
+        )
     }
 
     const getPasswordIcon = () => {
@@ -68,8 +63,8 @@ export default function Page() {
         return (
             <Icon
                 name={iconName}
-                type='font-awesome'
-                color='black'
+                type="font-awesome"
+                color="black"
                 onPress={() => iconHandler()}
             />
         )
@@ -89,10 +84,10 @@ export default function Page() {
                 containerStyle={styles.inputContainer}
                 onChangeText={setEmail}
                 onEndEditing={onEndEditingEmail}
-                autoCapitalize='none'
+                autoCapitalize="none"
                 autoCorrect={false}
-                textContentType='emailAddress'
-                keyboardType='email-address'
+                textContentType="emailAddress"
+                keyboardType="email-address"
             />
         )
     }
@@ -107,34 +102,35 @@ export default function Page() {
                 onChangeText={setPassword}
                 secureTextEntry={secureTextEntry}
                 containerStyle={styles.inputContainer}
-                autoCapitalize='none'
+                autoCapitalize="none"
                 autoCorrect={false}
             />
         )
     }
 
     const renderSignInButton = () => {
-        return <CustomButton
-            buttonText="Iniciar sesión"
-            disabled={signInDisabled()}
-            onPress={onPressSignIn}
-            fontSize="medium"
-            buttonSize="medium"
-            type='primary'
-            style={{ marginVertical: 10 }}
-            loading={loading}
-        />
+        return (
+            <CustomButton
+                buttonText="Iniciar sesión"
+                disabled={signInDisabled()}
+                onPress={onPressSignIn}
+                fontSize="medium"
+                buttonSize="medium"
+                type="primary"
+                style={{ marginVertical: 10 }}
+                loading={loading}
+            />
+        )
     }
 
     const onPressForgotPassword = () => {
-        router.push('/recoverAccount');
+        router.push('/recoverAccount')
     }
-
 
     const renderForgotPasswordText = () => {
         return (
             <Pressable onPress={onPressForgotPassword}>
-            <Text style={{ color: 'blue' }}>¿Olvidaste tu contraseña?</Text>
+                <Text style={{ color: 'blue' }}>¿Olvidaste tu contraseña?</Text>
             </Pressable>
         )
     }
@@ -145,7 +141,6 @@ export default function Page() {
 
     return (
         <View style={styles.container}>
-
             {renderEmailInput()}
             {renderPasswordInput()}
             {renderSignInButton()}
@@ -181,4 +176,4 @@ const styles = StyleSheet.create({
         backgroundColor: '#F4511E',
         borderRadius: 20,
     },
-});
+})

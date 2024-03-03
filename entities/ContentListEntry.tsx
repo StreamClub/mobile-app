@@ -1,4 +1,4 @@
-import { Content } from "./Content"
+import { Content } from './Content'
 
 export class ContentEntry extends Content {
     public available: boolean
@@ -15,9 +15,15 @@ export class ContentEntry extends Content {
         return new ContentEntry({
             available: json.available,
             score: json.score.toFixed(2),
-            ...content
+            ...content,
         })
     }
 
+    public static serialize(contentEntry: ContentEntry): any {
+        return {
+            ...super.serialize(contentEntry),
+            available: contentEntry.available,
+            score: contentEntry.score,
+        }
+    }
 }
-

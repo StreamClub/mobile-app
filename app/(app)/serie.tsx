@@ -7,15 +7,15 @@ import { getSerie } from '../../apiCalls/series'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
-import { SeriesDetailScreen } from '../../components/SeriesDetails/SeriesDetailScreen'
 import { Content } from '../../components/RecommendsList'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { useSeriesDetails } from '../../hooks/useSeriesDetails'
-import { SeriesHeader } from '../../components/SeriesDetails/SeriesHeader'
+import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader'
+import { SeriesDetailScreen } from '../../components/Series/SeriesDetails/SeriesDetailScreen'
 
 export default function Serie() {
     const session = useSession()
-    const {series, setSeries} = useSeriesDetails()
+    const { series, setSeries } = useSeriesDetails()
     const params = useLocalSearchParams<ContentDetailsParams>()
     const [serieLoaded, setSerieLoaded] = useState(false)
     const serieId = params.id
@@ -35,7 +35,7 @@ export default function Serie() {
         }
         loadSerie()
     }, [])
-    
+
     const onRecommendPress = (series: Content) => {
         const newParams: ContentDetailsParams = {
             id: series.id.toString(),
@@ -47,9 +47,7 @@ export default function Serie() {
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerRight: () => (
-                        <SeriesHeader series={series} />
-                    ),
+                    headerRight: () => <SeriesHeader series={series} />,
                 }}
             />
             {serieLoaded && series ? (

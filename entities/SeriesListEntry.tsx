@@ -1,4 +1,4 @@
-import { ContentEntry } from "./ContentListEntry"
+import { ContentEntry } from './ContentListEntry'
 
 export class SeriesEntry extends ContentEntry {
     public releaseYear: string
@@ -22,7 +22,16 @@ export class SeriesEntry extends ContentEntry {
             lastYear: serie.lastEpisodeReleaseDate
                 ? serie.lastEpisodeReleaseDate.split('-')[0]
                 : '?',
-            ...content
+            ...content,
         })
+    }
+
+    public static serialize(serie: SeriesEntry): any {
+        return {
+            ...ContentEntry.serialize(serie),
+            releaseYear: serie.releaseYear,
+            lastYear: serie.lastYear,
+            status: serie.status,
+        }
     }
 }

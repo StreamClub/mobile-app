@@ -4,7 +4,7 @@ import { ContentCover } from '../Content/ContentCover'
 import { ContentEntry } from '../../entities/ContentListEntry'
 import { ContentDetail } from '../Content/ContentDetail'
 import { ContentType } from '../../entities/ContentType'
-import { styles } from '../SeriesList/styles/SeriesList.style'
+import { styles } from '../Series/SeriesList/styles/SeriesList.style'
 
 type ContentListEntryProps = {
     contentEntry: ContentEntry

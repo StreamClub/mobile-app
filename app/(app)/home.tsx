@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native';
-import React from 'react';
-import { useSession } from '../../context/ctx';
-import { router, Stack } from 'expo-router';
+import { Text, View } from 'react-native'
+import React from 'react'
+import { useSession } from '../../context/ctx'
+import { router } from 'expo-router'
 
 export default function Index() {
-    const session = useSession();
+    const session = useSession()
     const signOut = session?.signOut
     const userId = session?.userId
     const email = session?.email
@@ -12,7 +12,9 @@ export default function Index() {
     const refreshToken = session?.refreshToken
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
             <Text> Sesión iniciada </Text>
             <Text> Bienvenido </Text>
 
@@ -20,45 +22,59 @@ export default function Index() {
             <Text> email: {email} </Text>
             <Text> AccessToken: {accessToken} </Text>
             <Text> RefreshToken: {refreshToken} </Text>
-            
-            
 
             <Text
-                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                style={{
+                    marginVertical: 10,
+                    textDecorationLine: 'underline',
+                    color: 'blue',
+                }}
                 onPress={() => {
                     console.log(refreshToken)
-                    router.push('/search');
-                    
-                }}>
+                    router.push('/search')
+                }}
+            >
                 Ventana de Busqueda
             </Text>
 
             <Text
-                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                style={{
+                    marginVertical: 10,
+                    textDecorationLine: 'underline',
+                    color: 'blue',
+                }}
                 onPress={() => {
-                    router.push('/profile');
-                    
-                }}>
+                    router.push('/profile')
+                }}
+            >
                 Perfil
             </Text>
 
             <Text
-                style={{ marginVertical: 10, textDecorationLine: 'underline', color: 'blue'}}
+                style={{
+                    marginVertical: 10,
+                    textDecorationLine: 'underline',
+                    color: 'blue',
+                }}
                 onPress={() => {
-                    router.push('/services');
-                    
-                }}>
+                    router.push('/services')
+                }}
+            >
                 Servicios
             </Text>
 
             <Text
-                style={{ marginVertical: 20, textDecorationLine: 'underline', color: 'blue'}}
+                style={{
+                    marginVertical: 20,
+                    textDecorationLine: 'underline',
+                    color: 'blue',
+                }}
                 onPress={() => {
-                    signOut?.();
-                }}>
+                    signOut?.()
+                }}
+            >
                 Sign Out
             </Text>
-
         </View>
-    );
+    )
 }

@@ -1,23 +1,17 @@
 import React from 'react'
-import {
-    View,
-    Image,
-    Pressable,
-    StyleSheet,
-    Dimensions,
-    Text,
-} from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { colors } from '../../assets'
 import { BodyText } from '../BasicComponents/BodyText'
 import { TitleText } from '../BasicComponents/TitleText'
-import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText'
-import { IconCollectionEntry } from '../Types/IconCollection'
+import {
+    IconWithText,
+    IconWithTextParams,
+} from '../BasicComponents/IconWithText'
 import { IconCollection } from '../BasicComponents/IconCollection'
-import { Icon } from 'react-native-paper'
-import { formatDate, calculateAge } from '../../utils/dateManager'
+import { formatDate } from '../../utils/dateManager'
 import { getMediaFromExternalId } from '../../utils/socialMediaManager'
 import { ExternalIds } from '../Types/ExternalId'
-import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage'
+import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage'
 import { LocalIcon } from '../Types/LocalIcon'
 
 const screenWidth = Dimensions.get('window').width
@@ -48,7 +42,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
         text: params.birthPlace,
     }
 
-    const seeBioLeyend = "Ver biografía"
+    const seeBioLeyend = 'Ver biografía'
 
     const medias = getMediaFromExternalId(params.externalIds)
 
@@ -62,31 +56,36 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                         width: screenWidth / 2,
                         paddingLeft: 20,
                         marginBottom: 20,
-                        fontWeight: "bold"
+                        fontWeight: 'bold',
                     }}
                 />
-                <View style={{ paddingTop: 20, flex: 1, width:"100%"}}>
+                <View style={{ paddingTop: 20, flex: 1, width: '100%' }}>
                     {params.birthDate && <IconWithText {...birthDateParams} />}
                     {params.deathDate && <IconWithText {...deathDateParams} />}
                     {params.birthPlace && (
                         <IconWithText {...birthPlaceParams} />
                     )}
-                    <BodyText 
+                    <BodyText
                         body={seeBioLeyend}
                         size="medium"
-                        style={{color: colors.primaryBlue, fontWeight: "bold", marginLeft: 30, marginTop:10, textDecorationLine: 'underline'}}
-                        
+                        style={{
+                            color: colors.primaryBlue,
+                            fontWeight: 'bold',
+                            marginLeft: 30,
+                            marginTop: 10,
+                            textDecorationLine: 'underline',
+                        }}
                     />
                 </View>
             </View>
-            <View style={{flex: 0.5}}>
-            <View style={styles.imageContainer}>
-                <TmdbImage
-                    resource={params.poster}
-                    type={TmdbImageType.Person}
-                    style={styles.image}
-                />
-            </View>
+            <View style={{ flex: 0.5 }}>
+                <View style={styles.imageContainer}>
+                    <TmdbImage
+                        resource={params.poster}
+                        type={TmdbImageType.Person}
+                        style={styles.image}
+                    />
+                </View>
                 {true && <IconCollection collection={medias} />}
             </View>
         </View>
@@ -99,7 +98,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     imageContainer: {
-        
         alignItems: 'center',
         justifyContent: 'center',
         height: 300,

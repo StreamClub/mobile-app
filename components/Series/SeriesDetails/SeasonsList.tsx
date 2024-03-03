@@ -1,7 +1,7 @@
 import React from 'react'
 import { Season } from '../../../entities/Details/Series/Season'
 import { styles } from './styles/SeriesDetails.styles'
-import { Pressable, ScrollView, View, Image } from 'react-native'
+import { Pressable, ScrollView, View } from 'react-native'
 import { TitleText } from '../../BasicComponents/TitleText'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'

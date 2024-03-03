@@ -1,18 +1,15 @@
-import React, { useState, useEffect }from 'react';
-import {  StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
-import { colors } from "../../assets";
-import { ServiceEntry } from '../Types/Services';
-import { Carousel } from '../BasicComponents/Carousel';
-import { CarouselEntry } from '../BasicComponents/Types/CarouselParams';
-import { TitleText } from '../BasicComponents/TitleText';
-import { BodyText } from '../BasicComponents/BodyText';
-import { TmdbImageType } from '../BasicComponents/TmdbImage';
-import { getAllServices } from '../../apiCalls/services';
-import { ServiceList, ServiceListParams } from './ServiceList';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Dimensions } from 'react-native'
+import { ServiceEntry } from '../Types/Services'
+import { Carousel } from '../BasicComponents/Carousel'
+import { CarouselEntry } from '../BasicComponents/Types/CarouselParams'
+import { BodyText } from '../BasicComponents/BodyText'
+import { TmdbImageType } from '../BasicComponents/TmdbImage'
+import { ServiceList, ServiceListParams } from './ServiceList'
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get('window').width
 
-const titleText = "Selecciona tus servicios de streaming"
+const titleText = 'Selecciona tus servicios de streaming'
 
 export type ServicesScreenCallbacks = {
     onUserServicePressed: (service: ServiceEntry) => void
@@ -31,7 +28,7 @@ export const ServicesScreen = (params: ServicesScreenParams) => {
     useEffect(() => {
         const _services: CarouselEntry[] = []
 
-        params.userServices.forEach(service => {
+        params.userServices.forEach((service) => {
             _services.push({
                 itemData: service,
                 tmdbResource: service.logoPath,
@@ -39,31 +36,38 @@ export const ServicesScreen = (params: ServicesScreenParams) => {
         })
         setServices(_services)
     }, [params.userServices])
-    
+
     const serviceListParams: ServiceListParams = {
         userServices: params.userServices,
         allServices: params.allServices,
-        onServicePressed: params.callbacks.onCheckService
+        onServicePressed: params.callbacks.onCheckService,
     }
 
     return (
         <View style={styles.container}>
-
-        
-        <View style={styles.topContainer}>
-        <BodyText body={titleText} size="big" style={{marginLeft: 10, marginVertical: 10, alignSelf: "flex-start", fontWeight: 'bold'}}/>
-            <Carousel 
-                items={services} 
-                itemStyle={styles.serviceLogo}
-                containerStyle={styles.carousel}
-                type={TmdbImageType.Cover}
-                onItemPressed={params.callbacks.onUserServicePressed}
-                renderX
-            />
-        </View>
-        <View style={styles.bottomContainer}>
-            <ServiceList {...serviceListParams}/>
-        </View>
+            <View style={styles.topContainer}>
+                <BodyText
+                    body={titleText}
+                    size="big"
+                    style={{
+                        marginLeft: 10,
+                        marginVertical: 10,
+                        alignSelf: 'flex-start',
+                        fontWeight: 'bold',
+                    }}
+                />
+                <Carousel
+                    items={services}
+                    itemStyle={styles.serviceLogo}
+                    containerStyle={styles.carousel}
+                    type={TmdbImageType.Cover}
+                    onItemPressed={params.callbacks.onUserServicePressed}
+                    renderX
+                />
+            </View>
+            <View style={styles.bottomContainer}>
+                <ServiceList {...serviceListParams} />
+            </View>
         </View>
     )
 }
@@ -88,4 +92,4 @@ const styles = StyleSheet.create({
         margin: 10,
         borderWidth: 1,
     },
-});
+})

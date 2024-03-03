@@ -7,11 +7,11 @@ import { getSerie } from '../../apiCalls/series'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
-import { SerieDetailScreen } from '../../screens/SerieDetailScreen'
-import { Content } from '../../components/RecomendsList'
+import { SeriesDetailScreen } from '../../components/SeriesDetails/SeriesDetailScreen'
+import { Content } from '../../components/RecommendsList'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { useSeriesDetails } from '../../hooks/useSeriesDetails'
-import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader'
+import { SeriesHeader } from '../../components/SeriesDetails/SeriesHeader'
 
 export default function Serie() {
     const session = useSession()
@@ -35,8 +35,8 @@ export default function Serie() {
         }
         loadSerie()
     }, [])
-
-    const onRedommendPress = (series: Content) => {
+    
+    const onRecommendPress = (series: Content) => {
         const newParams: ContentDetailsParams = {
             id: series.id.toString(),
         }
@@ -51,9 +51,9 @@ export default function Serie() {
                 }}
             />
             {serieLoaded && series ? (
-                <SerieDetailScreen
+                <SeriesDetailScreen
                     series={series}
-                    onRecommendPress={onRedommendPress}
+                    onRecommendPress={onRecommendPress}
                 />
             ) : (
                 <LoadingComponent />

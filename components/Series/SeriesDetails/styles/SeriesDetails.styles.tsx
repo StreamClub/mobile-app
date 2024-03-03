@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native'
 import { colors } from '../../../../assets'
 
+const screenWidth = getScreenSize().width;
+
 export const styles = StyleSheet.create({
     platforms: {
         marginLeft: 20,
@@ -48,6 +50,32 @@ export const styles = StyleSheet.create({
     seasonImage: {
         width: 150,
         height: 230,
-        borderRadius: 20,
+        borderRadius: 20
     },
-})
+    backdropImage: {
+        width: screenWidth,
+        height: 210
+    },
+    darkness: {
+        backgroundColor: colors.secondaryWhite + '85',
+        width: screenWidth
+    },
+    textOverlay: {
+        position: 'absolute',
+        top: 10,
+        left: 5,
+        alignSelf: 'center'
+    },
+    posterImage: {
+        width: 170,
+        height: 255,
+        marginRight: 10,
+        borderWidth: 2,
+        borderColor: colors.primaryBlack,
+    },
+    imageOverlay: {
+        position: 'absolute',
+        top: 90,
+        alignSelf: 'flex-end'
+    },
+});

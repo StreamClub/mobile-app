@@ -3,6 +3,7 @@ import { SessionProvider } from '../context/ctx'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { store } from '../store/store'
+import { ErrorHandler } from '../components/BasicComponents/ErrorHandler'
 
 export default function RootLayout() {
     return (
@@ -21,6 +22,7 @@ export default function RootLayout() {
                     }}
                 />
             </SessionProvider>
+            <ErrorHandler />
         </Provider>
     )
 }

@@ -2,6 +2,8 @@ import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
 import config from '../config.json';
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import { useState } from 'react';
 
 const baseURL = config.api.baseUrl
 const tokenExpiredErrorMessage = "Invalid auth token"
@@ -132,4 +134,37 @@ export function publicCall(
             }, (error) => {
                 onFailure(error)
             });
+}
+
+
+// Use for calls that do not require a token
+export const usePublicCall = () => {
+    const {setError} = useErrorHandler()
+    const [loading, setLoading] = useState(false);
+    
+    const publicCall = (method: string, endpoint: string, paramsAndData: Params, 
+        onSuccess: (response: AxiosResponse<any, any>) => void,
+        onFailure?: (error: any) => void) => {
+            setLoading(true);
+            axios({
+                method: method,
+                url: baseURL + endpoint,
+                responseType: 'json',
+                params: paramsAndData.params,
+                data: paramsAndData.data
+            })
+                .then(
+                    (response) => {
+                        onSuccess(response);
+                        setLoading(false);
+                    }, (error) => {
+                        if (onFailure){
+                            onFailure(error);
+                        } else {
+                            setError(error);
+                        }
+                        setLoading(false);
+                    });
+    }
+    return { loading, publicCall };
 }

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { publicCall, Params } from './generic';
+import { publicCall, Params, usePublicCall } from './generic';
 import { useSession } from '../context/ctx';
 
 
@@ -9,12 +9,15 @@ export type logInBody = {
     password: string
 }
 
-export function logIn(body: logInBody, session: ReturnType<typeof useSession>, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
+export const useLogIn = () => {
+    const {loading, publicCall} = usePublicCall()
 
-    const params: Params = { data: body }
-    const endpoint = '/auth/login'
-
-    publicCall('POST', session, endpoint, params, onSuccess, onFailure)
+    const logIn = (body: logInBody,onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { data: body }
+        const endpoint = '/auth/login'
+        publicCall('POST', endpoint, params, onSuccess);
+    }
+    return {logIn, loading};
 }
 
 

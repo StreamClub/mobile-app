@@ -6,19 +6,24 @@ import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
 import { getWatchlist, getWatchlistParams, getProfile, getProfileParams } from '../../apiCalls/profile'
+import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
 import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/ProfileScreen'
 import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
-import { TitleText } from '../../components/BasicComponents/TitleText'
+import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
+import { ServiceEntry } from '../../components/Types/Services'
 
 export default function Profile() {
     const session = useSession()
     const userId = session?.userId
 
+    const [userServices, setUserServices] = useState<CarouselEntry[]>([])
+
     const [loadingWatchlist, setLoadingWatchlist] = useState(true)
     const [loadingProfileHeader, setLoadingProfileHeader] = useState(true)
+    const [loadingUserServices, setLoadingUserServices] = useState(true)
 
-    const loadingParams = loadingWatchlist || loadingProfileHeader
+    const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(
         {
@@ -34,6 +39,7 @@ export default function Profile() {
     const profileParams: ProfileScreenParams = {
         watchlist: watchlist,
         profileHeader: profileHeader,
+        userServices: userServices,
     }
 
     const onSuccessGetWatchlist = (response: any) => {
@@ -46,6 +52,20 @@ export default function Profile() {
         const profileHeader: ProfileHeaderParams = response.data
         setProfileHeader(profileHeader)
         setLoadingProfileHeader(false)
+    }
+
+    const onSuccessGetUserServices = (response: any) => {
+        const _userServices: ServiceEntry[] = response.data.results
+        const _carousel: CarouselEntry[] = []
+
+        _userServices.forEach((service) => {
+            _carousel.push({
+                itemData: service,
+                tmdbResource: service.logoPath,
+            })
+        })
+        setUserServices(_carousel)
+        setLoadingUserServices(false)
     }
 
     const onFailure = (error: any) => {
@@ -62,6 +82,11 @@ export default function Profile() {
             userId: userId? userId : 0,
         }
         getProfile(session, profileParams, onSuccessGetProfile, onFailure)
+
+        const params: getUserServicesParams = {
+            userId: userId ? userId : 0,
+        }
+        getUserServices(session, params, onSuccessGetUserServices, onFailure)
     }, [])
 
     return (

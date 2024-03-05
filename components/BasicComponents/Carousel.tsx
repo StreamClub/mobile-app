@@ -32,7 +32,7 @@ const renderService = (
     return (
         <Pressable
             key={index}
-            onPress={() => params.onItemPressed(item.itemData)}
+            onPress={() => params.onItemPressed?.(item.itemData)}
             style={{ position: 'relative' }}
         >
             {params.renderX && (

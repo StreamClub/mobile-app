@@ -19,14 +19,16 @@ import { serializeSearchResults } from '../../utils/serializeSearchResults'
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
+import { useSearchMovies } from '../../apiCalls/movies'
 
 export const SearchContentBar = () => {
-    const { textSearched, loading, category } = useAppSelector(
+    const { textSearched, category } = useAppSelector(
         (state) => state.searchContent
     )
     const { toSeriesListEntries, toArtistListEntries, toMovieListEntries } =
         useDataToSerieEntryList()
     const dispatch = useAppDispatch()
+    const { loading } = useSearchMovies();
 
     // onSuccess and onFailure callbacks
     // ------------------------------------------------------------

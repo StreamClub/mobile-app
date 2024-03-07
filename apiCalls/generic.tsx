@@ -110,6 +110,97 @@ export function privateCall(
             });
 }
 
+export const usePrivateCall = () => {
+    const {setError} = useErrorHandler()
+    const [loading, setLoading] = useState(false);
+    const session = useSession();
+    const accessToken = session?.accessToken;
+    const refreshToken = session?.refreshToken;
+
+    const onSuccessRefresh = (privateCallParams: any, response: AxiosResponse<any, any>)  => {
+        const signIn = privateCallParams.session?.signIn
+        const accessToken = response.data.token
+        const refreshToken = response.data.refreshToken
+        
+        console.log('[Success Refresh]')
+        console.log('New access token: ' + accessToken)
+        console.log('New refresh token: ' + refreshToken)
+    
+        signIn?.(accessToken, refreshToken)
+    
+        privateCall(
+            privateCallParams.method,
+            privateCallParams.endpoint,
+            privateCallParams.paramsAndData,
+            privateCallParams.onSuccess,
+            privateCallParams.onFailure,
+            accessToken
+        )
+    }
+    
+    const refreshTokens = (privateCallParams: any) => {
+        const data = { refreshToken }
+        const endpoint = '/auth/refreshCredentials'
+    
+        axios({
+            method: 'POST',
+            url: baseURL + endpoint,
+            responseType: 'json',
+            data: data
+        })
+            .then(
+                (response) => {
+                    onSuccessRefresh(privateCallParams, response)
+                }, (error) => {
+                    if (privateCallParams.onFailure){
+                        privateCallParams.onFailure(error)
+                    } else {
+                        setError(error);
+                    }
+                });
+    }
+
+    const handlePrivateCallError = (
+        error: any,
+        privateCallParams: any,
+    ) => {
+        if (expiredToken(error.response)) {
+            refreshTokens(privateCallParams)
+        } else {
+            if (privateCallParams.onFailure){
+                privateCallParams.onFailure(error)
+            } else {
+                setError(error);
+            }
+        }
+    }
+   
+    const privateCall = (method: string, endpoint: string, paramsAndData: Params, 
+        onSuccess: (response: AxiosResponse<any, any>) => void,
+        onFailure?: (error: any) => void, newAccessToken?: string) => {
+            setLoading(true);
+            axios({
+                method: method,
+                url: baseURL + endpoint,
+                responseType: 'json',
+                headers: { "Authorization": `Bearer ${newAccessToken || accessToken}`},
+                params: paramsAndData.params,
+                data: paramsAndData.data
+            })
+                .then(
+                    (response) => {
+                        onSuccess(response);
+                    }, (error) => {
+                        const privateCallParams = { method, endpoint, paramsAndData, onSuccess, onFailure };
+                        handlePrivateCallError(error, privateCallParams);
+                    }).finally(() => {
+                        setLoading(false);
+                    });
+    }
+
+    return { loading, privateCall };
+}
+
 
 // Use for calls that do not require a token
 export function publicCall(

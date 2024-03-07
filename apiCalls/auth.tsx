@@ -10,7 +10,7 @@ export type logInBody = {
 }
 
 export const useLogIn = () => {
-    const {loading, publicCall} = usePublicCall()
+    const {loading, publicCall} = usePublicCall();
 
     const logIn = (body: logInBody, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const params: Params = { data: body }
@@ -53,16 +53,6 @@ export const useSignUp = () => {
 
 // --------- --------- --------- --------- --------- --------
 export function register(body: RegisterBodyType, session: ReturnType<typeof useSession>, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
-    
-    // TODO: eliminar este comentario una vez que se verifique que el flujo de registro funciona correctamente
-    // implementacion original (sin publicCall)
-    // axios.post('/auth/register', body).then(
-    //     (response) => {
-    //         onSuccess(response)
-    //     }, (error) => {
-    //         onFailure(error)
-    // });
-
     const params: Params = { data: body }
     const endpoint = '/auth/register'
 

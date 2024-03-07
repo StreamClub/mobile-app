@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { useSession } from '../context/ctx'
-import { privateCall, Params } from './generic'
+import { privateCall, Params, usePrivateCall } from './generic'
 
 const country = 'AR' // TODO: Esto hay que cambiarlo
 
@@ -23,7 +23,19 @@ export type SearchParams = {
     page: number
 }
 
-export function searchMovies(
+export const useSearchMovies = () => {
+    const {loading, privateCall} = usePrivateCall();
+    const endpoint = '/movies/';
+    
+    const searchMovies = (queryParams: SearchParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { params: {...queryParams, country: country } }
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {loading, searchMovies};
+}
+
+/* export function searchMovies(
     session: ReturnType<typeof useSession>,
     queryParams: SearchParams,
     onSuccess: (response: AxiosResponse<any, any>) => void,
@@ -33,7 +45,7 @@ export function searchMovies(
     const params: Params = { params: {...queryParams, country: country } }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
+} */
 
 // --------- --------- --------- --------- --------- ---------
 export function addMovieToWatchlist(

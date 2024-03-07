@@ -1,5 +1,5 @@
 import { searchArtists } from '../../apiCalls/artists'
-import { SearchParams, searchMovies } from '../../apiCalls/movies'
+import { SearchParams, useSearchMovies } from '../../apiCalls/movies'
 import { searchSeries } from '../../apiCalls/series'
 import { searchUsers } from '../../apiCalls/users'
 import {
@@ -27,6 +27,7 @@ export const useSearchContent = (
     )
     const session = useSession()
     const dispatch = useAppDispatch()
+    const { searchMovies, loading } = useSearchMovies()
 
     const searchText = (text: string) => {
         console.log('Buscando ' + text + '...')
@@ -34,7 +35,7 @@ export const useSearchContent = (
         const queryParams: SearchParams = { query: text, page: 1 }
 
         if (category == MOVIES_NAME) {
-            searchMovies(session, queryParams, onSuccessSearch, onFailureSearch)
+            searchMovies(queryParams, onSuccessSearch)
         } else if (category == SERIES_NAME) {
             searchSeries(session, queryParams, onSuccessSearch, onFailureSearch)
         } else if (category == ARTISTS_NAME) {
@@ -62,7 +63,7 @@ export const useSearchContent = (
 
     const onChangeTextSearched = (newText: string) => {
         if (newText.length > MAX_SEARCH_LENGTH) return
-
+        
         dispatch(setTextSearched(newText))
         cancelTimer()
 

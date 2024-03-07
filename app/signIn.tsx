@@ -8,20 +8,17 @@ import { CustomButton } from '../components/BasicComponents/CustomButton'
 import React from 'react'
 
 import { logInBody, useLogIn } from '../apiCalls/auth'
-import { ErrorHandler } from '../components/BasicComponents/ErrorHandler'
 
 export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    //const [loading, setLoading] = useState(false)
     const {logIn, loading} = useLogIn();
 
     const session = useSession()
     const signIn = session?.signIn
 
     const onSuccessLogIn = (response: any) => {
-        //setLoading(false)
         const accessToken = response.data.token
         const refreshToken = response.data.refreshToken
         signIn?.(accessToken, refreshToken)
@@ -30,7 +27,6 @@ export default function Page() {
 
     const onPressSignIn = () => {
         console.log('Iniciando sesión..')
-        //setLoading(true)
         const body: logInBody = { email, password }
         logIn(body, onSuccessLogIn)
     }

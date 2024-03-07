@@ -156,13 +156,13 @@ export const usePublicCall = () => {
                 .then(
                     (response) => {
                         onSuccess(response);
-                        setLoading(false);
                     }, (error) => {
                         if (onFailure){
                             onFailure(error);
                         } else {
                             setError(error);
                         }
+                    }).finally(() => {
                         setLoading(false);
                     });
     }

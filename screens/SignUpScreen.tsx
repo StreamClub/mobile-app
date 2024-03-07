@@ -7,6 +7,7 @@ import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { TextInputMask } from "react-native-masked-text";
 import config from "../config.json";
 import { colors } from "../assets";
+import { useSignUp } from "../apiCalls/auth";
 
 type SignUpParams = {
     onNext: (email: string, password: string, birthDate: string) => void;
@@ -37,7 +38,8 @@ export const SignUpScreen = (params: SignUpParams) => {
         setIsPasswordVisible((prev) => !prev);
     };
 
-    const [loading, setLoading] = useState(false);
+    const {loading} = useSignUp();
+    //const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.signUpScreen}>
@@ -140,7 +142,7 @@ export const SignUpScreen = (params: SignUpParams) => {
                     buttonText="Siguiente"
                     onPress={() => {
                         params.onNext(email, password, birthDate)
-                        setLoading(true)
+                        //setLoading(true)
                     }}
                     disabled={
                         !(

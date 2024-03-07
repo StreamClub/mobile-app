@@ -7,10 +7,10 @@ import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { TextInputMask } from "react-native-masked-text";
 import config from "../config.json";
 import { colors } from "../assets";
-import { useSignUp } from "../apiCalls/auth";
 
 type SignUpParams = {
     onNext: (email: string, password: string, birthDate: string) => void;
+    loading: boolean;
 };
 
 export const SignUpScreen = (params: SignUpParams) => {
@@ -37,9 +37,6 @@ export const SignUpScreen = (params: SignUpParams) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible((prev) => !prev);
     };
-
-    const {loading} = useSignUp();
-    //const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.signUpScreen}>
@@ -141,8 +138,7 @@ export const SignUpScreen = (params: SignUpParams) => {
                 <CustomButton
                     buttonText="Siguiente"
                     onPress={() => {
-                        params.onNext(email, password, birthDate)
-                        //setLoading(true)
+                        params.onNext(email, password, birthDate);
                     }}
                     disabled={
                         !(
@@ -156,7 +152,7 @@ export const SignUpScreen = (params: SignUpParams) => {
                     fontSize="medium"
                     buttonSize="medium"
                     type='primary'
-                    loading={loading}
+                    loading={params.loading}
                 />
             </View>
         </View>

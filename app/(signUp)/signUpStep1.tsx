@@ -6,27 +6,16 @@ import { sendVerificationCodeBody, useSignUp } from '../../apiCalls/auth'
 import { signUpStep2ParamsType } from './signUpStep2'
 
 export default function Page() {
-    const {sendVerification} = useSignUp();
+    const {sendVerification, loading} = useSignUp();
 
     var email = ''
     var password = ''
     var birthDate = ''
 
     const onSuccessSignUp = (response: any) => {
-        //setShowSuccessMessage(true)
-        //setShowErrorMessage(false)
         const data: signUpStep2ParamsType = { email, password, birthDate }
         router.push({ pathname: '/signUpStep2', params: data })
     }
-
-    /* const onFailureSignUp = (error: any) => {
-        const errorMessage =
-            error.response?.data?.error?.[0]?.message ||
-            config.api.defaultErrorMessage
-        setShowErrorMessage(true)
-        setShowSuccessMessage(false)
-        setErrorMessage(errorMessage)
-    } */
 
     const handleSingUpSubmit = (
         _email: string,
@@ -42,6 +31,6 @@ export default function Page() {
     }
 
     return (
-        <SignUpScreen onNext={handleSingUpSubmit} />
+        <SignUpScreen onNext={handleSingUpSubmit} loading={loading} />
     )
 }

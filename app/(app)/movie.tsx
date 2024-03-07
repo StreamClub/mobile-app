@@ -1,11 +1,9 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
-import { useState, useEffect } from 'react'
-import { getMovie } from '../../apiCalls/movies'
+import { useEffect } from 'react'
+import { useGetMovie } from '../../apiCalls/movies'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { MovieDetailScreen } from '../../components/MovieDetails/MovieDetailScreen'
-
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { Content } from '../../components/RecommendsList'
 import { colors } from '../../assets'
@@ -17,25 +15,19 @@ export type MovieDetailsParams = {
 }
 
 export default function Movie() {
-    const session = useSession()
     const {movie, setMovie} = useMovieDetail()
     const params = useLocalSearchParams<MovieDetailsParams>()
-    const [movieLoaded, setMovieLoaded] = useState(false)
+    const {loading, getMovie} = useGetMovie();
     const movieId = params.id
 
     const onSuccess = (response: any) => {
         console.log('responseMovie ' + response.data.title);
         setMovie(response.data);
-        setMovieLoaded(true);
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
     }
 
     useEffect(() => {
         const loadMovie = async () => {
-            await getMovie(session, movieId, onSuccess, onFailure)
+            await getMovie(movieId, onSuccess);
         }
         loadMovie()
     }, [])
@@ -56,7 +48,7 @@ export default function Movie() {
                     ),
                 }}
             />
-            {movie && movieLoaded ? (
+            {movie && !loading ? (
                 <MovieDetailScreen
                     movie={movie}
                     onRecommendPress={onRedommendedPress}

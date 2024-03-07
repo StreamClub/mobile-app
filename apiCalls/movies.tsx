@@ -5,16 +5,16 @@ import { privateCall, Params, usePrivateCall } from './generic'
 const country = 'AR' // TODO: Esto hay que cambiarlo
 
 // --------- --------- --------- --------- --------- ---------
-export function getMovie(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/movies/' + movieId
-    const params: Params = { params: { country: country } }
+export const useGetMovie = () => {
+    const {loading, privateCall} = usePrivateCall();
 
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    const getMovie = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/movies/' + movieId;
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {loading, getMovie};
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -34,18 +34,6 @@ export const useSearchMovies = () => {
 
     return {loading, searchMovies};
 }
-
-/* export function searchMovies(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/movies/'
-    const params: Params = { params: {...queryParams, country: country } }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-} */
 
 // --------- --------- --------- --------- --------- ---------
 export function addMovieToWatchlist(

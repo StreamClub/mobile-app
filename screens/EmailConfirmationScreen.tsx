@@ -5,15 +5,14 @@ import { BodyText } from "../components/BasicComponents/BodyText";
 import { TextInput } from "react-native-paper";
 import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { colors } from "../assets";
-import { useSignUp } from "../apiCalls/auth";
 
 type EmailConfirmParams = {
     onSubmit: (validationCode: number) => void;
+    loading: boolean;
 };
 
 export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
     const [verificationCode, setVerificationCode] = useState("");
-    const {loading} = useSignUp();
 
     return (
         <View style={styles.signUpScreen}>
@@ -50,7 +49,7 @@ export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
                     buttonSize="big"
                     fontSize="big"
                     type="primary"
-                    loading={loading}
+                    loading={params.loading}
                 />
             </View>
         </View>

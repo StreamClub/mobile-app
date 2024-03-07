@@ -4,7 +4,7 @@ import { EmailConfirmationScreen } from '../../screens/EmailConfirmationScreen'
 import { router, useLocalSearchParams } from 'expo-router'
 const config = require('../../config.json')
 
-import { register, RegisterBodyType, useSignUp } from '../../apiCalls/auth'
+import { RegisterBodyType, useSignUp } from '../../apiCalls/auth'
 import { useSession } from '../../context/ctx'
 
 export type signUpStep2ParamsType = {
@@ -14,32 +14,19 @@ export type signUpStep2ParamsType = {
 }
 
 export default function Page() {
-    const {register} = useSignUp();
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-    const [showErrorMessage, setShowErrorMessage] = useState(false)
+    const { register, loading } = useSignUp();
     const createAccountBody = useLocalSearchParams<signUpStep2ParamsType>()
 
     const session = useSession()
     const signIn = session?.signIn
 
     const onSucesssRegister = (response: any) => {
-        setShowSuccessMessage(true)
-        setShowErrorMessage(false)
 
         const { token, refreshToken } = response.data
 
         signIn?.(token, refreshToken)
         router.replace('/home')
     }
-
-    /* const onFailureRegister = (error: any) => {
-        const errorMessage =
-            error.response?.data?.error?.[0]?.message ||
-            config.api.defaultErrorMessage
-        setShowErrorMessage(true)
-        setShowSuccessMessage(false)
-        setErrorMessage(errorMessage)
-    } */
 
     const handleCreateAccount = (verificationCode: number) => {
         const body: RegisterBodyType = {
@@ -52,6 +39,6 @@ export default function Page() {
     }
 
     return (
-        <EmailConfirmationScreen onSubmit={handleCreateAccount} />
+        <EmailConfirmationScreen onSubmit={handleCreateAccount} loading={loading} />
     )
 }

@@ -1,66 +1,48 @@
 import { AxiosResponse } from 'axios'
 import { useSession } from '../context/ctx'
-import { privateCall, Params } from './generic'
+import { privateCall, Params, usePrivateCall } from './generic'
 import { getRegion } from '../utils/regionManager'
-
-// --------- --------- --------- --------- --------- ---------
-export type getUserServicesParams = {
-    userId: number
-}
-
-export function getUserServices(
-    session: ReturnType<typeof useSession>,
-    queryParams: getUserServicesParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/streamProviders/' + queryParams.userId
-    const params: Params = { params: {country: getRegion()} }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
 
 // --------- --------- --------- --------- --------- ---------
 export type deleteUserServiceParams = {
     providerId: number
 }
 
-export function deleteUserService(
-    session: ReturnType<typeof useSession>,
-    queryParams: deleteUserServiceParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/streamProviders'
-    const params: Params = { data: {providerId: queryParams.providerId} }
-
-    privateCall('DELETE', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function getAllServices(
-    session: ReturnType<typeof useSession>,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/streamProviders'
-    const params: Params = { params: {country: getRegion()} }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
 export type putUserServiceParams = {
     providerId: number
 }
 
-export function putUserService(
-    session: ReturnType<typeof useSession>,
-    queryParams: putUserServiceParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/streamProviders'
-    const params: Params = { data: {providerId: queryParams.providerId} }
-    privateCall('PUT', session, endpoint, params, onSuccess, onFailure)
+export const useUserServices = () => {
+    const {privateCall, loading} = usePrivateCall();
+    const session = useSession();
+    const userId = session?.userId;
+
+    const getUserServices = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/streamProviders/' + userId
+        const params: Params = { params: {country: getRegion()} }
+
+        privateCall('GET', endpoint, params, onSuccess)
+    }
+
+    const deleteUserService = (queryParams: deleteUserServiceParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/streamProviders';
+        const params: Params = { data: {providerId: queryParams.providerId} };
+        privateCall('DELETE', endpoint, params, onSuccess);
+    }
+
+    const getAllServices = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/streamProviders'
+        const params: Params = { params: {country: getRegion()} }
+    
+        privateCall('GET', endpoint, params, onSuccess)
+    }
+
+    const putUserService = (queryParams: putUserServiceParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/streamProviders';
+        const params: Params = { data: {providerId: queryParams.providerId} };
+        privateCall('PUT', endpoint, params, onSuccess);
+    }
+
+    return {getUserServices, deleteUserService, getAllServices, putUserService, loading};
 }
+

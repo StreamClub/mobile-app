@@ -1,18 +1,14 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
-import { getWatchlist, getWatchlistParams } from '../../apiCalls/profile'
+import { useGetWatchlist } from '../../apiCalls/profile'
 import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/ProfileScreen'
 
 export default function Profile() {
-    const session = useSession()
-    const userId = session?.userId
-
-    const [loading, setLoading] = useState(true)
+    const {getWatchlist, loading} = useGetWatchlist();
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
 
     const profileParams: ProfileScreenParams = {
@@ -22,18 +18,10 @@ export default function Profile() {
     const onSuccess = (response: any) => {
         const watchlist:WatchlistEntry[] = response.data.results
         setWatchlist(watchlist)
-        setLoading(false)
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
     }
 
     useEffect(() => {
-        const params: getWatchlistParams = {
-            userId: userId? userId : 0,
-        }
-        getWatchlist(session, params, onSuccess, onFailure)
+        getWatchlist(onSuccess)
     }, [])
 
     return (

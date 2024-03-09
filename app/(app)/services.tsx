@@ -7,6 +7,7 @@ import { LoadingComponent } from '../../components/BasicComponents/LoadingCompon
 import {
     deleteUserServiceParams,
     putUserServiceParams,
+    useModifyServices,
     useUserServices,
 } from '../../apiCalls/services'
 import { ServiceEntry } from '../../components/Types/Services'
@@ -19,7 +20,8 @@ import { ServicesScreenCallbacks } from '../../components/Services/ServicesScree
 export default function Services() {
     const session = useSession()
     const userId = session?.userId
-    const {getUserServices, deleteUserService, getAllServices, putUserService, loading} = useUserServices();
+    const {getUserServices, getAllServices, loading} = useUserServices();
+    const {deleteUserService, putUserService} = useModifyServices();
     let serviceSelected: ServiceEntry = {} as ServiceEntry
     const [userServices, setUserServices] = useState<ServiceEntry[]>([])
     const [allServices, setAllServices] = useState<ServiceEntry[]>([])

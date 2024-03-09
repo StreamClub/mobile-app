@@ -49,14 +49,3 @@ export const useSignUp = () => {
 
     return {sendVerification, register, loading};
 }
-
-
-// --------- --------- --------- --------- --------- --------
-export function register(body: RegisterBodyType, session: ReturnType<typeof useSession>, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
-    const params: Params = { data: body }
-    const endpoint = '/auth/register'
-
-    publicCall('POST', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------

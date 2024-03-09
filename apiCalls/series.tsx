@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { useSession } from '../context/ctx'
-import { privateCall, Params } from './generic'
+import { privateCall, Params, usePrivateCall } from './generic'
 
 const country = 'AR' //TODO: Esto hay que cambiarlo
 
@@ -23,30 +23,29 @@ export function searchSeries(
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function getSerie(
-    session: ReturnType<typeof useSession>,
-    serieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/series/' + serieId
-    const params: Params = { params: { country: country } }
+export const useGetSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
 
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    const getSeries = (serieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/' + serieId
+        const params: Params = { params: { country: country } }
+
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+    return {getSeries, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function getSeason(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    seasonId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/series/' + seriesId + '/seasons/' + seasonId
-    const params: Params = { params: { country: country } }
+export const useGetSeason = () => {
+    const {privateCall, loading} = usePrivateCall();
 
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    const getSeason = (seriesId: string, seasonId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/' + seriesId + '/seasons/' + seasonId;
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {getSeason, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------

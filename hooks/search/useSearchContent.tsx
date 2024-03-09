@@ -27,7 +27,7 @@ export const useSearchContent = (
     )
     const session = useSession()
     const dispatch = useAppDispatch()
-    const { searchMovies, loading } = useSearchMovies()
+    const { searchMovies } = useSearchMovies()
 
     const searchText = (text: string) => {
         console.log('Buscando ' + text + '...')

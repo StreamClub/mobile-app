@@ -186,16 +186,15 @@ export const usePrivateCall = () => {
                 headers: { "Authorization": `Bearer ${newAccessToken || accessToken}`},
                 params: paramsAndData.params,
                 data: paramsAndData.data
-            })
-                .then(
-                    (response) => {
-                        onSuccess(response);
-                    }, (error) => {
-                        const privateCallParams = { method, endpoint, paramsAndData, onSuccess, onFailure };
-                        handlePrivateCallError(error, privateCallParams);
-                    }).finally(() => {
-                        setLoading(false);
-                    });
+            }).then(
+                (response) => {
+                    onSuccess(response);
+                }, (error) => {
+                    const privateCallParams = { method, endpoint, paramsAndData, onSuccess, onFailure };
+                    handlePrivateCallError(error, privateCallParams);
+                }).finally(() => {
+                    setLoading(false);
+                });
     }
 
     return { loading, privateCall };

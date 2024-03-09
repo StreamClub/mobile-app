@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { publicCall, Params, usePublicCall } from './generic';
-import { useSession } from '../context/ctx';
+import { Params, usePublicCall } from './generic';
 
 
 // --------- --------- --------- --------- --------- ---------

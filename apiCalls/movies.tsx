@@ -63,20 +63,16 @@ export const useMovieWatchlist = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function markMovieAsSeen(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) { 
-    privateCall('PUT', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
-}
+export const useMovieSeen = () => {
+    const {privateCall, loading} = usePrivateCall();
 
-export function unmarkMovieAsSeen(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    privateCall('DELETE', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
+    const markMovieAsSeen = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('PUT', '/seenContent/movies/' + movieId, {}, onSuccess);
+    }
+
+    const unmarkMovieAsSeen = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('DELETE', '/seenContent/movies/' + movieId, {}, onSuccess);
+    }
+
+    return {markMovieAsSeen, unmarkMovieAsSeen, loading};
 }

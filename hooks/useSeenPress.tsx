@@ -1,59 +1,52 @@
 import { useState } from 'react'
 import { ContentType } from '../entities/ContentType'
-import { markMovieAsSeen, unmarkMovieAsSeen } from '../apiCalls/movies'
-import { useSession } from '../context/ctx'
-import { markEpisodeAsSeen, markSeasonAsSeen, markSeriesAsSeen, unmarkEpisodeAsSeen, unmarkSeasonAsSeen, unmarkSeriesAsSeen } from '../apiCalls/series'
+import { useMovieSeen } from '../apiCalls/movies'
+import { useSeriesSeen } from '../apiCalls/series'
 
 export const useSeenPress = (seenState: boolean, contentId: string, contentType: ContentType, 
                             seriesId?: string, seasonId?: string) => {
-    const [loading, setLoading] = useState(false)
-    const [seen, setSeen] = useState(seenState)
-    const session = useSession()
+    const {markMovieAsSeen, unmarkMovieAsSeen, loading: loadingMovie} = useMovieSeen();
+    const {markSeriesAsSeen, unmarkSeriesAsSeen, markSeasonAsSeen, unmarkSeasonAsSeen,
+            markEpisodeAsSeen, unmarkEpisodeAsSeen, loading: loadingSeries} = useSeriesSeen();
+    const [seen, setSeen] = useState(seenState);
+    const loading = loadingMovie || loadingSeries;
     const onSuccessAdd = (response: any) => {
         console.log('Marco como visto');
         setSeen(true);
-        setLoading(false);
     }
 
     const onSuccessRemove = (response: any) => {
         console.log('Desmarco como visto');
         setSeen(false);
-        setLoading(false);
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
-        console.log(error.message)
-        setLoading(false)
     }
 
     const markContentAsSeen = () => {
         if(contentType.isMovie()) {
-            markMovieAsSeen(session,contentId,onSuccessAdd,onFailure)
+            markMovieAsSeen(contentId,onSuccessAdd)
         }
         if (contentType.isSeries()) {
-            markSeriesAsSeen(session,contentId,onSuccessAdd,onFailure)
+            markSeriesAsSeen(contentId,onSuccessAdd)
         }
         if (contentType.isSeason() && seriesId) {
-            markSeasonAsSeen(session,contentId,seriesId,onSuccessAdd,onFailure)
+            markSeasonAsSeen(contentId,seriesId,onSuccessAdd)
         }
         if (contentType.isEpisode() && seriesId && seasonId) {
-            markEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessAdd,onFailure)
+            markEpisodeAsSeen(contentId,seriesId,seasonId,onSuccessAdd)
         }
     }
 
     const unmarkContentAsSeen = () => {
         if(contentType.isMovie()) {
-            unmarkMovieAsSeen(session,contentId,onSuccessRemove,onFailure)
+            unmarkMovieAsSeen(contentId,onSuccessRemove)
         }
         if (contentType.isSeries()) {
-            unmarkSeriesAsSeen(session,contentId,onSuccessRemove,onFailure)
+            unmarkSeriesAsSeen(contentId,onSuccessRemove)
         }
         if (contentType.isSeason() && seriesId) {
-            unmarkSeasonAsSeen(session,contentId,seriesId,onSuccessRemove,onFailure)
+            unmarkSeasonAsSeen(contentId,seriesId,onSuccessRemove)
         }
         if (contentType.isEpisode() && seriesId && seasonId) {
-            unmarkEpisodeAsSeen(session,contentId,seriesId,seasonId,onSuccessRemove,onFailure)
+            unmarkEpisodeAsSeen(contentId,seriesId,seasonId,onSuccessRemove)
         }
     }
 
@@ -64,7 +57,6 @@ export const useSeenPress = (seenState: boolean, contentId: string, contentType:
         } else {
             unmarkContentAsSeen()
         }
-        setLoading(true)
     }
 
     return { loading, seen, onPress }

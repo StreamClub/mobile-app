@@ -36,7 +36,7 @@ export const useSearchMovies = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
-export const useAddMovieToWatchlist = () => {
+export const useMovieWatchlist = () => {
     const {loading, privateCall} = usePrivateCall();
 
     const addMovieToWatchlist = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
@@ -49,21 +49,17 @@ export const useAddMovieToWatchlist = () => {
         privateCall('PUT', '/watchlist', params, onSuccess);
     }
     
-    return {loading, addMovieToWatchlist};
-}
-
-export function removeMovieFromWatchlist(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: movieId,
-        contentType: 'movie',
+    const removeMovieFromWatchlist = (movieId: string, 
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: movieId,
+            contentType: 'movie',
+        };
+        const params: Params = { data: body };
+        privateCall('DELETE', '/watchlist', params, onSuccess);
     }
-    const params: Params = { data: body }
-    privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
+
+    return {loading, addMovieToWatchlist, removeMovieFromWatchlist};
 }
 
 // --------- --------- --------- --------- --------- ---------

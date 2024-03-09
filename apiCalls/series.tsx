@@ -49,32 +49,30 @@ export const useGetSeason = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function addSeriesToWatchlist(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: seriesId,
-        contentType: 'series',
-    }
-    const params: Params = { data: body }
-    privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure)
-}
+export const useSeriesWatchlist = () => {
+    const {privateCall, loading} = usePrivateCall();
 
-export function removeSeriesFromWatchlist(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: seriesId,
-        contentType: 'series',
+    const addSeriesToWatchlist = (seriesId: string, 
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: seriesId,
+            contentType: 'series',
+        };
+        const params: Params = { data: body };
+        privateCall('PUT', '/watchlist', params, onSuccess);
     }
-    const params: Params = { data: body }
-    privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
+
+    const removeSeriesFromWatchlist = (seriesId: string,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: seriesId,
+            contentType: 'series',
+        };
+        const params: Params = { data: body };
+        privateCall('DELETE', '/watchlist', params, onSuccess);
+    }
+    
+    return {addSeriesToWatchlist, removeSeriesFromWatchlist, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------

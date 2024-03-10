@@ -5,11 +5,31 @@ import { seenContentStyles } from '../styles/SeenContentStyle';
 import { colors } from '../../../assets';
 import { SeenContentEntryFooter } from './SeenContentEntryFooter';
 import { SeenContentEntry } from '../../Types/SeenContentEntry';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BodyText } from '../../BasicComponents/BodyText';
+import { EpisodeNumber } from '../../Types/EpisodeNumber';
 
-function renderLastEpisodeSection(lastSeenEpisodeContainer: ({ marginHorizontal: number; height: number; backgroundColor: string; position: "absolute"; bottom: number; zIndex: number; } | { width: number; borderBottomLeftRadius: number; borderBottomRightRadius: number; })[]): React.ReactNode {
-    return <View style={lastSeenEpisodeContainer}>
+function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, itemData: SeenContentEntry): React.ReactNode {
+    const lastSeenEpisodeContainer = [
+        styles.lastSeenEpisodeContainer, 
+        {
+            width: itemWidth, 
+            borderBottomLeftRadius: itemBorderRadius, 
+            borderBottomRightRadius: itemBorderRadius,
+        },
+    ]
 
-    </View>;
+    const lastSeenEpisode: EpisodeNumber = itemData.lastSeenEpisode? itemData.lastSeenEpisode : {seasonId: 0, episodeId: 0};
+
+    const lastSeenEpisodeText = "Último visto " + lastSeenEpisode.seasonId + "x" + lastSeenEpisode.episodeId;
+
+    return <LinearGradient 
+        colors={['rgba(255, 255, 255, 0)', colors.primaryGrey, colors.primaryGrey, colors.primaryGrey, colors.primaryGrey]}
+        style={lastSeenEpisodeContainer}
+        start={{x: 0.5, y: 0}} end={{x: 0.5, y: 1}}
+        >
+            <BodyText body={lastSeenEpisodeText} size='medium' style={{fontWeight: 'bold'}}/>
+        </LinearGradient>
 }
 
 function renderPercentSeen(): React.ReactNode {
@@ -22,14 +42,6 @@ function renderPercentSeen(): React.ReactNode {
 export const renderItemContainer = (itemComponent: React.ReactElement, itemData: SeenContentEntry) => {
     const itemWidth = seenContentStyles.contentPoster.height * seenContentStyles.contentPoster.aspectRatio;
     const itemBorderRadius = seenContentStyles.contentPoster.borderRadius;
-    const lastSeenEpisodeContainer = [
-        styles.lastSeenEpisodeContainer, 
-        {
-            width: itemWidth, 
-            borderBottomLeftRadius: itemBorderRadius, 
-            borderBottomRightRadius: itemBorderRadius
-        },
-    ]
 
     const isSeries = itemData.contentType === 'series';
     const lastSeenEpisode = isSeries? itemData.lastSeenEpisode : null;
@@ -42,7 +54,7 @@ export const renderItemContainer = (itemComponent: React.ReactElement, itemData:
                     renderPercentSeen()
                 }
                 {isSeries && lastSeenEpisode &&
-                    renderLastEpisodeSection(lastSeenEpisodeContainer)
+                    renderLastEpisodeSection(itemWidth, itemBorderRadius, itemData)
                 }
                 {itemComponent}
             </View>
@@ -66,11 +78,13 @@ const styles = StyleSheet.create({
     },
     lastSeenEpisodeContainer: {
         marginHorizontal: 10, 
-        height: 50, 
-        backgroundColor: colors.primaryGrey,  
+        height: 50,  
         position: 'absolute', 
-        bottom: 10, 
+        bottom: 9, 
         zIndex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor : 'transparent',
     },
 
 });

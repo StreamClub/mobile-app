@@ -1,6 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
 import { privateCall, Params, usePrivateCall } from './generic';
+import { useAppDispatch } from '../hooks/redux/useAppDispatch';
+import { setLoading } from '../store/slices/searchContentSlice';
 
 // --------- --------- --------- --------- --------- ---------
 export const useGetArtist = () => {
@@ -19,17 +21,18 @@ export type SearchArtistParams = {
     query: string,
     page: number,
 }
+export const useSearchArtist = () => {
+    const {privateCall, loading} = usePrivateCall();
+    const dispatch = useAppDispatch();
 
-export function searchArtists(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchArtistParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void) {
+    const searchArtists = (queryParams: SearchArtistParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/artists'
+        const params: Params = { params: queryParams }
+        dispatch(setLoading(true));
+        privateCall('GET', endpoint, params, onSuccess);
+        dispatch(setLoading(false));
+    }
 
-    const endpoint = '/artists'
-    const params: Params = { params: queryParams }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    return {searchArtists}
 }
-
 // --------- --------- --------- --------- --------- ---------

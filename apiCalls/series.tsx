@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
-import { useSession } from '../context/ctx'
-import { privateCall, Params, usePrivateCall } from './generic'
+import { Params, usePrivateCall } from './generic'
+import { useAppDispatch } from '../hooks/redux/useAppDispatch'
+import { setLoading } from '../store/slices/searchContentSlice'
 
 const country = 'AR' //TODO: Esto hay que cambiarlo
 
@@ -10,16 +11,19 @@ export type SearchParams = {
     page: number
 }
 
-export function searchSeries(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/series/'
-    const params: Params = { params: {...queryParams, country: country } }
-    
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+export const useSearchSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
+    const dispatch = useAppDispatch();
+
+    const searchSeries = (queryParams: SearchParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/'
+        const params: Params = { params: {...queryParams, country: country } }
+        dispatch(setLoading(true));
+        privateCall('GET', endpoint, params, onSuccess);
+        dispatch(setLoading(false));
+    }
+
+    return {searchSeries};
 }
 
 // --------- --------- --------- --------- --------- ---------

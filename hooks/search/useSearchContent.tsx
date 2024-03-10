@@ -1,6 +1,6 @@
-import { searchArtists } from '../../apiCalls/artists'
+import { useSearchArtist } from '../../apiCalls/artists'
 import { SearchParams, useSearchMovies } from '../../apiCalls/movies'
-import { searchSeries } from '../../apiCalls/series'
+import { useSearchSeries } from '../../apiCalls/series'
 import { searchUsers } from '../../apiCalls/users'
 import {
     ARTISTS_NAME,
@@ -28,6 +28,8 @@ export const useSearchContent = (
     const session = useSession()
     const dispatch = useAppDispatch()
     const { searchMovies } = useSearchMovies()
+    const {searchSeries} = useSearchSeries();
+    const {searchArtists} = useSearchArtist();
 
     const searchText = (text: string) => {
         console.log('Buscando ' + text + '...')
@@ -37,16 +39,11 @@ export const useSearchContent = (
         if (category == MOVIES_NAME) {
             searchMovies(queryParams, onSuccessSearch)
         } else if (category == SERIES_NAME) {
-            searchSeries(session, queryParams, onSuccessSearch, onFailureSearch)
+            searchSeries(queryParams, onSuccessSearch)
         } else if (category == ARTISTS_NAME) {
-            searchArtists(
-                session,
-                queryParams,
-                onSuccessSearch,
-                onFailureSearch
-            )
+            searchArtists(queryParams, onSuccessSearch)
         } else if (category == USERS_NAME) {
-            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch)
+            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch) //TO DO: Cambiar por state, hoy no hace nada.
         }
     }
 

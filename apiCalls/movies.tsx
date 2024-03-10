@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios'
 import { Params, usePrivateCall } from './generic'
 import { useAppDispatch } from '../hooks/redux/useAppDispatch';
-import { setLoading } from '../store/slices/searchContentSlice';
+import { setLoading, setResults } from '../store/slices/searchContentSlice';
+import { useAppSelector } from '../hooks/redux/useAppSelector';
 
 const country = 'AR' // TODO: Esto hay que cambiarlo
 
@@ -27,7 +28,7 @@ export type SearchParams = {
 export const useSearchMovies = () => {
     const {privateCall} = usePrivateCall();
     const endpoint = '/movies/';
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     
     const searchMovies = (queryParams: SearchParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const params: Params = { params: {...queryParams, country: country } }
@@ -35,7 +36,7 @@ export const useSearchMovies = () => {
         privateCall('GET', endpoint, params, onSuccess);
         dispatch(setLoading(false));
         //TODO: AGREGAR LOGICA EN BASE A SHOWERROR PARA QUE SETEE EL PAYLOAD DE REDUX DE LA BUSQUEDA
-        //EN VACIO (O SEA UN ARRAY VACIO)
+        //EN VACIO (O SEA UN ARRAY VACIO) < eso tan simple no es, asi no funciono hay q revisar.
     }
 
     return {searchMovies};

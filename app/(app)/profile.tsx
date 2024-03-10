@@ -12,6 +12,7 @@ import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
 import { ServiceEntry } from '../../components/Types/Services'
+import { getSeenContent, getSeenContentParams } from '../../apiCalls/content'
 
 export default function Profile() {
     const session = useSession()
@@ -22,8 +23,9 @@ export default function Profile() {
     const [loadingWatchlist, setLoadingWatchlist] = useState(true)
     const [loadingProfileHeader, setLoadingProfileHeader] = useState(true)
     const [loadingUserServices, setLoadingUserServices] = useState(true)
+    const [loadingSeenContent, setLoadingSeenContent] = useState(true)
 
-    const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices
+    const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices || loadingSeenContent
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(
         {
@@ -68,6 +70,11 @@ export default function Profile() {
         setLoadingUserServices(false)
     }
 
+    const onSuccessGetSeenContent = (response: any) => {
+        console.log(response)
+        setLoadingSeenContent(false)
+    }
+
     const onFailure = (error: any) => {
         console.log(error)
     }
@@ -83,10 +90,17 @@ export default function Profile() {
         }
         getProfile(session, profileParams, onSuccessGetProfile, onFailure)
 
-        const params: getUserServicesParams = {
+        const userServicesParams: getUserServicesParams = {
             userId: userId ? userId : 0,
         }
-        getUserServices(session, params, onSuccessGetUserServices, onFailure)
+        getUserServices(session, userServicesParams, onSuccessGetUserServices, onFailure)
+
+        const seenContentParams: getSeenContentParams = {
+            userId: userId ? userId : 0,
+            page: 1,
+            pageSize: 10,
+        }
+        getSeenContent(session, seenContentParams, onSuccessGetSeenContent, onFailure)
     }, [])
 
     return (

@@ -3,6 +3,8 @@ import { Snackbar } from "react-native-paper"
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import { setShowError } from '../../store/slices/errorResponseSlice'
+import { colors } from '../../assets'
+import { BodyText } from './BodyText'
 
 export const ErrorHandler = () => {
     const { errorMessage, showError } = useAppSelector(
@@ -17,9 +19,12 @@ export const ErrorHandler = () => {
             visible={showError}
             onDismiss={onDismissSnackBar}
             action={{
-            label: 'X',
-            }}>
-            {errorMessage}
+                label: 'CERRAR',
+                onPress: onDismissSnackBar,
+                textColor: colors.primaryWhite
+            }}
+            style={{backgroundColor: colors.primaryRed}}>
+            <BodyText body={errorMessage} size='big' color={colors.primaryWhite} />
         </Snackbar>
     )
 }

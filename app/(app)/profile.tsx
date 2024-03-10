@@ -12,19 +12,26 @@ import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
 import { ServiceEntry } from '../../components/Types/Services'
+import { getSeenContent, getSeenContentParams } from '../../apiCalls/content'
+import { SeenContentListEntry } from '../../entities/SeenContent/SeenContentListEntry'
+import { SeenSeriesListEntry } from '../../entities/SeenContent/SeenSeriesListEntry'
+import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
 
 export default function Profile() {
     const session = useSession()
     const userId = session?.userId
 
-    const [userServices, setUserServices] = useState<CarouselEntry[]>([])
+    
 
     const [loadingWatchlist, setLoadingWatchlist] = useState(true)
     const [loadingProfileHeader, setLoadingProfileHeader] = useState(true)
     const [loadingUserServices, setLoadingUserServices] = useState(true)
+    const [loadingSeenContent, setLoadingSeenContent] = useState(true)
 
-    const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices
+    const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices || loadingSeenContent
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
+    const [userServices, setUserServices] = useState<CarouselEntry[]>([])
+    const [seenContent, setSeenContent] = useState<CarouselEntry[]>([])
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(
         {
             id: 0,
@@ -40,6 +47,7 @@ export default function Profile() {
         watchlist: watchlist,
         profileHeader: profileHeader,
         userServices: userServices,
+        seenContent: seenContent,
     }
 
     const onSuccessGetWatchlist = (response: any) => {
@@ -58,7 +66,7 @@ export default function Profile() {
         const _userServices: ServiceEntry[] = response.data.results
         const _carousel: CarouselEntry[] = []
 
-        _userServices.forEach((service) => {
+        _userServices.forEach((service: ServiceEntry) => {
             _carousel.push({
                 itemData: service,
                 tmdbResource: service.logoPath,
@@ -66,6 +74,20 @@ export default function Profile() {
         })
         setUserServices(_carousel)
         setLoadingUserServices(false)
+    }
+
+    const onSuccessGetSeenContent = (response: any) => {
+        const _seenContent: SeenContentEntry[] = response.data.results
+        const _carousel: CarouselEntry[] = []
+
+        response.data.results.forEach((contentData: any) => {
+            _carousel.push({
+                itemData: contentData,
+                tmdbResource: contentData.poster,
+            })
+        })
+        setSeenContent(_carousel)
+        setLoadingSeenContent(false)
     }
 
     const onFailure = (error: any) => {
@@ -83,10 +105,17 @@ export default function Profile() {
         }
         getProfile(session, profileParams, onSuccessGetProfile, onFailure)
 
-        const params: getUserServicesParams = {
+        const userServicesParams: getUserServicesParams = {
             userId: userId ? userId : 0,
         }
-        getUserServices(session, params, onSuccessGetUserServices, onFailure)
+        getUserServices(session, userServicesParams, onSuccessGetUserServices, onFailure)
+
+        const seenContentParams: getSeenContentParams = {
+            userId: userId ? userId : 0,
+            page: 1,
+            pageSize: 10,
+        }
+        getSeenContent(session, seenContentParams, onSuccessGetSeenContent, onFailure)
     }, [])
 
     return (

@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 import { ProfilePicture } from './ProfilePicture';
-
+import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText';
+import { LocalIcon } from '../Types/LocalIcon';
 export type ProfileHeaderParams = {
     id: number,
     email: string,
@@ -14,6 +15,11 @@ export type ProfileHeaderParams = {
 }
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
+    const emailParams: IconWithTextParams = {
+        icon: LocalIcon.email,
+        text: params.email,
+    }
+    
     return(
         <View style={containerStyles.container}>
             <View style={containerStyles.pictureAndDetailsSection}>
@@ -23,16 +29,17 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
                 <View style={containerStyles.details}>
                     <View style={containerStyles.friendsAndReviews}>
                         <View style={containerStyles.metric}>
-                            <BodyText size={"big"} body={params.friendsCount.toString()} style={styles.metricText}/>
+                            <BodyText size={"big"} body={params.friendsCount.toString()} style={styles.metricNumber}/>
                             <BodyText size={"big"} body={"Amigos"} style={styles.metricText}/>                            
                         </View>
                         <View style={containerStyles.metric}>
-                            <BodyText size={"big"} body={params.reviewsCount.toString()} style={styles.metricText}/>
+                            <BodyText size={"big"} body={params.reviewsCount.toString()} style={styles.metricNumber}/>
                             <BodyText size={"big"} body={"Opiniones"} style={styles.metricText}/>                            
                         </View>
                     </View>
                     <View style={containerStyles.email}>
-                        <BodyText size={"big"} body={params.email} style={styles.mailText}/>
+                        {/* <BodyText size={"big"} body={params.email} style={styles.mailText}/> */}
+                        <IconWithText {...emailParams} />
                     </View>
                 </View>
             </View>
@@ -86,8 +93,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginHorizontal: 20,
     },
+    metricNumber: {
+        textAlign: "center",
+    },
     metricText: {
         textAlign: "center",
+        fontWeight: "bold",
     },
     mailText: {
         textAlign: "center",

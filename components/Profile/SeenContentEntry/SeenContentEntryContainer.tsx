@@ -8,6 +8,7 @@ import { SeenContentEntry } from '../../Types/SeenContentEntry';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BodyText } from '../../BasicComponents/BodyText';
 import { EpisodeNumber } from '../../Types/EpisodeNumber';
+import { Percent } from '../../BasicComponents/Percent';
 
 function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, itemData: SeenContentEntry): React.ReactNode {
     const lastSeenEpisodeContainer = [
@@ -24,20 +25,13 @@ function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, i
     const lastSeenEpisodeText = "Último visto " + lastSeenEpisode.seasonId + "x" + lastSeenEpisode.episodeId;
 
     return <LinearGradient 
-        colors={['rgba(255, 255, 255, 0)', colors.primaryGrey, colors.primaryGrey, colors.primaryGrey, colors.primaryGrey]}
+        colors={['rgba(255, 255, 255, 0)', colors.primaryGrey, 'rgba(255, 255, 255, 0)']}
         style={lastSeenEpisodeContainer}
         start={{x: 0.5, y: 0}} end={{x: 0.5, y: 1}}
         >
             <BodyText body={lastSeenEpisodeText} size='medium' style={{fontWeight: 'bold'}}/>
         </LinearGradient>
 }
-
-function renderPercentSeen(): React.ReactNode {
-    return <Image
-        source={LocalIcon.percentTemplate}
-        style={styles.percent} />;
-}
-
 
 export const renderItemContainer = (itemComponent: React.ReactElement, itemData: SeenContentEntry) => {
     const itemWidth = seenContentStyles.contentPoster.height * seenContentStyles.contentPoster.aspectRatio;
@@ -51,7 +45,7 @@ export const renderItemContainer = (itemComponent: React.ReactElement, itemData:
         <View>
             <View style={styles.itemInnerContainer}>
                 {isSeries && seen &&
-                    renderPercentSeen()
+                    <Percent style={styles.percent} percent={seen} size={50}/>
                 }
                 {isSeries && lastSeenEpisode &&
                     renderLastEpisodeSection(itemWidth, itemBorderRadius, itemData)
@@ -72,8 +66,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 15,
         left: 15,
-        width: 50,
-        height: 50,
         zIndex: 1,
     },
     lastSeenEpisodeContainer: {

@@ -15,4 +15,5 @@ export enum LocalIcon {
     review = require('../../assets/icons/review.png'),
     popcorn = require('../../assets/icons/popcorn.png'),
     percentTemplate = require('../../assets/icons/percentTemplate.png'),
+    email = require('../../assets/icons/email.png'),
 }

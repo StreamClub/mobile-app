@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { useSession } from '../context/ctx';
-import { privateCall, Params, usePrivateCall } from './generic';
+import { Params, usePrivateCall } from './generic';
 import { useAppDispatch } from '../hooks/redux/useAppDispatch';
 import { setLoading } from '../store/slices/searchContentSlice';
 

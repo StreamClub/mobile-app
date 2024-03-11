@@ -5,6 +5,7 @@ export const useMovieDetail = () => {
     const [movie, setMovieState] = useState<MovieDetail>()
 
     const setMovie = (data: any) => {
+        console.log(data);
         const movieEntry = MovieDetail.fromJson(data)
         setMovieState(movieEntry);
     }

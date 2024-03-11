@@ -1,9 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
-import { getArtist } from '../../apiCalls/artists'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { useLocalSearchParams } from 'expo-router'
 import {
@@ -11,10 +9,10 @@ import {
     ArtistDetails,
 } from '../../components/ArtistDetails/ArtistDetailScreen'
 import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
+import { useGetArtist } from '../../apiCalls/artists'
 
 export default function Serie() {
-    const session = useSession()
-    const [artist, setArtist] = useState<ArtistDetails>({
+    const emptyArtist = {
         id: 1136406,
         name: '',
         poster: '',
@@ -31,9 +29,10 @@ export default function Serie() {
             instagramId: null,
             twitterId: null,
         }
-    })
+    }
+    const {getArtist, loading} = useGetArtist();
+    const [artist, setArtist] = useState<ArtistDetails>(emptyArtist)
     const params = useLocalSearchParams<ArtistDetailsParams>()
-    const [artistLoaded, setArtistLoaded] = useState(false)
     const artistId = params.id
 
     const onSuccess = (response: any) => {
@@ -56,23 +55,18 @@ export default function Serie() {
             }
         }
         setArtist(artistData)
-        setArtistLoaded(true)
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
     }
 
     useEffect(() => {
-        getArtist(session, artistId, onSuccess, onFailure)
+        getArtist(artistId, onSuccess)
     }, [])
 
     return (
         <View style={styles.container}>
-            {artistLoaded ? (
-                <ArtistDetailScreen artist={artist} />
-            ) : (
+            {loading || (artist == emptyArtist) ? (
                 <LoadingComponent />
+            ) : (
+                <ArtistDetailScreen artist={artist} />
             )}
         </View>
     )

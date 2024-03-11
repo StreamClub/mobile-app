@@ -5,13 +5,10 @@ import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import {
-    getUserServices,
-    getUserServicesParams,
-    deleteUserService,
     deleteUserServiceParams,
-    getAllServices,
-    putUserService,
     putUserServiceParams,
+    useModifyServices,
+    useUserServices,
 } from '../../apiCalls/services'
 import { ServiceEntry } from '../../components/Types/Services'
 import {
@@ -23,10 +20,9 @@ import { ServicesScreenCallbacks } from '../../components/Services/ServicesScree
 export default function Services() {
     const session = useSession()
     const userId = session?.userId
-
+    const {getUserServices, getAllServices, loading} = useUserServices();
+    const {deleteUserService, putUserService} = useModifyServices();
     let serviceSelected: ServiceEntry = {} as ServiceEntry
-
-    const [loading, setLoading] = useState(true)
     const [userServices, setUserServices] = useState<ServiceEntry[]>([])
     const [allServices, setAllServices] = useState<ServiceEntry[]>([])
 
@@ -34,7 +30,6 @@ export default function Services() {
         const _userServices: ServiceEntry[] = response.data.results
 
         setUserServices(_userServices)
-        setLoading(false)
     }
 
     const onFailure = (error: any) => {
@@ -46,23 +41,16 @@ export default function Services() {
         const _allServices: ServiceEntry[] = response.data.streamServices
         console.log(_allServices)
         setAllServices(_allServices)
-        setLoading(false)
     }
 
     useEffect(() => {
-        const params: getUserServicesParams = {
-            userId: userId ? userId : 0,
-        }
-        getUserServices(session, params, onSuccess, onFailure)
-        getAllServices(session, onSuccessGetAllServices, onFailure)
+        getUserServices(onSuccess)
+        getAllServices(onSuccessGetAllServices)
     }, [])
 
     const onFailureDelete = (error: any) => {
-        const params: getUserServicesParams = {
-            userId: userId ? userId : 0,
-        }
-        getUserServices(session, params, onSuccess, onFailure)
-        getAllServices(session, onSuccessGetAllServices, onFailure)
+        getUserServices(onSuccess)
+        getAllServices(onSuccessGetAllServices)
     }
 
     const onSuccessDelete = (response: any) => {
@@ -80,7 +68,7 @@ export default function Services() {
             (service) => service.providerId !== serviceSelected.providerId
         )
         setUserServices(_userServices)
-        deleteUserService(session, params, onSuccessDelete, onFailureDelete)
+        deleteUserService(params, onSuccessDelete)
     }
 
     const onSuccessPut = (response: any) => {
@@ -95,7 +83,7 @@ export default function Services() {
             const params: putUserServiceParams = {
                 providerId: service.providerId,
             }
-            putUserService(session, params, onSuccessPut, onFailure)
+            putUserService(params, onSuccessPut)
         } else {
             onUserServicePressed(service)
         }

@@ -1,72 +1,48 @@
-import {
-    addMovieToWatchlist,
-    removeMovieFromWatchlist,
-} from '../apiCalls/movies'
-import { useSession } from '../context/ctx'
 import { useState } from 'react'
 import { ContentType } from '../entities/ContentType'
-import {
-    addSeriesToWatchlist,
-    removeSeriesFromWatchlist,
-} from '../apiCalls/series'
 import { Content } from '../entities/Content'
+import { useMovieWatchlist } from '../apiCalls/movies'
+import { useSeriesWatchlist } from '../apiCalls/series'
 
 export const useWatchlistPress = (
     contentEntry: Content,
     contentType: ContentType
 ) => {
-    const [inWatchlist, setInWatchlist] = useState(contentEntry.inWatchlist)
-    const [loading, setLoading] = useState(false)
+    const {addMovieToWatchlist, removeMovieFromWatchlist, loading: movieLoading} = useMovieWatchlist();
+    const {addSeriesToWatchlist, removeSeriesFromWatchlist, loading: seriesLoading} = useSeriesWatchlist();
+    const [inWatchlist, setInWatchlist] = useState(contentEntry.inWatchlist);
 
     const onSuccessAdd = (response: any) => {
         console.log('Agrego a watchlist')
         setInWatchlist(true)
-        setLoading(false)
     }
 
     const onSuccessRemove = (response: any) => {
         console.log('Borro de watchlist')
         setInWatchlist(false)
-        setLoading(false)
     }
-
-    const onFailure = (error: any) => {
-        console.log(error)
-        console.log(error.message)
-        setLoading(false)
-    }
-
-    const session = useSession()
 
     const addContentToWatchlist = () => {
         contentType.isMovie()
             ? addMovieToWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessAdd,
-                  onFailure
+                  onSuccessAdd
               )
             : addSeriesToWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessAdd,
-                  onFailure
+                  onSuccessAdd
               )
     }
 
     const removeContentFromWatchlist = () => {
         contentType.isMovie()
             ? removeMovieFromWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessRemove,
-                  onFailure
+                  onSuccessRemove
               )
             : removeSeriesFromWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessRemove,
-                  onFailure
+                  onSuccessRemove
               )
     }
 
@@ -77,8 +53,7 @@ export const useWatchlistPress = (
         } else {
             removeContentFromWatchlist()
         }
-        setLoading(true)
     }
-
+    const loading = movieLoading || seriesLoading;
     return { onPress, inWatchlist, loading }
 }

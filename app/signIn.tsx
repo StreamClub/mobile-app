@@ -7,35 +7,28 @@ import { useSession } from '../context/ctx'
 import { CustomButton } from '../components/BasicComponents/CustomButton'
 import React from 'react'
 
-import { logIn, logInBody } from '../apiCalls/auth'
+import { logInBody, useLogIn } from '../apiCalls/auth'
 
 export default function Page() {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
+    const {logIn, loading} = useLogIn();
 
     const session = useSession()
     const signIn = session?.signIn
 
     const onSuccessLogIn = (response: any) => {
-        setLoading(false)
         const accessToken = response.data.token
         const refreshToken = response.data.refreshToken
         signIn?.(accessToken, refreshToken)
         router.replace('/home')
     }
 
-    const onFailureLogIn = (error: any) => {
-        console.log(error)
-        setLoading(false)
-    }
-
     const onPressSignIn = () => {
         console.log('Iniciando sesión..')
-        setLoading(true)
         const body: logInBody = { email, password }
-        logIn(body, session, onSuccessLogIn, onFailureLogIn)
+        logIn(body, onSuccessLogIn)
     }
 
     const onPressOpenEye = () => {
@@ -145,7 +138,7 @@ export default function Page() {
             {renderPasswordInput()}
             {renderSignInButton()}
             {renderForgotPasswordText()}
-
+            
             {/* {signInFailed && renderErrorMessage()} */}
         </View>
     )

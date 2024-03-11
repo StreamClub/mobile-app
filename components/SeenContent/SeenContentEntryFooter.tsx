@@ -5,13 +5,19 @@ import { BodyText } from '../BasicComponents/BodyText';
 import { ProfilePicture } from '../Profile/ProfilePicture';
 import { LocalIcon } from '../Types/LocalIcon';
 
-export const SeenContentEntryFooter = () => {
+type SeenContentEntryFooterParams = {
+    size: number;
+}
+
+export const SeenContentEntryFooter = (params: SeenContentEntryFooterParams) => {
+    const size = params.size
+    
     return(
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
                 source={LocalIcon.popcorn}
                 style={{
-                    width: 30,
+                    width: size,
                     aspectRatio: 1240 / 1598,
                     marginLeft: 11,
                 }} />
@@ -19,7 +25,7 @@ export const SeenContentEntryFooter = () => {
             <Image
                 source={LocalIcon.review}
                 style={{
-                    width: 30,
+                    width: size,
                     aspectRatio: 555 / 513,
                     marginRight: 11,
                 }} />

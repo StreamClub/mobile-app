@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { Image, View, StyleSheet } from 'react-native';
-import { LocalIcon } from '../Types/LocalIcon';
-import { seenContentStyles } from './styles/SeenContentStyle';
 import { colors } from '../../assets';
 import { SeenContentEntryFooter } from './SeenContentEntryFooter';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
@@ -10,18 +8,18 @@ import { BodyText } from '../BasicComponents/BodyText';
 import { EpisodeNumber } from '../Types/EpisodeNumber';
 import { Percent } from '../BasicComponents/Percent';
 
-function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, itemData: SeenContentEntry): React.ReactNode {
+function renderLastEpisodeSection(params: SeenContentEntryWrapperParams): React.ReactNode {
+    const { itemObject, props } = params
     const lastSeenEpisodeContainer = [
-        styles.lastSeenEpisodeContainer, 
+        styles.lastSeenEpisodeContainer,
         {
-            width: itemWidth,
-            alignSelf: 'center',
-            borderBottomLeftRadius: itemBorderRadius, 
-            borderBottomRightRadius: itemBorderRadius,
+            width: props.width,
+            marginHorizontal: props.marginHorizontal,
+            bottom: props.bottomLastSeen
         },
     ]
 
-    const lastSeenEpisode: EpisodeNumber = itemData.lastSeenEpisode? itemData.lastSeenEpisode : {seasonId: 0, episodeId: 0};
+    const lastSeenEpisode: EpisodeNumber = itemObject.lastSeenEpisode? itemObject.lastSeenEpisode : {seasonId: 0, episodeId: 0};
 
     const lastSeenEpisodeText = "Último visto " + lastSeenEpisode.seasonId + "x" + lastSeenEpisode.episodeId;
 
@@ -34,26 +32,40 @@ function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, i
         </LinearGradient>
 }
 
-export const renderItemContainer = (itemComponent: React.ReactElement, itemData: SeenContentEntry, width?: number, showText: Boolean = true, size: number = 50) => {
-    const itemWidth = width? width : seenContentStyles.contentPoster.height * seenContentStyles.contentPoster.aspectRatio;
-    const itemBorderRadius = seenContentStyles.contentPoster.borderRadius;
+export type SeenContentEntryWrapperProps = {
+    width: number;
+    showPercentText: Boolean;
+    percentSize: number;
+    marginHorizontal: number;
+    bottomLastSeen: number;
+    topPercent: number;
+    leftPercent: number,
+    sizeLastSeenIcons: number;
+}
 
-    const isSeries = itemData.contentType === 'series';
-    const lastSeenEpisode = isSeries? itemData.lastSeenEpisode : null;
-    const seen = isSeries ? itemData.seen : null;
+export type SeenContentEntryWrapperParams = {
+    itemComponent: React.ReactElement;
+    itemObject: SeenContentEntry;
+    props: SeenContentEntryWrapperProps;
+}
+
+export const seenContentEntryWrapper = (params: SeenContentEntryWrapperParams) => {
+    const isSeries = params.itemObject.contentType === 'series';
+    const lastSeenEpisode = isSeries? params.itemObject.lastSeenEpisode : null;
+    const seen = isSeries ? params.itemObject.seen : null;
 
     return (
         <View>
             <View style={styles.itemInnerContainer}>
                 {isSeries && seen &&
-                    <Percent style={styles.percent} percent={seen} size={size} showText={showText}/>
+                    <Percent style={[styles.percent, {top: params.props.topPercent, left: params.props.leftPercent}]} percent={seen} size={params.props.percentSize} showText={params.props.showPercentText}/>
                 }
                 {isSeries && lastSeenEpisode &&
-                    renderLastEpisodeSection(itemWidth, itemBorderRadius, itemData)
+                    renderLastEpisodeSection(params)
                 }
-                {itemComponent}
+                {params.itemComponent}
             </View>
-            <SeenContentEntryFooter />
+            <SeenContentEntryFooter size={params.props.sizeLastSeenIcons}/>
         </View>
     )
 }
@@ -65,15 +77,11 @@ const styles = StyleSheet.create({
     },
     percent: {
         position: 'absolute',
-        top: 15,
-        left: 15,
         zIndex: 1,
     },
     lastSeenEpisodeContainer: {
-        // marginHorizontal: 10, 
         height: 50,  
-        position: 'absolute', 
-        bottom: 9, 
+        position: 'absolute',  
         zIndex: 1,
         alignItems: 'center',
         justifyContent: 'center',

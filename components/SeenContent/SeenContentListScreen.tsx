@@ -6,7 +6,7 @@ import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/Carousel
 import { TmdbImageType } from '../BasicComponents/TmdbImage';
 import { TmdbImage } from '../BasicComponents/TmdbImage';
 import { LocalIcon } from '../Types/LocalIcon';
-import { renderItemContainer } from '../SeenContent/SeenContentEntryContainer';
+import { renderItemContainer } from './SeenContentEntryWrapper';
 import { seenContentStyles } from '../SeenContent/styles/SeenContentStyle';
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';

@@ -4,7 +4,7 @@ import { colors } from '../../assets';
 import { createTuples } from '../../utils/listManager';
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
-import { renderItemContainer } from './SeenContentEntryContainer';
+import { seenContentEntryWrapper, SeenContentEntryWrapperParams, SeenContentEntryWrapperProps } from './SeenContentEntryWrapper';
 
 const ENTRIES_PER_ROW = 3;
 const entryContainerFlex = 1/ENTRIES_PER_ROW
@@ -14,20 +14,36 @@ export type SeenContentListParams = {
     seenContentList: SeenContentEntry[];
 }
 
-const renderSeenContentEntry = (entry: SeenContentEntry, index: number) => {
-    const params: TmdbImageParams = {
-        resource: entry.poster,
+const renderSeenContentEntry = (seenContentEntry: SeenContentEntry, index: number) => {
+    const tmdbImageParams: TmdbImageParams = {
+        resource: seenContentEntry.poster,
         type: TmdbImageType.Cover,
         style: styles.posterStyle,
     }
 
-    const itemComponent = <TmdbImage {...params}/>
+    const itemComponent = <TmdbImage {...tmdbImageParams}/>
 
-    const width = (screenWidth / ENTRIES_PER_ROW) - 2
+    const width = (screenWidth * entryContainerFlex) - 2;
+
+    const seenContentEntryWrapperParams: SeenContentEntryWrapperParams = {
+        itemComponent: itemComponent,
+        itemObject: seenContentEntry,
+        props: {
+            width: width,
+            showPercentText: false,
+            percentSize: 30,
+            marginHorizontal: 0,
+            bottomLastSeen: 0,
+            leftPercent: 5,
+            topPercent: 5,
+            sizeLastSeenIcons: 20,
+        }
+    }
 
     return(
         <View key={index} style={styles.entryContainer}>
-            {renderItemContainer(itemComponent, entry, width, false, 30)}
+            {/* {seenContentEntryWrapper(itemComponent, entry, width, false, 30)} */}
+            {seenContentEntryWrapper(seenContentEntryWrapperParams)}
         </View>
     )
 }

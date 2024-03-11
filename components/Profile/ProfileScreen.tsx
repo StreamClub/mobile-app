@@ -7,10 +7,7 @@ import { colors } from '../../assets';
 import { Carousel } from '../BasicComponents/Carousel';
 import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/CarouselParams';
 import { TmdbImageType } from '../BasicComponents/TmdbImage';
-import { TmdbImage } from '../BasicComponents/TmdbImage';
-import { LocalIcon } from '../Types/LocalIcon';
-import { renderItemContainer } from '../SeenContent/SeenContentEntryContainer';
-import { seenContentStyles } from '../SeenContent/styles/SeenContentStyle';
+import { seenContentEntryWrapper, SeenContentEntryWrapperProps } from '../SeenContent/SeenContentEntryWrapper';
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 
@@ -33,12 +30,26 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
         type: TmdbImageType.Cover,
     }
 
+    const itemWidth = seenContentStyles.contentPoster.height * seenContentStyles.contentPoster.aspectRatio;
+
+    const itemWrapperProps: SeenContentEntryWrapperProps = {
+        width: itemWidth,
+        showPercentText: true, 
+        percentSize: 50,
+        marginHorizontal: 10,
+        bottomLastSeen: 9,
+        leftPercent: 15,
+        topPercent: 15,
+        sizeLastSeenIcons: 30,
+    }
+
     const seenContentCarouselParams: CarouselParams = {
         items: params.seenContent,
         itemStyle: seenContentStyles.contentPoster,
         containerStyle: styles.carousel,
         type: TmdbImageType.Cover,
-        itemContainer: renderItemContainer,
+        itemWrapper: seenContentEntryWrapper,
+        itemWrapperProps: itemWrapperProps,
     }
 
     return (
@@ -86,5 +97,15 @@ const styles = StyleSheet.create({
     titleText: {
         fontWeight:'bold', 
         marginLeft: 10
+    },
+});
+
+export const seenContentStyles = StyleSheet.create({
+    contentPoster: {
+        height: (screenWidth/1.7),
+        aspectRatio: 2/3,
+        borderRadius: 5,
+        margin: 10,
+        borderWidth: 1,
     },
 });

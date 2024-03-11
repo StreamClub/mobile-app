@@ -16,6 +16,7 @@ import { getSeenContent, getSeenContentParams } from '../../apiCalls/content'
 import { SeenContentListEntry } from '../../entities/SeenContent/SeenContentListEntry'
 import { SeenSeriesListEntry } from '../../entities/SeenContent/SeenSeriesListEntry'
 import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
+import { router } from 'expo-router'
 
 export default function Profile() {
     const session = useSession()
@@ -42,12 +43,17 @@ export default function Profile() {
             reviewsCount: 0,
         }
     )
+    
+    const onPressMoreSeenContent = () => {
+        router.push('/seenContent')
+    }
 
     const profileParams: ProfileScreenParams = {
         watchlist: watchlist,
         profileHeader: profileHeader,
         userServices: userServices,
         seenContent: seenContent,
+        onPressMoreSeenContent: onPressMoreSeenContent,
     }
 
     const onSuccessGetWatchlist = (response: any) => {

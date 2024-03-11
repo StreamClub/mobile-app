@@ -7,6 +7,7 @@ export type PercentParams = {
     style: any;
     percent: number;
     size: number;
+    showText: Boolean;
 }
 
 export const Percent = (params: PercentParams) => {
@@ -14,6 +15,8 @@ export const Percent = (params: PercentParams) => {
     if (percent === 0 && params.percent > 0) {
         percent = 1;
     }
+    const percentText = params.showText? percent + "%" : "";
+    const seenText = params.showText? "visto" : "";
 
     return (
     <View style={params.style}>
@@ -30,12 +33,12 @@ export const Percent = (params: PercentParams) => {
                 borderRadius: 50
             }}
         padding={3}
-    >
+    > 
         {
             (fill) => (
                 <View style={{alignItems: 'center'}}>
-                    <BodyText body={percent + "%"} size='small' style={{margin:0, lineHeight: 15}}/>
-                    <BodyText body="visto" size='small' style={{margin:0, lineHeight: 15}}/>
+                    <BodyText body={percentText} size='small' style={{margin:0, lineHeight: 15}}/>
+                    <BodyText body={seenText} size='small' style={{margin:0, lineHeight: 15}}/>
                 </View>
             )
         }

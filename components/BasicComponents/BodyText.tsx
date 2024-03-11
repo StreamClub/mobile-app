@@ -33,6 +33,7 @@ export const BodyText = (params: TextParams) => {
             ]}
             onLayout={params.onLayout}
             numberOfLines={params.numberOfLines}
+            onPress={params.onPress}
         >
             {text}
         </Text>

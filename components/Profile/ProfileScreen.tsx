@@ -9,8 +9,8 @@ import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/Carousel
 import { TmdbImageType } from '../BasicComponents/TmdbImage';
 import { TmdbImage } from '../BasicComponents/TmdbImage';
 import { LocalIcon } from '../Types/LocalIcon';
-import { renderItemContainer } from './SeenContentEntry/SeenContentEntryContainer';
-import { seenContentStyles } from './styles/SeenContentStyle';
+import { renderItemContainer } from '../SeenContent/SeenContentEntryContainer';
+import { seenContentStyles } from '../SeenContent/styles/SeenContentStyle';
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 
@@ -21,6 +21,7 @@ export type ProfileScreenParams = {
     profileHeader: ProfileHeaderParams;
     userServices: CarouselEntry[];
     seenContent: CarouselEntry[];
+    onPressMoreSeenContent: () => void;
 }
 
 export const ProfileScreen = (params: ProfileScreenParams) => {
@@ -50,7 +51,7 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
 
             <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
             <Carousel {...seenContentCarouselParams}/>
-            <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} />
+            <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={params.onPressMoreSeenContent}/>
             
             <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
             <Watchlist watchlist={params.watchlist}/>

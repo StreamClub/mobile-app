@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
 import { Image, View, StyleSheet } from 'react-native';
-import { LocalIcon } from '../../Types/LocalIcon';
-import { seenContentStyles } from '../styles/SeenContentStyle';
-import { colors } from '../../../assets';
+import { LocalIcon } from '../Types/LocalIcon';
+import { seenContentStyles } from './styles/SeenContentStyle';
+import { colors } from '../../assets';
 import { SeenContentEntryFooter } from './SeenContentEntryFooter';
-import { SeenContentEntry } from '../../Types/SeenContentEntry';
+import { SeenContentEntry } from '../Types/SeenContentEntry';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BodyText } from '../../BasicComponents/BodyText';
-import { EpisodeNumber } from '../../Types/EpisodeNumber';
-import { Percent } from '../../BasicComponents/Percent';
+import { BodyText } from '../BasicComponents/BodyText';
+import { EpisodeNumber } from '../Types/EpisodeNumber';
+import { Percent } from '../BasicComponents/Percent';
 
 function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, itemData: SeenContentEntry): React.ReactNode {
     const lastSeenEpisodeContainer = [
         styles.lastSeenEpisodeContainer, 
         {
-            width: itemWidth, 
+            width: itemWidth,
+            alignSelf: 'center',
             borderBottomLeftRadius: itemBorderRadius, 
             borderBottomRightRadius: itemBorderRadius,
         },
@@ -33,8 +34,8 @@ function renderLastEpisodeSection(itemWidth: number, itemBorderRadius: number, i
         </LinearGradient>
 }
 
-export const renderItemContainer = (itemComponent: React.ReactElement, itemData: SeenContentEntry) => {
-    const itemWidth = seenContentStyles.contentPoster.height * seenContentStyles.contentPoster.aspectRatio;
+export const renderItemContainer = (itemComponent: React.ReactElement, itemData: SeenContentEntry, width?: number, showText: Boolean = true, size: number = 50) => {
+    const itemWidth = width? width : seenContentStyles.contentPoster.height * seenContentStyles.contentPoster.aspectRatio;
     const itemBorderRadius = seenContentStyles.contentPoster.borderRadius;
 
     const isSeries = itemData.contentType === 'series';
@@ -45,7 +46,7 @@ export const renderItemContainer = (itemComponent: React.ReactElement, itemData:
         <View>
             <View style={styles.itemInnerContainer}>
                 {isSeries && seen &&
-                    <Percent style={styles.percent} percent={seen} size={50}/>
+                    <Percent style={styles.percent} percent={seen} size={size} showText={showText}/>
                 }
                 {isSeries && lastSeenEpisode &&
                     renderLastEpisodeSection(itemWidth, itemBorderRadius, itemData)
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     lastSeenEpisodeContainer: {
-        marginHorizontal: 10, 
+        // marginHorizontal: 10, 
         height: 50,  
         position: 'absolute', 
         bottom: 9, 

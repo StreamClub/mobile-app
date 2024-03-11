@@ -12,3 +12,13 @@ export const seenContentStyles = StyleSheet.create({
         borderWidth: 1,
     },
 });
+
+export const seenContentListItemStyles = StyleSheet.create({
+    contentPoster: {
+        height: (screenWidth/1.7),
+        aspectRatio: 2/3,
+        borderRadius: 5,
+        margin: 10,
+        borderWidth: 1,
+    },
+});

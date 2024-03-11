@@ -15,8 +15,9 @@ export type CarouselEntry = {
 export type CarouselParams = {
     type: TmdbImageType;
     items: CarouselEntry[];
-    onItemPressed: (item: any) => void;
+    onItemPressed?: (item: any) => void;
     itemStyle: ImageStyleWithHeight;
     containerStyle?: ImageStyle;
     renderX?: boolean;
+    itemContainer?: any;
 };

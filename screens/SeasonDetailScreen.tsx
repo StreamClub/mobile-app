@@ -44,7 +44,6 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
                               seasonId={params.season.id}
                               seriesId={params.season.seriesId}
                               episode={episode}
-                              episodeNumber={index}
                               key={index}
                           />
                       ))

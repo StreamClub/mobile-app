@@ -32,7 +32,7 @@ const renderService = (
     return (
         <Pressable
             key={index}
-            onPress={() => params.onItemPressed(item.itemData)}
+            onPress={() => params.onItemPressed?.(item.itemData)}
             style={{ position: 'relative' }}
         >
             {params.renderX && (
@@ -48,7 +48,11 @@ const renderService = (
                     }}
                 />
             )}
-            <TmdbImage {..._params} />
+            {params.itemContainer?
+                params.itemContainer(<TmdbImage {..._params} />, item.itemData)
+                :
+                <TmdbImage {..._params} />
+            }
         </Pressable>
     )
 }
@@ -138,7 +142,10 @@ export const Carousel = (params: CarouselParams) => {
             <Animated.View
                 style={[
                     styles.sideIconContainerLeft,
-                    { opacity: opacityLeft, height: sideContainerHeight },
+                    { opacity: opacityLeft, 
+                        // TODO: Refactor calculo de altura, deben probaser más casos usando el parametro tmdbImageContainer
+                        // height: sideContainerHeight
+                     },
                 ]}
             >
                 <Image
@@ -161,7 +168,10 @@ export const Carousel = (params: CarouselParams) => {
             <Animated.View
                 style={[
                     styles.sideIconContainerRight,
-                    { opacity: opacityRight, height: sideContainerHeight },
+                    { opacity: opacityRight, 
+                        // TODO: Refactor calculo de altura, deben probaser más casos usando el parametro tmdbImageContainer
+                        // height: sideContainerHeight 
+                    },
                 ]}
             >
                 <Image
@@ -178,6 +188,8 @@ const baseStyles = StyleSheet.create({
         backgroundColor: colors.secondaryWhite,
         zIndex: 3,
         width: 30,
+        // TODO: Refactor calculo de altura, deben probaser más casos usando el parametro tmdbImageContainer
+        height: "100%"
     },
     sideIcon: {
         position: 'absolute',

@@ -21,16 +21,27 @@ export type getProfileParams = {
     userId: number
 }
 
-export function getProfile(
+export const useGetProfile = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getProfile = (queryParams: getProfileParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/users/' + queryParams.userId
+        const params: Params = { }
+        privateCall('GET', endpoint, params, onSuccess)
+    }
+    return {getProfile, loading};
+}
+/* export function getProfile(
     session: ReturnType<typeof useSession>,
     queryParams: getProfileParams,
     onSuccess: (response: AxiosResponse<any, any>) => void,
     onFailure: (error: any) => void
 ) {
+    
     const endpoint = '/users/' + queryParams.userId
     const params: Params = { }
 
     privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
+} */
 
 // --------- --------- --------- --------- --------- ---------

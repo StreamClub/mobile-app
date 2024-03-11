@@ -70,7 +70,7 @@ export const SeenContentList = (params: SeenContentListParams) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.primaryWhite,
+        backgroundColor: colors.secondaryWhite
     },
     rowContainer: {
         flex: 1,

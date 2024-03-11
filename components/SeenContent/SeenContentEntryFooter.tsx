@@ -1,8 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Image } from 'react-native';
-import { TitleText } from '../BasicComponents/TitleText';
-import { BodyText } from '../BasicComponents/BodyText';
-import { ProfilePicture } from '../Profile/ProfilePicture';
+import { View, Image } from 'react-native';
 import { LocalIcon } from '../Types/LocalIcon';
 
 type SeenContentEntryFooterParams = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { colors } from '../../assets';
 import { BodyText } from './BodyText';

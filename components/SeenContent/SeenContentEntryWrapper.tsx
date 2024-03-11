@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Image, View, StyleSheet } from 'react-native';
 import { colors } from '../../assets';
 import { SeenContentEntryFooter } from './SeenContentEntryFooter';
@@ -73,7 +73,7 @@ export const seenContentEntryWrapper = (params: SeenContentEntryWrapperParams) =
 const styles = StyleSheet.create({
     itemInnerContainer: { 
         alignSelf: 'center', 
-        position: 'relative', 
+        position: 'relative',
     },
     percent: {
         position: 'absolute',

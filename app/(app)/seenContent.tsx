@@ -4,15 +4,8 @@ import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { WatchlistEntry } from '../../components/Types/Watchlist'
-import { getWatchlist, getWatchlistParams, getProfile, getProfileParams } from '../../apiCalls/profile'
-import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
-import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/ProfileScreen'
-import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
-import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
-import { ServiceEntry } from '../../components/Types/Services'
-import { getSeenContent, getSeenContentParams } from '../../apiCalls/content'
+import { getSeenContentParams, useGetSeenContent } from '../../apiCalls/content'
 import { SeenContentListEntry } from '../../entities/SeenContent/SeenContentListEntry'
 import { SeenSeriesListEntry } from '../../entities/SeenContent/SeenSeriesListEntry'
 import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
@@ -22,14 +15,13 @@ export default function SeenContent() {
     const session = useSession()
     const userId = session?.userId
 
-    const [loadingSeenContent, setLoadingSeenContent] = useState(true)
     const [seenContent, setSeenContent] = useState<SeenContentEntry[]>([])
+    const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
 
     const onSuccessGetSeenContent = (response: any) => {
         const _seenContent: SeenContentEntry[] = response.data.results
 
         setSeenContent(_seenContent)
-        setLoadingSeenContent(false)
     }
 
     const onFailure = (error: any) => {
@@ -42,7 +34,7 @@ export default function SeenContent() {
             page: 1,
             pageSize: 10,
         }
-        getSeenContent(session, seenContentParams, onSuccessGetSeenContent, onFailure)
+        getSeenContent(seenContentParams, onSuccessGetSeenContent)
     }, [])
 
     return (

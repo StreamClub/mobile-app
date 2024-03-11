@@ -1,33 +1,29 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
-import { getWatchlist, getWatchlistParams, getProfile, getProfileParams } from '../../apiCalls/profile'
-import { getUserServices, getUserServicesParams } from '../../apiCalls/services'
+import { useGetProfile, useGetWatchlist } from '../../apiCalls/profile'
+import { getProfileParams } from '../../apiCalls/profile'
 import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/ProfileScreen'
 import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
 import { ServiceEntry } from '../../components/Types/Services'
-import { getSeenContent, getSeenContentParams } from '../../apiCalls/content'
-import { SeenContentListEntry } from '../../entities/SeenContent/SeenContentListEntry'
-import { SeenSeriesListEntry } from '../../entities/SeenContent/SeenSeriesListEntry'
+import { getSeenContentParams, useGetSeenContent } from '../../apiCalls/content'
 import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
 import { router } from 'expo-router'
+import { useSession } from '../../context/ctx'
+import { useUserServices } from '../../apiCalls/services'
 
 export default function Profile() {
+    const {getWatchlist, loading: loadingWatchlist} = useGetWatchlist();
     const session = useSession()
     const userId = session?.userId
-
-    
-
-    const [loadingWatchlist, setLoadingWatchlist] = useState(true)
-    const [loadingProfileHeader, setLoadingProfileHeader] = useState(true)
-    const [loadingUserServices, setLoadingUserServices] = useState(true)
-    const [loadingSeenContent, setLoadingSeenContent] = useState(true)
+    const {getUserServices, loading: loadingUserServices} = useUserServices();
+    const {getProfile, loading: loadingProfileHeader} = useGetProfile();
+    const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
 
     const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices || loadingSeenContent
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
@@ -59,13 +55,11 @@ export default function Profile() {
     const onSuccessGetWatchlist = (response: any) => {
         const watchlist:WatchlistEntry[] = response.data.results
         setWatchlist(watchlist)
-        setLoadingWatchlist(false)
     }
 
     const onSuccessGetProfile = (response: any) => {
         const profileHeader: ProfileHeaderParams = response.data
         setProfileHeader(profileHeader)
-        setLoadingProfileHeader(false)
     }
 
     const onSuccessGetUserServices = (response: any) => {
@@ -79,7 +73,6 @@ export default function Profile() {
             })
         })
         setUserServices(_carousel)
-        setLoadingUserServices(false)
     }
 
     const onSuccessGetSeenContent = (response: any) => {
@@ -93,7 +86,6 @@ export default function Profile() {
             })
         })
         setSeenContent(_carousel)
-        setLoadingSeenContent(false)
     }
 
     const onFailure = (error: any) => {
@@ -101,27 +93,20 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        const watchlistParams: getWatchlistParams = {
-            userId: userId? userId : 0,
-        }
-        getWatchlist(session, watchlistParams, onSuccessGetWatchlist, onFailure)
+        getWatchlist(onSuccessGetWatchlist)
 
         const profileParams: getProfileParams = {
             userId: userId? userId : 0,
         }
-        getProfile(session, profileParams, onSuccessGetProfile, onFailure)
-
-        const userServicesParams: getUserServicesParams = {
-            userId: userId ? userId : 0,
-        }
-        getUserServices(session, userServicesParams, onSuccessGetUserServices, onFailure)
+        getProfile(profileParams, onSuccessGetProfile)
+        getUserServices(onSuccessGetUserServices)
 
         const seenContentParams: getSeenContentParams = {
             userId: userId ? userId : 0,
             page: 1,
             pageSize: 10,
         }
-        getSeenContent(session, seenContentParams, onSuccessGetSeenContent, onFailure)
+        getSeenContent(seenContentParams, onSuccessGetSeenContent)
     }, [])
 
     return (

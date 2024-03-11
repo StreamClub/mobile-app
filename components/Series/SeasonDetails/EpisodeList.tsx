@@ -14,7 +14,6 @@ import { TmdbImage, TmdbImageType } from '../../BasicComponents/TmdbImage'
 
 type EpisodeListEntry = {
     episode: Episode
-    episodeNumber: number
     seasonId: number
     seriesId: number
 }

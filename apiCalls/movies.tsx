@@ -1,20 +1,22 @@
 import { AxiosResponse } from 'axios'
-import { useSession } from '../context/ctx'
-import { privateCall, Params } from './generic'
+import { Params, usePrivateCall } from './generic'
+import { useAppDispatch } from '../hooks/redux/useAppDispatch';
+import { setLoading, setResults } from '../store/slices/searchContentSlice';
+import { useAppSelector } from '../hooks/redux/useAppSelector';
 
 const country = 'AR' // TODO: Esto hay que cambiarlo
 
 // --------- --------- --------- --------- --------- ---------
-export function getMovie(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/movies/' + movieId
-    const params: Params = { params: { country: country } }
+export const useGetMovie = () => {
+    const {loading, privateCall} = usePrivateCall();
 
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    const getMovie = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/movies/' + movieId;
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {loading, getMovie};
 }
 
 // --------- --------- --------- --------- --------- ---------
@@ -23,63 +25,61 @@ export type SearchParams = {
     page: number
 }
 
-export function searchMovies(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/movies/'
-    const params: Params = { params: {...queryParams, country: country } }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function addMovieToWatchlist(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: movieId,
-        contentType: 'movie',
-    }
-    const params: Params = { data: body }
+export const useSearchMovies = () => {
+    const {privateCall} = usePrivateCall();
+    const endpoint = '/movies/';
+    const dispatch = useAppDispatch();
     
-    privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure)
-}
-
-export function removeMovieFromWatchlist(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: movieId,
-        contentType: 'movie',
+    const searchMovies = (queryParams: SearchParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { params: {...queryParams, country: country } }
+        dispatch(setLoading(true));
+        privateCall('GET', endpoint, params, onSuccess);
+        dispatch(setLoading(false));
+        //TODO: AGREGAR LOGICA EN BASE A SHOWERROR PARA QUE SETEE EL PAYLOAD DE REDUX DE LA BUSQUEDA
+        //EN VACIO (O SEA UN ARRAY VACIO) < eso tan simple no es, asi no funciono hay q revisar.
     }
-    const params: Params = { data: body }
-    privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
+
+    return {searchMovies};
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function markMovieAsSeen(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) { 
-    privateCall('PUT', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
+export const useMovieWatchlist = () => {
+    const {loading, privateCall} = usePrivateCall();
+
+    const addMovieToWatchlist = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: movieId,
+            contentType: 'movie',
+        }
+        const params: Params = { data: body }
+        
+        privateCall('PUT', '/watchlist', params, onSuccess);
+    }
+    
+    const removeMovieFromWatchlist = (movieId: string, 
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: movieId,
+            contentType: 'movie',
+        };
+        const params: Params = { data: body };
+        privateCall('DELETE', '/watchlist', params, onSuccess);
+    }
+
+    return {loading, addMovieToWatchlist, removeMovieFromWatchlist};
 }
 
-export function unmarkMovieAsSeen(
-    session: ReturnType<typeof useSession>,
-    movieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    privateCall('DELETE', session, '/seenContent/movies/' + movieId, {}, onSuccess, onFailure);
+// --------- --------- --------- --------- --------- ---------
+export const useMovieSeen = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const markMovieAsSeen = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('PUT', '/seenContent/movies/' + movieId, {}, onSuccess);
+    }
+
+    const unmarkMovieAsSeen = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('DELETE', '/seenContent/movies/' + movieId, {}, onSuccess);
+    }
+
+    return {markMovieAsSeen, unmarkMovieAsSeen, loading};
 }

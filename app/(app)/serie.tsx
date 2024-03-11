@@ -1,9 +1,8 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { colors } from '../../assets'
-import { getSerie } from '../../apiCalls/series'
+import { useGetSeries } from '../../apiCalls/series'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
@@ -14,24 +13,18 @@ import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader
 import { SeriesDetailScreen } from '../../components/Series/SeriesDetails/SeriesDetailScreen'
 
 export default function Serie() {
-    const session = useSession()
     const { series, setSeries } = useSeriesDetails()
     const params = useLocalSearchParams<ContentDetailsParams>()
-    const [serieLoaded, setSerieLoaded] = useState(false)
     const serieId = params.id
+    const { getSeries, loading } = useGetSeries();
 
     const onSuccess = (response: any) => {
         setSeries(response.data)
-        setSerieLoaded(true)
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
     }
 
     useEffect(() => {
         const loadSerie = async () => {
-            await getSerie(session, serieId, onSuccess, onFailure)
+            await getSeries(serieId, onSuccess)
         }
         loadSerie()
     }, [])
@@ -50,7 +43,7 @@ export default function Serie() {
                     headerRight: () => <SeriesHeader series={series} />,
                 }}
             />
-            {serieLoaded && series ? (
+            {!loading && series ? (
                 <SeriesDetailScreen
                     series={series}
                     onRecommendPress={onRecommendPress}

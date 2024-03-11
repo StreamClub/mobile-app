@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native';
-import { TitleText } from '../../BasicComponents/TitleText';
-import { BodyText } from '../../BasicComponents/BodyText';
-import { ProfilePicture } from '../ProfilePicture';
-import { LocalIcon } from '../../Types/LocalIcon';
+import { TitleText } from '../BasicComponents/TitleText';
+import { BodyText } from '../BasicComponents/BodyText';
+import { ProfilePicture } from '../Profile/ProfilePicture';
+import { LocalIcon } from '../Types/LocalIcon';
 
 export const SeenContentEntryFooter = () => {
     return(

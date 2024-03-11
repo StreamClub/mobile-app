@@ -13,6 +13,7 @@ import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselPa
 import { ServiceEntry } from '../../components/Types/Services'
 import { getSeenContentParams, useGetSeenContent } from '../../apiCalls/content'
 import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
+import { router } from 'expo-router'
 import { useSession } from '../../context/ctx'
 import { useUserServices } from '../../apiCalls/services'
 
@@ -38,12 +39,17 @@ export default function Profile() {
             reviewsCount: 0,
         }
     )
+    
+    const onPressMoreSeenContent = () => {
+        router.push('/seenContent')
+    }
 
     const profileParams: ProfileScreenParams = {
         watchlist: watchlist,
         profileHeader: profileHeader,
         userServices: userServices,
         seenContent: seenContent,
+        onPressMoreSeenContent: onPressMoreSeenContent,
     }
 
     const onSuccessGetWatchlist = (response: any) => {

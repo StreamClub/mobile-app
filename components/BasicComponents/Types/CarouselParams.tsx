@@ -19,5 +19,6 @@ export type CarouselParams = {
     itemStyle: ImageStyleWithHeight;
     containerStyle?: ImageStyle;
     renderX?: boolean;
-    itemContainer?: any;
+    itemWrapper?: any;
+    itemWrapperProps?: any;
 };

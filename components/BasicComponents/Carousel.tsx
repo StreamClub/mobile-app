@@ -29,6 +29,14 @@ const renderService = (
         style: params.itemStyle,
     }
 
+    const itemImage = <TmdbImage {..._params} />
+
+    const itemWrapperParams = {
+        itemComponent: itemImage,
+        itemObject: item.itemData,
+        props: params.itemWrapperProps,
+    }
+
     return (
         <Pressable
             key={index}
@@ -48,8 +56,8 @@ const renderService = (
                     }}
                 />
             )}
-            {params.itemContainer?
-                params.itemContainer(<TmdbImage {..._params} />, item.itemData)
+            {params.itemWrapper?
+                params.itemWrapper(itemWrapperParams)
                 :
                 <TmdbImage {..._params} />
             }

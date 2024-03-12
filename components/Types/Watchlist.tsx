@@ -2,7 +2,7 @@ import { ContentType } from './ContentType';
 
 export type WatchlistEntry = {
     createdAt: string;
-    contentId: number;
+    id: number;
     poster: string;
     contentType: ContentType;
 }

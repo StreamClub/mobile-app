@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { colors } from "../assets";
 import { BodyText } from './BasicComponents/BodyText';
+import { CreditsEntry } from './Types/Credits';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -9,11 +10,13 @@ export type PosterWithDetailsParams = {
     poster: string,
     title: string,
     description: string,
+    onPressCreditsEntry: (entry: CreditsEntry) => void
+    creditsEntry: CreditsEntry
 }
 
 export const PosterWithDetails = (params: PosterWithDetailsParams) => {
     return (
-        <Pressable style={styles.container}>
+        <Pressable style={styles.container} onPress={() => params.onPressCreditsEntry(params.creditsEntry)}>
             <Image 
                 source={{ uri: "https://image.tmdb.org/t/p/original" + params.poster }} 
                 style={styles.poster}

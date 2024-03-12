@@ -10,6 +10,9 @@ import {
 } from '../../components/ArtistDetails/ArtistDetailScreen'
 import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
 import { useGetArtist } from '../../apiCalls/artists'
+import { CreditsEntry } from '../../components/Types/Credits'
+import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import { router } from 'expo-router'
 
 export default function Serie() {
     const emptyArtist = {
@@ -61,12 +64,22 @@ export default function Serie() {
         getArtist(artistId, onSuccess)
     }, [])
 
+    const onPressCreditsEntry = (entry: CreditsEntry) => {
+        const contentScreenParams: ContentDetailsParams = {
+            id: entry.id.toString(),
+        }
+
+        //TODO: Refactorizar para usar o bien entities o bien un enum
+        const pathname = entry.mediaType === 'movie' ? '/movie' : '/serie'
+        router.push({ pathname: pathname, params: contentScreenParams })
+    }
+
     return (
         <View style={styles.container}>
             {loading || (artist == emptyArtist) ? (
                 <LoadingComponent />
             ) : (
-                <ArtistDetailScreen artist={artist} />
+                <ArtistDetailScreen artist={artist} onPressCreditsEntry={onPressCreditsEntry} />
             )}
         </View>
     )

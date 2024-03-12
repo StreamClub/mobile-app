@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Pressable, StyleSheet, View, Text, Dimensions } from 'react-native'
 import { colors } from '../../assets'
-import { Credits, CastEntry, CrewEntry } from '../Types/Credits'
+import { Credits, CastEntry, CrewEntry, CreditsEntry } from '../Types/Credits'
 import {
     PosterWithDetails,
     PosterWithDetailsParams,
@@ -12,6 +12,7 @@ import { Icon } from 'react-native-paper'
 
 export type ArtistFilmografyParams = {
     credits: Credits
+    onPressCreditsEntry: (entry: CreditsEntry) => void
 }
 
 const screenWidth = Dimensions.get('window').width
@@ -22,7 +23,8 @@ const getDescription = (credit: CastEntry | CrewEntry) => {
 
 const renderRow = (
     creditsPair: Array<CastEntry> | Array<CrewEntry>,
-    index: number
+    index: number,
+    params: ArtistFilmografyParams
 ) => {
     const credit1 = creditsPair[0]
     const description1 = getDescription(credit1)
@@ -30,12 +32,16 @@ const renderRow = (
         poster: credit1.poster,
         title: credit1.title,
         description: description1,
+        onPressCreditsEntry: params.onPressCreditsEntry,
+        creditsEntry: credit1
     }
 
     let entry2: PosterWithDetailsParams = {
         poster: '',
         title: '',
         description: '',
+        onPressCreditsEntry: params.onPressCreditsEntry,
+        creditsEntry: { id: 0, title: '', poster: '', mediaType: '' }
     }
     if (creditsPair.length > 1) {
         const credit2 = creditsPair[1]
@@ -44,6 +50,8 @@ const renderRow = (
             poster: credit2.poster,
             title: credit2.title,
             description: description2,
+            onPressCreditsEntry: params.onPressCreditsEntry,
+            creditsEntry: credit2
         }
     }
     const entry2NotEmpty = entry2.poster || entry2.title || entry2.description
@@ -82,7 +90,7 @@ export const ArtistFilmografy = (params: ArtistFilmografyParams) => {
                 <TitleText body={castSectionTitle} size="medium" />
             </Pressable>
             {showCastSection &&
-                castTuples.map((tuple, index) => renderRow(tuple, index))}
+                castTuples.map((tuple, index) => renderRow(tuple, index, params))}
 
             <Pressable
                 style={[styles.sectionTitle, { width: screenWidth }]}
@@ -92,7 +100,7 @@ export const ArtistFilmografy = (params: ArtistFilmografyParams) => {
                 <TitleText body={crewSectionTitle} size="medium" />
             </Pressable>
             {showCrewSection &&
-                crewTuples.map((tuple, index) => renderRow(tuple, index))}
+                crewTuples.map((tuple, index) => renderRow(tuple, index, params))}
         </View>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { colors } from '../../assets';
 import { BodyText } from './BodyText';
@@ -24,7 +24,6 @@ export const Percent = (params: PercentParams) => {
         width={6}
         fill={params.percent}
         tintColor={colors.secondarySkyBlue}
-        onAnimationComplete={() => console.log('onAnimationComplete')}
         backgroundColor={colors.secondaryWhite}
         size={params.size}
         rotation={0}

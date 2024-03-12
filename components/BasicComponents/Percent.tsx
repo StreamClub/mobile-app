@@ -24,7 +24,6 @@ export const Percent = (params: PercentParams) => {
         width={6}
         fill={params.percent}
         tintColor={colors.secondarySkyBlue}
-        onAnimationComplete={() => console.log('onAnimationComplete')}
         backgroundColor={colors.secondaryWhite}
         size={params.size}
         rotation={0}

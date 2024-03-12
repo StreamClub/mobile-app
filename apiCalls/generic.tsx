@@ -35,7 +35,7 @@ export const usePrivateCall = () => {
     }
 
     const onSuccessRefresh = (privateCallParams: any, response: AxiosResponse<any, any>)  => {
-        const signIn = privateCallParams.session?.signIn
+        const signIn = session?.signIn
         const accessToken = response.data.token
         const refreshToken = response.data.refreshToken
         
@@ -44,7 +44,7 @@ export const usePrivateCall = () => {
         console.log('New refresh token: ' + refreshToken)
     
         signIn?.(accessToken, refreshToken)
-    
+
         privateCall(
             privateCallParams.method,
             privateCallParams.endpoint,

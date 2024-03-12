@@ -56,6 +56,7 @@ export const seenContentEntryWrapper = (params: SeenContentEntryWrapperParams) =
 
     return (
         <View>
+            <BodyText body={"17/08/24"} size='medium' style={{marginLeft: 10}}/>
             <View style={styles.itemInnerContainer}>
                 {isSeries && seen &&
                     <Percent style={[styles.percent, {top: params.props.topPercent, left: params.props.leftPercent}]} percent={seen} size={params.props.percentSize} showText={params.props.showPercentText}/>

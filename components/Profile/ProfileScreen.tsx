@@ -105,7 +105,8 @@ export const seenContentStyles = StyleSheet.create({
         height: (screenWidth/1.7),
         aspectRatio: 2/3,
         borderRadius: 5,
-        margin: 10,
+        margin: 0,
+        marginHorizontal: 10,
         borderWidth: 1,
     },
 });

@@ -4,6 +4,7 @@ import { colors } from "../../assets";
 import { ArtistFilmografy } from './ArtistFilmografy';
 import { ArtistBasicInfo, ArtistBasicInfoParams } from './ArtistBasicInfo';
 import { ExternalIds } from '../Types/ExternalId';
+import { CreditsEntry } from '../Types/Credits';
 
 import { Credits } from '../Types/Credits';
 
@@ -24,6 +25,7 @@ export type ArtistDetails = {
 
 type ArtistDetailScreenParams = {
     artist: ArtistDetails
+    onPressCreditsEntry: (entry: CreditsEntry) => void
 }
 
 export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
@@ -40,7 +42,7 @@ export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <ArtistBasicInfo {...artistBasicInfo}/>
-            <ArtistFilmografy credits={params.artist.credits}/>
+            <ArtistFilmografy credits={params.artist.credits} onPressCreditsEntry= {params.onPressCreditsEntry}/>
         </ScrollView>
     )
 }

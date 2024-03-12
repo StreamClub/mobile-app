@@ -16,6 +16,8 @@ import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
 import { router } from 'expo-router'
 import { useSession } from '../../context/ctx'
 import { useUserServices } from '../../apiCalls/services'
+import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import {ContentType } from '../../components/Types/ContentType'
 
 export default function Profile() {
     const {getWatchlist, loading: loadingWatchlist} = useGetWatchlist();
@@ -40,8 +42,32 @@ export default function Profile() {
         }
     )
     
+    const onPressManageServices = () => {
+        router.push('/services')
+    }
+
     const onPressMoreSeenContent = () => {
         router.push('/seenContent')
+    }
+
+    const onPressSeenContentEntry = (itemObject: SeenContentEntry) => {
+        const contentScreenParams: ContentDetailsParams = {
+            id: itemObject.id.toString(),
+        }
+
+        //TODO: Refactorizar para usar o bien entities o bien un enum
+        const pathname = itemObject.contentType === 'movie' ? '/movie' : '/serie'
+        router.push({ pathname: pathname, params: contentScreenParams })
+    }
+
+    const onPressWatchlistEntry = (entry: WatchlistEntry) => {
+        const contentScreenParams: ContentDetailsParams = {
+            id: entry.id.toString(),
+        }
+
+        //TODO: Refactorizar para usar o bien entities o bien un enum
+        const pathname = entry.contentType === ContentType.Movie ? '/movie' : '/serie'
+        router.push({ pathname: pathname, params: contentScreenParams })
     }
 
     const profileParams: ProfileScreenParams = {
@@ -49,7 +75,10 @@ export default function Profile() {
         profileHeader: profileHeader,
         userServices: userServices,
         seenContent: seenContent,
+        onPressManageServices: onPressManageServices,
         onPressMoreSeenContent: onPressMoreSeenContent,
+        onPressSeenContentEntry: onPressSeenContentEntry,
+        onPressWatchlistEntry: onPressWatchlistEntry,
     }
 
     const onSuccessGetWatchlist = (response: any) => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { colors } from '../../assets';
 import { createTuples } from '../../utils/listManager';
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage';
@@ -12,9 +12,10 @@ const screenWidth = Dimensions.get('window').width;
 
 export type SeenContentListParams = {
     seenContentList: SeenContentEntry[];
+    onPressSeenContentEntry: (entry: SeenContentEntry) => void;
 }
 
-const renderSeenContentEntry = (seenContentEntry: SeenContentEntry, index: number) => {
+const renderSeenContentEntry = (seenContentEntry: SeenContentEntry, index: number, params: SeenContentListParams) => {
     const tmdbImageParams: TmdbImageParams = {
         resource: seenContentEntry.poster,
         type: TmdbImageType.Cover,
@@ -39,19 +40,19 @@ const renderSeenContentEntry = (seenContentEntry: SeenContentEntry, index: numbe
             sizeLastSeenIcons: 20,
         }
     }
+    const onPress = () => params.onPressSeenContentEntry(seenContentEntry)
 
     return(
-        <View key={index} style={styles.entryContainer}>
-            {/* {seenContentEntryWrapper(itemComponent, entry, width, false, 30)} */}
+        <Pressable key={index} style={styles.entryContainer} onPress={onPress}>
             {seenContentEntryWrapper(seenContentEntryWrapperParams)}
-        </View>
+        </Pressable>
     )
 }
 
-const renderSeenContentRow = (tuple: SeenContentEntry[], index: number) => {
+const renderSeenContentRow = (tuple: SeenContentEntry[], index: number, params: SeenContentListParams) => {
     return(
         <View key={index} style={styles.rowContainer}>
-            {tuple.map((entry, index) => renderSeenContentEntry(entry, index))}
+            {tuple.map((entry, index) => renderSeenContentEntry(entry, index, params))}
         </View>
     )
 }
@@ -61,7 +62,7 @@ export const SeenContentList = (params: SeenContentListParams) => {
     return(
         <View style={styles.container}>
             {tuples.map((tuple: SeenContentEntry[], index: number) => 
-                renderSeenContentRow(tuple, index))
+                renderSeenContentRow(tuple, index, params))
             }
         </View>
     )

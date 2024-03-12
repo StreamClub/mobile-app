@@ -10,6 +10,7 @@ import { TmdbImageType } from '../BasicComponents/TmdbImage';
 import { seenContentEntryWrapper, SeenContentEntryWrapperProps } from '../SeenContent/SeenContentEntryWrapper';
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
+import { SeenContentEntry } from '../Types/SeenContentEntry';
 
 const screenWidth = Dimensions.get('window').width
 
@@ -18,7 +19,10 @@ export type ProfileScreenParams = {
     profileHeader: ProfileHeaderParams;
     userServices: CarouselEntry[];
     seenContent: CarouselEntry[];
+    onPressManageServices: () => void;
     onPressMoreSeenContent: () => void;
+    onPressSeenContentEntry: (itemObject: SeenContentEntry) => void;
+    onPressWatchlistEntry: (entry: WatchlistEntry) => void;
 }
 
 export const ProfileScreen = (params: ProfileScreenParams) => {
@@ -50,6 +54,12 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
         type: TmdbImageType.Cover,
         itemWrapper: seenContentEntryWrapper,
         itemWrapperProps: itemWrapperProps,
+        onItemPressed: params.onPressSeenContentEntry,
+    }
+
+    const watchlistParams = {
+        watchlist: params.watchlist,
+        onPressWatchlistEntry: params.onPressWatchlistEntry,
     }
 
     return (
@@ -58,14 +68,14 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
 
             <TitleText body="Mis plataformas" style={styles.titleText} size='medium'/>
             <Carousel {...userServicesCarouselParams}/>
-            <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText}/>
+            <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText} onPress={params.onPressManageServices}/>
 
             <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
             <Carousel {...seenContentCarouselParams}/>
             <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={params.onPressMoreSeenContent}/>
             
             <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
-            <Watchlist watchlist={params.watchlist}/>
+            <Watchlist {...watchlistParams}/>
         </ScrollView>
     )
 }

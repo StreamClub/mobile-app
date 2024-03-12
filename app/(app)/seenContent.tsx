@@ -6,10 +6,11 @@ import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack } from 'expo-router'
 import { getSeenContentParams, useGetSeenContent } from '../../apiCalls/content'
-import { SeenContentListEntry } from '../../entities/SeenContent/SeenContentListEntry'
-import { SeenSeriesListEntry } from '../../entities/SeenContent/SeenSeriesListEntry'
 import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
-import { SeenContentListScreen } from '../../components/SeenContent/SeenContentListScreen'
+import { SeenContentListScreen, SeenContentListScreenParams } from '../../components/SeenContent/SeenContentListScreen'
+import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import { ContentType } from '../../components/Types/ContentType'
+import { router } from 'expo-router'
 
 export default function SeenContent() {
     const session = useSession()
@@ -37,6 +38,21 @@ export default function SeenContent() {
         getSeenContent(seenContentParams, onSuccessGetSeenContent)
     }, [])
 
+    const onPressSeenContentEntry = (entry: SeenContentEntry) => {
+        const contentScreenParams: ContentDetailsParams = {
+            id: entry.id.toString(),
+        }
+
+        //TODO: Refactorizar para usar o bien entities o bien un enum
+        const pathname = entry.contentType === ContentType.Movie ? '/movie' : '/serie'
+        router.push({ pathname: pathname, params: contentScreenParams })
+    }
+
+    const seenContentListScreenParams: SeenContentListScreenParams = {
+        seenContentList: seenContent,
+        onPressSeenContentEntry: onPressSeenContentEntry,
+    }
+
     return (
         <View style={styles.container}>
             <Stack.Screen
@@ -47,7 +63,7 @@ export default function SeenContent() {
             {loadingSeenContent ? 
                 <LoadingComponent />
             :
-                <SeenContentListScreen seenContentList={seenContent}/>   
+                <SeenContentListScreen {...seenContentListScreenParams}/>   
             }
         </View>
     )

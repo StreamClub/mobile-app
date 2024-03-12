@@ -1,28 +1,25 @@
 import React from 'react';
-import {  StyleSheet, ScrollView, Dimensions, View, Text, Image } from 'react-native';
+import {  StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { colors } from '../../assets';
-import { Carousel } from '../BasicComponents/Carousel';
-import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/CarouselParams';
-import { TmdbImageType } from '../BasicComponents/TmdbImage';
-import { TmdbImage } from '../BasicComponents/TmdbImage';
-import { LocalIcon } from '../Types/LocalIcon';
-import { renderItemContainer } from './SeenContentEntryWrapper';
-import { seenContentStyles } from '../SeenContent/styles/SeenContentStyle';
-import { TitleText } from '../BasicComponents/TitleText';
-import { BodyText } from '../BasicComponents/BodyText';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
-import { SeenContentList } from './SeenContentList';
+import { SeenContentList, SeenContentListParams } from './SeenContentList';
 
 const screenWidth = Dimensions.get('window').width
 
 export type SeenContentListScreenParams = {
     seenContentList: SeenContentEntry[];
+    onPressSeenContentEntry: (entry: SeenContentEntry) => void;
 }
 
 export const SeenContentListScreen = (params: SeenContentListScreenParams) => {
+    const seenContentListParams: SeenContentListParams = {
+        seenContentList: params.seenContentList,
+        onPressSeenContentEntry: params.onPressSeenContentEntry,
+    }
+
     return (
         <ScrollView style={styles.container}>
-            <SeenContentList seenContentList={params.seenContentList}/>
+            <SeenContentList {...seenContentListParams}/>
         </ScrollView>
     )
 }

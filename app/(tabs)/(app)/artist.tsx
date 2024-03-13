@@ -1,17 +1,17 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react'
-import { colors } from '../../assets'
-import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
+import { colors } from '../../../assets'
+import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
 import { useLocalSearchParams } from 'expo-router'
 import {
     ArtistDetailScreen,
     ArtistDetails,
-} from '../../components/ArtistDetails/ArtistDetailScreen'
-import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
-import { useGetArtist } from '../../apiCalls/artists'
-import { CreditsEntry } from '../../components/Types/Credits'
-import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+} from '../../../components/ArtistDetails/ArtistDetailScreen'
+import { ArtistDetailsParams } from '../../../apiCalls/params/content/ArtistDetailParams'
+import { useGetArtist } from '../../../apiCalls/artists'
+import { CreditsEntry } from '../../../components/Types/Credits'
+import { ContentDetailsParams } from '../../../apiCalls/params/content/ContentDetailsParams'
 import { router } from 'expo-router'
 
 export default function Serie() {

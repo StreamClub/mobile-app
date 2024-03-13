@@ -1,21 +1,21 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
+import { useSession } from '../../../context/ctx'
 import { useState, useEffect } from 'react'
-import { colors } from '../../assets'
-import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
+import { colors } from '../../../assets'
+import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
 import {
     deleteUserServiceParams,
     putUserServiceParams,
     useModifyServices,
     useUserServices,
-} from '../../apiCalls/services'
-import { ServiceEntry } from '../../components/Types/Services'
+} from '../../../apiCalls/services'
+import { ServiceEntry } from '../../../components/Types/Services'
 import {
     ServicesScreen,
     ServicesScreenParams,
-} from '../../components/Services/ServicesScreen'
-import { ServicesScreenCallbacks } from '../../components/Services/ServicesScreen'
+} from '../../../components/Services/ServicesScreen'
+import { ServicesScreenCallbacks } from '../../../components/Services/ServicesScreen'
 
 export default function Services() {
     const session = useSession()

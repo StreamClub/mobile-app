@@ -1,4 +1,5 @@
 import React from 'react'
+import { View, Text } from 'react-native'
 import { Redirect } from 'expo-router'
 import { useSession } from '../context/ctx'
 import { useEffect } from 'react'
@@ -26,4 +27,8 @@ export default function Index() {
     } else {
         return <InitialScreen />
     }
+    // return(
+    // <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+    //   <Text>Tab [Home]</Text>
+    // </View>)
 }

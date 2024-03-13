@@ -1,13 +1,13 @@
 import React from 'react';
 import { Redirect, Stack, router } from 'expo-router';
 
-import { useSession } from '../../context/ctx';
-import { colors } from '../../assets';
+import { useSession } from '../../../context/ctx';
+import { colors } from '../../../assets';
 import { IconButton } from 'react-native-paper';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Tabs } from 'expo-router';
 
 export default function AppLayout() {
-
-
     const session = useSession()
 
     const accessToken = session?.accessToken
@@ -35,5 +35,6 @@ export default function AppLayout() {
                 headerBackVisible: false,
             }}
         />
-    </>);
+    </>
+    );
 }

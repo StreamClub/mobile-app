@@ -8,7 +8,8 @@ export enum LocalIcon {
     addToWatchlist = require('../../assets/icons/addToWatchlist.png'),
     markAsSeen = require('../../assets/icons/markAsSeen.png'),
     markAsUnseen = require('../../assets/icons/markAsUnseen.png'),
-    search = require('../../assets/icons/search.png'),
+    search_unselected = require('../../assets/icons/search.png'),
+    search = require('../../assets/icons/search_selected.png'),
     left = require('../../assets/icons/left.png'),
     right = require('../../assets/icons/right.png'),
     x = require('../../assets/icons/x.png'),
@@ -17,4 +18,5 @@ export enum LocalIcon {
     percentTemplate = require('../../assets/icons/percentTemplate.png'),
     email = require('../../assets/icons/email.png'),
     account = require('../../assets/icons/account.png'),
+    account_unselected = require('../../assets/icons/account_unselected.png'),
 }

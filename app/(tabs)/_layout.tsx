@@ -5,6 +5,7 @@ import { useSession } from '../../context/ctx';
 import { colors } from '../../assets';
 import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
+import { useIsFocused } from '@react-navigation/native';
 export default function AppLayout() {
     const session = useSession()
 
@@ -37,12 +38,12 @@ export default function AppLayout() {
             <Tabs.Screen
                 name="profile"
                 options={{
-                    tabBarIcon: () =>
+                    tabBarIcon: ({ focused }) =>
                         <Image
-                            source={LocalIcon.account}
+                            source={focused ? LocalIcon.account : LocalIcon.account_unselected}
                             style={{
                                 aspectRatio: 1,
-                                height: 20,
+                                height: focused? 24 : 20,
                             }}
                         />,
                 headerStyle: {
@@ -56,12 +57,12 @@ export default function AppLayout() {
             <Tabs.Screen
                 name="search"
                 options={{
-                    tabBarIcon: () =>
+                    tabBarIcon: ({ focused }) =>
                         <Image
-                            source={LocalIcon.search}
+                            source={focused? LocalIcon.search : LocalIcon.search_unselected }
                             style={{
                                 aspectRatio: 469 / 512,
-                                height: 20,
+                                height: focused? 24 : 20,
                             }}
                         />,
                     headerStyle: {

@@ -22,7 +22,7 @@ export default function Index() {
     }, [accessToken, refreshToken])
 
     if (accessToken && refreshToken) {
-        return <Redirect href="/home" />
+        return <Redirect href="/profile" />
     } else {
         return <InitialScreen />
     }

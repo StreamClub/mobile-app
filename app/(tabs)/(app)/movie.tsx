@@ -1,14 +1,14 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useEffect } from 'react'
-import { useGetMovie } from '../../apiCalls/movies'
-import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { MovieDetailScreen } from '../../components/MovieDetails/MovieDetailScreen'
+import { useGetMovie } from '../../../apiCalls/movies'
+import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
+import { MovieDetailScreen } from '../../../components/MovieDetails/MovieDetailScreen'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
-import { Content } from '../../components/RecommendsList'
-import { colors } from '../../assets'
-import { useMovieDetail } from '../../hooks/useMovieDetails'
-import { MovieHeader } from '../../components/MovieDetails/MovieHeader'
+import { Content } from '../../../components/RecommendsList'
+import { colors } from '../../../assets'
+import { useMovieDetail } from '../../../hooks/useMovieDetails'
+import { MovieHeader } from '../../../components/MovieDetails/MovieHeader'
 
 export type MovieDetailsParams = {
     id: string

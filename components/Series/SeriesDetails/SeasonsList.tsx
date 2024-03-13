@@ -6,7 +6,7 @@ import { TitleText } from '../../BasicComponents/TitleText'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
 import { Platform } from '../../../entities/Details/Platform'
-import { SeasonDetailsParams } from '../../../app/(app)/season'
+import { SeasonDetailsParams } from '../../../app/(app)/(app)/season'
 import { router } from 'expo-router'
 import { TmdbImage, TmdbImageType } from '../../BasicComponents/TmdbImage'
 

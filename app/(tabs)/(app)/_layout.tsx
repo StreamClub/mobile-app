@@ -1,25 +1,11 @@
 import React from 'react';
-import { Redirect, Stack, router } from 'expo-router';
+import { Stack, router } from 'expo-router';
 
-import { useSession } from '../../context/ctx';
-import { colors } from '../../assets';
+import { colors } from '../../../assets';
 import { IconButton } from 'react-native-paper';
 
 export default function AppLayout() {
-
-
-    const session = useSession()
-
-    const accessToken = session?.accessToken
-    const refreshToken = session?.refreshToken
-    const isLoading = session?.isLoading
-
-    if (!(accessToken) && !(refreshToken) && !(isLoading)) {
-        return <Redirect href="/" />;
-    }
-
     return (
-    <>
         <Stack
             screenOptions={{
                 headerStyle: {
@@ -35,5 +21,5 @@ export default function AppLayout() {
                 headerBackVisible: false,
             }}
         />
-    </>);
+    );
 }

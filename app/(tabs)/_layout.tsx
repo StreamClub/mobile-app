@@ -1,10 +1,8 @@
 import React from 'react';
-import { Redirect, Stack, router } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { Image } from 'react-native';
 import { useSession } from '../../context/ctx';
 import { colors } from '../../assets';
-import { IconButton } from 'react-native-paper';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
 export default function AppLayout() {
@@ -19,39 +17,26 @@ export default function AppLayout() {
     }
 
     return (
-        // <>
-        //     <Stack
-        //         screenOptions={{
-        //             headerStyle: {
-        //                 backgroundColor: colors.primaryRed
-        //             },
-        //             headerTitle: () => router.canGoBack() ? <IconButton 
-        //                                     onPress={() => router.back()} 
-        //                                     icon="arrow-left" 
-        //                                     size={35} 
-        //                                     iconColor={colors.primaryWhite}/> : null,
-        //             headerTintColor: '#fff',
-        //             headerShown: true,
-        //             headerBackVisible: false,
-        //         }}
-        //     />
-        // </>
         <Tabs screenOptions={{
-            headerStyle: {
-                backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
+            tabBarActiveTintColor: 'black',
+            headerShown: false,
+            tabBarStyle: {
+                
+                borderWidth: 1,
+                borderTopColor: "black",
+                backgroundColor: colors.primaryRed,
+                },
+            tabBarLabelStyle: {
+                fontSize: 12,
                 fontWeight: 'bold',
             },
-            headerShown: true,
-            tabBarActiveTintColor: 'black'
+            tabBarHideOnKeyboard: true,
+            tabBarShowLabel: false,
         }}
         >
             <Tabs.Screen
                 name="profile"
                 options={{
-                    title: 'Perfil',
                     tabBarIcon: () =>
                         <Image
                             source={LocalIcon.account}
@@ -60,12 +45,17 @@ export default function AppLayout() {
                                 height: 20,
                             }}
                         />,
+                headerStyle: {
+                    backgroundColor: colors.primaryRed
+                },
+                headerTitle: "Mi Perfil",
+                headerTintColor: '#fff',
+                headerShown: true,
                 }}
             />
             <Tabs.Screen
                 name="search"
                 options={{
-                    title: 'Buscar',
                     tabBarIcon: () =>
                         <Image
                             source={LocalIcon.search}
@@ -74,6 +64,12 @@ export default function AppLayout() {
                                 height: 20,
                             }}
                         />,
+                    headerStyle: {
+                        backgroundColor: colors.primaryRed
+                    },
+                    headerTitle: "Busqueda",
+                    headerTintColor: '#fff',
+                    headerShown: true,
                 }}
             />
             <Tabs.Screen

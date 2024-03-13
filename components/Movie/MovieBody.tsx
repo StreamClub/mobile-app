@@ -1,8 +1,8 @@
 import React from 'react'
 import { formatTitle } from '../../utils/formatTitle'
 import { MovieTitle } from './MovieTitle'
-import { MovieState } from './MovieState'
 import { MovieEntry } from '../../entities/MovieListEntry'
+import { ContentState } from '../Content/contentList/ContentState'
 
 type MovieBodyProps = {
     movieEntry: MovieEntry
@@ -18,7 +18,7 @@ export const MovieBody = (params: MovieBodyProps) => {
                 year={movieEntry.year}
             />
 
-            <MovieState
+            <ContentState
                 available={movieEntry.available}
                 status={movieEntry.status}
             />

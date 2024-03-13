@@ -3,14 +3,16 @@ import { View } from 'react-native'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
 import { AvailableText } from '../../Content/AvailableText'
+import { toAvailableText } from '../../../utils'
 
-type SeriesStateProps = {
+type ContentStateProps = {
     status: string
-    availableText: string
+    available: boolean
 }
 
-export const SeriesState = (params: SeriesStateProps) => {
-    const { status, availableText } = params
+export const ContentState = (params: ContentStateProps) => {
+    const { status, available } = params
+    const availableText = toAvailableText(available)
     return (
         <>
             <View style={{ flex: 0.35 }}>

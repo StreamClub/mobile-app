@@ -1,9 +1,8 @@
 import React from 'react'
 import { SeriesTitle } from './SeriesTitle'
-import { SeriesState } from './SeriesState'
 import { SeriesEntry } from '../../../entities/SeriesListEntry'
-import { toAvailableText } from '../../../utils'
 import { formatTitle } from '../../../utils/formatTitle'
+import { ContentState } from '../../Content/contentList/ContentState'
 
 type SeriesBodyProps = {
     serieEntry: SeriesEntry
@@ -23,9 +22,9 @@ export const SeriesBody = (params: SeriesBodyProps) => {
                 status={serieEntry.status}
             />
 
-            <SeriesState
+            <ContentState
                 status={serieEntry.status}
-                availableText={toAvailableText(serieEntry.available)}
+                available={serieEntry.available}
             />
         </>
     )

@@ -18,7 +18,10 @@ export const MovieBody = (params: MovieBodyProps) => {
                 year={movieEntry.year}
             />
 
-            <MovieState available={movieEntry.available} />
+            <MovieState
+                available={movieEntry.available}
+                status={movieEntry.status}
+            />
         </>
     )
 }

@@ -24,8 +24,5 @@ export default function RootLayout() {
             </SessionProvider>
             <ErrorHandler />
         </Provider>
-        // <Stack>
-        //     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        // </Stack>
     )
 }

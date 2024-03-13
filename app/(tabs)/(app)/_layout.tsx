@@ -8,18 +8,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 
 export default function AppLayout() {
-    const session = useSession()
-
-    const accessToken = session?.accessToken
-    const refreshToken = session?.refreshToken
-    const isLoading = session?.isLoading
-
-    if (!(accessToken) && !(refreshToken) && !(isLoading)) {
-        return <Redirect href="/" />;
-    }
-
     return (
-    <>
         <Stack
             screenOptions={{
                 headerStyle: {
@@ -35,6 +24,5 @@ export default function AppLayout() {
                 headerBackVisible: false,
             }}
         />
-    </>
     );
 }

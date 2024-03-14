@@ -11,6 +11,7 @@ import { ContentDetailsParams } from '../../../apiCalls/params/content/ContentDe
 import { useSeriesDetails } from '../../../hooks/useSeriesDetails'
 import { SeriesHeader } from '../../../components/Series/SeriesDetails/SeriesHeader'
 import { SeriesDetailScreen } from '../../../components/Series/SeriesDetails/SeriesDetailScreen'
+import { ContentType } from '../../../components/Types/ContentType'
 
 export default function Serie() {
     const { series, setSeries } = useSeriesDetails()
@@ -36,6 +37,10 @@ export default function Serie() {
         router.replace({ pathname: '/serie', params: newParams })
     }
 
+    const onPressFullCredits = () => {
+        router.push({ pathname: '/credits', params: { contentId: serieId, contentType: ContentType.Series} })
+    }
+
     return (
         <View style={styles.container}>
             <Stack.Screen
@@ -47,6 +52,7 @@ export default function Serie() {
                 <SeriesDetailScreen
                     series={series}
                     onRecommendPress={onRecommendPress}
+                    onPressFullCredits={onPressFullCredits}
                 />
             ) : (
                 <LoadingComponent />

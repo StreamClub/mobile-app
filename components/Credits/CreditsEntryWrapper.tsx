@@ -1,11 +1,7 @@
 import React from 'react'
-import { Image, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../../assets';
-import { SeenContentEntry } from '../Types/SeenContentEntry';
-import { LinearGradient } from 'expo-linear-gradient';
 import { BodyText } from '../BasicComponents/BodyText';
-import { EpisodeNumber } from '../Types/EpisodeNumber';
-import { Percent } from '../BasicComponents/Percent';
 import { CreditsEntry, CastEntry, CrewEntry } from '../Types/Credits';
 
 export type CreditsEntryWrapperProps = {

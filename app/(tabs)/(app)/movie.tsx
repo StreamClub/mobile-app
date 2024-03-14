@@ -4,8 +4,7 @@ import { useEffect } from 'react'
 import { useGetMovie } from '../../../apiCalls/movies'
 import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
 import { MovieDetailScreen } from '../../../components/MovieDetails/MovieDetailScreen'
-import { Stack, router, useLocalSearchParams } from 'expo-router'
-import { Content } from '../../../components/RecommendsList'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import { colors } from '../../../assets'
 import { useMovieDetail } from '../../../hooks/useMovieDetails'
 import { MovieHeader } from '../../../components/MovieDetails/MovieHeader'
@@ -15,44 +14,32 @@ export type MovieDetailsParams = {
 }
 
 export default function Movie() {
-    const {movie, setMovie} = useMovieDetail()
+    const { movie, setMovie } = useMovieDetail()
     const params = useLocalSearchParams<MovieDetailsParams>()
-    const {loading, getMovie} = useGetMovie();
+    const { loading, getMovie } = useGetMovie()
     const movieId = params.id
 
     const onSuccess = (response: any) => {
-        console.log('responseMovie ' + response.data.title);
-        setMovie(response.data);
+        console.log('responseMovie ' + response.data.title)
+        setMovie(response.data)
     }
 
     useEffect(() => {
         const loadMovie = async () => {
-            await getMovie(movieId, onSuccess);
+            await getMovie(movieId, onSuccess)
         }
         loadMovie()
     }, [])
-
-    const onRedommendedPress = (movie: Content) => {
-        const newParams: MovieDetailsParams = {
-            id: movie.id.toString(),
-        }
-        router.replace({ pathname: '/movie', params: newParams })
-    }
 
     return (
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerRight: () => (
-                        <MovieHeader movie={movie}/>
-                    ),
+                    headerRight: () => <MovieHeader movie={movie} />,
                 }}
             />
             {movie && !loading ? (
-                <MovieDetailScreen
-                    movie={movie}
-                    onRecommendPress={onRedommendedPress}
-                />
+                <MovieDetailScreen movie={movie} />
             ) : (
                 <LoadingComponent />
             )}

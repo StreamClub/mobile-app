@@ -10,6 +10,7 @@ import { Platform } from '../../entities/Details/Platform'
 
 export type PlatformsEntry = {
     platforms: Array<Platform>
+    status: string
 }
 
 export const MoviePlatforms = (params: PlatformsEntry) => {
@@ -31,7 +32,13 @@ export const MoviePlatforms = (params: PlatformsEntry) => {
                             )}
                         />
                         <Divider style={styles.divider} />
-                        <View style={styles.buttom}>
+                        <BodyText
+                            body={'Estado: ' + params.status}
+                            size="big"
+                            color={colors.primaryBlue}
+                            style={{ fontWeight: 'bold' }}
+                        />
+                        <View style={styles.bottom}>
                             <SeeContentButton platforms={params.platforms} />
                         </View>
                     </View>

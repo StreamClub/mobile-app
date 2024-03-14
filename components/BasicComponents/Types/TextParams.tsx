@@ -8,4 +8,5 @@ export type TextParams = {
   numberOfLines?: number;
   max_length?: number;
   onPress?: (...params: any[]) => void;
+  visible?: boolean;
 }

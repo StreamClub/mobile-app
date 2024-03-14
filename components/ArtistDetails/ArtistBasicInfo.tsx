@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import { colors } from '../../assets'
 import { BodyText } from '../BasicComponents/BodyText'
 import { TitleText } from '../BasicComponents/TitleText'
@@ -13,6 +13,7 @@ import { getMediaFromExternalId } from '../../utils/socialMediaManager'
 import { ExternalIds } from '../Types/ExternalId'
 import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage'
 import { LocalIcon } from '../Types/LocalIcon'
+import { Overlay } from 'react-native-elements'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -23,6 +24,9 @@ export type ArtistBasicInfoParams = {
     birthPlace: string
     deathDate: string
     externalIds: ExternalIds
+    biography: string
+    showBiography: boolean
+    onPressShowBiography: () => void
     style?: any
 }
 
@@ -42,11 +46,11 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
         text: params.birthPlace,
     }
 
-    const seeBioLeyend = 'Ver biografía'
+    const showBiographyText = 'Ver biografía'
 
     const medias = getMediaFromExternalId(params.externalIds)
 
-    return (
+    return (<>
         <View style={[{ flexDirection: 'row' }, params.style]}>
             <View style={{ flex: 0.5, alignItems: 'center' }}>
                 <TitleText
@@ -66,7 +70,8 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                         <IconWithText {...birthPlaceParams} />
                     )}
                     <BodyText
-                        body={seeBioLeyend}
+                        visible={params.biography != ''}
+                        body={showBiographyText}
                         size="medium"
                         style={{
                             color: colors.primaryBlue,
@@ -75,6 +80,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                             marginTop: 10,
                             textDecorationLine: 'underline',
                         }}
+                        onPress={params.onPressShowBiography}
                     />
                 </View>
             </View>
@@ -89,7 +95,21 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                 {true && <IconCollection collection={medias} />}
             </View>
         </View>
-    )
+        <Overlay
+            isVisible={params.showBiography && params.biography != ''}
+            onBackdropPress={params.onPressShowBiography}
+            overlayStyle={{
+                backgroundColor: colors.primarySkyBlue,
+                margin: 20,
+                borderRadius: 20,
+                height: '40%',
+            }}
+        >
+            <ScrollView>
+                <BodyText body={params.biography} size="medium"/>
+            </ScrollView>
+        </Overlay>    
+    </>)
 }
 
 const styles = StyleSheet.create({

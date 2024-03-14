@@ -5,6 +5,7 @@ import { colors } from '../../../assets'
 import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
 import { useLocalSearchParams } from 'expo-router'
 import {
+    ArtistDetailScreenParams,
     ArtistDetailScreen,
     ArtistDetails,
 } from '../../../components/ArtistDetails/ArtistDetailScreen'
@@ -28,6 +29,7 @@ export default function Serie() {
             cast: [],
             crew: [],
         },
+        biography: '',
         externalIds: {
             instagramId: null,
             twitterId: null,
@@ -35,8 +37,14 @@ export default function Serie() {
     }
     const {getArtist, loading} = useGetArtist();
     const [artist, setArtist] = useState<ArtistDetails>(emptyArtist)
+    const [showBiography, setShowBiography] = useState(false)
     const params = useLocalSearchParams<ArtistDetailsParams>()
     const artistId = params.id
+
+    const onPressShowBiography = () => {
+        console.log('onPressShowBiography')
+        setShowBiography(!showBiography)
+    }
 
     const onSuccess = (response: any) => {
         const artistData: ArtistDetails = {
@@ -52,6 +60,7 @@ export default function Serie() {
                 cast: response.data.credits.cast,
                 crew: response.data.credits.crew,
             },
+            biography: response.data.biography,
             externalIds: {
                 instagramId: response.data.externalIds.instagramId,
                 twitterId: response.data.externalIds.twitterId,
@@ -74,12 +83,19 @@ export default function Serie() {
         router.push({ pathname: pathname, params: contentScreenParams })
     }
 
+    const artistDetailsScreenParams: ArtistDetailScreenParams = {
+        artist: artist,
+        onPressCreditsEntry: onPressCreditsEntry,
+        showBiography: showBiography,
+        onPressShowBiography: onPressShowBiography,
+    }
+
     return (
         <View style={styles.container}>
             {loading || (artist == emptyArtist) ? (
                 <LoadingComponent />
             ) : (
-                <ArtistDetailScreen artist={artist} onPressCreditsEntry={onPressCreditsEntry} />
+                <ArtistDetailScreen {...artistDetailsScreenParams}/>
             )}
         </View>
     )

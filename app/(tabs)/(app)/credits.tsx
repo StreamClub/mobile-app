@@ -36,7 +36,7 @@ export default function Credits() {
             })
         })
         _crewCredits.forEach((crewEntry: CrewEntry) => {
-            _cast.push({
+            _crew.push({
                 itemObject: crewEntry,
                 tmdbResource: crewEntry.poster,
             })

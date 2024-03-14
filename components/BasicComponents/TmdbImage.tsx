@@ -49,7 +49,8 @@ export const TmdbImage = (params: TmdbImageParams) => {
                         <BodyText
                             body={altText}
                             size="big"
-                            max_length={max_length}
+                            // max_length={max_length}
+                            numberOfLines={4}
                             style={{ textAlign: 'center' }}
                         />
                     ) : (

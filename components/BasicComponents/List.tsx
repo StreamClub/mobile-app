@@ -4,12 +4,12 @@ import { colors } from '../../assets';
 import { createTuples } from '../../utils/listManager';
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage';
 
-const ENTRIES_PER_ROW = 3;
-const entryContainerFlex = 1/ENTRIES_PER_ROW
+
 const screenWidth = Dimensions.get('window').width;
 
 export type ListEntry = {
     tmdbResource: string;
+    altText?: string;
     itemObject: Object;
 };
 
@@ -23,8 +23,8 @@ export type ListParams = {
     list: ListEntry[];
     type: TmdbImageType;
     listEntryStyle: Object;
-    // entriesPerRow?: number;
-    // listWidth?: number;
+    entriesPerRow: number;
+    containerWidth?: number;
     onPressListEntry: (itemObject: any) => void;
     listEntryWrapper?: (itemObject: any, itemComponent:React.JSX.Element, params: any) => React.ReactNode;
     listEntryWrapperProps?: any;
@@ -35,22 +35,22 @@ const renderEntry = (entry: ListEntry, index: number, params: ListParams) => {
         resource: entry.tmdbResource,
         type: params.type,
         style: params.listEntryStyle,
+        altText: entry.altText,
     }
 
     const itemComponent = <TmdbImage {...tmdbImageParams}/>
-
+    const entryContainerFlex = 1/params.entriesPerRow
     const width = (screenWidth * entryContainerFlex) - 2;
 
     const onPress = () => params.onPressListEntry(entry.itemObject)
 
-    const listEntryWrapperParams: ListEntryWrapperParams = {
-        itemObject: entry.itemObject,
-        itemComponent: itemComponent,
-        props: params.listEntryWrapperProps,
+    const st = {
+        flex: entryContainerFlex,
+        margin: 1,
     }
 
     return(
-        <Pressable key={index} style={styles.entryContainer} onPress={onPress}>
+        <Pressable key={index} style={st} onPress={onPress}>
             {params.listEntryWrapper?
                 params.listEntryWrapper(entry.itemObject, itemComponent, params.listEntryWrapperProps)
                 :
@@ -69,9 +69,10 @@ const renderRow = (tuple: ListEntry[], index: number, params: ListParams) => {
 }
 
 export const List = (params: ListParams) => {
-    const tuples = createTuples(params.list, ENTRIES_PER_ROW)
+    const tuples = createTuples(params.list, params.entriesPerRow)
+    const width = params.containerWidth? params.containerWidth : screenWidth;
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, {width: width}]}>
             {tuples.map((tuple: ListEntry[], index: number) => 
                 renderRow(tuple, index, params))
             }
@@ -89,10 +90,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
     },
-    entryContainer: {
-        flex: entryContainerFlex,
-        margin: 1,
-    },
+    
     posterStyle: {
         width: "100%",
         aspectRatio: 2/3,

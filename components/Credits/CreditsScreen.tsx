@@ -1,16 +1,18 @@
-import React from 'react';
-import {  StyleSheet, ScrollView, Dimensions, View, Text, Image } from 'react-native';
-import { WatchlistEntry } from '../Types/Watchlist';
-import { Watchlist } from '../Watchlist';
+import React, { useState } from 'react'
+import { StyleSheet, ScrollView, View } from 'react-native';
 import { colors } from '../../assets';
-import { Carousel } from '../BasicComponents/Carousel';
-import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/CarouselParams';
 import { TmdbImageType } from '../BasicComponents/TmdbImage';
-import { seenContentEntryWrapper, SeenContentEntryWrapperProps } from '../SeenContent/SeenContentEntryWrapper';
 import { ListEntry, List, ListParams } from '../BasicComponents/List';
 import { CreditsEntry } from '../Types/Credits';
 import { CreditsEntryWrapper, CreditsEntryWrapperProps } from './CreditsEntryWrapper';
-const screenWidth = Dimensions.get('window').width
+import { ButtonGroup } from '@rneui/themed'
+
+const ENTRIES_PER_ROW = 3
+const TEXT_SIZE = "medium"
+const CAST_NAME = 'Elenco'
+const CREW_NAME = 'Reparto'
+const CATEGORIES = [CAST_NAME, CREW_NAME]
+const INITIAL_CATEGORY = 0
 
 export type CreditsScreenParams = {
     crew: ListEntry[],
@@ -19,39 +21,69 @@ export type CreditsScreenParams = {
 }
 
 export const CreditsScreen = (params: CreditsScreenParams) => {
-    // const itemWrapperProps: SeenContentEntryWrapperProps = {
-    //     width: itemWidth,
-    //     showPercentText: true, 
-    //     percentSize: 50,
-    //     marginHorizontal: 10,
-    //     bottomLastSeen: 9,
-    //     leftPercent: 15,
-    //     topPercent: 15,
-    //     sizeLastSeenIcons: 30,
-    // }
+    const creditsEntryWrapperProps: CreditsEntryWrapperProps = {
+        textSize: TEXT_SIZE,
+    }
+    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
+
+    const renderButtonGroup = () => {
+        return (
+            <ButtonGroup
+                buttons={CATEGORIES}
+                selectedIndex={selectedIndex}
+                onPress={setSelectedIndex}
+                containerStyle={{
+                    backgroundColor: 'transparent',
+                    borderColor: 'black',
+                    borderRadius: 20,
+                }}
+                buttonContainerStyle={{
+                    borderColor: 'black',
+                }}
+                selectedButtonStyle={{
+                    backgroundColor: colors.primaryRed,
+                }}
+                textStyle={{
+                    color: 'black',
+                    fontSize: 14,
+                }}
+            />
+        )
+    }
 
     const castListParams: ListParams = {
         list: params.cast,
         listEntryStyle: styles.poster,
-        type: TmdbImageType.Cover,
+        type: TmdbImageType.Person,
         listEntryWrapper: CreditsEntryWrapper,
-        listEntryWrapperProps: null,
+        listEntryWrapperProps: creditsEntryWrapperProps,
         onPressListEntry: params.onPressCreditsEntry,
+        entriesPerRow: ENTRIES_PER_ROW,
     }
     const crewListParams: ListParams = {
         list: params.crew,
         listEntryStyle: styles.poster,
-        type: TmdbImageType.Cover,
+        type: TmdbImageType.Person,
         listEntryWrapper: CreditsEntryWrapper,
-        listEntryWrapperProps: null,
+        listEntryWrapperProps: creditsEntryWrapperProps,
         onPressListEntry: params.onPressCreditsEntry,
+        entriesPerRow: ENTRIES_PER_ROW,
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <List {...castListParams}/>
-            <List {...crewListParams}/>
-        </ScrollView>
+        <View style={styles.container}>
+            <View style={{flex: 0.1, alignItems: 'center', justifyContent: 'center'}}>
+                {renderButtonGroup()}
+            </View>
+            
+            <ScrollView style={{flex: 0.9}}>
+                {selectedIndex == 0?
+                    <List {...castListParams}/>
+                    :
+                    <List {...crewListParams}/>
+                }
+            </ScrollView>
+        </View>
     )
 }
 

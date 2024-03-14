@@ -73,13 +73,11 @@ const styles = StyleSheet.create({
     },
     castStyle: {
         marginLeft: 20,
-        marginBottom: 20
     },
     linkedText: {
         color: colors.primaryBlue,
         fontWeight: 'bold',
         alignSelf: 'flex-end',
-        marginTop: 10,
         marginRight: 8,
         textDecorationLine: 'underline',
     },

@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { useSession } from '../context/ctx'
 import { Params, usePrivateCall } from './generic'
+import { ContentType } from '../components/Types/ContentType'
 
 // --------- --------- --------- --------- --------- ---------
 export type getSeenContentParams = {
@@ -24,21 +25,27 @@ export const useGetSeenContent = () => {
     return {getSeenContent, loading}
 }
 
-/* export function getSeenContent(
-    session: ReturnType<typeof useSession>,
-    queryParams: getSeenContentParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/seenContent/' + queryParams.userId
-    const params: Params = { 
-        params: {
-            page: queryParams.page, 
-            pageSize: queryParams.pageSize
-        }
-    }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-} */
-
 // --------- --------- --------- --------- --------- ---------
+export type getCreditsParams = {
+    contentId: string,
+    contentType: ContentType,
+}
+
+var matchingContentType: { [key in ContentType]: string } = {
+    [ContentType.Movie]: "/movies", 
+    [ContentType.Series]: "/series"
+}
+export const useGetCredits = () => {
+    const {privateCall, loading} = usePrivateCall();
+    
+    const getCredits = (queryParams: getCreditsParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        if (!(queryParams.contentType in matchingContentType)) {
+            throw new Error("Tipo de contenido inválido: " + queryParams.contentType);
+        }
+        const endpoint = matchingContentType[queryParams.contentType] + '/' + queryParams.contentId + '/credits'
+
+        const params: Params = { }
+        privateCall('GET', endpoint, params, onSuccess)
+    }
+    return {getCredits, loading}
+}

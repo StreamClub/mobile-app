@@ -12,6 +12,7 @@ import { CastList } from '../CastList';
 type MovieDetailScreenParams = {
     movie: MovieDetail;
     onRecommendPress: (movie: Content) => void;
+    onPressFullCredits: () => void;
 }
 
 export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
@@ -41,9 +42,10 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     </View> : null
                 }
             </View>
-            {params.movie.cast.length > 0?
-                <CastList cast={params.movie.cast} style={styles.castStyle}/> : null
-            }
+            {params.movie.cast.length > 0 && <>
+                <CastList cast={params.movie.cast} style={styles.castStyle}/>
+                <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits}/>
+            </>}
             {params.movie.similar.length > 0?
                 <RecommendsList 
                     contents={params.movie.similar} 
@@ -72,5 +74,13 @@ const styles = StyleSheet.create({
     castStyle: {
         marginLeft: 20,
         marginBottom: 20
+    },
+    linkedText: {
+        color: colors.primaryBlue,
+        fontWeight: 'bold',
+        alignSelf: 'flex-end',
+        marginTop: 10,
+        marginRight: 8,
+        textDecorationLine: 'underline',
     },
 });

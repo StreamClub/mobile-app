@@ -9,6 +9,7 @@ import { Content } from '../../../components/RecommendsList'
 import { colors } from '../../../assets'
 import { useMovieDetail } from '../../../hooks/useMovieDetails'
 import { MovieHeader } from '../../../components/MovieDetails/MovieHeader'
+import { ContentType } from '../../../components/Types/ContentType'
 
 export type MovieDetailsParams = {
     id: string
@@ -39,6 +40,10 @@ export default function Movie() {
         router.replace({ pathname: '/movie', params: newParams })
     }
 
+    const onPressFullCredits = () => {
+        router.push({ pathname: '/credits', params: { contentId: movieId, contentType: ContentType.Movie} })
+    }
+
     return (
         <View style={styles.container}>
             <Stack.Screen
@@ -52,6 +57,7 @@ export default function Movie() {
                 <MovieDetailScreen
                     movie={movie}
                     onRecommendPress={onRedommendedPress}
+                    onPressFullCredits={onPressFullCredits}
                 />
             ) : (
                 <LoadingComponent />

@@ -108,7 +108,7 @@ export default function Profile() {
         const _seenContent: SeenContentEntry[] = response.data.results
         const _carousel: CarouselEntry[] = []
 
-        response.data.results.forEach((contentData: any) => {
+        _seenContent.forEach((contentData: SeenContentEntry) => {
             _carousel.push({
                 itemData: contentData,
                 tmdbResource: contentData.poster,

@@ -16,7 +16,7 @@ export type PlatformsEntry = {
 export const MoviePlatforms = (params: PlatformsEntry) => {
     return (
         <View style={styles.platforms}>
-            {params.platforms.length >= 1 ? (
+            {params.platforms.length >= 1 && (
                 <>
                     <BodyText body={'Disponible en:'} size="big" />
                     <View
@@ -32,25 +32,15 @@ export const MoviePlatforms = (params: PlatformsEntry) => {
                             )}
                         />
                         <Divider style={styles.divider} />
-                        <BodyText
-                            body={'Estado: ' + params.status}
-                            size="big"
-                            color={colors.primaryBlue}
-                            style={{ fontWeight: 'bold' }}
-                        />
-                        <View style={styles.bottom}>
-                            <SeeContentButton platforms={params.platforms} />
-                        </View>
                     </View>
                 </>
-            ) : (
-                <BodyText
-                    size="big"
-                    color={colors.primaryRed}
-                    body="No disponible en ninguna plataforma."
-                    style={{ width: 160, margin: 10 }}
-                />
             )}
+            <BodyText
+                body={'Estado: ' + params.status}
+                size="big"
+                color={colors.primaryBlue}
+                style={{ fontWeight: 'bold' }}
+            />
         </View>
     )
 }

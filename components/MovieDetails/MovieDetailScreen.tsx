@@ -2,14 +2,13 @@ import React from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Chip } from 'react-native-paper'
 import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
-import { Content, RecommendsList } from '../RecommendsList'
+import { RecommendsList } from '../RecommendsList'
 import { MovieInfo } from './MovieInfo'
 import { MoviePlatforms } from './MoviePlatforms'
 import { BodyText } from '../BasicComponents/BodyText'
 import { colors } from '../../assets'
 import { CastList } from '../CastList'
-import { MovieDetailsParams } from '../../app/(tabs)/(app)/movie'
-import { router } from 'expo-router'
+import { SeeMovieButton } from './SeeMovieButton'
 
 type MovieDetailScreenParams = {
     movie: MovieDetail
@@ -17,13 +16,6 @@ type MovieDetailScreenParams = {
 
 export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
     const { movie } = params
-
-    const onRecommendPress = (movie: Content) => {
-        const newParams: MovieDetailsParams = {
-            id: movie.id.toString(),
-        }
-        router.replace({ pathname: '/movie', params: newParams })
-    }
 
     return (
         <ScrollView>
@@ -34,6 +26,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     status={movie.status}
                 />
                 <View style={styles.description}>
+                    <SeeMovieButton platforms={movie.platforms} />
                     {movie.overview ? (
                         <BodyText body={movie.overview} />
                     ) : (
@@ -78,7 +71,6 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                         contents={movie.similar}
                         style={styles.recommends}
                         title="Películas similares:"
-                        onRecommendPress={onRecommendPress}
                     />
                 )}
             </View>
@@ -91,7 +83,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     description: {
-        margin: 20,
         flex: 1,
         alignItems: 'center',
     },

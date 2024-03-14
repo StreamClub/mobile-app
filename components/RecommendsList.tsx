@@ -4,6 +4,8 @@ import { View, Image, StyleSheet, ScrollView, Pressable } from 'react-native'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets'
 import { Icon } from 'react-native-paper'
+import { MovieDetailsParams } from '../app/(tabs)/(app)/movie'
+import { router } from 'expo-router'
 
 export type Content = {
     title: string
@@ -16,17 +18,23 @@ type RecommendsParams = {
     contents: Array<Content>
     style: object
     title: string
-    onRecommendPress: (content: Content) => void
 }
 
 export const RecommendsList = (params: RecommendsParams) => {
+    const onRecommendPress = (movie: Content) => {
+        const newParams: MovieDetailsParams = {
+            id: movie.id.toString(),
+        }
+        router.replace({ pathname: '/movie', params: newParams })
+    }
+
     return (
         <View style={params.style}>
             <TitleText body={params.title} style={{ fontWeight: 'bold' }} />
             <ScrollView horizontal>
                 {params.contents.map((content, index) => (
                     <Pressable
-                        onPress={() => params.onRecommendPress(content)}
+                        onPress={() => onRecommendPress(content)}
                         key={index}
                     >
                         <View

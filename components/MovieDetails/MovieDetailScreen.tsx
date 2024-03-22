@@ -9,6 +9,8 @@ import { BodyText } from '../BasicComponents/BodyText'
 import { colors } from '../../assets'
 import { CastList } from '../CastList'
 import { SeeMovieButton } from './SeeMovieButton'
+import { router } from 'expo-router'
+import { ContentType } from '../Types/ContentType'
 
 type MovieDetailScreenParams = {
     movie: MovieDetail
@@ -16,6 +18,10 @@ type MovieDetailScreenParams = {
 
 export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
     const { movie } = params
+
+    const onPressFullCredits = () => {
+        router.push({ pathname: '/credits', params: { contentId: movie.id, contentType: ContentType.Movie} })
+    }
 
     return (
         <ScrollView>
@@ -63,9 +69,11 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                         </View>
                     )}
                 </View>
-                {movie.cast.length > 0 && (
-                    <CastList cast={movie.cast} style={styles.castStyle} />
-                )}
+                {movie.cast.length > 0 && <>
+                <CastList cast={movie.cast} style={styles.castStyle}/>
+                <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} 
+                    onPress={onPressFullCredits}/>
+            </>}
                 {movie.similar.length > 0 && (
                     <RecommendsList
                         contents={movie.similar}
@@ -93,5 +101,12 @@ const styles = StyleSheet.create({
     castStyle: {
         marginLeft: 20,
         marginBottom: 20,
+    },
+    linkedText: {
+        color: colors.primaryBlue,
+        fontWeight: 'bold',
+        alignSelf: 'flex-end',
+        marginRight: 8,
+        textDecorationLine: 'underline',
     },
 })

@@ -22,22 +22,23 @@ export const BodyText = (params: TextParams) => {
         ? params.body.slice(0, params.max_length).trim() + '...'
         : params.body
 
-    return (
-        <Text
-            style={[
-                styles.textStyle,
-                titleSize,
-                fontStyle,
-                { color: textColor },
-                params.style,
-            ]}
-            onLayout={params.onLayout}
-            numberOfLines={params.numberOfLines}
-            onPress={params.onPress}
-        >
-            {text}
-        </Text>
-    )
+    const visible = params.visible === undefined ? true : params.visible
+
+    return (<>{ visible && 
+            <Text style={[
+                    styles.textStyle,
+                    titleSize,
+                    fontStyle,
+                    { color: textColor },
+                    params.style,
+                ]}
+                onLayout={params.onLayout}
+                numberOfLines={params.numberOfLines}
+                onPress={params.onPress}
+            >
+                {text}
+            </Text>
+        }</>)
 }
 
 const styles = StyleSheet.create({

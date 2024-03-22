@@ -17,7 +17,7 @@ export default function Movie() {
     const { movie, setMovie } = useMovieDetail()
     const params = useLocalSearchParams<MovieDetailsParams>()
     const { loading, getMovie } = useGetMovie()
-    const movieId = params.id
+    const movieId = params.id || ''
 
     const onSuccess = (response: any) => {
         console.log('responseMovie ' + response.data.title)

@@ -14,6 +14,7 @@ import { SeriesInfo } from './SeriesInfo'
 type SeriesDetailScreenParams = {
     series: SeriesDetail
     onRecommendPress: (series: Content) => void
+    onPressFullCredits: () => void;
 }
 
 export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
@@ -88,9 +89,10 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
                         platforms={params.series.platforms}
                     />
                 ) : null}
-                {params.series.cast.length > 0 ? (
+                {params.series.cast.length > 0 && <>
                     <CastList cast={params.series.cast} style={styles.cast} />
-                ) : null}
+                    <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits}/>
+                </>}
                 {params.series.similar.length > 0 ? (
                     <RecommendsList
                         onRecommendPress={params.onRecommendPress}
@@ -120,5 +122,12 @@ const styles = StyleSheet.create({
         margin: 20,
         flex: 1,
         alignItems: 'center',
+    },
+    linkedText: {
+        color: colors.primaryBlue,
+        fontWeight: 'bold',
+        alignSelf: 'flex-end',
+        marginRight: 8,
+        textDecorationLine: 'underline',
     },
 })

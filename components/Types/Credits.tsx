@@ -1,6 +1,7 @@
 export type CreditsEntry = {
     id: number;
     title: string;
+    name?: string;
     poster: string;
     mediaType: string;
 }

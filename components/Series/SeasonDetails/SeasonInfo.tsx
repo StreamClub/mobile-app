@@ -44,7 +44,7 @@ export const SeasonInfo = (params: SeasonInfoParams) => {
                         size="small"
                         style={{ flex: 1 }}
                     />
-                    {season.overview.length > 10 ? (
+                    {season.overview.length > 10 && (
                         <BodyText
                             body="Ver más"
                             size="small"
@@ -55,7 +55,7 @@ export const SeasonInfo = (params: SeasonInfoParams) => {
                                 fontWeight: 'bold',
                             }}
                         />
-                    ) : null}
+                    )}
                 </Pressable>
             </View>
             <Overlay

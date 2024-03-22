@@ -10,12 +10,13 @@ import { Platform } from '../../entities/Details/Platform'
 
 export type PlatformsEntry = {
     platforms: Array<Platform>
+    status: string
 }
 
 export const MoviePlatforms = (params: PlatformsEntry) => {
     return (
         <View style={styles.platforms}>
-            {params.platforms.length >= 1 ? (
+            {params.platforms.length >= 1 && (
                 <>
                     <BodyText body={'Disponible en:'} size="big" />
                     <View
@@ -31,19 +32,15 @@ export const MoviePlatforms = (params: PlatformsEntry) => {
                             )}
                         />
                         <Divider style={styles.divider} />
-                        <View style={styles.buttom}>
-                            <SeeContentButton platforms={params.platforms} />
-                        </View>
                     </View>
                 </>
-            ) : (
-                <BodyText
-                    size="big"
-                    color={colors.primaryRed}
-                    body="No disponible en ninguna plataforma."
-                    style={{ width: 160, margin: 10 }}
-                />
             )}
+            <BodyText
+                body={'Estado: ' + params.status}
+                size="big"
+                color={colors.primaryBlue}
+                style={{ fontWeight: 'bold' }}
+            />
         </View>
     )
 }

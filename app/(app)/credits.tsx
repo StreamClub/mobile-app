@@ -1,15 +1,15 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { colors } from '../../../assets'
-import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
+import { colors } from '../../assets'
+import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, useLocalSearchParams, router } from 'expo-router'
-import { useGetCredits, getCreditsParams } from '../../../apiCalls/content'
-import { ContentType } from '../../../components/Types/ContentType'
-import { CreditsEntry, CastEntry, CrewEntry } from '../../../components/Types/Credits'
-import { CreditsScreen, CreditsScreenParams } from '../../../components/Credits/CreditsScreen'
-import { ListEntry } from '../../../components/BasicComponents/List'
-import { ArtistDetailsParams } from '../../../apiCalls/params/content/ArtistDetailParams'
+import { useGetCredits, getCreditsParams } from '../../apiCalls/content'
+import { ContentType } from '../../components/Types/ContentType'
+import { CreditsEntry, CastEntry, CrewEntry } from '../../components/Types/Credits'
+import { CreditsScreen, CreditsScreenParams } from '../../components/Credits/CreditsScreen'
+import { ListEntry } from '../../components/BasicComponents/List'
+import { ArtistDetailsParams } from '../../apiCalls/params/content/ArtistDetailParams'
 
 export type CreditsParams = {
     contentId: string,

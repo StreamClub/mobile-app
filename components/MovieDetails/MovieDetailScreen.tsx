@@ -34,7 +34,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                 <View style={styles.description}>
                     <SeeMovieButton platforms={movie.platforms} />
                     {movie.overview ? (
-                        <BodyText body={movie.overview} />
+                        <BodyText body={movie.overview} style={{marginTop: 12}}/>
                     ) : (
                         <BodyText
                             body="Sin descripción"

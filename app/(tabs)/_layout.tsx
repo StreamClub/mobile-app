@@ -73,12 +73,6 @@ export default function AppLayout() {
                     headerShown: true,
                 }}
             />
-            <Tabs.Screen
-                name="(app)"
-                options={{
-                    href: null,
-                }}
-            />
             {/* <Tabs.Screen
                 name="home"
                 options={{

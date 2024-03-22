@@ -1,14 +1,14 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { colors } from '../../../assets'
+import { colors } from '../../assets'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect } from 'react'
-import { LoadingComponent } from '../../../components/BasicComponents/LoadingComponent'
-import { SeasonDetailScreen } from '../../../screens/SeasonDetailScreen'
-import { useSeasonDetail } from '../../../hooks/useSeasonDetails'
-import { Platform } from '../../../entities/Details/Platform'
-import { SeasonHeader } from '../../../components/Series/SeasonDetails/SeasonHeader'
-import { useGetSeason } from '../../../apiCalls/series'
+import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
+import { SeasonDetailScreen } from '../../screens/SeasonDetailScreen'
+import { useSeasonDetail } from '../../hooks/useSeasonDetails'
+import { Platform } from '../../entities/Details/Platform'
+import { SeasonHeader } from '../../components/Series/SeasonDetails/SeasonHeader'
+import { useGetSeason } from '../../apiCalls/series'
 
 export type SeasonDetailsParams = {
     seriesId: string

@@ -150,15 +150,15 @@ export const ArtistList = (params: ArtistListProps) => {
         }
 
         const birthDateParams: IconWithTextParams = {
-            icon: LocalIcon.birth,
+            leftIcon: LocalIcon.birth,
             text: birthDate,
         }
         const deathDateParams: IconWithTextParams = {
-            icon: LocalIcon.death,
+            leftIcon: LocalIcon.death,
             text: deathDate,
         }
         const birthPlaceParams: IconWithTextParams = {
-            icon: LocalIcon.location,
+            leftIcon: LocalIcon.location,
             text: artistEntry.birthPlace,
         }
 

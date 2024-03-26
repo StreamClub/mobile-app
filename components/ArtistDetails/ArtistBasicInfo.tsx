@@ -32,17 +32,17 @@ export type ArtistBasicInfoParams = {
 
 export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
     const birthDateParams: IconWithTextParams = {
-        icon: LocalIcon.birth,
+        leftIcon: LocalIcon.birth,
         text: formatDate(params.birthDate),
         style: { marginBottom: 15 },
     }
     const deathDateParams: IconWithTextParams = {
-        icon: LocalIcon.death,
+        leftIcon: LocalIcon.death,
         text: formatDate(params.deathDate),
         style: { marginBottom: 15 },
     }
     const birthPlaceParams: IconWithTextParams = {
-        icon: LocalIcon.location,
+        leftIcon: LocalIcon.location,
         text: params.birthPlace,
     }
 

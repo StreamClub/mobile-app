@@ -16,10 +16,20 @@ export type ProfileHeaderParams = {
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
     const emailParams: IconWithTextParams = {
-        icon: LocalIcon.email,
+        leftIcon: LocalIcon.email,
         text: params.email,
     }
-    
+
+    const displayNameParams: IconWithTextParams = {
+        rightIcon: LocalIcon.edit,
+        text: params.displayName,
+        textType: "title",
+        textSize: "big",
+        textStyle: styles.displayName,
+        iconStyle: styles.iconStyle,
+        onPressIcon: () => console.log("Edit pressed"),
+        iconContainerStyle: styles.iconContainerStyle,
+    }
     return(
         <View style={containerStyles.container}>
             <View style={containerStyles.pictureAndDetailsSection}>
@@ -38,12 +48,12 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
                         </View>
                     </View>
                     <View style={containerStyles.email}>
-                        {/* <BodyText size={"big"} body={params.email} style={styles.mailText}/> */}
                         <IconWithText {...emailParams} />
                     </View>
                 </View>
             </View>
-            <TitleText size={"big"} body={params.displayName} style={styles.displayName}/>
+            <IconWithText {...displayNameParams} />
+            <View style={styles.horizontalLine}/>
         </View>
     )
 }
@@ -91,7 +101,8 @@ const styles = StyleSheet.create({
     },
     displayName: {
         fontWeight: "bold",
-        marginHorizontal: 20,
+        marginLeft: 20,
+        flexGrow: 1,
     },
     metricNumber: {
         textAlign: "center",
@@ -102,5 +113,21 @@ const styles = StyleSheet.create({
     },
     mailText: {
         textAlign: "center",
-    }
+    },
+    horizontalLine: {
+        width: "95%", 
+        alignSelf: 'center', 
+        height: 1, 
+        backgroundColor: "black", 
+        borderRadius: 100,
+        marginTop: 4,
+    },
+    iconStyle: {
+        height: 25,
+        aspectRatio: 1,
+        marginRight: 15,
+    },
+    iconContainerStyle: {
+        alignSelf: "flex-end",
+    },
 })

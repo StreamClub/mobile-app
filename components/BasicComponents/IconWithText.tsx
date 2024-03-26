@@ -1,25 +1,49 @@
 import React from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, Pressable } from 'react-native'
 import { BodyText } from './BodyText'
+import { TitleText } from './TitleText'
 import { colors } from '../../assets/styles/colors'
 import { LocalIcon } from '../Types/LocalIcon'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export type IconWithTextParams = {
-    icon: LocalIcon
     text: string
     style?: any
+    textStyle?: any
+    textType?: 'title' | 'body'
+    textSize?: 'small' | 'medium' | 'big'
+    iconStyle?: any
+    leftIcon?: LocalIcon
+    rightIcon?: LocalIcon
+    onPressIcon?: () => void
+    iconContainerStyle?: any
 }
 
 export const IconWithText = (params: IconWithTextParams) => {
+    const iconStyle = params.iconStyle ? params.iconStyle : styles.iconStyle
+    const textStyle = params.textStyle ? params.textStyle : styles.textStyle
+    const textSize = params.textSize ? params.textSize : 'medium'
+    const textType = params.textType ? params.textType : 'body'
+
+    let textComponent
+    if (textType === 'title')
+        textComponent = <TitleText body={params.text} size={textSize} color={colors.primaryBlack} style={textStyle} />
+    else
+        textComponent = <BodyText body={params.text} size={textSize} color={colors.primaryBlack} style={textStyle} />
+
     return (
         <View style={[styles.container, params.style]}>
-            <Image source={params.icon} style={styles.iconStyle} />
-            <BodyText
-                body={params.text}
-                size="medium"
-                color={colors.primaryBlack}
-                style={{ paddingTop: 5, width: '85%', paddingLeft: 10 }}
-            />
+            { params.leftIcon &&
+                <Pressable onPress={params.onPressIcon} style={params.iconContainerStyle}>
+                    <Image source={params.leftIcon} style={iconStyle} />
+                </Pressable>
+            }
+            {textComponent}
+            { params.rightIcon &&
+                <Pressable onPress={params.onPressIcon} style={params.iconContainerStyle}>
+                    <Image source={params.rightIcon} style={iconStyle} />
+                </Pressable>
+            }
         </View>
     )
 }
@@ -31,7 +55,12 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     iconStyle: {
-        width: 25,
+        height: 25,
         aspectRatio: 487 / 512,
+    },
+    textStyle: { 
+        paddingTop: 5, 
+        width: '85%', 
+        paddingLeft: 10 
     },
 })

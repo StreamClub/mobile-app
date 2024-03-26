@@ -33,3 +33,19 @@ export const useGetProfile = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export type patchDisplayNameParams = {
+    displayName: string
+}
+
+export const usePatchDisplayName = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const patchDisplayName = (queryParams: patchDisplayNameParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/users'
+        const params: Params = { data: queryParams }
+        privateCall('PATCH', endpoint, params, onSuccess)
+    }
+    return {patchDisplayName, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------

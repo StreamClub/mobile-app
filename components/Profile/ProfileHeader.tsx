@@ -1,10 +1,10 @@
-import React, { useRef } from 'react'
-import { View, StyleSheet, TextInput, Keyboard } from 'react-native';
-import { TitleText } from '../BasicComponents/TitleText';
+import React from 'react'
+import { View, StyleSheet } from 'react-native';
 import { BodyText } from '../BasicComponents/BodyText';
 import { ProfilePicture } from './ProfilePicture';
 import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText';
 import { LocalIcon } from '../Types/LocalIcon';
+import { MAX_DISPLAY_NAME_LENGHT } from '../../constants/constants';
 
 export type ProfileHeaderParams = {
     id: number,
@@ -13,13 +13,12 @@ export type ProfileHeaderParams = {
     displayName: string,
     friendsCount: number,
     reviewsCount: number,
-    onChangeDisplayName: (displayName: string) => void,
+    onChangeDisplayName: (newDisplayName: string) => void,
 }
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
     const [displayName, setDisplayName] = React.useState(params.displayName);
     const [editing, setEditing] = React.useState(false);
-    const textInputRef = useRef<TextInput>(null)
 
     const emailParams: IconWithTextParams = {
         leftIcon: LocalIcon.email,
@@ -34,10 +33,9 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
     const textInputParams = {
         value: displayName,
         onChangeText: (text: string) => { setDisplayName(text) },
-        maxLength: 50,
+        maxLength: MAX_DISPLAY_NAME_LENGHT,
         multiline: true,
         placeholder: "¿Cuál es tu nombre?",
-        onFocus: () => console.log("Focus"),
         onEndEditing: onEndEditing,
         returnKeyType: "send",
         blurOnSubmit: true,
@@ -64,7 +62,6 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
         iconStyle: styles.iconStyle,
         onPressIcon: onPressRigthIcon,
         iconContainerStyle: styles.iconContainerStyle,
-        ref: {textInputRef}
     }
 
     return(

@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
-import { useGetProfile, useGetWatchlist } from '../../apiCalls/profile'
-import { getProfileParams } from '../../apiCalls/profile'
+import { useGetProfile, useGetWatchlist, usePatchDisplayName } from '../../apiCalls/profile'
+import { getProfileParams, patchDisplayNameParams } from '../../apiCalls/profile'
 import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/ProfileScreen'
 import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
@@ -26,6 +26,7 @@ export default function Profile() {
     const {getUserServices, loading: loadingUserServices} = useUserServices();
     const {getProfile, loading: loadingProfileHeader} = useGetProfile();
     const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
+    const {patchDisplayName} = usePatchDisplayName();
 
     const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices || loadingSeenContent
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([])
@@ -71,8 +72,22 @@ export default function Profile() {
         router.push({ pathname: pathname, params: contentScreenParams })
     }
 
-    const onChangeDisplayName = (displayName: string) => {
-        console.log("new displayName:", displayName)
+    const onSuccessPatchDisplayName = (response: any) => {
+        console.log("[onsuccess]", response.data)
+        console.log({...profileHeader, displayName: response.data.displayName})
+        
+        let _profileHeader = profileHeader
+        _profileHeader.displayName = response.data.displayName
+        setProfileHeader(_profileHeader)
+    }
+
+    const onChangeDisplayName = (newDisplayName: string) => {
+        console.log("[onchange]", newDisplayName)
+
+        const patchDisplayNameParams: patchDisplayNameParams = {
+            displayName: newDisplayName
+        }
+        patchDisplayName(patchDisplayNameParams, onSuccessPatchDisplayName)
     }
 
     const profileParams: ProfileScreenParams = {
@@ -122,10 +137,6 @@ export default function Profile() {
             })
         })
         setSeenContent(_carousel)
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
     }
 
     useEffect(() => {

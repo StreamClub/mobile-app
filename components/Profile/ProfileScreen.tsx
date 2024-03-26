@@ -23,6 +23,7 @@ export type ProfileScreenParams = {
     onPressMoreSeenContent: () => void;
     onPressSeenContentEntry: (itemObject: SeenContentEntry) => void;
     onPressWatchlistEntry: (entry: WatchlistEntry) => void;
+    onChangeDisplayName: (displayName: string) => void;
 }
 
 export const ProfileScreen = (params: ProfileScreenParams) => {
@@ -63,7 +64,7 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
             <ProfileHeader {...params.profileHeader}/>
 
             <TitleText body="Mis plataformas" style={styles.titleText} size='medium'/>

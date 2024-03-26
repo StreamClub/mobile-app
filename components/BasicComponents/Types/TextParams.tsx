@@ -9,4 +9,6 @@ export type TextParams = {
   max_length?: number;
   onPress?: (...params: any[]) => void;
   visible?: boolean;
+  textInputParams?: object;
+  canEdit?: boolean;
 }

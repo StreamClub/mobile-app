@@ -5,13 +5,18 @@ import { TitleText } from './TitleText'
 import { colors } from '../../assets/styles/colors'
 import { LocalIcon } from '../Types/LocalIcon'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TextParams } from './Types/TextParams'
 
 export type IconWithTextParams = {
     text: string
-    style?: any
     textStyle?: any
-    textType?: 'title' | 'body'
     textSize?: 'small' | 'medium' | 'big'
+    textType?: 'title' | 'body'
+    textInputParams?: object
+    canEdit?: boolean
+    ref?: any
+
+    style?: any
     iconStyle?: any
     leftIcon?: LocalIcon
     rightIcon?: LocalIcon
@@ -27,10 +32,16 @@ export const IconWithText = (params: IconWithTextParams) => {
 
     let textComponent
     if (textType === 'title')
-        textComponent = <TitleText body={params.text} size={textSize} color={colors.primaryBlack} style={textStyle} />
+        textComponent = <TitleText 
+            body={params.text} 
+            size={textSize} 
+            color={colors.primaryBlack} 
+            style={textStyle} 
+            textInputParams={params.textInputParams}
+            canEdit={params.canEdit}
+        />
     else
         textComponent = <BodyText body={params.text} size={textSize} color={colors.primaryBlack} style={textStyle} />
-
     return (
         <View style={[styles.container, params.style]}>
             { params.leftIcon &&
@@ -61,6 +72,6 @@ const styles = StyleSheet.create({
     textStyle: { 
         paddingTop: 5, 
         width: '85%', 
-        paddingLeft: 10 
+        paddingLeft: 10,
     },
 })

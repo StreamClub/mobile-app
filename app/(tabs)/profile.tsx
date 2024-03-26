@@ -39,6 +39,7 @@ export default function Profile() {
             displayName: '',
             friendsCount: 0,
             reviewsCount: 0,
+            onChangeDisplayName: () => {}, 
         }
     )
     
@@ -70,6 +71,10 @@ export default function Profile() {
         router.push({ pathname: pathname, params: contentScreenParams })
     }
 
+    const onChangeDisplayName = (displayName: string) => {
+        console.log("new displayName:", displayName)
+    }
+
     const profileParams: ProfileScreenParams = {
         watchlist: watchlist,
         profileHeader: profileHeader,
@@ -79,6 +84,7 @@ export default function Profile() {
         onPressMoreSeenContent: onPressMoreSeenContent,
         onPressSeenContentEntry: onPressSeenContentEntry,
         onPressWatchlistEntry: onPressWatchlistEntry,
+        onChangeDisplayName: onChangeDisplayName,
     }
 
     const onSuccessGetWatchlist = (response: any) => {
@@ -87,7 +93,8 @@ export default function Profile() {
     }
 
     const onSuccessGetProfile = (response: any) => {
-        const profileHeader: ProfileHeaderParams = response.data
+        let profileHeader: ProfileHeaderParams = response.data
+        profileHeader.onChangeDisplayName = onChangeDisplayName
         setProfileHeader(profileHeader)
     }
 

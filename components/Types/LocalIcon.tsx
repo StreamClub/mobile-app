@@ -20,4 +20,5 @@ export enum LocalIcon {
     account = require('../../assets/icons/account.png'),
     account_unselected = require('../../assets/icons/account_unselected.png'),
     edit = require('../../assets/icons/edit.png'),
+    undo = require('../../assets/icons/undo.png'),
 }

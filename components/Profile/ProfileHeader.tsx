@@ -1,35 +1,72 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native';
+import React, { useRef } from 'react'
+import { View, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 import { ProfilePicture } from './ProfilePicture';
 import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText';
 import { LocalIcon } from '../Types/LocalIcon';
+
 export type ProfileHeaderParams = {
     id: number,
     email: string,
     userName: string,
     displayName: string,
     friendsCount: number,
-    reviewsCount: number
+    reviewsCount: number,
+    onChangeDisplayName: (displayName: string) => void,
 }
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
+    const [displayName, setDisplayName] = React.useState(params.displayName);
+    const [editing, setEditing] = React.useState(false);
+    const textInputRef = useRef<TextInput>(null)
+
     const emailParams: IconWithTextParams = {
         leftIcon: LocalIcon.email,
         text: params.email,
     }
 
+    const onEndEditing = () => {
+        params.onChangeDisplayName(displayName);
+        setEditing(false);
+    }
+
+    const textInputParams = {
+        value: displayName,
+        onChangeText: (text: string) => { setDisplayName(text) },
+        maxLength: 50,
+        multiline: true,
+        placeholder: "¿Cuál es tu nombre?",
+        onFocus: () => console.log("Focus"),
+        onEndEditing: onEndEditing,
+        returnKeyType: "send",
+        blurOnSubmit: true,
+    }
+
+    const onPressRigthIcon = () => {
+        if (editing) {
+            setEditing(false);
+            setDisplayName(params.displayName);
+        }
+        else {
+            setEditing(true);
+        }
+    }
+
     const displayNameParams: IconWithTextParams = {
-        rightIcon: LocalIcon.edit,
-        text: params.displayName,
-        textType: "title",
+        rightIcon: editing? LocalIcon.undo : LocalIcon.edit,
+        text: displayName,
         textSize: "big",
         textStyle: styles.displayName,
+        textInputParams: textInputParams,
+        canEdit: editing,
+        textType: "title",
         iconStyle: styles.iconStyle,
-        onPressIcon: () => console.log("Edit pressed"),
+        onPressIcon: onPressRigthIcon,
         iconContainerStyle: styles.iconContainerStyle,
+        ref: {textInputRef}
     }
+
     return(
         <View style={containerStyles.container}>
             <View style={containerStyles.pictureAndDetailsSection}>
@@ -52,8 +89,11 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
                     </View>
                 </View>
             </View>
-            <IconWithText {...displayNameParams} />
-            <View style={styles.horizontalLine}/>
+            <View style={{width: "95%", alignSelf: 'center'}}>
+                <IconWithText {...displayNameParams}/>
+                <View style={styles.horizontalLine}/>
+            </View>
+            
         </View>
     )
 }
@@ -101,8 +141,9 @@ const styles = StyleSheet.create({
     },
     displayName: {
         fontWeight: "bold",
-        marginLeft: 20,
+        marginLeft: 3,
         flexGrow: 1,
+        width: "85%",
     },
     metricNumber: {
         textAlign: "center",
@@ -115,7 +156,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     horizontalLine: {
-        width: "95%", 
+        width: "100%", 
         alignSelf: 'center', 
         height: 1, 
         backgroundColor: "black", 
@@ -125,9 +166,15 @@ const styles = StyleSheet.create({
     iconStyle: {
         height: 25,
         aspectRatio: 1,
-        marginRight: 15,
+        marginRight: 3,
     },
     iconContainerStyle: {
         alignSelf: "flex-end",
     },
+    text: {
+        fontFamily: 'Roboto',
+        fontSize: 30,
+        fontWeight: "bold",
+        marginLeft: 3,
+    }
 })

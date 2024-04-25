@@ -20,7 +20,7 @@ export const useSearchSeries = () => {
         const params: Params = { params: {...queryParams, country: country } }
         dispatch(setLoading(true));
         privateCall('GET', endpoint, params, onSuccess);
-        dispatch(setLoading(false));
+        // TODO: agregar onfailurecustom con dispatch(setLoading(false))
     }
 
     return {searchSeries};

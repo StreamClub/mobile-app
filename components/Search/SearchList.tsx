@@ -16,21 +16,25 @@ export const SearchList = (params: SearchListProps) => {
 
     return (
         <>
-            {loading ? null : length === 0 ? (
-                <BodyText
-                    style={{
-                        marginTop: 20,
-                        fontWeight: 'bold',
-                        alignSelf: 'flex-start',
-                        marginLeft: '5%',
-                    }}
-                    size="big"
-                    color={colors.primaryBlack}
-                    body={'No se encontraron resultados para: ' + textSearched}
-                />
-            ) : (
-                children // Renderiza los children directamente
-            )}
+            {loading ? 
+                null 
+                : 
+                length === 0 ? (
+                    <BodyText
+                        style={{
+                            marginTop: 20,
+                            fontWeight: 'bold',
+                            alignSelf: 'flex-start',
+                            marginLeft: '5%',
+                        }}
+                        size="big"
+                        color={colors.primaryBlack}
+                        body={'No se encontraron resultados para: ' + textSearched}
+                    />
+                ) : (
+                    children // This is the children prop that will be rendered
+                )
+            }
         </>
     )
 }

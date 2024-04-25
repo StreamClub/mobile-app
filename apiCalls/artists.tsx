@@ -29,7 +29,7 @@ export const useSearchArtist = () => {
         const params: Params = { params: queryParams }
         dispatch(setLoading(true));
         privateCall('GET', endpoint, params, onSuccess);
-        dispatch(setLoading(false));
+        // TODO: agregar onfailurecustom con dispatch(setLoading(false)) (referencia onFailureSearch)
     }
 
     return {searchArtists}

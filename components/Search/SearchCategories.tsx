@@ -5,6 +5,7 @@ import { ButtonGroup } from '@rneui/themed'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import {
     setCategory,
+    setResults,
     setTextSearched,
 } from '../../store/slices/searchContentSlice'
 
@@ -15,8 +16,8 @@ export const SearchCategories = (params: SearchCategories) => {
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
 
     const onPress = (value: number) => {
-        // setShowLoading(true); //TODO: REVISAR, NUNCA TERMINA DE CARGAR
         dispatch(setTextSearched(''))
+        dispatch(setResults([]))
         setSelectedIndex(value)
         dispatch(setCategory(CATEGORIES[value]))
     }

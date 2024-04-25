@@ -34,7 +34,6 @@ export const useSearchMovies = () => {
         const params: Params = { params: {...queryParams, country: country } }
         dispatch(setLoading(true));
         privateCall('GET', endpoint, params, onSuccess);
-        dispatch(setLoading(false));
         //TODO: AGREGAR LOGICA EN BASE A SHOWERROR PARA QUE SETEE EL PAYLOAD DE REDUX DE LA BUSQUEDA
         //EN VACIO (O SEA UN ARRAY VACIO) < eso tan simple no es, asi no funciono hay q revisar.
     }

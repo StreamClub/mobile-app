@@ -2,7 +2,7 @@
 export const MAX_TITLE_LENGTH = 50
 export const MAX_NAME_LENGTH = 45
 export const MAX_SEARCH_LENGTH = 50
-export const DELAY_SEARCH = 500
+export const DELAY_SEARCH = 700
 export const MOVIES_NAME = 'Películas'
 export const SERIES_NAME = 'Series'
 export const ARTISTS_NAME = 'Artistas'

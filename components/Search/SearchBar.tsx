@@ -49,9 +49,10 @@ export const SearchContentBar = () => {
             default:
                 break
         }
+        
         const serializedData = serializeSearchResults(parsedResponse, category)
         dispatch(setResults(serializedData))
-        //dispatch(setLoading(false))
+        dispatch(setLoading(false))
     }
 
     const onFailureSearch = (error: any) => {

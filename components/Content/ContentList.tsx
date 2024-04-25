@@ -17,9 +17,7 @@ export const ContentList = (params: ContentListProps) => {
     const { category } = useAppSelector((state) => state.searchContent)
     switch (category) {
         case SERIES_NAME:
-            return (
-                <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />
-            )
+            return <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />
         case MOVIES_NAME:
             return <MovieList movieList={params.contentEntry as MovieEntry[]} />
         case ARTISTS_NAME:

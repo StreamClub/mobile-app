@@ -12,6 +12,8 @@ import { SeeMovieButton } from './SeeMovieButton'
 import { router } from 'expo-router'
 import { ContentType } from '../Types/ContentType'
 import { ReviewCard } from '../Content/Reviews/ReviewCard'
+import { MyReview } from '../Content/Reviews/MyReview'
+import { ReviewsList } from '../Content/Reviews/ReviewsList'
 
 type MovieDetailScreenParams = {
     movie: MovieDetail
@@ -75,7 +77,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} 
                         onPress={onPressFullCredits}/>
                 </>}
-                <ReviewCard />
+                <ReviewsList />
                 {movie.similar.length > 0 && (
                     <RecommendsList
                         contents={movie.similar}

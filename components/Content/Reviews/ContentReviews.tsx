@@ -55,7 +55,7 @@ export const ContentReviews = () => {
     <View>
       {showReviews?
         <View style={{backgroundColor: colors.secondarySkyBlue, margin: 5, borderRadius: 10}}>
-          <TitleText body='Other reviews:' size='small' style={{marginLeft: 10}} />
+          <TitleText body='All reviews:' size='small' style={{marginLeft: 10}} />
           {reviews.map((review, index) => (
             <ReviewCard review={review} key={index}/>
           ))}

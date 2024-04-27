@@ -43,7 +43,7 @@ export const useSearchContent = (
         } else if (category == ARTISTS_NAME) {
             searchArtists(queryParams, onSuccessSearch)
         } else if (category == USERS_NAME) {
-            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch) //TO DO: Cambiar por state, hoy no hace nada.
+            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch) //TODO: Cambiar por state, hoy no hace nada.
         }
     }
 

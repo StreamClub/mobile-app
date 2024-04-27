@@ -69,11 +69,8 @@ export const usePrivateCall = () => {
                 (response) => {
                     onSuccessRefresh(privateCallParams, response)
                 }, (error) => {
-                    if (privateCallParams.onFailure){
-                        privateCallParams.onFailure(error)
-                    } else {
-                        setError(error);
-                    }
+                    session?.signOut()
+                    setError(error);
                 });
     }
 

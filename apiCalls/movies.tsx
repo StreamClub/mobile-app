@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { Params, usePrivateCall } from './generic'
 import { useAppDispatch } from '../hooks/redux/useAppDispatch';
-import { setLoading, setResults } from '../store/slices/searchContentSlice';
-import { useAppSelector } from '../hooks/redux/useAppSelector';
+import { setLoading } from '../store/slices/searchContentSlice';
 
 const country = 'AR' // TODO: Esto hay que cambiarlo
 

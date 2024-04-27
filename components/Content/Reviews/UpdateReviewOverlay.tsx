@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { TextInput, View } from 'react-native'
-import { BodyText } from '../../BasicComponents/BodyText'
 import { CustomButton } from '../../BasicComponents/CustomButton';
 import { TitleText } from '../../BasicComponents/TitleText';
 import { colors } from '../../../assets';
 import { IconButton } from 'react-native-paper';
 import { styles } from './styles/Review.styles';
+/* import { useOnUpdateReviewPress } from '../../../hooks/reviews/useReviews'; */
 
 export const UpdateReviewOverlay = () => {
+    //const { onPress } = useOnUpdateReviewPress()
     const [review, setReview] = useState('');
     const [liked, setLiked] = useState(false);
     const [likeSet, setLikeSet] = useState(false);
+
     return (
         <View style={styles.container}>
             <TitleText body='Escribe tu review:' size='small' />

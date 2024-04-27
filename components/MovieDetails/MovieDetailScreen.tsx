@@ -77,7 +77,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} 
                         onPress={onPressFullCredits}/>
                 </>}
-                <ReviewsList />
+                <ReviewsList contentId={movie.id} contentType='movie' />
                 {movie.similar.length > 0 && (
                     <RecommendsList
                         contents={movie.similar}

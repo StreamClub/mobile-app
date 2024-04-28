@@ -11,7 +11,6 @@ export const ContentReviews = (params: ReviewsListEntry) => {
   const [showReviews, setShowReviews] = useState(false);
   const {onSeeAllPress, reviews, setReviews, loading} = useReviewsList(params.contentId, params.contentType);
 
-
   const onSuccess = (response: any) => {
     console.log('responseMovie ' + response.data.page);
     setReviews(response.data.results);

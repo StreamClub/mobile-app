@@ -6,17 +6,19 @@ import { colors } from '../../../assets'
 import { CustomButton } from '../../BasicComponents/CustomButton'
 import { UpdateReviewOverlay } from './UpdateReviewOverlay'
 import { Overlay } from 'react-native-elements'
+import { ReviewsListEntry } from './ReviewsList'
+import { useOnUpdateReviewPress } from '../../../hooks/reviews/useReviews';
 
-export const MyReview = () => {
+export const MyReview = (params: ReviewsListEntry) => {
+  const { onPress, loading } = useOnUpdateReviewPress(params.contentId, params.contentType)
   const [openModal, setOpenModal] = useState(false)
-  const userReview = null/* {
-    "id": "1",
-    "userId": 101,
-    "contentId": 1,
-    "contentType": "movie",
-    "liked": true,
-    "review": "A mesmerizing journey into the depths of human emotions and the cosmos. Absolutely stunning!"
-  } */;
+  const userReview = null;
+
+  const onSuccess = (response: any) => {
+    setOpenModal(false);
+    //setReviews(response.data.results);
+  }
+
   return(
     <>
     {userReview?
@@ -40,7 +42,7 @@ export const MyReview = () => {
         borderRadius: 20,
       }}
     >
-      <UpdateReviewOverlay />
+      <UpdateReviewOverlay onPress={onPress} loading={loading} onSuccess={onSuccess} />
     </Overlay>
     </>
   )

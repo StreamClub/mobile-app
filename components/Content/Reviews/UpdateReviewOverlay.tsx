@@ -5,10 +5,15 @@ import { TitleText } from '../../BasicComponents/TitleText';
 import { colors } from '../../../assets';
 import { IconButton } from 'react-native-paper';
 import { styles } from './styles/Review.styles';
-/* import { useOnUpdateReviewPress } from '../../../hooks/reviews/useReviews'; */
+import { AxiosResponse } from 'axios';
 
-export const UpdateReviewOverlay = () => {
-    //const { onPress } = useOnUpdateReviewPress()
+export type UpdateReviewEntry = {
+    onPress: (liked: boolean, review: string, onSuccess: (response: AxiosResponse<any, any>) => void) => void,
+    loading: boolean,
+    onSuccess: (response: AxiosResponse<any, any>) => void
+}
+
+export const UpdateReviewOverlay = (params: UpdateReviewEntry) => {
     const [review, setReview] = useState('');
     const [liked, setLiked] = useState(false);
     const [likeSet, setLikeSet] = useState(false);
@@ -47,10 +52,11 @@ export const UpdateReviewOverlay = () => {
             <CustomButton 
                 buttonText='Actualizar review' 
                 type='primary'
-                onPress={() =>  console.log("Actualizo")}
+                onPress={() => params.onPress(liked, review, params.onSuccess)}
                 fontSize='small' 
                 style={{ margin: 5 }}
-                disabled={!likeSet} />
+                disabled={!likeSet} 
+                loading={params.loading} />
         </View>
     )
 }

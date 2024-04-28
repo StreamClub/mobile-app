@@ -11,7 +11,7 @@ export type ReviewsListEntry = {
 export const ReviewsList = (params: ReviewsListEntry) => {
   return(
     <View>
-      <MyReview />
+      <MyReview contentId={params.contentId} contentType={params.contentType} />
       <ContentReviews contentId={params.contentId} contentType={params.contentType} />
     </View>
   )

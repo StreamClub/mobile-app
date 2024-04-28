@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable } from 'react-native'
 import { colors } from '../../assets'
-import { ContentEntry } from '../../entities/ContentListEntry'
+import { ContentEntry } from '../../entities/ContentEntry'
 import { styles } from '../Series/SeriesList/styles/SeriesList.style'
 import { useContentEntryPressed } from '../../hooks/useContentEntryPressed'
 import { ContentType } from '../../entities/ContentType'

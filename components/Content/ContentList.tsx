@@ -1,5 +1,5 @@
 import React from 'react'
-import { ContentEntry } from '../../entities/ContentListEntry'
+import { ContentEntry } from '../../entities/ContentEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { ARTISTS_NAME, MOVIES_NAME, SERIES_NAME } from '../../constants'

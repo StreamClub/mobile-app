@@ -17,7 +17,8 @@ import { router } from 'expo-router'
 import { useSession } from '../../context/ctx'
 import { useUserServices } from '../../apiCalls/services'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
-import {ContentType } from '../../components/Types/ContentType'
+import { ContentType } from '../../components/Types/ContentType'
+import { useOnFocus } from '../../hooks/useOnFocus'
 
 export default function Profile() {
     const {getWatchlist, loading: loadingWatchlist} = useGetWatchlist();
@@ -139,7 +140,11 @@ export default function Profile() {
         setSeenContent(_carousel)
     }
 
-    useEffect(() => {
+    useOnFocus(() => {
+        getAll()
+    })
+
+    const getAll = () => {
         getWatchlist(onSuccessGetWatchlist)
 
         const profileParams: getProfileParams = {
@@ -154,7 +159,10 @@ export default function Profile() {
             pageSize: 10,
         }
         getSeenContent(seenContentParams, onSuccessGetSeenContent)
-    }, [])
+    }
+
+    
+    
 
     return (
         <View style={styles.container}>

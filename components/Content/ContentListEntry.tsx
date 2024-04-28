@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ContentCover } from '../Content/ContentCover'
-import { ContentEntry } from '../../entities/ContentListEntry'
+import { ContentEntry } from '../../entities/ContentEntry'
 import { ContentDetail } from '../Content/ContentDetail'
 import { ContentType } from '../../entities/ContentType'
 import { styles } from '../Series/SeriesList/styles/SeriesList.style'

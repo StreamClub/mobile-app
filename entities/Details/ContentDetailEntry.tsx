@@ -12,6 +12,7 @@ export class ContentDetail extends Content {
     public overview: string
     public cast: CastMember[]
     public similar: SimilarContent[]
+    public inWatchlist: boolean
 
     constructor(contentDetail: ContentDetail) {
         super(contentDetail)
@@ -23,6 +24,7 @@ export class ContentDetail extends Content {
         this.platforms = contentDetail.platforms
         this.releaseDate = contentDetail.releaseDate
         this.similar = contentDetail.similar
+        this.inWatchlist = contentDetail.inWatchlist
     }
 
     public static fromJson(json: any): ContentDetail {
@@ -40,6 +42,7 @@ export class ContentDetail extends Content {
             similar: json.similar.map((item: any) =>
                 SimilarContent.fromJson(item)
             ),
+            inWatchlist: json.inWatchlist,
             ...content,
         })
     }

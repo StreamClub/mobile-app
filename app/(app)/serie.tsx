@@ -12,22 +12,26 @@ import { useSeriesDetails } from '../../hooks/useSeriesDetails'
 import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader'
 import { SeriesDetailScreen } from '../../components/Series/SeriesDetails/SeriesDetailScreen'
 import { ContentType } from '../../components/Types/ContentType'
+import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
+import { setFocusedEntry } from '../../store/slices/searchContentSlice'
+
 
 export default function Serie() {
     const { series, setSeries } = useSeriesDetails()
     const params = useLocalSearchParams<ContentDetailsParams>()
     const serieId = params.id
     const { getSeries, loading } = useGetSeries();
+    const dispatch = useAppDispatch();
+
 
     const onSuccess = (response: any) => {
-        setSeries(response.data)
+        const series = response.data
+        setSeries(series)
+        dispatch(setFocusedEntry({id: series.id, seen: false, inWatchlist: series.inWatchlist}))
     }
 
     useEffect(() => {
-        const loadSerie = async () => {
-            await getSeries(serieId, onSuccess)
-        }
-        loadSerie()
+        getSeries(serieId, onSuccess)
     }, [])
 
     const onRecommendPress = (series: Content) => {

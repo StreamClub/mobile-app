@@ -1,4 +1,4 @@
-import { ContentEntry } from './ContentListEntry'
+import { ContentEntry } from './ContentEntry'
 
 export class MovieEntry extends ContentEntry {
     public year: string

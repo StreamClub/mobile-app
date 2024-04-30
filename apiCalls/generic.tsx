@@ -102,11 +102,8 @@ export const usePrivateCall = () => {
                 data: paramsAndData.data
             }).then(
                 (response) => {
-                    console.log("Existoso");
                     onSuccess(response);
                 }, (error) => {
-                    console.log("Error: " + endpoint);
-                    console.log(error);
                     const privateCallParams = { method, endpoint, paramsAndData, onSuccess, onFailure };
                     handlePrivateCallError(error, privateCallParams);
                 }).finally(() => {

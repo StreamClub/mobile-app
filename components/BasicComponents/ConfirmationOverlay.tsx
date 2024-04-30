@@ -1,24 +1,25 @@
 import { AxiosResponse } from 'axios'
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { styles } from './styles/Review.styles'
-import { CustomButton } from '../../BasicComponents/CustomButton'
-import { BodyText } from '../../BasicComponents/BodyText'
+import { styles } from '../Content/Reviews/styles/Review.styles'
+import { CustomButton } from './CustomButton'
+import { BodyText } from './BodyText'
 
-export type DeleteReviewEntry = {
+export type ConfirmationOverlayEntry = {
   onConfirmPress: (onSuccess: (response: AxiosResponse<any, any>) => void) => void,
   onCancelPress: () => void,
   loading: boolean,
-  onSuccess: (response: AxiosResponse<any, any>) => void
+  onSuccess: (response: AxiosResponse<any, any>) => void,
+  text: string
 }
 
-export const DeleteReviewOverlay = (params: DeleteReviewEntry) => {
+export const ConfirmationOverlay = (params: ConfirmationOverlayEntry) => {
   return(
     <View style={styles.container}>
-      <BodyText body='¿Estás seguro que deseas eliminar tu review?' size='big' />
+      <BodyText body={params.text} size='big' />
       <View style={{flexDirection: 'row', justifyContent: 'center', margin: 5}}>
         <CustomButton 
-          buttonText='Eliminar'
+          buttonText='Confirmar'
           fontSize='small'
           type='primary'
           onPress={() => params.onConfirmPress(params.onSuccess)}

@@ -4,8 +4,8 @@ import { View, Image, StyleSheet, ScrollView, Pressable } from 'react-native'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets'
 import { Icon } from 'react-native-paper'
-import { MovieDetailsParams } from '../app/(tabs)/(app)/movie'
 import { router } from 'expo-router'
+import { MovieDetailsParams } from '../app/(app)/movie'
 
 export type Content = {
     title: string

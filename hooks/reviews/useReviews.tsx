@@ -1,7 +1,21 @@
 import { AxiosResponse } from "axios";
-import { useGetReviews, useUpdateReview } from "../../apiCalls/reviews"
+import { useDeleteReview, useGetReviews, useUpdateReview } from "../../apiCalls/reviews"
 import { Review } from "../../entities/Review";
 import { useState } from "react";
+
+export const useOnDeleteReviewPress = (contentId: string, contentType: string) => {
+  const {deleteReview, loading} = useDeleteReview();
+
+  const onPress = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const body = {
+      contentId: +contentId,
+      contentType: contentType
+    }
+    deleteReview(body, onSuccess);
+  }
+
+  return { onPress, loading }
+}
 
 export const useOnUpdateReviewPress = (contentId: string, contentType: string) => {
   const {updateReview, loading} = useUpdateReview();

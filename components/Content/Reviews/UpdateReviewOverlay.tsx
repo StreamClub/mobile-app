@@ -10,13 +10,16 @@ import { AxiosResponse } from 'axios';
 export type UpdateReviewEntry = {
     onPress: (liked: boolean, review: string, onSuccess: (response: AxiosResponse<any, any>) => void) => void,
     loading: boolean,
-    onSuccess: (response: AxiosResponse<any, any>) => void
+    onSuccess: (response: AxiosResponse<any, any>) => void,
+    myReviewText?: string,
+    myLike?: boolean
 }
 
 export const UpdateReviewOverlay = (params: UpdateReviewEntry) => {
-    const [review, setReview] = useState('');
-    const [liked, setLiked] = useState(false);
-    const [likeSet, setLikeSet] = useState(false);
+    const [review, setReview] = useState(params.myReviewText? params.myReviewText : '');
+    const [liked, setLiked] = useState(params.myLike? params.myLike : false);
+    const [likeSet, setLikeSet] = useState((params.myLike != null)? true : false);
+    console.log(likeSet)
 
     return (
         <View style={styles.container}>

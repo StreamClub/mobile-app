@@ -21,6 +21,25 @@ export const useUpdateReview = () => {
   return {updateReview, loading};
 }
 
+// --------- --------- --------- --------- --------- ---------
+export type deleteReviewParams = {
+  contentId: number,
+  contentType: string
+}
+
+export const useDeleteReview = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const deleteReview = (body: deleteReviewParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/reviews';
+    const params: Params = { data: body };
+    privateCall('DELETE', endpoint, params, onSuccess);
+  }
+
+  return {deleteReview, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
 export const useGetReviews = () => {
   const {privateCall, loading} = usePrivateCall();
 

@@ -4,10 +4,14 @@ import { CustomButton } from '../../BasicComponents/CustomButton'
 import { ReviewCard } from './ReviewCard'
 import { colors } from '../../../assets'
 import { TitleText } from '../../BasicComponents/TitleText'
-import { ReviewsListEntry } from './ReviewsList'
 import { useReviewsList } from '../../../hooks/reviews/useReviews'
 
-export const ContentReviews = (params: ReviewsListEntry) => {
+export type ContentReviewsEntry = {
+  contentType: 'movie' | 'series',
+  contentId: string
+}
+
+export const ContentReviews = (params: ContentReviewsEntry) => {
   const [showReviews, setShowReviews] = useState(false);
   const {onSeeAllPress, reviews, setReviews, loading} = useReviewsList(params.contentId, params.contentType);
 

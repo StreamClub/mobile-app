@@ -11,6 +11,7 @@ import { CastList } from '../CastList'
 import { SeeMovieButton } from './SeeMovieButton'
 import { router } from 'expo-router'
 import { ContentType } from '../Types/ContentType'
+import { ReviewsList } from '../Content/Reviews/ReviewsList'
 
 type MovieDetailScreenParams = {
     movie: MovieDetail
@@ -70,10 +71,11 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                     )}
                 </View>
                 {movie.cast.length > 0 && <>
-                <CastList cast={movie.cast} style={styles.castStyle}/>
-                <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} 
-                    onPress={onPressFullCredits}/>
-            </>}
+                    <CastList cast={movie.cast} style={styles.castStyle}/>
+                    <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} 
+                        onPress={onPressFullCredits}/>
+                </>}
+                <ReviewsList contentId={movie.id} contentType='movie' userReview={movie.userReview}/>
                 {movie.similar.length > 0 && (
                     <RecommendsList
                         contents={movie.similar}

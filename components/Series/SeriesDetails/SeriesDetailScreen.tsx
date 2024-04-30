@@ -10,6 +10,7 @@ import { NextEpisode } from './NextEpisode'
 import { SeriesDetail } from '../../../entities/Details/Series/SeriesDetailEntry'
 import { SeasonsList } from './SeasonsList'
 import { SeriesInfo } from './SeriesInfo'
+import { ReviewsList } from '../../Content/Reviews/ReviewsList'
 
 type SeriesDetailScreenParams = {
     series: SeriesDetail
@@ -93,6 +94,7 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
                     <CastList cast={params.series.cast} style={styles.cast} />
                     <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits}/>
                 </>}
+                <ReviewsList contentId={params.series.id} contentType='series' userReview={params.series.userReview}/>
                 {params.series.similar.length > 0 ? (
                     <RecommendsList
                         onRecommendPress={params.onRecommendPress}

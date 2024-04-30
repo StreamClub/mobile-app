@@ -1,3 +1,4 @@
+import { Review } from '../../Review'
 import { ContentDetail } from '../ContentDetailEntry'
 import { Episode } from './Episode'
 import { Season } from './Season'
@@ -9,6 +10,7 @@ export class SeriesDetail extends ContentDetail {
     public totalSeasons: number
     public seasons: Season[]
     public nextEpisode: Episode | null
+    public userReview: Review | null
 
     constructor(series: SeriesDetail) {
         super(series)
@@ -18,6 +20,7 @@ export class SeriesDetail extends ContentDetail {
         this.seasons = series.seasons
         this.totalSeasons = series.totalSeasons
         this.nextEpisode = series.nextEpisode
+        this.userReview = series.userReview
     }
 
     public static fromJson(json: any): SeriesDetail {
@@ -33,6 +36,7 @@ export class SeriesDetail extends ContentDetail {
             nextEpisode: json.nextEpisode
                 ? Episode.fromJson(json.nextEpisode)
                 : null,
+            userReview: json.userReview ? Review.fromJson(json.userReview) : null,
             ...content,
         })
     }

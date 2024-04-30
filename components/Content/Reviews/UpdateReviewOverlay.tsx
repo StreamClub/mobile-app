@@ -19,7 +19,6 @@ export const UpdateReviewOverlay = (params: UpdateReviewEntry) => {
     const [review, setReview] = useState(params.myReviewText? params.myReviewText : '');
     const [liked, setLiked] = useState(params.myLike? params.myLike : false);
     const [likeSet, setLikeSet] = useState((params.myLike != null)? true : false);
-    console.log(likeSet)
 
     return (
         <View style={styles.container}>

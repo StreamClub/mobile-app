@@ -8,7 +8,7 @@ import { UpdateReviewOverlay } from './UpdateReviewOverlay'
 import { Overlay } from 'react-native-elements'
 import { useOnDeleteReviewPress, useOnUpdateReviewPress } from '../../../hooks/reviews/useReviews';
 import { Review } from '../../../entities/Review'
-import { DeleteReviewOverlay } from './DeleteReviewOverlay'
+import { ConfirmationOverlay } from '../../BasicComponents/ConfirmationOverlay'
 
 export type MyReviewEntry = {
   contentType: 'movie' | 'series',
@@ -78,11 +78,12 @@ export const MyReview = (params: MyReviewEntry) => {
         borderRadius: 20,
       }}
     >
-      <DeleteReviewOverlay 
+      <ConfirmationOverlay 
         onConfirmPress={onDeletePress} 
         onCancelPress={() => setOpenDeleteModal(false)}
         loading={deleteLoading} 
-        onSuccess={onDeleteSuccess} />
+        onSuccess={onDeleteSuccess}
+        text='¿Estás seguro de que quieres eliminar esta review?' />
     </Overlay>
     </>
   )

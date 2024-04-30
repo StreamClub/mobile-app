@@ -6,6 +6,7 @@ import { colors } from '../../assets';
 import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
 import { useIsFocused } from '@react-navigation/native';
+import { LogOutButton } from '../../components/LogOutButton';
 export default function AppLayout() {
     const session = useSession()
 
@@ -46,12 +47,13 @@ export default function AppLayout() {
                                 height: focused? 24 : 20,
                             }}
                         />,
-                headerStyle: {
-                    backgroundColor: colors.primaryRed
-                },
-                headerTitle: "Mi Perfil",
-                headerTintColor: '#fff',
-                headerShown: true,
+                    headerStyle: {
+                        backgroundColor: colors.primaryRed
+                    },
+                    headerTitle: "Mi Perfil",
+                    headerTintColor: '#fff',
+                    headerShown: true,
+                    headerRight: () => <LogOutButton/>
                 }}
             />
             <Tabs.Screen

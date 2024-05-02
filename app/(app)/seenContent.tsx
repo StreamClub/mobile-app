@@ -20,13 +20,8 @@ export default function SeenContent() {
     const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
 
     const onSuccessGetSeenContent = (response: any) => {
-        const _seenContent: SeenContentEntry[] = response.data.results
-
+        const _seenContent: SeenContentEntry[] = response.data.results;
         setSeenContent(_seenContent)
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
     }
 
     useEffect(() => {

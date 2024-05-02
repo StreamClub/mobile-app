@@ -18,6 +18,7 @@ const renderWatchlistEntry = (entry: WatchlistEntry, index: number, watchlistPar
         resource: entry.poster,
         type: TmdbImageType.Cover,
         style: styles.posterStyle,
+        altText: entry.title
     }
     const onPress = watchlistParams.onPressWatchlistEntry
 

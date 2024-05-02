@@ -19,6 +19,7 @@ const renderSeenContentEntry = (seenContentEntry: SeenContentEntry, index: numbe
     const tmdbImageParams: TmdbImageParams = {
         resource: seenContentEntry.poster,
         type: TmdbImageType.Cover,
+        altText: seenContentEntry.title,
         style: styles.posterStyle,
     }
 

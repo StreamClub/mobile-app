@@ -5,4 +5,5 @@ export type WatchlistEntry = {
     id: number;
     poster: string;
     contentType: ContentType;
+    title: string;
 }

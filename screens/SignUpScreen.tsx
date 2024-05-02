@@ -7,6 +7,7 @@ import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { TextInputMask } from "react-native-masked-text";
 import config from "../config.json";
 import { colors } from "../assets";
+import { router } from "expo-router";
 
 type SignUpParams = {
     onNext: (email: string, password: string, birthDate: string) => void;
@@ -129,7 +130,7 @@ export const SignUpScreen = (params: SignUpParams) => {
             <View style={styles.buttons}>
                 <CustomButton
                     buttonText="Cancelar"
-                    onPress={() => console.log("Next")}
+                    onPress={() => router.push({ pathname: '/', params: {} })}
                     fontSize="medium"
                     buttonSize="medium"
                     type='secondary'

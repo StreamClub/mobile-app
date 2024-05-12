@@ -1,12 +1,34 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, Button } from "react-native";
 import { StyleSheet } from "react-native";
 import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { router } from "expo-router";
 import { TitleText } from "../components/BasicComponents/TitleText";
 import { colors } from "../assets";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 
 export const InitialScreen = () => {
+  
+  GoogleSignin.configure({
+    webClientId: '440697278069-9umno9778vb2nvjs89qjf64oqsbl1vkf.apps.googleusercontent.com',
+  });
+
+  const onGoogleButtonPress = async () => {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    //return auth().signInWithCredential(googleCredential);
+    const user_sign_in = auth().signInWithCredential(googleCredential);
+    user_sign_in.then((user) => console.log(user)).catch((error) => console.log(error))
+  }
+
   return (
     <View style={styles.initialScreen}>
       <Image
@@ -34,6 +56,10 @@ export const InitialScreen = () => {
           type="secondary"
         />
       </View>
+      <Button
+        title="Sign-In with Google"
+        onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}
+      />
     </View>
   );
 };

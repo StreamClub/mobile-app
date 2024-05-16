@@ -1,19 +1,18 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { ButtonParams } from "./Types/ButtonParams";
-import { colors } from "../../assets";
-import { Button } from '@rneui/themed';
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { ButtonParams } from './Types/ButtonParams'
+import { colors } from '../../assets'
+import { Button } from '@rneui/themed'
 
 export const CustomButton = (params: ButtonParams) => {
-    params.fontSize = params.fontSize || 'medium';
+    params.fontSize = params.fontSize || 'medium'
     const fontSize = {
         small: { fontSize: 14 },
         medium: { fontSize: 18 },
         big: { fontSize: 24 },
-    }[params.fontSize];
+    }[params.fontSize]
 
-
-    params.buttonSize = params.buttonSize || 'auto';
+    params.buttonSize = params.buttonSize || 'auto'
     const buttonSize = {
         small: { width: 60, height: 40 },
         medium: { width: 150, height: 40 },
@@ -21,21 +20,25 @@ export const CustomButton = (params: ButtonParams) => {
 
         // In this case, the button will have the size of the text
         auto: { width: 'auto', height: 'auto' },
-    }[params.buttonSize];
+    }[params.buttonSize]
 
-    params.type = params.type || 'primary';
+    params.type = params.type || 'primary'
     const backgroundColor = {
-        primary: {backgroundColor: colors.primaryRed},
-        secondary: {backgroundColor: colors.primaryGrey},
-    }[params.type];
-    
+        primary: { backgroundColor: colors.primaryRed },
+        secondary: { backgroundColor: colors.primaryGrey },
+    }[params.type]
 
     return (
         <Button
             onPress={params.onPress}
             disabled={params.disabled}
             disabledStyle={styles.disabledStyle}
-            containerStyle={[buttonSize, backgroundColor, styles.containerStyle, params.style]}
+            containerStyle={[
+                buttonSize,
+                backgroundColor,
+                styles.containerStyle,
+                params.style,
+            ]}
             buttonStyle={styles.buttonStyle}
             titleStyle={[styles.titleStyle, fontSize]}
             icon={{
@@ -47,14 +50,14 @@ export const CustomButton = (params: ButtonParams) => {
             title={params.buttonText}
             loading={params.loading}
         />
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     containerStyle: {
         borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
     buttonStyle: {
@@ -65,11 +68,11 @@ const styles = StyleSheet.create({
 
     titleStyle: {
         color: colors.primaryWhite,
-        fontFamily: "Roboto",
+        fontFamily: 'Roboto',
     },
 
     disabledStyle: {
         backgroundColor: colors.primaryGrey,
         width: '100%',
     },
-});
+})

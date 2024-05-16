@@ -1,56 +1,56 @@
-import React from 'react';
-import { View, StyleSheet } from "react-native";
-import { colors } from "../../assets";
-import { Stack, useLocalSearchParams } from 'expo-router';
-import { useState, useEffect } from "react";
-import { useSession } from '../../context/ctx';
-import { getSeason } from '../../apiCalls/series';
-import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-import { SeasonDetailScreen } from '../../screens/SeasonDetailScreen';
-import { useSeasonDetail } from '../../hooks/useSeasonDetails';
-import { SeasonHeader } from '../../components/SeasonDetails/SeasonHeader';
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import { colors } from '../../assets'
+import { Stack, useLocalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
+import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
+import { SeasonDetailScreen } from '../../screens/SeasonDetailScreen'
+import { useSeasonDetail } from '../../hooks/useSeasonDetails'
+import { Platform } from '../../entities/Details/Platform'
+import { SeasonHeader } from '../../components/Series/SeasonDetails/SeasonHeader'
+import { useGetSeason } from '../../apiCalls/series'
 
 export type SeasonDetailsParams = {
-    seriesId: string;
-    seasonId: string;
-    platforms: string;
-};
+    seriesId: string
+    seasonId: string
+    platforms: string
+}
 
 export default function Season() {
-    const session = useSession();
-    const params = useLocalSearchParams<SeasonDetailsParams>();
-    const {season, setSeason} = useSeasonDetail();
-    const [seasonLoaded, setSeasonLoaded] = useState(false)
+    const params = useLocalSearchParams<SeasonDetailsParams>()
+    const { season, setSeason } = useSeasonDetail()
+    const {getSeason, loading} = useGetSeason();
+    const platforms = JSON.parse(params.platforms).map((item: any) =>
+        Platform.fromJson(item)
+    )
 
     const onSuccess = (response: any) => {
-        setSeason(response.data, Number(params.seriesId));
-        setSeasonLoaded(true);
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error);
+        setSeason(response.data, Number(params.seriesId))
     }
 
     useEffect(() => {
         const loadSerie = async () => {
-          await getSeason(session, params.seriesId, params.seasonId, onSuccess, onFailure)
-        };
-        loadSerie();
-    }, []);
+            await getSeason(
+                params.seriesId,
+                params.seasonId,
+                onSuccess
+            )
+        }
+        loadSerie()
+    }, [])
 
-    return(
+    return (
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerRight: () => (
-                        <SeasonHeader season={season} />
-                    ) ,
+                    headerRight: () => <SeasonHeader season={season} />,
                 }}
             />
-            {seasonLoaded && season ? 
-                <SeasonDetailScreen season={season}/> : 
+            {!loading && season ? (
+                <SeasonDetailScreen season={season} platforms={platforms} />
+            ) : (
                 <LoadingComponent />
-            }
+            )}
         </View>
     )
 }
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: colors.secondaryWhite,
     },
-});
+})

@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
 import { useSession } from '../context/ctx';
-import { privateCall, Params } from './generic';
 
 const country = "AR" // TODO: Esto hay que cambiarlo
 

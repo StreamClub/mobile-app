@@ -1,6 +1,6 @@
 import { router } from 'expo-router'
 import { ContentDetailsParams } from '../apiCalls/params/content/ContentDetailsParams'
-import { ContentEntry } from '../entities/ContentListEntry'
+import { ContentEntry } from '../entities/ContentEntry'
 import { ContentType } from '../entities/ContentType'
 
 export const useContentEntryPressed = (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, Pressable } from 'react-native'
 import { BodyText } from '../BasicComponents/BodyText'
-import { styles } from '../SeriesList/styles/SeriesList.style'
+import { styles } from '../Series/SeriesList/styles/SeriesList.style'
 
 type ContentScoreProps = {
     score: string

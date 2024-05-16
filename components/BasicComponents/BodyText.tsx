@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
-import * as Font from 'expo-font'
 import { TextParams } from './Types/TextParams'
 import { colors } from '../../assets'
 
@@ -19,26 +18,27 @@ export const BodyText = (params: TextParams) => {
         normal: { fontStyle: 'normal' },
     }[params.fontStyle || 'normal']
 
-    const text = params.max_length ?
-        params.body.slice(0, params.max_length).trim() + '...'
-        :
-        params.body
+    const text = params.max_length
+        ? params.body.slice(0, params.max_length).trim() + '...'
+        : params.body
 
-    return (
-        <Text
-            style={[
-                styles.textStyle,
-                titleSize,
-                fontStyle,
-                { color: textColor },
-                params.style,
-            ]}
-            onLayout={params.onLayout}
-            numberOfLines={params.numberOfLines}
-        >
-            {text}
-        </Text>
-    )
+    const visible = params.visible === undefined ? true : params.visible
+
+    return (<>{ visible && 
+            <Text style={[
+                    styles.textStyle,
+                    titleSize,
+                    fontStyle,
+                    { color: textColor },
+                    params.style,
+                ]}
+                onLayout={params.onLayout}
+                numberOfLines={params.numberOfLines}
+                onPress={params.onPress}
+            >
+                {text}
+            </Text>
+        }</>)
 }
 
 const styles = StyleSheet.create({

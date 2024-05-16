@@ -1,74 +1,62 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { colors } from '../../assets'
-import { getSerie } from '../../apiCalls/series'
+import { useGetSeries } from '../../apiCalls/series'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
-import { SerieDetailScreen } from '../../screens/SerieDetailScreen'
-import { SeasonDetailsParams } from './season'
-import { Content } from '../../components/RecomendsList'
+import { Content } from '../../components/RecommendsList'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { useSeriesDetails } from '../../hooks/useSeriesDetails'
-import { Season } from '../../entities/Details/Series/Season'
-import { Platform } from '../../entities/Details/Platform'
-import { SeriesHeader } from '../../components/SeriesDetails/SeriesHeader'
+import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader'
+import { SeriesDetailScreen } from '../../components/Series/SeriesDetails/SeriesDetailScreen'
+import { ContentType } from '../../components/Types/ContentType'
+import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
+import { setFocusedEntry } from '../../store/slices/searchContentSlice'
+
 
 export default function Serie() {
-    const session = useSession()
-    const {series, setSeries} = useSeriesDetails()
+    const { series, setSeries } = useSeriesDetails()
     const params = useLocalSearchParams<ContentDetailsParams>()
-    const [serieLoaded, setSerieLoaded] = useState(false)
     const serieId = params.id
+    const { getSeries, loading } = useGetSeries();
+    const dispatch = useAppDispatch();
+
 
     const onSuccess = (response: any) => {
-        setSeries(response.data)
-        setSerieLoaded(true)
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
+        const series = response.data
+        setSeries(series)
+        dispatch(setFocusedEntry({id: series.id, seen: false, inWatchlist: series.inWatchlist}))
     }
 
     useEffect(() => {
-        const loadSerie = async () => {
-            await getSerie(session, serieId, onSuccess, onFailure)
-        }
-        loadSerie()
+        getSeries(serieId, onSuccess)
     }, [])
 
-    const onSeasonPress = (season: Season, platforms: Platform[]) => {
-        const params: SeasonDetailsParams = {
-            seasonId: season.id.toString(),
-            seriesId: season.seriesId.toString(),
-            platforms: JSON.stringify(platforms)
-        }
-        router.push({ pathname: '/season', params })
-    }
-
-    const onRedommendPress = (series: Content) => {
+    const onRecommendPress = (series: Content) => {
         const newParams: ContentDetailsParams = {
             id: series.id.toString(),
         }
         router.replace({ pathname: '/serie', params: newParams })
     }
 
+    const onPressFullCredits = () => {
+        router.push({ pathname: '/credits', params: { contentId: serieId, contentType: ContentType.Series} })
+    }
+
     return (
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerRight: () => (
-                        <SeriesHeader series={series} />
-                    ),
+                    headerRight: () => <SeriesHeader series={series} />,
                 }}
             />
-            {serieLoaded && series ? (
-                <SerieDetailScreen
+            {!loading && series ? (
+                <SeriesDetailScreen
                     series={series}
-                    onSeasonPress={onSeasonPress}
-                    onRecommendPress={onRedommendPress}
+                    onRecommendPress={onRecommendPress}
+                    onPressFullCredits={onPressFullCredits}
                 />
             ) : (
                 <LoadingComponent />

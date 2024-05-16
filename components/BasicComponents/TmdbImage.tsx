@@ -1,22 +1,21 @@
-import React from 'react';
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
-import { BodyText } from './BodyText';
-import { colors } from '../../assets/styles/colors';
-import config from '../../config.json';
+import React from 'react'
+import { View, Image, StyleSheet } from 'react-native'
+import { BodyText } from './BodyText'
+import { colors } from '../../assets/styles/colors'
+import config from '../../config.json'
 import { Icon } from 'react-native-paper'
 
 const defaultIconSize = 70
 const max_length = 70
 
 export enum TmdbImageType {
-    Cover = "image-off-outline",
-    Person = "account",
+    Cover = 'image-off-outline',
+    Person = 'account',
 }
 
-
 export type TmdbImageParams = {
-    resource: string,
-    type: TmdbImageType,
+    resource: string
+    type: TmdbImageType
     style: object
     iconSize?: number
     altText?: string
@@ -30,12 +29,12 @@ export const TmdbImage = (params: TmdbImageParams) => {
 
     return (
         <>
-            {params.resource ?
+            {params.resource ? (
                 <Image
                     source={{ uri: config.tmdbBaseUrl + params.resource }}
                     style={params.style}
                 />
-                :
+            ) : (
                 <View
                     style={[
                         params.style,
@@ -46,13 +45,19 @@ export const TmdbImage = (params: TmdbImageParams) => {
                         },
                     ]}
                 >
-                    {altText ?
-                        <BodyText body={altText} size="big" max_length={max_length} style={{ textAlign: "center" }} />
-                        :
+                    {altText ? (
+                        <BodyText
+                            body={altText}
+                            size="big"
+                            // max_length={max_length}
+                            numberOfLines={4}
+                            style={{ textAlign: 'center' }}
+                        />
+                    ) : (
                         <Icon source={iconName} size={iconSize} />
-                    }
+                    )}
                 </View>
-            }
+            )}
         </>
     )
 }
@@ -61,10 +66,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: "100%"
+        width: '100%',
     },
     iconStyle: {
         width: 25,
         aspectRatio: 487 / 512,
-    }
+    },
 })

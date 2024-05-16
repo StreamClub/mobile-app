@@ -1,22 +1,51 @@
 import { AxiosResponse } from 'axios'
 import { useSession } from '../context/ctx'
-import { privateCall, Params } from './generic'
+import { Params, usePrivateCall } from './generic'
 
 // --------- --------- --------- --------- --------- ---------
-export type getWatchlistParams = {
+export const useGetWatchlist = () => {
+    const {privateCall, loading} = usePrivateCall();
+    const session = useSession();
+    const userId = session?.userId;
+
+    const getWatchlist = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/watchlist/' + userId
+        const params: Params = { };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+    return {getWatchlist, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export type getProfileParams = {
     userId: number
 }
 
-export function getWatchlist(
-    session: ReturnType<typeof useSession>,
-    queryParams: getWatchlistParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/watchlist/' + queryParams.userId
-    const params: Params = { }
+export const useGetProfile = () => {
+    const {privateCall, loading} = usePrivateCall();
 
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    const getProfile = (queryParams: getProfileParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/users/' + queryParams.userId
+        const params: Params = { }
+        privateCall('GET', endpoint, params, onSuccess)
+    }
+    return {getProfile, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export type patchDisplayNameParams = {
+    displayName: string
+}
+
+export const usePatchDisplayName = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const patchDisplayName = (queryParams: patchDisplayNameParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/users'
+        const params: Params = { data: queryParams }
+        privateCall('PATCH', endpoint, params, onSuccess)
+    }
+    return {patchDisplayName, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------

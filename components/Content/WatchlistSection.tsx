@@ -1,20 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Pressable } from 'react-native'
 import { WatchlistButton } from '../BasicComponents/WatchlistButton'
-import { styles } from '../SeriesList/styles/SeriesList.style'
+import { styles } from '../Series/SeriesList/styles/SeriesList.style'
 import { ContentType } from '../../entities/ContentType'
 import { useWatchlistPress } from '../../hooks/useWatchlistPress'
-import { Content } from '../../entities/Content'
+import { ContentEntry } from '../../entities/ContentEntry'
+import { ContentDetail } from '../../entities/Details/ContentDetailEntry'
 
 type WatchlistButtonProps = {
-    contentEntry: Content
+    contentEntry: ContentEntry | ContentDetail
     contentType: ContentType
+    inWatchlist?: boolean
 }
 
 export const WatchlistSection = (params: WatchlistButtonProps) => {
     const { contentEntry, contentType } = params
 
-    const { onPress, inWatchlist, loading } = useWatchlistPress(
+    const { onPress, loading } = useWatchlistPress(
         contentEntry,
         contentType
     )
@@ -23,7 +25,7 @@ export const WatchlistSection = (params: WatchlistButtonProps) => {
         <>
             <Pressable onPress={() => onPress()} style={styles.iconContainer}>
                 <WatchlistButton
-                    inWatchlist={inWatchlist}
+                    inWatchlist={params.inWatchlist != undefined? params.inWatchlist : contentEntry.inWatchlist}
                     watchlistLoading={loading}
                     iconStyle={styles.iconsStyle}
                 />

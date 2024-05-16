@@ -7,9 +7,11 @@ import { CustomButton } from "../components/BasicComponents/CustomButton";
 import { TextInputMask } from "react-native-masked-text";
 import config from "../config.json";
 import { colors } from "../assets";
+import { router } from "expo-router";
 
 type SignUpParams = {
     onNext: (email: string, password: string, birthDate: string) => void;
+    loading: boolean;
 };
 
 export const SignUpScreen = (params: SignUpParams) => {
@@ -36,8 +38,6 @@ export const SignUpScreen = (params: SignUpParams) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible((prev) => !prev);
     };
-
-    const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.signUpScreen}>
@@ -130,7 +130,7 @@ export const SignUpScreen = (params: SignUpParams) => {
             <View style={styles.buttons}>
                 <CustomButton
                     buttonText="Cancelar"
-                    onPress={() => console.log("Next")}
+                    onPress={() => router.push({ pathname: '/', params: {} })}
                     fontSize="medium"
                     buttonSize="medium"
                     type='secondary'
@@ -139,8 +139,7 @@ export const SignUpScreen = (params: SignUpParams) => {
                 <CustomButton
                     buttonText="Siguiente"
                     onPress={() => {
-                        params.onNext(email, password, birthDate)
-                        setLoading(true)
+                        params.onNext(email, password, birthDate);
                     }}
                     disabled={
                         !(
@@ -154,7 +153,7 @@ export const SignUpScreen = (params: SignUpParams) => {
                     fontSize="medium"
                     buttonSize="medium"
                     type='primary'
-                    loading={loading}
+                    loading={params.loading}
                 />
             </View>
         </View>

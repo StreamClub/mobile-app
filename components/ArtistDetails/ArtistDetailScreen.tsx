@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {  StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { colors } from "../../assets";
 import { ArtistFilmografy } from './ArtistFilmografy';
 import { ArtistBasicInfo, ArtistBasicInfoParams } from './ArtistBasicInfo';
 import { ExternalIds } from '../Types/ExternalId';
-
+import { CreditsEntry } from '../Types/Credits';
 import { Credits } from '../Types/Credits';
 
 const screenWidth = Dimensions.get('window').width;
@@ -18,12 +18,16 @@ export type ArtistDetails = {
     deathDate: string,
     gender: string,
     knownFor: string,
-    credits: Credits
-    externalIds: ExternalIds
+    credits: Credits,
+    externalIds: ExternalIds,
+    biography: string,
 }
 
-type ArtistDetailScreenParams = {
+export type ArtistDetailScreenParams = {
     artist: ArtistDetails
+    onPressCreditsEntry: (entry: CreditsEntry) => void
+    showBiography: boolean
+    onPressShowBiography: () => void
 }
 
 export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
@@ -33,14 +37,17 @@ export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
         birthDate: params.artist.birthDate,
         birthPlace: params.artist.birthPlace,
         deathDate: params.artist.deathDate,
+        biography: params.artist.biography,
         externalIds: params.artist.externalIds,
-        style: {marginTop: 15, marginBottom: 15}
+        style: {marginTop: 15, marginBottom: 15},
+        showBiography: params.showBiography,
+        onPressShowBiography: params.onPressShowBiography
     }
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <ArtistBasicInfo {...artistBasicInfo}/>
-            <ArtistFilmografy credits={params.artist.credits}/>
+            <ArtistFilmografy credits={params.artist.credits} onPressCreditsEntry= {params.onPressCreditsEntry}/>
         </ScrollView>
     )
 }

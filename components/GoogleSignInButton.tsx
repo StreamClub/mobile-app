@@ -5,11 +5,13 @@ import { Image } from 'react-native'
 import { LocalIcon } from "./Types/LocalIcon";
 import { Pressable } from "react-native";
 import { colors } from "../assets";
-import { logIn, logInBody } from "../apiCalls/auth";
 import { useSession } from "../context/ctx";
 import { router } from "expo-router";
+import { logInBody, useLogIn } from "../apiCalls/auth";
 
 export const GoogleSignInButton = () => {
+  const {logIn, loading} = useLogIn();
+  
   GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT,
     forceCodeForRefreshToken: true,
@@ -24,10 +26,6 @@ export const GoogleSignInButton = () => {
     router.replace('/home');
   }
 
-  const onFailureLogIn = (error: any) => {
-    console.log(error);
-  }
-
   const streamClubSignIn = (email: string | null, password: string | null) => {
     if (email != null && password != null) {
       console.log('Iniciando sesión..');
@@ -36,9 +34,7 @@ export const GoogleSignInButton = () => {
       const body: logInBody = { email, password }
       logIn(
         body,
-        session,
-        onSuccessLogIn,
-        onFailureLogIn
+        onSuccessLogIn
       );
     } else {
       console.log("ERROR: email or password null");
@@ -65,4 +61,8 @@ export const GoogleSignInButton = () => {
         style={{width: 60, height: 60, backgroundColor: colors.primaryWhite, borderRadius: 10}} />
     </Pressable>
   )
+}
+
+function logIn(body: logInBody, session: { signIn: (accessToken: string, refreshToken: string) => void; signOut: () => void; processTokens: (accessToken: string, refreshToken: string) => void; accessToken?: string | null | undefined; refreshToken?: string | null | undefined; isLoading: boolean; userId: number; email: string; } | null, onSuccessLogIn: (response: any) => void, onFailureLogIn: (error: any) => void) {
+  throw new Error("Function not implemented.");
 }

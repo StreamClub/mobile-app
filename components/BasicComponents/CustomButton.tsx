@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Pressable } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { ButtonParams } from "./Types/ButtonParams";
 import { colors } from "../../assets";
 import { Button } from '@rneui/themed';

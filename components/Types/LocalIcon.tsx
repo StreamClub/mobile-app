@@ -12,4 +12,5 @@ export enum LocalIcon {
     left = require('../../assets/icons/left.png'),
     right = require('../../assets/icons/right.png'),
     x = require('../../assets/icons/x.png'),
+    googleLogo = require('../../assets/icons/google_logo.png'),
 }

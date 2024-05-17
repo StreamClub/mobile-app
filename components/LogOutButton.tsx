@@ -4,11 +4,23 @@ import { colors } from "../assets"
 import { useSession } from '../context/ctx';
 import { Overlay } from 'react-native-elements';
 import { ConfirmationOverlay } from './BasicComponents/ConfirmationOverlay';
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export const LogOutButton = () => {
   const session = useSession();
   const signOut = session?.signOut;
   const [openModal, setOpenModal] = useState(false);
+
+  const onConfirmSignOut = () => {
+    signOut?.();
+    const user = auth().currentUser;
+    if (user) {
+      auth().signOut().then(() => {
+        GoogleSignin.revokeAccess();
+      });
+    }
+  }
 
   return (
     <>
@@ -27,7 +39,7 @@ export const LogOutButton = () => {
           borderRadius: 20,
         }} >
         <ConfirmationOverlay 
-          onConfirmPress={() => signOut?.()} 
+          onConfirmPress={() => onConfirmSignOut()} 
           onCancelPress={() => setOpenModal(false)}
           loading={false} 
           onSuccess={() => {}}

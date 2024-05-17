@@ -8,9 +8,12 @@ import { colors } from "../assets";
 import { useSession } from "../context/ctx";
 import { router } from "expo-router";
 import { logInBody, useLogIn } from "../apiCalls/auth";
+import { useErrorHandler } from "../hooks/useErrorHandler";
+import { LoadingComponent } from "./BasicComponents/LoadingComponent";
 
 export const GoogleSignInButton = () => {
   const {logIn, loading} = useLogIn();
+  const {setError} = useErrorHandler()
   
   GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT,
@@ -26,6 +29,16 @@ export const GoogleSignInButton = () => {
     router.replace('/home');
   }
 
+  const onFailure = (error: any) => {
+    setError(error);
+    const user = auth().currentUser;
+    if (user) {
+      auth().signOut().then(() => {
+        GoogleSignin.revokeAccess();
+      });
+    }
+  }
+
   const streamClubSignIn = (email: string | null, password: string | null) => {
     if (email != null && password != null) {
       console.log('Iniciando sesión..');
@@ -34,7 +47,8 @@ export const GoogleSignInButton = () => {
       const body: logInBody = { email, password }
       logIn(
         body,
-        onSuccessLogIn
+        onSuccessLogIn,
+        onFailure
       );
     } else {
       console.log("ERROR: email or password null");
@@ -42,27 +56,24 @@ export const GoogleSignInButton = () => {
 }
 
   const onGoogleButtonPress = async () => {
-    const { idToken } = await GoogleSignin.signIn();
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    const user_sign_in = auth().signInWithCredential(googleCredential);
-    user_sign_in.then((user) => streamClubSignIn(user.user.email, user.user.uid)).catch((error) => console.log(error))
+    try {
+      const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const user_sign_in = auth().signInWithCredential(googleCredential);
+      user_sign_in.then((user) => streamClubSignIn(user.user.email, user.user.uid)).catch((error) => console.log(error))
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return(
-    <Pressable onPress={() => onGoogleButtonPress().then(() => {
-        console.log('Signed in with Google!');
-        /* auth().signOut().then(() => {
-          GoogleSignin.revokeAccess();
-          console.log("Logged out");
-        });  */
-      })} >
-      <Image
-        source={LocalIcon.googleLogo}
-        style={{width: 60, height: 60, backgroundColor: colors.primaryWhite, borderRadius: 10}} />
+    <Pressable onPress={() => onGoogleButtonPress()} >
+      {loading?
+        <LoadingComponent /> :
+        <Image
+          source={LocalIcon.googleLogo}
+          style={{width: 60, height: 60, backgroundColor: colors.primaryWhite, borderRadius: 10}} />
+      }
     </Pressable>
   )
-}
-
-function logIn(body: logInBody, session: { signIn: (accessToken: string, refreshToken: string) => void; signOut: () => void; processTokens: (accessToken: string, refreshToken: string) => void; accessToken?: string | null | undefined; refreshToken?: string | null | undefined; isLoading: boolean; userId: number; email: string; } | null, onSuccessLogIn: (response: any) => void, onFailureLogIn: (error: any) => void) {
-  throw new Error("Function not implemented.");
 }

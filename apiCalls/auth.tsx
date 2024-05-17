@@ -1,7 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Params, usePublicCall } from './generic';
 
-
 // --------- --------- --------- --------- --------- ---------
 export type logInBody = {
     email: string,
@@ -11,10 +10,11 @@ export type logInBody = {
 export const useLogIn = () => {
     const {loading, publicCall} = usePublicCall();
 
-    const logIn = (body: logInBody, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const logIn = (body: logInBody, onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure?: (error: any) => void) => {
         const params: Params = { data: body }
         const endpoint = '/auth/login'
-        publicCall('POST', endpoint, params, onSuccess);
+        publicCall('POST', endpoint, params, onSuccess, onFailure);
     }
     return {logIn, loading};
 }

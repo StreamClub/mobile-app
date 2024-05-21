@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import { TitleText } from "../components/BasicComponents/TitleText";
 import { colors } from "../assets";
 import { GoogleSignInButton } from "../components/GoogleSignInButton";
+import { ShareContentButton } from "../components/Content/ShareContentButton";
 
 export const InitialScreen = () => {
 

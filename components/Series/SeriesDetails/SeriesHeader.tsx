@@ -5,6 +5,7 @@ import { ContentType } from '../../../entities/ContentType'
 import { SeriesDetail } from '../../../entities/Details/Series/SeriesDetailEntry'
 import { WatchlistSection } from '../../Content/WatchlistSection'
 import { useAppSelector } from '../../../hooks/redux/useAppSelector'
+import { ShareContentButton } from '../../Content/ShareContentButton'
 
 type SeriesHeaderParams = {
     series?: SeriesDetail
@@ -20,6 +21,11 @@ export const SeriesHeader = (params: SeriesHeaderParams) => {
     }
     return (
         <>
+            <View style={{ margin: 0 }}>
+                <ShareContentButton 
+                    title={series.title} 
+                    poster={series.poster} />
+            </View>
             <View style={{ margin: 10 }}>
                 <SeenSection
                     seenState={false}

@@ -5,6 +5,7 @@ import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
 import { ContentType } from '../../entities/ContentType'
 import { WatchlistSection } from '../Content/WatchlistSection'
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
+import { ShareContentButton } from '../Content/ShareContentButton'
 
 
 type MovieHeaderParams = {
@@ -24,6 +25,11 @@ export const MovieHeader = (params: MovieHeaderParams) => {
 
     return (
         <>
+            <View style={{ margin: 0 }}>
+                <ShareContentButton 
+                    title={movie.title} 
+                    poster={movie.poster} />
+            </View>
             <View style={{ margin: 10 }}>
                 <SeenSection
                     seenState={movie.seen}

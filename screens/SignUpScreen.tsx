@@ -4,7 +4,6 @@ import { View } from "react-native";
 import { Card, TextInput } from "react-native-paper";
 import { BodyText } from "../components/BasicComponents/BodyText";
 import { CustomButton } from "../components/BasicComponents/CustomButton";
-import { TextInputMask } from "react-native-masked-text";
 import config from "../config.json";
 import { colors } from "../assets";
 import { router } from "expo-router";

@@ -12,3 +12,7 @@ Para hacer un rebuild:
 ```
 eas build --profile development --platform android
 ```
+Para instalar dependencias usar mejor:
+```
+npx expo install <dependencia>
+```

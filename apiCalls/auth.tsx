@@ -16,7 +16,21 @@ export const useLogIn = () => {
         const endpoint = '/auth/login'
         publicCall('POST', endpoint, params, onSuccess, onFailure);
     }
+
     return {logIn, loading};
+}
+
+export const useGoogleLogIn = () => {
+    const {loading, publicCall} = usePublicCall();
+
+    const googleLogIn = (body: logInBody, onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) => {
+        const params: Params = { data: body }
+        const endpoint = '/auth/login/google'
+        publicCall('POST', endpoint, params, onSuccess, onFailure);
+    }
+    
+    return {googleLogIn, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------

@@ -7,12 +7,12 @@ import { Pressable } from "react-native";
 import { colors } from "../assets";
 import { useSession } from "../context/ctx";
 import { router } from "expo-router";
-import { logInBody, useLogIn } from "../apiCalls/auth";
+import { logInBody, useGoogleLogIn } from "../apiCalls/auth";
 import { useErrorHandler } from "../hooks/useErrorHandler";
 import { LoadingComponent } from "./BasicComponents/LoadingComponent";
 
 export const GoogleSignInButton = () => {
-  const {logIn, loading} = useLogIn();
+  const {googleLogIn, loading} = useGoogleLogIn();
   const {setError} = useErrorHandler()
   
   GoogleSignin.configure({
@@ -41,11 +41,8 @@ export const GoogleSignInButton = () => {
 
   const streamClubSignIn = (email: string | null, password: string | null) => {
     if (email != null && password != null) {
-      console.log('Iniciando sesión..');
-      console.log(email);
-      console.log(password);
       const body: logInBody = { email, password }
-      logIn(
+      googleLogIn(
         body,
         onSuccessLogIn,
         onFailure

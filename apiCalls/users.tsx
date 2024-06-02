@@ -9,7 +9,6 @@ export const useSearchUsers = () => {
     const dispatch = useAppDispatch();
 
     const searchUsers = (queryText: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
-        console.log("En search users");
         const endpoint = '/users'
         const params: Params = { params: {query: queryText} }
         dispatch(setLoading(true));

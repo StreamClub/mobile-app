@@ -9,16 +9,14 @@ import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { ArtistList } from '../ArtistList'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { UserEntry } from '../../entities/UsersListEntry'
-import { UsersList } from '../UsersList'
+import { UsersList } from '../UsersList/UsersList'
 
 type ContentListProps = {
     contentEntry: ContentEntry[] | ArtistEntry[] | UserEntry[]
 }
 
 export const ContentList = (params: ContentListProps) => {
-    console.log("En content list")
     const { category } = useAppSelector((state) => state.searchContent)
-    console.log(category);
     switch (category) {
         case SERIES_NAME:
             return <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />

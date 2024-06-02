@@ -7,6 +7,7 @@ import {
 import { ArtistEntry } from '../entities/ArtistListEntry'
 import { MovieEntry } from '../entities/MovieListEntry'
 import { SeriesEntry } from '../entities/SeriesListEntry'
+import { UserEntry } from '../entities/UsersListEntry'
 
 export const serializeSearchResults = (results: any[], category: string) => {
     switch (category) {
@@ -23,7 +24,9 @@ export const serializeSearchResults = (results: any[], category: string) => {
                 return ArtistEntry.serialize(entry)
             })
         case USERS_NAME:
-            return [] //TODO: Implement user serialization
+            return results.map((entry: UserEntry) => {
+                return UserEntry.serialize(entry)
+            })
         default:
             return []
     }

@@ -9,6 +9,7 @@ import { ContentEntry } from '../../entities/ContentEntry'
 import { SearchCategories } from '../../components/Search/SearchCategories'
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
+import { UserEntry } from '../../entities/UsersListEntry'
 
 export default function Search() {
     const { textSearched, results } = useAppSelector(
@@ -34,7 +35,7 @@ export default function Search() {
         )
     }
 
-    const renderContentList = (contentList: ContentEntry[] | ArtistEntry[]) => {
+    const renderContentList = (contentList: ContentEntry[] | ArtistEntry[] | UserEntry[]) => {
         return (
             <SearchList length={contentList.length}>
                 <ContentList contentEntry={contentList} />

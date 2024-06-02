@@ -19,12 +19,13 @@ import { serializeSearchResults } from '../../utils/serializeSearchResults'
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
+import { UserEntry } from '../../entities/UsersListEntry'
 
 export const SearchContentBar = () => {
     const { textSearched, loading, category } = useAppSelector(
         (state) => state.searchContent
     )
-    const { toSeriesListEntries, toArtistListEntries, toMovieListEntries } =
+    const { toSeriesListEntries, toArtistListEntries, toMovieListEntries, toUsersListEntries } =
         useDataToSerieEntryList()
     const dispatch = useAppDispatch()
 
@@ -32,7 +33,7 @@ export const SearchContentBar = () => {
     // ------------------------------------------------------------
     const onSuccessSearch = (response: any) => {
         console.log('Busqueda exitosa: ')
-        let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[]
+        let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[]
         switch (category) {
             case MOVIES_NAME:
                 parsedResponse = toMovieListEntries(response.data)
@@ -44,26 +45,18 @@ export const SearchContentBar = () => {
                 parsedResponse = toArtistListEntries(response.data)
                 break
             case USERS_NAME:
-                console.log('TODO: Procesar respuesta')
+                parsedResponse = toUsersListEntries(response.data)
                 break
             default:
                 break
         }
-        
         const serializedData = serializeSearchResults(parsedResponse, category)
         dispatch(setResults(serializedData))
         dispatch(setLoading(false))
     }
 
-    const onFailureSearch = (error: any) => {
-        console.log(error)
-        console.log(error.response)
-        dispatch(setLoading(false))
-    }
-
     const { onSubmit, onChangeTextSearched } = useSearchContent(
-        onSuccessSearch,
-        onFailureSearch
+        onSuccessSearch
     )
     // ------------------------------------------------------------
 

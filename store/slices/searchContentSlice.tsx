@@ -3,6 +3,7 @@ import { CATEGORIES, INITIAL_CATEGORY, MOVIES_NAME, SERIES_NAME } from '../../co
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
+import { UserEntry } from '../../entities/UsersListEntry'
 
 const searchContentSlice = createSlice({
     name: 'searchContent',
@@ -10,7 +11,7 @@ const searchContentSlice = createSlice({
         category: CATEGORIES[INITIAL_CATEGORY],
         textSearched: '',
         loading: false,
-        results: [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[],
+        results: [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[],
         focusedEntry: {
             id: "",
             seen: false,
@@ -29,7 +30,7 @@ const searchContentSlice = createSlice({
         },
         setResults(
             state,
-            action: PayloadAction<MovieEntry[] | SeriesEntry[] | ArtistEntry[]>
+            action: PayloadAction<MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[] >
         ) {
             state.results = action.payload
         },

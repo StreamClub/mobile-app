@@ -104,7 +104,6 @@ export const usePrivateCall = () => {
                 (response) => {
                     onSuccess(response);
                 }, (error) => {
-                    console.log(error.response.data);
                     const privateCallParams = { method, endpoint, paramsAndData, onSuccess, onFailure };
                     handlePrivateCallError(error, privateCallParams);
                 }).finally(() => {

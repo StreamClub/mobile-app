@@ -1,6 +1,7 @@
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
+import { UserEntry } from '../../entities/UsersListEntry'
 
 export const useDataToSerieEntryList = () => {
     const toSeriesListEntries = (data: any) => {
@@ -33,5 +34,15 @@ export const useDataToSerieEntryList = () => {
         return artistList
     }
 
-    return { toSeriesListEntries, toMovieListEntries, toArtistListEntries }
+    const toUsersListEntries = (data: any) => {
+        const usersList: UserEntry[] = []
+        const usersResponse = data.results
+        usersResponse.forEach((user: any) => {
+            const userEntry: UserEntry = UserEntry.fromJson(user)
+            usersList.push(userEntry)
+        })
+        return usersList
+    }
+
+    return { toSeriesListEntries, toMovieListEntries, toArtistListEntries, toUsersListEntries }
 }

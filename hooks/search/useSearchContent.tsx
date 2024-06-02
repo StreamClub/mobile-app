@@ -1,7 +1,7 @@
 import { useSearchArtist } from '../../apiCalls/artists'
 import { SearchParams, useSearchMovies } from '../../apiCalls/movies'
 import { useSearchSeries } from '../../apiCalls/series'
-import { searchUsers } from '../../apiCalls/users'
+import { useSearchUsers } from '../../apiCalls/users'
 import {
     ARTISTS_NAME,
     MAX_SEARCH_LENGTH,
@@ -9,7 +9,6 @@ import {
     SERIES_NAME,
     USERS_NAME,
 } from '../../constants'
-import { useSession } from '../../context/ctx'
 import {
     setLoading,
     setTextSearched,
@@ -19,17 +18,16 @@ import { useAppSelector } from '../redux/useAppSelector'
 import { useTimer } from './useTimer'
 
 export const useSearchContent = (
-    onSuccessSearch: (response: any) => void,
-    onFailureSearch: (error: any) => void
+    onSuccessSearch: (response: any) => void
 ) => {
     const { textSearched, category } = useAppSelector(
         (state) => state.searchContent
     )
-    const session = useSession()
     const dispatch = useAppDispatch()
     const { searchMovies } = useSearchMovies()
-    const {searchSeries} = useSearchSeries();
-    const {searchArtists} = useSearchArtist();
+    const { searchSeries } = useSearchSeries();
+    const { searchArtists } = useSearchArtist();
+    const { searchUsers } = useSearchUsers();
 
     const searchText = (text: string) => {
         console.log('Buscando ' + text + '...')
@@ -43,7 +41,7 @@ export const useSearchContent = (
         } else if (category == ARTISTS_NAME) {
             searchArtists(queryParams, onSuccessSearch)
         } else if (category == USERS_NAME) {
-            searchUsers(session, queryParams, onSuccessSearch, onFailureSearch) //TODO: Cambiar por state, hoy no hace nada.
+            searchUsers(text, onSuccessSearch)
         }
     }
 

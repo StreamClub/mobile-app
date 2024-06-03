@@ -23,13 +23,11 @@ const emptyProfile = {
 }
 
 export default function Profile() {
-    const session = useSession()
-    const userId = session?.userId? session?.userId : 0;
     const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
     const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
     const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
-    const {loadingParams, getAll} = useProfile(userId, setWatchlist, setUserServices, setSeenContent, setProfileHeader);
+    const {loadingParams, getAll} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader);
 
     useOnFocus(() => {
         getAll()

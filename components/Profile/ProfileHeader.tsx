@@ -68,6 +68,13 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
     }
 
     const displayNameParams: IconWithTextParams = {
+        text: displayName,
+        textSize: "big",
+        textStyle: styles.displayName,
+        textType: "title"
+    }
+
+    const editableDisplayNameParams: IconWithTextParams = {
         rightIcon: editing? LocalIcon.undo : LocalIcon.edit,
         text: displayName,
         textSize: "big",
@@ -103,7 +110,7 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
                 </View>
             </View>
             <View style={{width: "95%", alignSelf: 'center'}}>
-                <IconWithText {...displayNameParams}/>
+                <IconWithText {... params.editable? editableDisplayNameParams : displayNameParams}/>
                 <View style={styles.horizontalLine}/>
             </View>
             

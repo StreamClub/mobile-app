@@ -7,11 +7,15 @@ import { ServiceEntry } from "../components/Types/Services";
 import { SeenContentEntry } from "../components/Types/SeenContentEntry";
 import { Dispatch, SetStateAction } from "react";
 import { WatchlistEntry } from "../components/Types/Watchlist";
+import { useSession } from "../context/ctx";
 
-export const useProfile = (userId: number, setWatchlist: Dispatch<SetStateAction<WatchlistEntry[]>>,
+export const useProfile = (setWatchlist: Dispatch<SetStateAction<WatchlistEntry[]>>,
   setUserServices: Dispatch<SetStateAction<CarouselEntry[]>>, setSeenContent: Dispatch<SetStateAction<CarouselEntry[]>>,
-  setProfileHeader: Dispatch<SetStateAction<ProfileHeaderParams>>) => {
+  setProfileHeader: Dispatch<SetStateAction<ProfileHeaderParams>>, otherUserId?: number) => {
   
+  const session = useSession()
+  const sessionUserId = session?.userId? session?.userId : 0;
+  const userId = otherUserId? otherUserId : sessionUserId;
   const {getWatchlist, loading: loadingWatchlist} = useGetWatchlist(userId);
   const {getUserServices, loading: loadingUserServices} = useUserServices(userId);
   const {getProfile, loading: loadingProfileHeader} = useGetProfile();
@@ -24,7 +28,8 @@ export const useProfile = (userId: number, setWatchlist: Dispatch<SetStateAction
   }
 
   const onSuccessGetProfile = (response: any) => {
-    let profileHeader: ProfileHeaderParams = response.data
+    response.data.editable = otherUserId? false : true;
+    let profileHeader: ProfileHeaderParams = response.data;
     setProfileHeader(profileHeader)
   }
 

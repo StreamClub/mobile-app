@@ -4,7 +4,7 @@ import { useSession } from '../../context/ctx'
 import { useState, useEffect } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { Stack } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import { getSeenContentParams, useGetSeenContent } from '../../apiCalls/content'
 import { SeenContentEntry } from '../../components/Types/SeenContentEntry'
 import { SeenContentListScreen, SeenContentListScreenParams } from '../../components/SeenContent/SeenContentListScreen'
@@ -12,10 +12,14 @@ import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetai
 import { ContentType } from '../../components/Types/ContentType'
 import { router } from 'expo-router'
 
-export default function SeenContent() {
-    const session = useSession()
-    const userId = session?.userId
+export type SeenContentParams = {
+    userId?: string
+}
 
+export default function SeenContent() {
+    const params = useLocalSearchParams<SeenContentParams>();
+    const session = useSession();
+    const userId = params.userId? +params.userId : session?.userId;
     const [seenContent, setSeenContent] = useState<SeenContentEntry[]>([])
     const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
 

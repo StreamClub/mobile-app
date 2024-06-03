@@ -13,6 +13,7 @@ import { BodyText } from '../BasicComponents/BodyText';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
 import { router } from 'expo-router';
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams';
+import { SeenContentParams } from '../../app/(app)/seenContent';
 
 const screenWidth = Dimensions.get('window').width
 
@@ -71,7 +72,8 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
     }
 
     const onPressMoreSeenContent = () => {
-        router.push('/seenContent')
+        const routeParams: SeenContentParams = {userId: params.profileHeader.id.toString()};
+        router.push({ pathname: '/seenContent', params: routeParams });
     }
 
     const onPressManageServices = () => {

@@ -5,6 +5,7 @@ import { ProfilePicture } from './ProfilePicture';
 import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText';
 import { LocalIcon } from '../Types/LocalIcon';
 import { MAX_DISPLAY_NAME_LENGHT } from '../../constants/constants';
+import { usePatchDisplayName, patchDisplayNameParams } from '../../apiCalls/profile';
 
 export type ProfileHeaderParams = {
     id: number,
@@ -13,20 +14,35 @@ export type ProfileHeaderParams = {
     displayName: string,
     friendsCount: number,
     reviewsCount: number,
-    onChangeDisplayName: (newDisplayName: string) => void,
+    editable: boolean
 }
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
     const [displayName, setDisplayName] = React.useState(params.displayName);
     const [editing, setEditing] = React.useState(false);
+    const {patchDisplayName} = usePatchDisplayName();
+
+    const onSuccessPatchDisplayName = (response: any) => {
+        console.log("[onsuccess]", response.data)
+        setDisplayName(response.data.displayName)
+    }
 
     const emailParams: IconWithTextParams = {
         leftIcon: LocalIcon.email,
         text: params.email,
     }
 
+    const onChangeDisplayName = (newDisplayName: string) => {
+        console.log("[onchange]", newDisplayName)
+
+        const patchDisplayNameParams: patchDisplayNameParams = {
+            displayName: newDisplayName
+        }
+        patchDisplayName(patchDisplayNameParams, onSuccessPatchDisplayName)
+    }
+
     const onEndEditing = () => {
-        params.onChangeDisplayName(displayName);
+        onChangeDisplayName(displayName);
         setEditing(false);
     }
 

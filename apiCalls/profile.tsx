@@ -1,12 +1,9 @@
 import { AxiosResponse } from 'axios'
-import { useSession } from '../context/ctx'
 import { Params, usePrivateCall } from './generic'
 
 // --------- --------- --------- --------- --------- ---------
-export const useGetWatchlist = () => {
+export const useGetWatchlist = (userId: number) => {
     const {privateCall, loading} = usePrivateCall();
-    const session = useSession();
-    const userId = session?.userId;
 
     const getWatchlist = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const endpoint = '/watchlist/' + userId

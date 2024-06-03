@@ -11,23 +11,22 @@ import { seenContentEntryWrapper, SeenContentEntryWrapperProps } from '../SeenCo
 import { TitleText } from '../BasicComponents/TitleText';
 import { BodyText } from '../BasicComponents/BodyText';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
+import { router } from 'expo-router';
+import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams';
+import { SeenContentParams } from '../../app/(app)/seenContent';
 
 const screenWidth = Dimensions.get('window').width
 
 export type ProfileScreenParams = {
+    editable?: boolean;
     watchlist: WatchlistEntry[];
     profileHeader: ProfileHeaderParams;
     userServices: CarouselEntry[];
     seenContent: CarouselEntry[];
-    onPressManageServices: () => void;
-    onPressMoreSeenContent: () => void;
-    onPressSeenContentEntry: (itemObject: SeenContentEntry) => void;
-    onPressWatchlistEntry: (entry: WatchlistEntry) => void;
-    onChangeDisplayName: (displayName: string) => void;
 }
 
 export const ProfileScreen = (params: ProfileScreenParams) => {
-    
+    const editable = (params.editable != null)? params.editable : true;
     const userServicesCarouselParams: CarouselParams = {
         items: params.userServices,
         itemStyle: styles.serviceLogo,
@@ -48,6 +47,16 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
         sizeLastSeenIcons: 30,
     }
 
+    const onPressSeenContentEntry = (itemObject: SeenContentEntry) => {
+        const contentScreenParams: ContentDetailsParams = {
+            id: itemObject.id.toString(),
+        }
+
+        //TODO: Refactorizar para usar o bien entities o bien un enum
+        const pathname = itemObject.contentType === 'movie' ? '/movie' : '/serie'
+        router.push({ pathname: pathname, params: contentScreenParams })
+    }
+
     const seenContentCarouselParams: CarouselParams = {
         items: params.seenContent,
         itemStyle: seenContentStyles.contentPoster,
@@ -55,12 +64,20 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
         type: TmdbImageType.Cover,
         itemWrapper: seenContentEntryWrapper,
         itemWrapperProps: itemWrapperProps,
-        onItemPressed: params.onPressSeenContentEntry,
+        onItemPressed: onPressSeenContentEntry,
     }
 
     const watchlistParams = {
-        watchlist: params.watchlist,
-        onPressWatchlistEntry: params.onPressWatchlistEntry,
+        watchlist: params.watchlist
+    }
+
+    const onPressMoreSeenContent = () => {
+        const routeParams: SeenContentParams = {userId: params.profileHeader.id.toString()};
+        router.push({ pathname: '/seenContent', params: routeParams });
+    }
+
+    const onPressManageServices = () => {
+        router.push('/services')
     }
 
     return (
@@ -69,11 +86,14 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
 
             <TitleText body="Mis plataformas" style={styles.titleText} size='medium'/>
             <Carousel {...userServicesCarouselParams}/>
-            <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText} onPress={params.onPressManageServices}/>
+            {editable?
+                <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText} onPress={onPressManageServices}/> :
+                null
+            }
 
             <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
             <Carousel {...seenContentCarouselParams}/>
-            <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={params.onPressMoreSeenContent}/>
+            <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={onPressMoreSeenContent}/>
             
             <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
             <Watchlist {...watchlistParams}/>

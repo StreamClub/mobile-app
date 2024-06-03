@@ -30,16 +30,14 @@ export const useModifyServices = () => {
     return {deleteUserService, putUserService, loading};
 }
 
-export const useUserServices = () => {
+export const useUserServices = (userId: number) => {
     const {privateCall, loading} = usePrivateCall();
-    const session = useSession();
-    const userId = session?.userId;
 
     const getUserServices = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
-        const endpoint = '/streamProviders/' + userId
-        const params: Params = { params: {country: getRegion()} }
+        const endpoint = '/streamProviders/' + userId;
+        const params: Params = { params: {country: getRegion()} };
 
-        privateCall('GET', endpoint, params, onSuccess)
+        privateCall('GET', endpoint, params, onSuccess);
     }
 
 

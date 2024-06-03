@@ -19,8 +19,8 @@ import { ServicesScreenCallbacks } from '../../components/Services/ServicesScree
 
 export default function Services() {
     const session = useSession()
-    const userId = session?.userId
-    const {getUserServices, getAllServices, loading} = useUserServices();
+    const userId = session?.userId? session?.userId : 0; 
+    const {getUserServices, getAllServices, loading} = useUserServices(userId);
     const {deleteUserService, putUserService} = useModifyServices();
     let serviceSelected: ServiceEntry = {} as ServiceEntry
     const [userServices, setUserServices] = useState<ServiceEntry[]>([])

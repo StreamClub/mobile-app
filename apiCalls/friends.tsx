@@ -15,6 +15,19 @@ export const useGetUsersFriends = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export const useGetFriendsRequest = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const getFriendsRequests = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/friends/requests';
+    const params: Params = {};
+    privateCall('GET', endpoint, params, onSuccess);
+  }
+
+  return {getFriendsRequests, loading}
+}
+
+// --------- --------- --------- --------- --------- ---------
 export const useSendFriendRequest = () => {
   const {privateCall, loading} = usePrivateCall();
 

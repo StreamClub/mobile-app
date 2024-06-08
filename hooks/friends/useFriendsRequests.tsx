@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { useSendFriendRequest } from "../apiCalls/friends"
+import { useSendFriendRequest } from "../../apiCalls/friends"
 
 export const useFriendsRequests = (userId: string, setHasFriendRequest: Dispatch<SetStateAction<boolean>>) => {
   const { sendRequest, loading } = useSendFriendRequest();
@@ -12,6 +12,8 @@ export const useFriendsRequests = (userId: string, setHasFriendRequest: Dispatch
   const sendFriendRequest = () => {
     sendRequest(userId, onSuccessSendFriendRequest);
   }
+
+  
 
   return {sendFriendRequest, loading};
 }

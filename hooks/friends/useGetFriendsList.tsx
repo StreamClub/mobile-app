@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { useGetFriendsRequest } from "../apiCalls/friends"
-import { FriendRequestType } from "../components/Profile/FriendRequestButton";
+import { useGetFriendsRequest } from "../../apiCalls/friends"
+import { FriendRequestType } from "../../components/Profile/Friends/FriendRequestButton";
 
 export const useGetFriendsRequests = (setFriendsRequests: Dispatch<SetStateAction<FriendRequestType[]>>) => {
   const { getFriendsRequests, loading } = useGetFriendsRequest();

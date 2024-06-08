@@ -39,3 +39,16 @@ export const useSendFriendRequest = () => {
 
   return {sendRequest, loading}
 }
+
+// --------- --------- --------- --------- --------- ---------
+export const useRemoveFriendRequest = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const removeRequest = (requestId: string, accept: boolean, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/friends/requests/' + requestId;
+    const params: Params = {data: {action: accept? 'ACCEPT' : 'REMOVE'}};
+    privateCall('DELETE', endpoint, params, onSuccess);
+  }
+
+  return {removeRequest, loading}
+}

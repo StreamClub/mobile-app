@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native'
 import { colors } from '../../assets'
 import { Stack } from 'expo-router'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { FriendsList } from '../../components/Profile/FriendsList'
-import { useGetFriendsRequests } from '../../hooks/useGetFriendsList'
+import { FriendsList } from '../../components/Profile/Friends/FriendsList'
+import { useGetFriendsRequests } from '../../hooks/friends/useGetFriendsList'
 import { useOnFocus } from '../../hooks/useOnFocus'
-import { FriendRequestType } from '../../components/Profile/FriendRequestButton'
+import { FriendRequestType } from '../../components/Profile/Friends/FriendRequestButton'
 
 export default function Friends() {
   const [friendsRequests, setFriendsRequests] = useState<FriendRequestType[]>([]);

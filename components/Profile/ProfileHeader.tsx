@@ -6,8 +6,9 @@ import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithTex
 import { LocalIcon } from '../Types/LocalIcon';
 import { ProfileLevel, ProfileLevelParams } from './ProfileLevel';
 import { ProfileDisplayName } from './ProfileDisplayName';
-import { FriendRequestButton, FriendRequestType, FriendshipType } from './FriendRequestButton';
+import { FriendRequestButton, FriendRequestType, FriendshipType } from './Friends/FriendRequestButton';
 import { router } from 'expo-router';
+import { colors } from '../../assets';
 
 export type ProfileHeaderParams = {
     id: number,

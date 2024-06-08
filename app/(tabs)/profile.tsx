@@ -19,7 +19,14 @@ const emptyProfile = {
     userName: '',
     displayName: '',
     friendsCount: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
+    level: {
+        name: 'Loading...',
+        points: 0,
+        nextLevelThreshold: 1
+    },
+    friendRequest: null,
+    friendship: null
 }
 
 export default function Profile() {

@@ -6,8 +6,7 @@ import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithTex
 import { LocalIcon } from '../Types/LocalIcon';
 import { ProfileLevel, ProfileLevelParams } from './ProfileLevel';
 import { ProfileDisplayName } from './ProfileDisplayName';
-import { CustomButton } from '../BasicComponents/CustomButton';
-import { colors } from '../../assets';
+import { FriendRequestButton, FriendRequestType, FriendshipType } from './FriendRequestButton';
 
 export type ProfileHeaderParams = {
     id: number,
@@ -17,7 +16,9 @@ export type ProfileHeaderParams = {
     friendsCount: number,
     reviewsCount: number,
     editable: boolean,
-    level: ProfileLevelParams
+    level: ProfileLevelParams,
+    friendRequest: FriendRequestType | null,
+    friendship: FriendshipType | null
 }
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
@@ -40,13 +41,13 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
                         <BodyText size={"big"} body={params.friendsCount.toString()} style={styles.metricNumber}/>
                         <BodyText size={"big"} body={"Amigos"} style={styles.metricText}/>                            
                     </View>
-                    <CustomButton 
-                        buttonText={'Enviar solicitud'} 
-                        fontSize={'small'} 
-                        buttonSize='medium'
-                        style={{backgroundColor: colors.primaryGrey, margin: 5}}
-                        onPress={() => console.log("Envio solicitud")} 
-                        type={'primary'}  />
+                    {params.editable?
+                        null : 
+                        <FriendRequestButton 
+                            userId={params.id.toString()}
+                            friendRequest={params.friendRequest}
+                            friendship={params.friendship} />
+                    }
                     <ProfileLevel {...params.level} />
                 </View>
             </View>

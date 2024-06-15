@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect } from 'expo-router';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { useSession } from '../../context/ctx';
 import { colors } from '../../assets';
 import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
-import { useIsFocused } from '@react-navigation/native';
 import { LogOutButton } from '../../components/LogOutButton';
+import { RequestsListButton } from '../../components/Profile/Friends/RequestsListButton';
 export default function AppLayout() {
     const session = useSession()
 
@@ -53,7 +53,11 @@ export default function AppLayout() {
                     headerTitle: "Mi Perfil",
                     headerTintColor: '#fff',
                     headerShown: true,
-                    headerRight: () => <LogOutButton/>
+                    headerRight: () => 
+                    <View style={{flexDirection: 'row'}} >
+                        <RequestsListButton />
+                        <LogOutButton/>
+                    </View>
                 }}
             />
             <Tabs.Screen

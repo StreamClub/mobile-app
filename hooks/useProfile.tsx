@@ -29,7 +29,6 @@ export const useProfile = (setWatchlist: Dispatch<SetStateAction<WatchlistEntry[
 
   const onSuccessGetProfile = (response: any) => {
     response.data.editable = otherUserId? false : true;
-    console.log(response.data);
     let profileHeader: ProfileHeaderParams = response.data;
     setProfileHeader(profileHeader)
   }

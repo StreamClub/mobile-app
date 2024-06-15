@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { Snackbar } from 'react-native-paper'
+import React from 'react'
 import { EmailConfirmationScreen } from '../../screens/EmailConfirmationScreen'
 import { router, useLocalSearchParams } from 'expo-router'
 const config = require('../../config.json')

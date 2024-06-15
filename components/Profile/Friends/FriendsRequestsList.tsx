@@ -15,16 +15,7 @@ export const FriendsRequestsList = (params: FriendsListParams) => {
     <ScrollView style={{margin: 10, width: '100%'}} >
       {params.friendsRequests.map((request, index) => (
         <View key={index}>
-          <FriendRequestEntry {...request} />
-          <View
-            style={{
-                height: 1,
-                backgroundColor: 'black',
-                width: '90%',
-                marginBottom: 10,
-                alignSelf: 'center',
-            }}
-          ></View>  
+          <FriendRequestEntry {...request} />  
         </View>
       )
       )}

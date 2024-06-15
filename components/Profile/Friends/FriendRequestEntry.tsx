@@ -15,11 +15,12 @@ export const FriendRequestEntry = (params: FriendRequestType) => {
   return(
     <>
     {showRequest?
+      <>  
       <View style={{flexDirection: 'row', margin: 20, justifyContent: 'flex-start', alignItems: 'center'}}>
         <ProfilePicture style={{borderRadius: 80, width: 70, height: 70}}/>
         <View style={{flexDirection: 'column', marginLeft: 20, flex: 0.9}}>
-          <TitleText body={'User' + params.senderId} numberOfLines={1} />
-          <BodyText body={'mail@mail.com'} numberOfLines={1} />
+          <TitleText body={params.displayName} numberOfLines={1} />
+          <BodyText body={params.email} numberOfLines={1} />
         </View>
         <IconButton 
           icon='check' 
@@ -33,7 +34,18 @@ export const FriendRequestEntry = (params: FriendRequestType) => {
           iconColor={colors.primaryRed} 
           onPress={rejectFriendRequest} 
           style={{margin: 5}}/>
-      </View> : null
+      </View> 
+      <View
+        style={{
+            height: 1,
+            backgroundColor: 'black',
+            width: '90%',
+            marginBottom: 10,
+            alignSelf: 'center',
+        }}
+      />
+      </>
+      : null
     }
     </>
   )

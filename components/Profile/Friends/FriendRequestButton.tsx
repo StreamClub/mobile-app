@@ -5,8 +5,10 @@ import { CustomButton } from '../../BasicComponents/CustomButton'
 
 export type FriendRequestType = {
   id: number,
-  receiverId: number,
-  senderId: number
+  displayName: string,
+  email: string,
+  userId: number,
+  userName: string
 }
 
 export type FriendshipType = {

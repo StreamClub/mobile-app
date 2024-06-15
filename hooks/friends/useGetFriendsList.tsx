@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
-import { useGetFriendsRequest } from "../../apiCalls/friends"
+import { useGetFriendsRequest, useGetUsersFriends } from "../../apiCalls/friends"
 import { FriendRequestType } from "../../components/Profile/Friends/FriendRequestButton";
+import { FriendType } from "../../components/Profile/Friends/FriendEntry";
 
 export const useGetFriendsRequests = (setFriendsRequests: Dispatch<SetStateAction<FriendRequestType[]>>) => {
   const { getFriendsRequests, loading } = useGetFriendsRequest();
@@ -14,4 +15,18 @@ export const useGetFriendsRequests = (setFriendsRequests: Dispatch<SetStateActio
   }
 
   return {getFriendRequest, loading};
+}
+
+export const useGetFriends = (setFriends: Dispatch<SetStateAction<FriendType[]>>) => {
+  const { getFriends: getFriendsApiCall, loading } = useGetUsersFriends();
+
+  const onSuccessGetFriends = (response: any) => {
+    setFriends(response.data.results);
+  }
+
+  const getFriends = () => {
+    getFriendsApiCall(onSuccessGetFriends);
+  }
+
+  return {getFriends, loading};
 }

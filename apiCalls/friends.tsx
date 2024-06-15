@@ -5,9 +5,9 @@ import { Params, usePrivateCall } from './generic';
 export const useGetUsersFriends = () => {
   const {privateCall, loading} = usePrivateCall();
 
-  const getFriends = (queryText: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+  const getFriends = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
     const endpoint = '/friends';
-    const params: Params = { params: {query: queryText} };
+    const params: Params = { };
     privateCall('GET', endpoint, params, onSuccess);
   }
 

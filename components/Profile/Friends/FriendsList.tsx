@@ -1,18 +1,17 @@
 import React from 'react'
 import { ScrollView, View } from 'react-native'
-import { FriendRequestType } from './FriendRequestButton'
-import { FriendRequestEntry } from './FriendRequestEntry'
+import { FriendEntry, FriendType } from './FriendEntry'
 
 type FriendsListParams = {
-  friendsRequests: FriendRequestType[]
+  friends: FriendType[]
 }
 
 export const FriendsList = (params: FriendsListParams) => {
   return (
     <ScrollView style={{margin: 10, width: '100%'}} >
-      {params.friendsRequests.map((request, index) => (
+      {params.friends.map((friend, index) => (
         <View key={index}>
-          <FriendRequestEntry {...request} />
+          <FriendEntry {...friend} />
           <View
             style={{
                 height: 1,

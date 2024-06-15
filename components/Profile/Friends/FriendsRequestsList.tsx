@@ -2,7 +2,6 @@ import React from 'react'
 import { ScrollView, View } from 'react-native'
 import { FriendRequestType } from './FriendRequestButton'
 import { FriendRequestEntry } from './FriendRequestEntry'
-import { TitleText } from '../../BasicComponents/TitleText'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
 

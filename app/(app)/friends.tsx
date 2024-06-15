@@ -4,16 +4,16 @@ import { colors } from '../../assets'
 import { Stack } from 'expo-router'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { FriendsList } from '../../components/Profile/Friends/FriendsList'
-import { useGetFriendsRequests } from '../../hooks/friends/useGetFriendsList'
+import { useGetFriends } from '../../hooks/friends/useGetFriendsList'
 import { useOnFocus } from '../../hooks/useOnFocus'
-import { FriendRequestType } from '../../components/Profile/Friends/FriendRequestButton'
+import { FriendType } from '../../components/Profile/Friends/FriendEntry'
 
 export default function Friends() {
-  const [friendsRequests, setFriendsRequests] = useState<FriendRequestType[]>([]);
-  const {getFriendRequest, loading} = useGetFriendsRequests(setFriendsRequests);
+  const [friends, setFriends] = useState<FriendType[]>([]);
+  const {getFriends, loading} = useGetFriends(setFriends);
 
   useOnFocus(() => {
-    getFriendRequest();
+    getFriends();
   })
 
   return(
@@ -24,7 +24,7 @@ export default function Friends() {
       {loading ? 
         <LoadingComponent />
       :
-        <FriendsList friendsRequests={friendsRequests}/>   
+        <FriendsList friends={friends}/>
       }
     </View>
   )
@@ -36,9 +36,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.secondaryWhite,
-  },
-  iconsStyle: {
-    height: 35,
-    aspectRatio: 495 / 512,
-  },
+  }
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, Pressable } from 'react-native';
+import { View, StyleSheet, Dimensions, Pressable, FlatList} from 'react-native';
 import { colors } from '../../assets';
 import { createTuples } from '../../utils/listManager';
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage';
@@ -73,9 +73,13 @@ export const List = (params: ListParams) => {
     const width = params.containerWidth? params.containerWidth : screenWidth;
     return(
         <View style={[styles.container, {width: width}]}>
-            {tuples.map((tuple: ListEntry[], index: number) => 
-                renderRow(tuple, index, params))
-            }
+            <FlatList
+                data={tuples}
+                renderItem={({ item, index }) => renderRow(item, index, params)}
+                keyExtractor={(item, index) => index.toString()}
+                initialNumToRender={8}
+                windowSize={6}
+            />
         </View>
     )
 }

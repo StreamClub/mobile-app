@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, FlatList } from 'react-native'
 import { TitleText } from '../components/BasicComponents/TitleText'
 import { SeasonDetail } from '../entities/Details/Series/SeasonDetail'
 import { Episode } from '../entities/Details/Series/Episode'
@@ -13,42 +13,58 @@ type SeasonDetailsScreenParams = {
     platforms: Platform[]
 }
 
+// export const SeasonDetailScreen1 = (params: SeasonDetailsScreenParams) => {
+
+//     return (
+//         <FlatList
+//             ListHeaderComponent={_SeasonDetailScreen(params)}
+//             data={[]}
+//             renderItem={() => null}
+//         />
+//     )
+// }
+
 export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
     const episodes = params.season.episodes
 
     return (
-        <ScrollView>
-            <SeasonInfo season={params.season} />
-            {params.platforms.length > 0 ? (
-                <View
-                    style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: 20,
-                    }}
-                >
-                    <SeeContentButton
-                        platforms={params.platforms}
-                        text="Ver serie"
-                    />
-                </View>
-            ) : null}
-            <TitleText
-                body={'Capítulos (' + episodes.length + '):'}
-                style={{ marginLeft: 20, marginTop: 20, fontWeight: 'bold' }}
-            />
-            <View style={{ alignItems: 'center', marginBottom: 20 }}>
-                {episodes
-                    ? episodes.map((episode: Episode, index: number) => (
-                          <EpisodeList
-                              seasonId={params.season.id}
-                              seriesId={params.season.seriesId}
-                              episode={episode}
-                              key={index}
-                          />
-                      ))
-                    : null}
-            </View>
-        </ScrollView>
+        <FlatList
+            data={episodes}
+            ListHeaderComponent={renderHeader(params, episodes)}
+            renderItem={({ item, index }) => (
+                <View style={{ alignItems: 'center'}} >
+                <EpisodeList
+                    seasonId={params.season.id}
+                    seriesId={params.season.seriesId}
+                    episode={item}
+                    key={index} 
+                /></View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            initialNumToRender={2}
+            windowSize={6}
+        />
     )
 }
+
+const renderHeader = (params: SeasonDetailsScreenParams, episodes: Episode[]) => {
+    return <>
+        <SeasonInfo season={params.season} />
+        {params.platforms.length > 0 &&
+            <View
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 20,
+                }}
+            >
+                <SeeContentButton
+                    platforms={params.platforms}
+                    text="Ver serie" />
+            </View>}
+        <TitleText
+            body={'Capítulos (' + episodes.length + '):'}
+            style={{ marginLeft: 20, marginTop: 20, fontWeight: 'bold' }} />
+    </>
+}
+

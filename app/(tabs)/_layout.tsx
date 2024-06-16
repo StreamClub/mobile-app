@@ -75,6 +75,26 @@ export default function AppLayout() {
                     headerShown: true,
                 }}
             />
+            <Tabs.Screen
+                name="recos"
+                options={{
+                    tabBarIcon: ({ focused }) =>
+                        <Image
+                            source={focused? LocalIcon.recos : LocalIcon.recos_unselected }
+                            style={{
+                                aspectRatio: 469 / 512,
+                                height: focused? 24 : 20,
+                            }}
+                        />,
+                    headerStyle: {
+                        backgroundColor: colors.primaryRed
+                    },
+                    headerTitle: "TITULO DE PANTALLA",
+                    headerTintColor: '#fff',
+                    headerShown: true,
+                }}
+            />
+            {/* Quitar comentario para que no aparezca la pantalla "home" */}
             {/* <Tabs.Screen
                 name="home"
                 options={{

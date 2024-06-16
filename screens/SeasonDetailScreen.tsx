@@ -13,17 +13,6 @@ type SeasonDetailsScreenParams = {
     platforms: Platform[]
 }
 
-// export const SeasonDetailScreen1 = (params: SeasonDetailsScreenParams) => {
-
-//     return (
-//         <FlatList
-//             ListHeaderComponent={_SeasonDetailScreen(params)}
-//             data={[]}
-//             renderItem={() => null}
-//         />
-//     )
-// }
-
 export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
     const episodes = params.season.episodes
 

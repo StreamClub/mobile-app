@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { colors } from '../../assets';
 import { TmdbImageType } from '../BasicComponents/TmdbImage';
 import { ListEntry, List, ListParams } from '../BasicComponents/List';
@@ -76,13 +76,13 @@ export const CreditsScreen = (params: CreditsScreenParams) => {
                 {renderButtonGroup()}
             </View>
             
-            <ScrollView style={{flex: 0.9}}>
+            <View style={{flex: 0.9}}>
                 {selectedIndex == 0?
                     <List {...castListParams}/>
                     :
                     <List {...crewListParams}/>
                 }
-            </ScrollView>
+            </View>
         </View>
     )
 }

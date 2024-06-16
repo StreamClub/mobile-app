@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, View, Text, Dimensions } from 'react-native'
+import { Pressable, StyleSheet, View, Dimensions, FlatList } from 'react-native'
 import { colors } from '../../assets'
 import { Credits, CastEntry, CrewEntry, CreditsEntry } from '../Types/Credits'
 import {
@@ -90,7 +90,14 @@ export const ArtistFilmografy = (params: ArtistFilmografyParams) => {
                 <TitleText body={castSectionTitle} size="medium" />
             </Pressable>
             {showCastSection &&
-                castTuples.map((tuple, index) => renderRow(tuple, index, params))}
+                <FlatList
+                    data={castTuples}
+                    renderItem={({ item, index }) => renderRow(item, index, params)}
+                    keyExtractor={(item, index) => index.toString()}
+                    initialNumToRender={2}
+                    windowSize={6}
+                />
+            }
 
             <Pressable
                 style={[styles.sectionTitle, { width: screenWidth }]}
@@ -100,7 +107,14 @@ export const ArtistFilmografy = (params: ArtistFilmografyParams) => {
                 <TitleText body={crewSectionTitle} size="medium" />
             </Pressable>
             {showCrewSection &&
-                crewTuples.map((tuple, index) => renderRow(tuple, index, params))}
+                <FlatList
+                    data={crewTuples}
+                    renderItem={({ item, index }) => renderRow(item, index, params)}
+                    keyExtractor={(item, index) => index.toString()}
+                    initialNumToRender={2}
+                    windowSize={6}
+                />
+            }
         </View>
     )
 }

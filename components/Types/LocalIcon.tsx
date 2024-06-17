@@ -24,4 +24,7 @@ export enum LocalIcon {
     undo = require('../../assets/icons/undo.png'),
     recos = require('../../assets/icons/recos.png'),
     recos_unselected = require('../../assets/icons/recos-unselected.png'),
+    movie = require('../../assets/icons/movie.png'),
+    series = require('../../assets/icons/series.png'),
+    clock = require('../../assets/icons/clock.png'),
 }

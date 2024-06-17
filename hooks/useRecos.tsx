@@ -1,6 +1,6 @@
 import { getSeenContentParams, useGetSeenContent } from "../apiCalls/content";
 import { getProfileParams, useGetProfile, useGetWatchlist } from "../apiCalls/profile";
-import { useGetRecos } from "../apiCalls/recos";
+import { useGetMovieRecos } from "../apiCalls/recos";
 
 import { useUserServices } from "../apiCalls/services";
 import { CarouselEntry } from "../components/BasicComponents/Types/CarouselParams";
@@ -16,34 +16,46 @@ import { useSession } from "../context/ctx";
 import { useAppDispatch } from './redux/useAppDispatch';
 import { setUserRecos } from '../store/slices/recosSlice';
 
+//todo: remover cuando el backend este listo
+const fakeServices = [{
+    logoPath: '/vbXJBJVv3u3YWt6ml0l0ldDblXT.jpg',
+    displayPriority: 29,
+    providerId: 569,
+    providerName: "DocAlliance Films",
+}] as ServiceEntry[]
+const fakeGenres = ["Acción", "Aventura", "Comedia", "Drama"]
+const fakeDuration = 90
+const mockInWatchlist = false
+
 export const useRecos = () => {
     const session = useSession()
     const dispatch = useAppDispatch()
-    const { getRecos } = useGetRecos();
+    const { getMovieRecos } = useGetMovieRecos();
 
     const onSuccessGetRecos = (response: any) => {
-        const reco: Reco = {
-            id: 465187,
-            title: "Kolara",
-            poster: '/v6brGFt7aJq7WKMLzTVyWJLctzL.jpg',
-            releaseDate: "2017-07-07",
-            services: [{
-                logoPath: '/vbXJBJVv3u3YWt6ml0l0ldDblXT.jpg',
-                displayPriority: 29,
-                providerId: 569,
-                providerName: "DocAlliance Films",
-            }],
-            genres: ["Acción", "Aventura", "Comedia", "Drama"],
-            duration: 90,
-            type: ContentType.Movie,
-            inWatchlist: false,
-        }
+        const rawRecos = response.data
+        const recos = [] as Reco[]
 
-        dispatch(setUserRecos([reco]))
+        rawRecos.forEach((rawReco: any) => {
+            const reco: Reco = {
+                id: rawReco.id,
+                title: rawReco.title,
+                poster: rawReco.poster,
+                releaseDate: rawReco.releaseDate,
+                services: fakeServices,
+                genres: fakeGenres,
+                duration: fakeDuration,
+                type: ContentType.Movie,
+                inWatchlist: mockInWatchlist,
+            }
+            recos.push(reco)
+        })
+        
+        dispatch(setUserRecos(recos))
     }
 
     const loadRecos = () => {
-        getRecos(onSuccessGetRecos);
+        getMovieRecos(onSuccessGetRecos);
     }
 
     return { loadRecos }

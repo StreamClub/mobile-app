@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  StyleSheet, Dimensions, ScrollView } from 'react-native';
+import {  StyleSheet, Dimensions, FlatList, ScrollView } from 'react-native';
 import { colors } from "../../assets";
 import { ArtistFilmografy } from './ArtistFilmografy';
 import { ArtistBasicInfo, ArtistBasicInfoParams } from './ArtistBasicInfo';
@@ -45,10 +45,12 @@ export const ArtistDetailScreen = (params: ArtistDetailScreenParams) => {
     }
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-            <ArtistBasicInfo {...artistBasicInfo}/>
-            <ArtistFilmografy credits={params.artist.credits} onPressCreditsEntry= {params.onPressCreditsEntry}/>
-        </ScrollView>
+        <FlatList
+            ListHeaderComponent={<ArtistBasicInfo {...artistBasicInfo}/>}
+            ListFooterComponent={<ArtistFilmografy credits={params.artist.credits} onPressCreditsEntry= {params.onPressCreditsEntry}/>}
+            data={[]}
+            renderItem={() => null}
+        />
     )
 }
 

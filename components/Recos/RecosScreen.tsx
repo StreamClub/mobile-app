@@ -8,7 +8,6 @@ const screenWidth = Dimensions.get('window').width
 export const RecosScreen = () => {
     return (
         <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
-            <Text>Pantalla de Recomendaciones</Text>
             <UserRecos />
         </ScrollView>
     )

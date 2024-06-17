@@ -1,22 +1,13 @@
-import { getSeenContentParams, useGetSeenContent } from "../apiCalls/content";
-import { getProfileParams, useGetProfile, useGetWatchlist } from "../apiCalls/profile";
-import { useGetMovieRecos } from "../apiCalls/recos";
 
-import { useUserServices } from "../apiCalls/services";
-import { CarouselEntry } from "../components/BasicComponents/Types/CarouselParams";
-import { ProfileHeaderParams } from "../components/Profile/ProfileHeader";
+import { useGetMovieRecos, useGetSeriesRecos } from "../apiCalls/recos";
 import { ServiceEntry } from "../components/Types/Services";
 import { Reco } from "../components/Types/Reco";
 import { ContentType } from "../components/Types/ContentType";
-import { SeenContentEntry } from "../components/Types/SeenContentEntry";
-import { Dispatch, SetStateAction } from "react";
-import { WatchlistEntry } from "../components/Types/Watchlist";
 import { useSession } from "../context/ctx";
-
 import { useAppDispatch } from './redux/useAppDispatch';
-import { setUserRecos } from '../store/slices/recosSlice';
+import { updateUserMovieRecos, updateUserSeriesRecos } from '../store/slices/recosSlice';
 
-//todo: remover cuando el backend este listo
+//todo: remover fakes cuando el backend este listo
 const fakeServices = [{
     logoPath: '/vbXJBJVv3u3YWt6ml0l0ldDblXT.jpg',
     displayPriority: 29,
@@ -31,8 +22,9 @@ export const useRecos = () => {
     const session = useSession()
     const dispatch = useAppDispatch()
     const { getMovieRecos } = useGetMovieRecos();
+    const { getSeriesRecos } = useGetSeriesRecos();
 
-    const onSuccessGetRecos = (response: any) => {
+    const onSuccessGetMovieRecos = (response: any) => {
         const rawRecos = response.data
         const recos = [] as Reco[]
 
@@ -51,11 +43,34 @@ export const useRecos = () => {
             recos.push(reco)
         })
         
-        dispatch(setUserRecos(recos))
+        dispatch(updateUserMovieRecos(recos))
+    }
+
+    const onSuccessGetSeriesRecos = (response: any) => {
+        const rawRecos = response.data
+        const recos = [] as Reco[]
+
+        rawRecos.forEach((rawReco: any) => {
+            const reco: Reco = {
+                id: rawReco.id,
+                title: rawReco.title,
+                poster: rawReco.poster,
+                releaseDate: rawReco.releaseDate,
+                services: fakeServices,
+                genres: fakeGenres,
+                duration: fakeDuration,
+                type: ContentType.Series,
+                inWatchlist: mockInWatchlist,
+            }
+            recos.push(reco)
+        })
+        
+        dispatch(updateUserSeriesRecos(recos))
     }
 
     const loadRecos = () => {
-        getMovieRecos(onSuccessGetRecos);
+        getMovieRecos(onSuccessGetMovieRecos);
+        getSeriesRecos(onSuccessGetSeriesRecos)
     }
 
     return { loadRecos }

@@ -22,3 +22,15 @@ export const useGetMovieRecos = () => {
 
     return { getMovieRecos };
 }
+
+export const useGetSeriesRecos = () => {
+    const { privateCall } = usePrivateCall();
+
+    const getSeriesRecos = ( onSuccess: (response: AxiosResponse<any, any>) => void ) => {
+        const endpoint = '/users/recommendations/series';
+        const params: Params = { params: { country: country } };
+        privateCall( 'GET', endpoint, params, onSuccess );
+    }
+
+    return { getSeriesRecos };
+}

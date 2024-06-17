@@ -8,10 +8,6 @@ const hasIndex = (list: any[], index: number) => {
     return index >= 0 && index < list.length;
 };
 
-
-
-
-
 export const UserRecos = () => {
     const { userRecos } = useAppSelector((state) => state.recos)
     const [actualIndex, setActualIndex] = React.useState(0)
@@ -57,17 +53,6 @@ export const UserRecos = () => {
             {renderRecoByIndex(actualIndex)}
             {rightArrow()}
             {leftArrow()}
-            {/* <FlatList
-                ref={flatListRef}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                data={userRecos}
-                renderItem={({ item, index }) => <UserReco reco={item} index={index} />}
-                keyExtractor={(item, index) => index.toString()}
-                onScroll={handleScroll}
-                scrollEventThrottle={16}
-            /> */}
         </View>
     )
 }

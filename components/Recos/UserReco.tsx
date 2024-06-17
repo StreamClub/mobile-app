@@ -25,7 +25,9 @@ export const UserReco = (params: UserRecoParams) => {
     // revisar si el procesado se debe extraer a otro componente 
     const genres = reco.genres ? reco.genres.slice(0, 3) : []
     const type = reco.type === ContentType.Movie ? "Película" : "Serie"
-    const duration = reco.duration ? reco.duration.toString() + " min" : "0 min"
+    const durationUnit = reco.type === ContentType.Movie ? " min" : " temporadas"
+    const durationIcon = reco.type === ContentType.Movie ? LocalIcon.clock : undefined
+    const duration = reco.duration ? reco.duration.toString() + durationUnit : "0" + durationUnit
     const playLeyend = "Ver ahora"
 
     return (
@@ -88,7 +90,7 @@ export const UserReco = (params: UserRecoParams) => {
                 text={duration}
                 textSize="small"
                 textType="title"
-                leftIcon={LocalIcon.clock}
+                leftIcon={durationIcon}
                 style={styles.durationContainer}
                 iconStyle={styles.typeIcon}
                 textStyle={{width: undefined, marginLeft: 10}}

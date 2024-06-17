@@ -7,6 +7,7 @@ import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
 import { LogOutButton } from '../../components/LogOutButton';
 import { RequestsListButton } from '../../components/Profile/Friends/RequestsListButton';
+import { SettingsButton } from '../../components/Settings/SettingsButton';
 export default function AppLayout() {
     const session = useSession()
 
@@ -56,7 +57,8 @@ export default function AppLayout() {
                     headerRight: () => 
                     <View style={{flexDirection: 'row'}} >
                         <RequestsListButton />
-                        <LogOutButton/>
+                        <SettingsButton />
+                        {/* <LogOutButton/> */}
                     </View>
                 }}
             />

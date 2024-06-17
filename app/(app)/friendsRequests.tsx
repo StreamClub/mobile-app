@@ -36,9 +36,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.secondaryWhite,
-  },
-  iconsStyle: {
-    height: 35,
-    aspectRatio: 495 / 512,
-  },
+  }
 })

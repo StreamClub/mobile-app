@@ -5,12 +5,25 @@ import { UserReco } from './UserReco'
 
 export const UserRecos = () => {
     const { userRecos } = useAppSelector((state) => state.recos)
-    
+
+    // actualIndex = 0
+
     return (
-        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+        <ScrollView>
             {userRecos.map((reco, index) => (
                 <UserReco reco={reco} index={index} key={index} />
             ))}
+            {/* <FlatList
+                ref={flatListRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                data={userRecos}
+                renderItem={({ item, index }) => <UserReco reco={item} index={index} />}
+                keyExtractor={(item, index) => index.toString()}
+                onScroll={handleScroll}
+                scrollEventThrottle={16}
+            /> */}
         </ScrollView>
     )
 }

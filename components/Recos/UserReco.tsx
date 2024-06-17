@@ -34,7 +34,6 @@ export const UserReco = (params: UserRecoParams) => {
             start={{ x: 0, y: 1 }}
             end={{ x: 1, y: 0 }}
             style={styles.container}
-            key={index}
         >
             <View style={styles.posterContainer}>
                 <TmdbImage

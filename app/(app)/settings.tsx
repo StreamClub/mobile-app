@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from "react-native";
 import { colors } from '../../assets';
-import { LogOutButton } from '../../components/LogOutButton';
 import { useGetUsersPrivacy } from '../../apiCalls/privacy';
 import { WatchlistPrivacyButton } from '../../components/Settings/WatchlistPrivacyButton';
+import { LogOutButton } from '../../components/Settings/LogOutButton';
+import { TitleText } from '../../components/BasicComponents/TitleText';
+import { SeenContentPrivacyButton } from '../../components/Settings/SeenContentPrivacyButton';
+import { useOnFocus } from '../../hooks/useOnFocus';
+import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 
 export default function Services() {
   const {getUsersPrivacy, loading} = useGetUsersPrivacy();
@@ -16,25 +20,21 @@ export default function Services() {
     setIsSeenContentListPrivate(response.data.isSeenContentListPrivate);
   }
 
-  useEffect(() => {
+  useOnFocus(() => {
     getUsersPrivacy(onSuccess);
-  }, [])
+  })
 
   return (
     <View style={styles.container}>
-      <View style={{margin: 20}} >
-        <WatchlistPrivacyButton isPrivate={isWatchlistPrivate} />
-        <LogOutButton />
-      </View>
-      <View
-        style={{
-          height: 1,
-          backgroundColor: 'black',
-          width: '60%',
-          marginBottom: 10,
-          alignSelf: 'center',
-        }}
-      />
+      {loading?
+        <LoadingComponent /> :
+        <>
+          <TitleText body='Configuración:' color={colors.primaryGrey}/>
+          <WatchlistPrivacyButton isPrivate={isWatchlistPrivate} />
+          <SeenContentPrivacyButton isPrivate={isSeenContentListPrivate} />
+          <LogOutButton />
+        </>
+      }
     </View>
   )
 }
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     backgroundColor: colors.secondaryWhite
   }
 })

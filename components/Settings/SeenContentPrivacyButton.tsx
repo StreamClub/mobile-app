@@ -4,25 +4,26 @@ import { ActivityIndicator, Icon, Switch } from 'react-native-paper'
 import { colors } from '../../assets';
 import { View } from 'react-native';
 import { BodyText } from '../BasicComponents/BodyText';
-import { useUpdateWatchlistPrivacy } from '../../apiCalls/privacy';
+import { useUpdateSeenContentPrivacy } from '../../apiCalls/privacy';
 
-export const WatchlistPrivacyButton = (params: PrivacyButtonType) => {
+export const SeenContentPrivacyButton = (params: PrivacyButtonType) => {
   const [isPrivate, setIsPrivate] = useState(params.isPrivate);
-  const {updateWatchlistPrivacy, loading} = useUpdateWatchlistPrivacy();
+  const {updateSeenContentPrivacy, loading} = useUpdateSeenContentPrivacy();
 
   const onSuccess = (response: any) => {
-    setIsPrivate(response.data.isWatchlistPrivate);
+    console.log("Exito")
+    setIsPrivate(response.data.isSeenContentListPrivate);
   }
   
   const onSwitchPress = () => {
-    updateWatchlistPrivacy(!isPrivate, onSuccess);
+    updateSeenContentPrivacy(!isPrivate, onSuccess);
   }
   
   return(
     <View style={{flexDirection: 'row', margin: 10}} >
       <View>
         <BodyText
-          body='Watchlist'
+          body='Contenido visto'
           color={colors.primaryGrey}
           size='big'
           style={{marginRight: 10}} />

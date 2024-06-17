@@ -5,7 +5,6 @@ import { useSession } from '../../context/ctx';
 import { colors } from '../../assets';
 import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
-import { LogOutButton } from '../../components/LogOutButton';
 import { RequestsListButton } from '../../components/Profile/Friends/RequestsListButton';
 import { SettingsButton } from '../../components/Settings/SettingsButton';
 export default function AppLayout() {
@@ -58,7 +57,6 @@ export default function AppLayout() {
                     <View style={{flexDirection: 'row'}} >
                         <RequestsListButton />
                         <SettingsButton />
-                        {/* <LogOutButton/> */}
                     </View>
                 }}
             />

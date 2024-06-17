@@ -13,3 +13,29 @@ export const useGetUsersPrivacy = () => {
 
   return {getUsersPrivacy, loading}
 }
+
+// --------- --------- --------- --------- --------- ---------
+export const useUpdateWatchlistPrivacy = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const updateWatchlistPrivacy = (isPrivate: boolean, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/privacy/watchlist';
+    const params: Params = { data: {isWatchlistPrivate: isPrivate} };
+    privateCall('PATCH', endpoint, params, onSuccess);
+  }
+
+  return {updateWatchlistPrivacy, loading}
+}
+
+// --------- --------- --------- --------- --------- ---------
+export const useUpdateSeenContentPrivacy = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const updateSeenContentPrivacy = (isPrivate: boolean, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/privacy/seenContent';
+    const params: Params = { data: {isSeenContentListPrivate: isPrivate} };
+    privateCall('PATCH', endpoint, params, onSuccess);
+  }
+
+  return {updateSeenContentPrivacy, loading}
+}

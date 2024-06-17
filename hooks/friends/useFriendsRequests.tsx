@@ -1,13 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 import { useRemoveFriend, useRemoveFriendRequest, useSendFriendRequest } from "../../apiCalls/friends"
 
-export const useFriendsRequests = (userId: string, setHasFriendRequest: Dispatch<SetStateAction<boolean>>, setAreFriends: Dispatch<SetStateAction<boolean>>) => {
+export const useFriendsRequests = (userId: string, setHasFriendRequest: Dispatch<SetStateAction<boolean>>, 
+  setAreFriends: Dispatch<SetStateAction<boolean>>, setRequestId: Dispatch<SetStateAction<string>>) => {
   const { sendRequest, loading: loadingSend } = useSendFriendRequest();
   const { removeRequest, loading: loadingRemove } = useRemoveFriendRequest();
   const { removeFriend: removeFriendCall, loading: loadingRemoveFriend } = useRemoveFriend();
   const loading = loadingRemove && loadingSend && loadingRemoveFriend;
 
   const onSuccessSendFriendRequest = (response: any) => {
+    setRequestId(response.data.id);
     setHasFriendRequest(true);
   }
 
@@ -24,7 +26,6 @@ export const useFriendsRequests = (userId: string, setHasFriendRequest: Dispatch
   }
 
   const removeFriendRequest = (requestId: string) => {
-    console.log("Por eliminar la request");
     removeRequest(requestId, false, onSuccessRemoveFriendRequest);
   }
 

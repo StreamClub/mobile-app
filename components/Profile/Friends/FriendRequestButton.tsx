@@ -27,8 +27,8 @@ export const FriendRequestButton = (params: FriendRequestButtonParams) => {
   const [hasFriendRequest, setHasFriendRequest] = useState<boolean>(params.friendRequest != null);
   const [areFriends, setAreFriends] = useState<boolean>(params.friendship != null);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const {sendFriendRequest, removeFriendRequest, removeFriend, loading} = useFriendsRequests(params.userId, setHasFriendRequest, setAreFriends);
-  const requestId = params.friendRequest?.id? params.friendRequest.id.toString() : '';
+  const [requestId, setRequestId] = useState<string>(params.friendRequest?.id? params.friendRequest.id.toString() : '');
+  const {sendFriendRequest, removeFriendRequest, removeFriend, loading} = useFriendsRequests(params.userId, setHasFriendRequest, setAreFriends, setRequestId);
   
   return(
     <>

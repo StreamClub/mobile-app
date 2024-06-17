@@ -4,15 +4,16 @@ import { Reco } from '../../components/Types/Reco'
 const recosSlice = createSlice({
     name: 'recos',
     initialState: {
-        userRecos: [] as Reco[], //TODO definir tipo
-        loading: true,
+        userRecos: [] as Reco[],
+        loadingUserRecos: true,
+
     },
     reducers: {
         setUserRecos(state, action: PayloadAction<Reco[]>) {
             state.userRecos = action.payload;
         },
         setLoading(state, action: PayloadAction<boolean>) {
-            state.loading = action.payload;
+            state.loadingUserRecos = action.payload;
         },
     },
 })

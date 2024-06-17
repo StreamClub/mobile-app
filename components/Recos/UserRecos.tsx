@@ -1,12 +1,7 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
-
-import {
-    TmdbImage,
-    TmdbImageParams,
-    TmdbImageType,
-} from '../BasicComponents/TmdbImage'
+import React from 'react'
+import { StyleSheet, ScrollView } from 'react-native'
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
+import { UserReco } from './UserReco'
 
 export const UserRecos = () => {
     const { userRecos } = useAppSelector((state) => state.recos)
@@ -14,11 +9,7 @@ export const UserRecos = () => {
     return (
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>
             {userRecos.map((reco, index) => (
-                <TmdbImage
-                    type={TmdbImageType.Cover}
-                    resource={reco.poster}
-                    style={styles.poster}
-                />
+                <UserReco reco={reco} index={index} key={index} />
             ))}
         </ScrollView>
     )
@@ -29,8 +20,8 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     poster: {
-        height: 80,
-        aspectRatio: 1,
+        width: "80%",
+        aspectRatio: 791/1186,
         borderRadius: 15,
         margin: 10,
     },

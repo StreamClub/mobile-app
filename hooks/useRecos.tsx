@@ -17,33 +17,34 @@ import { useAppDispatch } from './redux/useAppDispatch';
 import { setUserRecos } from '../store/slices/recosSlice';
 
 export const useRecos = () => {
-  const session = useSession()
-  const dispatch = useAppDispatch()
-  const { getRecos } = useGetRecos();
+    const session = useSession()
+    const dispatch = useAppDispatch()
+    const { getRecos } = useGetRecos();
 
-  const onSuccessGetRecos = (response: any) => {
-    const reco: Reco = {
-      poster: '/uZGFIGIaQO7rFHeq6DhZbSGOwo3.jpg',
-      services: [
-        {
-          logoPath: '/vbXJBJVv3u3YWt6ml0l0ldDblXT.jpg',
-          displayPriority: 29,
-          providerId: 569,
-          providerName: "DocAlliance Films",
-        },
-      ],
-      genres: ["Acción", "Aventura", "Comedia", "Drama"],
-      duration: 90,
-      type: ContentType.Movie,
-      inWatchlist: false,
+    const onSuccessGetRecos = (response: any) => {
+        const reco: Reco = {
+            id: 465187,
+            title: "Kolara",
+            poster: '/v6brGFt7aJq7WKMLzTVyWJLctzL.jpg',
+            releaseDate: "2017-07-07",
+            services: [{
+                logoPath: '/vbXJBJVv3u3YWt6ml0l0ldDblXT.jpg',
+                displayPriority: 29,
+                providerId: 569,
+                providerName: "DocAlliance Films",
+            }],
+            genres: ["Acción", "Aventura", "Comedia", "Drama"],
+            duration: 90,
+            type: ContentType.Movie,
+            inWatchlist: false,
+        }
+
+        dispatch(setUserRecos([reco]))
     }
 
-    dispatch(setUserRecos([reco]))
-  }
+    const loadRecos = () => {
+        getRecos(onSuccessGetRecos);
+    }
 
-  const loadRecos = () => {
-    getRecos(onSuccessGetRecos);
-  }
-
-  return { loadRecos }
+    return { loadRecos }
 }

@@ -9,7 +9,7 @@ import { colors } from "../assets";
 import { router } from "expo-router";
 
 type SignUpParams = {
-    onNext: (email: string, password: string, birthDate: string) => void;
+    onNext: (email: string, password: string) => void;
     loading: boolean;
 };
 
@@ -20,8 +20,6 @@ export const SignUpScreen = (params: SignUpParams) => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [isValidEmail, setIsValidEmail] = useState(true);
-    const [isValidBirth, setIsValidBirth] = useState(true);
-    const [birthDate, setbirthDate] = useState("");
 
     const handleEmailChange = (text: string) => {
         setEmail(text);
@@ -106,24 +104,6 @@ export const SignUpScreen = (params: SignUpParams) => {
                             />
                         )}
                     </View>
-                    <TextInput
-                        label="Fecha de nacimiento"
-                        style={styles.input}
-                        textColor={colors.primaryWhite}
-                        activeUnderlineColor={colors.primaryBlack}
-                        render={(props) => (
-                            <TextInputMask
-                                type={"datetime"}
-                                options={{
-                                    format: "DD/MM/YYYY",
-                                }}
-                                {...props}
-                            />
-                        )}
-                        onChangeText={(date) => {
-                            setbirthDate(date);
-                        }}
-                    />
                 </Card.Content>
             </Card>
             <View style={styles.buttons}>
@@ -138,15 +118,14 @@ export const SignUpScreen = (params: SignUpParams) => {
                 <CustomButton
                     buttonText="Siguiente"
                     onPress={() => {
-                        params.onNext(email, password, birthDate);
+                        params.onNext(email, password);
                     }}
                     disabled={
                         !(
                             email &&
                             password &&
                             isValidEmail &&
-                            passwordsMatch &&
-                            isValidBirth
+                            passwordsMatch
                         )
                     }
                     fontSize="medium"

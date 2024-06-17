@@ -19,13 +19,11 @@ export default function Page() {
 
     const handleSingUpSubmit = (
         _email: string,
-        _password: string,
-        _birthDate: string
+        _password: string
     ) => {
         const body: sendVerificationCodeBody = { email: _email }
         email = _email
         password = _password
-        birthDate = _birthDate
 
         sendVerification(body, onSuccessSignUp);
     }

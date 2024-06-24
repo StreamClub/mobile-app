@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { BodyText } from '../BasicComponents/BodyText';
 import { Checkbox } from 'react-native-paper';
 import { colors } from '../../assets';

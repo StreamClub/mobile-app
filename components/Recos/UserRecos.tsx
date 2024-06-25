@@ -16,7 +16,13 @@ export const UserRecos = () => {
         if (hasIndex(userRecos, index)) {
             return <UserReco reco={userRecos[index]} index={index} />
         } else {
-            return <Text> TODO, contemplar casos para limites de la lista </Text>
+            return <Text> No tenemos recomendaciones por el momento </Text>
+        }
+    }
+
+    const onChangeIndex = (newIndex: number) => {
+        if (hasIndex(userRecos, newIndex)) {
+            setActualIndex(newIndex)
         }
     }
 
@@ -24,7 +30,7 @@ export const UserRecos = () => {
         return (
             <Pressable
                 style={{ position: "absolute", right: 0, width: 100, height: 450, zIndex: 2, alignItems: "flex-end", justifyContent: "center"}}
-                onPress={() => setActualIndex(actualIndex + 1)}
+                onPress={() => onChangeIndex(actualIndex + 1)}
             >
                 <Image
                     source={LocalIcon.right}
@@ -38,7 +44,7 @@ export const UserRecos = () => {
         return (
             <Pressable
                 style={{ position: "absolute", left: 0, width: 100, height: 450, zIndex: 2, alignItems: "flex-start", justifyContent: "center"}}
-                onPress={() => setActualIndex(actualIndex - 1)}
+                onPress={() => onChangeIndex(actualIndex - 1)}
             >
                 <Image
                     source={LocalIcon.left}
@@ -51,8 +57,8 @@ export const UserRecos = () => {
     return (
         <View style={{position: "relative"}}>
             {renderRecoByIndex(actualIndex)}
-            {rightArrow()}
-            {leftArrow()}
+            { hasIndex(userRecos, actualIndex + 1) && rightArrow() }
+            { hasIndex(userRecos, actualIndex - 1) && leftArrow() }
         </View>
     )
 }

@@ -1,12 +1,7 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, Text, Pressable, Image } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { Reco } from '../Types/Reco'
-import { TmdbImage, TmdbImageType } from '../BasicComponents/TmdbImage'
 import { BodyText } from '../BasicComponents/BodyText'
-import { ContentType } from '../Types/ContentType'
-import { IconWithText } from '../BasicComponents/IconWithText'
-import { LocalIcon } from '../Types/LocalIcon'
-import { colors } from '../../assets'
 import { LinearGradient } from 'expo-linear-gradient';
 import { UserRecoFooter } from './UserRecoFooter'
 import { UserRecoPoster } from './UserRecoPoster'

@@ -14,9 +14,6 @@ const fakeServices = [{
     providerId: 569,
     providerName: "DocAlliance Films",
 }] as ServiceEntry[]
-const fakeGenres = ["Acción", "Aventura", "Comedia", "Drama"]
-const fakeDuration = 90
-const mockInWatchlist = false
 
 export const useRecos = () => {
     const session = useSession()
@@ -35,10 +32,10 @@ export const useRecos = () => {
                 poster: rawReco.poster,
                 releaseDate: rawReco.releaseDate,
                 services: fakeServices,
-                genres: fakeGenres,
-                duration: fakeDuration,
+                genres: rawReco.genres,
+                duration: rawReco.duration,
                 type: ContentType.Movie,
-                inWatchlist: mockInWatchlist,
+                inWatchlist: rawReco.inWatchlist,
             }
             recos.push(reco)
         })
@@ -57,10 +54,10 @@ export const useRecos = () => {
                 poster: rawReco.poster,
                 releaseDate: rawReco.releaseDate,
                 services: fakeServices,
-                genres: fakeGenres,
-                duration: fakeDuration,
+                genres: rawReco.genres,
+                duration: rawReco.duration,
                 type: ContentType.Series,
-                inWatchlist: mockInWatchlist,
+                inWatchlist: rawReco.inWatchlist,
             }
             recos.push(reco)
         })

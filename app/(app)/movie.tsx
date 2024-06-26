@@ -10,6 +10,8 @@ import { useMovieDetail } from '../../hooks/useMovieDetails'
 import { MovieHeader } from '../../components/MovieDetails/MovieHeader'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import { setFocusedEntry } from '../../store/slices/searchContentSlice'
+import { ContentType } from '../../components/Types/ContentType'
+import { MOVIES_NAME } from '../../constants'
 
 
 export type MovieDetailsParams = {
@@ -26,7 +28,7 @@ export default function Movie() {
     const onSuccess = (response: any) => {
         const movie = response.data
         setMovie(movie)
-        dispatch(setFocusedEntry({id: movie.id, seen: movie.seen, inWatchlist: movie.inWatchlist}))
+        dispatch(setFocusedEntry({id: movie.id, seen: movie.seen, inWatchlist: movie.inWatchlist, type: MOVIES_NAME}))
     }
 
     useEffect(() => {

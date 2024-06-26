@@ -7,6 +7,13 @@ import { IconWithText } from '../BasicComponents/IconWithText'
 import { LocalIcon } from '../Types/LocalIcon'
 import { colors } from '../../assets'
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router'
+import { ContentType } from '../Types/ContentType'
+import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
+import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
+import { changeOnWatchlistState } from '../../store/slices/recosSlice';
+import { useWatchlistPress } from '../../hooks/useWatchlistPress'
+import { ContentType as ContentTypeClass } from '../../entities/ContentType'
 
 export type UserRecoPosterParams = {
     reco: Reco,
@@ -14,22 +21,44 @@ export type UserRecoPosterParams = {
 }
 
 export const UserRecoPoster = (params: UserRecoPosterParams) => {
-    const { reco, index } = params
+    const { onPress } = useWatchlistPress( 
+        { id: params.reco.id.toString(), inWatchlist: params.reco.inWatchlist},
+        new ContentTypeClass(params.reco.type)
+    )
 
+    const { reco, index } = params
     const detailsLeyend = "Ver detalle"
     const { logoPath } = reco.services[0]
     const genres = reco.genres ? reco.genres.slice(0, 3) : []
+    const inWatchlistLogo = reco.inWatchlist ? LocalIcon.removeFromWatchlist : LocalIcon.addToWatchlist
+
+    const onPressDetails = () => {
+
+        const params: ContentDetailsParams = {
+            id: reco.id.toString(),
+        }
+
+        if (reco.type === ContentType.Movie)
+            router.push({ pathname: '/movie', params })  
+        if (reco.type === ContentType.Series)
+            router.push({ pathname: '/serie', params })
+    }
+
+    const onPressWatchlist = () => {
+        onPress()
+    }
 
     return (
         <View style={styles.posterContainer}>
-            <TmdbImage
+            {/* Funcionalidad cancelada. No borrar. */}
+            {/* <TmdbImage
                 type={TmdbImageType.Cover}
                 resource={logoPath}
                 style={styles.serviceLogo}
-            />
-            <Pressable style={styles.watchlistButtonContainer}>
+            /> */}
+            <Pressable style={styles.watchlistButtonContainer} onPress={onPressWatchlist}>
                 <Image
-                    source={LocalIcon.addToWatchlist}
+                    source={inWatchlistLogo}
                     style={styles.watchlistButton}
                 />
             </Pressable>
@@ -48,7 +77,7 @@ export const UserRecoPoster = (params: UserRecoPosterParams) => {
                 >
                     <BodyText body={genres.join(" \u2022 ")} size="medium" style={{ fontWeight: "bold" }} />
                 </LinearGradient>
-                <View style={styles.playIconWithTextContainer}>
+                <Pressable style={styles.playIconWithTextContainer} onPress={onPressDetails}>
                     <IconWithText
                         text={detailsLeyend}
                         textSize="small"
@@ -58,7 +87,7 @@ export const UserRecoPoster = (params: UserRecoPosterParams) => {
                         iconStyle={styles.playIcon}
                         textStyle={{ width: undefined }}
                     />
-                </View>
+                </Pressable>
             </View>
         </View>
 
@@ -119,14 +148,15 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         zIndex: 0,
     },
-    serviceLogo: {
-        height: 70,
-        aspectRatio: 1,
-        borderRadius: 15,
+    // Funcionalidad cancelada. No borrar.
+    // serviceLogo: {
+    //     height: 70,
+    //     aspectRatio: 1,
+    //     borderRadius: 15,
         
-        position: "absolute",
-        top: 10,
-        right: 10,
-        zIndex: 1,
-    },
+    //     position: "absolute",
+    //     top: 10,
+    //     right: 10,
+    //     zIndex: 1,
+    // },
 })

@@ -1,12 +1,10 @@
 import React from 'react'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Reco } from '../Types/Reco'
 import { BodyText } from '../BasicComponents/BodyText'
 import { LinearGradient } from 'expo-linear-gradient';
 import { UserRecoFooter } from './UserRecoFooter'
 import { UserRecoPoster } from './UserRecoPoster'
-
-const screenHeigth = Dimensions.get("screen").height 
 
 export type UserRecoParams = {
     reco: Reco
@@ -15,9 +13,6 @@ export type UserRecoParams = {
 
 export const UserReco = (params: UserRecoParams) => {
     const { reco, index } = params
-    
-    //TODO: contemplar caso services vacio
-    const { logoPath } = reco.services[0]
 
     return (
         <LinearGradient

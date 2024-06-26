@@ -5,7 +5,9 @@ import { Reco } from "../components/Types/Reco";
 import { ContentType } from "../components/Types/ContentType";
 import { useSession } from "../context/ctx";
 import { useAppDispatch } from './redux/useAppDispatch';
-import { updateUserMovieRecos, updateUserSeriesRecos } from '../store/slices/recosSlice';
+import { updateUserMovieRecos, updateUserSeriesRecos, changeOnWatchlistState } from '../store/slices/recosSlice';
+import { useWatchlistPress } from './useWatchlistPress'
+import { ContentType as ContentTypeClass } from '../entities/ContentType'
 
 //todo: remover fakes cuando el backend este listo
 const fakeServices = [{
@@ -69,6 +71,21 @@ export const useRecos = () => {
         getMovieRecos(onSuccessGetMovieRecos);
         getSeriesRecos(onSuccessGetSeriesRecos)
     }
+
+    // const useChangeOnWatchlistState = (type: ContentType, id: number, inWatchlist: boolean) => {
+    //     const stringId = id.toString()
+
+    //     const params = { 
+    //         type, 
+    //         id,
+    //         inWatchlist,
+    //     }
+    //     dispatch(changeOnWatchlistState(params));
+        
+
+    //     const { onPress } = useWatchlistPress({ id: stringId, inWatchlist }, new ContentTypeClass(type))
+    //     onPress()
+    // }
 
     return { loadRecos }
 }

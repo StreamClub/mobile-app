@@ -29,7 +29,7 @@ export const UserRecos = () => {
     const rightArrow = () => {
         return (
             <Pressable
-                style={{ position: "absolute", right: 0, width: 100, height: 450, zIndex: 2, alignItems: "flex-end", justifyContent: "center"}}
+                style={{ position: "absolute", right: 0, width: 40, height: 450, zIndex: 2, alignItems: "flex-end", justifyContent: "center"}}
                 onPress={() => onChangeIndex(actualIndex + 1)}
             >
                 <Image
@@ -43,7 +43,7 @@ export const UserRecos = () => {
     const leftArrow = () => {
         return (
             <Pressable
-                style={{ position: "absolute", left: 0, width: 100, height: 450, zIndex: 2, alignItems: "flex-start", justifyContent: "center"}}
+                style={{ position: "absolute", left: 0, width: 40, height: 450, zIndex: 2, alignItems: "flex-start", justifyContent: "center"}}
                 onPress={() => onChangeIndex(actualIndex - 1)}
             >
                 <Image

@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {StyleSheet, View} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { colors } from '../../assets';
 import { BodyText } from '../BasicComponents/BodyText';
 
-export const DurationSlider = () => {
-  const [duration, setDuration] = useState([0, 200]);
+type DurationSliderParams = {
+  duration: number[],
+  setDuration: (values: number[]) => void
+}
+
+export const DurationSlider = (params: DurationSliderParams) => {
+
+
 
   return(
     <View style={{margin: 10}}>
@@ -14,8 +20,8 @@ export const DurationSlider = () => {
         color={colors.primaryWhite}
         size='big' />
       <MultiSlider
-        values={duration}
-        onValuesChange={setDuration}
+        values={params.duration}
+        onValuesChange={params.setDuration}
         min={0}
         max={200}
         step={1}
@@ -27,10 +33,10 @@ export const DurationSlider = () => {
         markerStyle={styles.marker} />
       <View style={styles.durationsContainer}>
         <BodyText 
-          body={duration[0].toString() + ' min'}
+          body={params.duration[0].toString() + ' min'}
           color={colors.primaryWhite} />
         <BodyText 
-          body={duration[1].toString() + ' min'}
+          body={params.duration[1].toString() + ' min'}
           color={colors.primaryWhite} />
       </View>
     </View>

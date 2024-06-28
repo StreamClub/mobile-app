@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { BodyText } from '../BasicComponents/BodyText';
 import { Checkbox } from 'react-native-paper';
 import { colors } from '../../assets';
@@ -83,17 +83,19 @@ const genres = [
   }
 ]
 
-export const GenresChecklist = () => {
-  const [checkedGenres, setCheckedGenres] = useState<Array<number>>([]);
+type GenresChecklistParams = {
+  checkedGenres: Array<number>,
+  setCheckedGenres: Dispatch<SetStateAction<Array<number>>>
+}
+
+export const GenresChecklist = (params: GenresChecklistParams) => {
 
   const markGenreAsChecked = (genre: number) => {
-    if (checkedGenres.includes(genre)) {
-      const newGenres = checkedGenres.filter((item) => item !== genre)  
-      setCheckedGenres(newGenres);
-      console.log(checkedGenres);
+    if (params.checkedGenres.includes(genre)) {
+      const newGenres = params.checkedGenres.filter((item) => item !== genre)  
+      params.setCheckedGenres(newGenres);
     } else {
-      setCheckedGenres([...checkedGenres, genre]);
-      console.log(checkedGenres);
+      params.setCheckedGenres([...params.checkedGenres, genre]);
     }
   }
 
@@ -108,7 +110,7 @@ export const GenresChecklist = () => {
         <View style={styles.checkbox} key={index}>
           <BodyText body={genre.name} />
           <Checkbox
-            status={checkedGenres.includes(genre.id) ? 'checked' : 'unchecked'}
+            status={params.checkedGenres.includes(genre.id) ? 'checked' : 'unchecked'}
             onPress={() => markGenreAsChecked(genre.id)}
             color={colors.secondaryBlue} />
         </View>

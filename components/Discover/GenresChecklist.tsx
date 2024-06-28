@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { BodyText } from '../BasicComponents/BodyText';
 import { Checkbox } from 'react-native-paper';
 import { colors } from '../../assets';

@@ -84,7 +84,7 @@ export const useMovieSeen = () => {
 
 // --------- --------- --------- --------- --------- ---------
 export type DiscoverMovieParams = {
-    genderIds?: Array<number>,
+    genderIds?: string,
     page: number,
     country: string,
     runtimeLte?: number,
@@ -96,7 +96,8 @@ export const useDiscoverMovie = () => {
     const {privateCall, loading} = usePrivateCall();
 
     const discoverMovie = (filters: DiscoverMovieParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
-        const params: Params = { params: {...filters } }
+        const params: Params = { params: {...filters } };
+        console.log("Buscando por discover");
         privateCall('GET', '/movies/discover', params, onSuccess);
     }
 

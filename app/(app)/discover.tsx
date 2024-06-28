@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { colors } from '../../assets'
 import { DiscoverForm } from '../../components/Discover/DiscoverForm'
+import { DiscoverContentList } from '../../components/Discover/DiscoverContentList'
+import { ContentEntry } from '../../entities/ContentEntry'
 
 export default function Discover() {
+    const [results, setResults] = useState<ContentEntry[]>([]);
+    const [searched, setSearched] = useState<boolean>(false);
+    console.log(searched);
+    
     return (
         <View style={styles.container}>
-            <DiscoverForm />
+            {searched?
+                <DiscoverContentList contentList={results} /> :
+                <DiscoverForm
+                    setResults={setResults}
+                    setSearched={setSearched} />
+            }
         </View>
     )
 }

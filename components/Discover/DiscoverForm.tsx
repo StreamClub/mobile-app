@@ -5,11 +5,13 @@ import { GenresChecklist } from './GenresChecklist';
 import { DurationSlider } from './DurationSlider';
 import { MyPlatformsButton } from './MyPlatformsButton';
 import { CustomButton } from '../BasicComponents/CustomButton';
-import { DiscoverMovieParams, useDiscoverMovie } from '../../apiCalls/movies';
+import { DiscoverParams, useDiscoverMovie } from '../../apiCalls/movies';
 import { useDataToSerieEntryList } from '../../hooks/search/useSeriesEntryList';
 import { serializeSearchResults } from '../../utils/serializeSearchResults';
-import { MOVIES_NAME } from '../../constants';
+import { MOVIES_NAME, SERIES_NAME } from '../../constants';
 import { ContentEntry } from '../../entities/ContentEntry';
+import { DiscoverCategories } from './DiscoverCategories';
+import { useDiscoverSeries } from '../../apiCalls/series';
 
 type DiscoverFormParams = {
   setResults: Dispatch<SetStateAction<ContentEntry[]>>,
@@ -20,20 +22,27 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
   const [inMyPlatforms, setInMyPlatforms] = useState(false);
   const [duration, setDuration] = useState([0, 200]);
   const [checkedGenres, setCheckedGenres] = useState<Array<number>>([]);
-  const {discoverMovie, loading} = useDiscoverMovie();
-  const { toMovieListEntries } = useDataToSerieEntryList();
+  const [selectedCategory, setSelectedCategory] = useState(MOVIES_NAME);
+  const {discoverMovie, loading: loadingMovies} = useDiscoverMovie();
+  const {discoverSeries, loading: loadingSeries} = useDiscoverSeries();
+  const { toMovieListEntries, toSeriesListEntries } = useDataToSerieEntryList();
 
   const onSuccess = (response: any) => {
     console.log('Busqueda exitosa: ');
-    console.log(response.data);
-    const parsedResponse = toMovieListEntries(response.data)
-    const serializedData = serializeSearchResults(parsedResponse, MOVIES_NAME);
-    params.setResults(serializedData);
+    if (selectedCategory == MOVIES_NAME) {
+      const parsedResponse = toMovieListEntries(response.data)
+      const serializedData = serializeSearchResults(parsedResponse, MOVIES_NAME);
+      params.setResults(serializedData);
+    } else {
+      const parsedResponse = toSeriesListEntries(response.data)
+      const serializedData = serializeSearchResults(parsedResponse, SERIES_NAME);
+      params.setResults(serializedData);
+    }
     params.setSearched(true);
   }
 
   const discover = () => {
-    const filters: DiscoverMovieParams = {
+    const filters: DiscoverParams = {
       country: 'AR',
       page: 1,
       genderIds: checkedGenres.toString(),
@@ -41,14 +50,22 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
       runtimeGte: duration[0],
       inMyPlatforms: inMyPlatforms
     }
-    discoverMovie(filters, onSuccess);
+    if (selectedCategory == MOVIES_NAME) {
+      discoverMovie(filters, onSuccess);
+    } else {
+      discoverSeries(filters, onSuccess);
+    }
   }
 
   return(
     <View style={styles.form}>
+      <DiscoverCategories
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory} />
       <GenresChecklist
         checkedGenres={checkedGenres}
-        setCheckedGenres={setCheckedGenres} />
+        setCheckedGenres={setCheckedGenres}
+        selectedCategory={selectedCategory} />
       <DurationSlider
         duration={duration}
         setDuration={setDuration} />
@@ -62,7 +79,7 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
           buttonSize='medium'
           type='primary'
           onPress={discover}
-          loading={loading} />
+          loading={loadingMovies || loadingSeries} />
       </View>
     </View>
   )

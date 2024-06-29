@@ -3,89 +3,13 @@ import { BodyText } from '../BasicComponents/BodyText';
 import { Checkbox } from 'react-native-paper';
 import { colors } from '../../assets';
 import { ScrollView, View, StyleSheet } from 'react-native';
-
-const genres = [
-  {
-    "id": 28,
-    "name": "Acción"
-  },
-  {
-    "id": 12,
-    "name": "Aventura"
-  },
-  {
-    "id": 16,
-    "name": "Animación"
-  },
-  {
-    "id": 35,
-    "name": "Comedia"
-  },
-  {
-    "id": 80,
-    "name": "Crimen"
-  },
-  {
-    "id": 99,
-    "name": "Documental"
-  },
-  {
-    "id": 18,
-    "name": "Drama"
-  },
-  {
-    "id": 10751,
-    "name": "Familia"
-  },
-  {
-    "id": 14,
-    "name": "Fantasía"
-  },
-  {
-    "id": 36,
-    "name": "Historia"
-  },
-  {
-    "id": 27,
-    "name": "Terror"
-  },
-  {
-    "id": 10402,
-    "name": "Música"
-  },
-  {
-    "id": 9648,
-    "name": "Misterio"
-  },
-  {
-    "id": 10749,
-    "name": "Romance"
-  },
-  {
-    "id": 878,
-    "name": "Ciencia ficción"
-  },
-  {
-    "id": 10770,
-    "name": "Película de TV"
-  },
-  {
-    "id": 53,
-    "name": "Suspense"
-  },
-  {
-    "id": 10752,
-    "name": "Bélica"
-  },
-  {
-    "id": 37,
-    "name": "Western"
-  }
-]
+import { movie_genres, series_genres } from './genres_list';
+import { MOVIES_NAME } from '../../constants';
 
 type GenresChecklistParams = {
   checkedGenres: Array<number>,
-  setCheckedGenres: Dispatch<SetStateAction<Array<number>>>
+  setCheckedGenres: Dispatch<SetStateAction<Array<number>>>,
+  selectedCategory: string
 }
 
 export const GenresChecklist = (params: GenresChecklistParams) => {
@@ -106,7 +30,7 @@ export const GenresChecklist = (params: GenresChecklistParams) => {
       color={colors.primaryWhite}
       size='big' />
     <ScrollView style={styles.genresScroll}>
-      {genres.map((genre, index) => (
+      {(params.selectedCategory == MOVIES_NAME? movie_genres : series_genres).map((genre, index) => (
         <View style={styles.checkbox} key={index}>
           <BodyText body={genre.name} />
           <Checkbox

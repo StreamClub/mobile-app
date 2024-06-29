@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios'
 import { Params, usePrivateCall } from './generic'
 import { useAppDispatch } from '../hooks/redux/useAppDispatch'
 import { setLoading } from '../store/slices/searchContentSlice'
+import { DiscoverParams } from './movies'
 
 const country = 'AR' //TODO: Esto hay que cambiarlo
 
@@ -115,4 +116,16 @@ export const useSeriesSeen = () => {
 
     return {markSeriesAsSeen, unmarkSeriesAsSeen, markSeasonAsSeen, unmarkSeasonAsSeen, 
         markEpisodeAsSeen, unmarkEpisodeAsSeen, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export const useDiscoverSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const discoverSeries = (filters: DiscoverParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { params: {...filters } };
+        privateCall('GET', '/series/discover', params, onSuccess);
+    }
+
+    return {discoverSeries, loading};
 }

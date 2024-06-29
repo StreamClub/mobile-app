@@ -8,12 +8,17 @@ import {
     setResults,
     setTextSearched,
 } from '../../store/slices/searchContentSlice'
+import { useOnFocus } from '../../hooks/useOnFocus'
 
 type SearchCategories = {}
 
 export const SearchCategories = (params: SearchCategories) => {
     const dispatch = useAppDispatch()
-    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY)
+    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
+    
+    useOnFocus(() => {
+        dispatch(setCategory(CATEGORIES[INITIAL_CATEGORY]));
+    })
 
     const onPress = (value: number) => {
         dispatch(setTextSearched(''))

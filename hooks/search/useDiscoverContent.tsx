@@ -5,12 +5,15 @@ import { MOVIES_NAME, SERIES_NAME } from "../../constants";
 import { serializeSearchResults } from "../../utils/serializeSearchResults";
 import { useDataToSerieEntryList } from "./useSeriesEntryList";
 import { ContentEntry } from "../../entities/ContentEntry";
+import { useAppDispatch } from "../redux/useAppDispatch";
+import { setCategory } from "../../store/slices/searchContentSlice";
 
 export const useDiscoverContent = (setResults: Dispatch<SetStateAction<ContentEntry[]>>,
   setSearched: Dispatch<SetStateAction<boolean>>) => {
   const {discoverMovie, loading: loadingMovies} = useDiscoverMovie();
   const {discoverSeries, loading: loadingSeries} = useDiscoverSeries();
   const { toMovieListEntries, toSeriesListEntries } = useDataToSerieEntryList();
+  const dispatch = useAppDispatch();
   const loading = loadingMovies || loadingSeries;
 
   const onSuccessSeries = (response: any) => {
@@ -39,6 +42,7 @@ export const useDiscoverContent = (setResults: Dispatch<SetStateAction<ContentEn
       runtimeGte: runtimeGte,
       inMyPlatforms: inMyPlatforms
     }
+    dispatch(setCategory(category));
     if (category == MOVIES_NAME) {
       discoverMovie(filters, onSuccessMovies);
     } else {

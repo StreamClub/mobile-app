@@ -12,7 +12,9 @@ export default function Discover() {
     return (
         <View style={styles.container}>
             {searched?
-                <DiscoverContentList contentList={results} /> :
+                <DiscoverContentList 
+                    setSearched={setSearched}
+                    contentList={results} /> :
                 <DiscoverForm
                     setResults={setResults}
                     setSearched={setSearched} />

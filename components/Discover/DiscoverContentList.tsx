@@ -8,7 +8,6 @@ type DiscoverContentListParams = {
 }
 
 export const DiscoverContentList = (params: DiscoverContentListParams) => {
-  console.log(params.contentList);
 
   return(
     <SearchList length={params.contentList.length}>

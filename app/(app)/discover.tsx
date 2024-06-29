@@ -8,7 +8,6 @@ import { ContentEntry } from '../../entities/ContentEntry'
 export default function Discover() {
     const [results, setResults] = useState<ContentEntry[]>([]);
     const [searched, setSearched] = useState<boolean>(false);
-    console.log(searched);
     
     return (
         <View style={styles.container}>

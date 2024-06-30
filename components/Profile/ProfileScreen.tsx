@@ -1,5 +1,5 @@
 import React from 'react';
-import {  StyleSheet, ScrollView, Dimensions, View, Text, Image } from 'react-native';
+import {  StyleSheet, ScrollView, Dimensions, View, Text, Image, FlatList } from 'react-native';
 import { WatchlistEntry } from '../Types/Watchlist';
 import { Watchlist } from '../Watchlist';
 import { ProfileHeader, ProfileHeaderParams } from './ProfileHeader';
@@ -80,24 +80,35 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
         router.push('/services')
     }
 
+
+    const renderProfileContent = () => {
+        return (
+            <>
+                <ProfileHeader {...params.profileHeader}/>
+
+                <TitleText body="Mis plataformas" style={styles.titleText} size='medium'/>
+                <Carousel {...userServicesCarouselParams}/>
+                {editable?
+                    <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText} onPress={onPressManageServices}/> :
+                    null
+                }
+                <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
+                <Carousel {...seenContentCarouselParams}/>
+                <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={onPressMoreSeenContent}/>
+
+                <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
+            </>
+        )
+    }
+
     return (
-        <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
-            <ProfileHeader {...params.profileHeader}/>
 
-            <TitleText body="Mis plataformas" style={styles.titleText} size='medium'/>
-            <Carousel {...userServicesCarouselParams}/>
-            {editable?
-                <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText} onPress={onPressManageServices}/> :
-                null
-            }
-
-            <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
-            <Carousel {...seenContentCarouselParams}/>
-            <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={onPressMoreSeenContent}/>
-            
-            <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
-            <Watchlist {...watchlistParams}/>
-        </ScrollView>
+        <FlatList
+            ListHeaderComponent={renderProfileContent()}
+            ListFooterComponent={<Watchlist {...watchlistParams}/>}
+            data={[]}
+            renderItem={() => null}
+        />
     )
 }
 

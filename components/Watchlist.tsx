@@ -7,6 +7,7 @@ import { WatchlistEntry } from './Types/Watchlist';
 import { ContentDetailsParams } from '../apiCalls/params/content/ContentDetailsParams';
 import { ContentType } from './Types/ContentType';
 import { router } from 'expo-router';
+import { List, ListParams, ListEntry } from './BasicComponents/List';
 
 const ENTRIES_PER_ROW = 3;
 const entryContainerFlex = 1/ENTRIES_PER_ROW
@@ -15,15 +16,10 @@ export type WatchlistParams = {
     watchlist: WatchlistEntry[];
 }
 
-const renderWatchlistEntry = (entry: WatchlistEntry, index: number) => {
-    const tmdbParams: TmdbImageParams = {
-        resource: entry.poster,
-        type: TmdbImageType.Cover,
-        style: styles.posterStyle,
-        altText: entry.title
-    }
+export const Watchlist = (params: WatchlistParams) => {
     
     const onPressWatchlistEntry = (entry: WatchlistEntry) => {
+        console.log('entry', entry)
         const contentScreenParams: ContentDetailsParams = {
           id: entry.id.toString(),
         }
@@ -32,27 +28,28 @@ const renderWatchlistEntry = (entry: WatchlistEntry, index: number) => {
         const pathname = entry.contentType === ContentType.Movie ? '/movie' : '/serie'
         router.push({ pathname: pathname, params: contentScreenParams })
     }
+    
+    const watchlistAsList: ListEntry[] = params.watchlist.map((entry) => {
+        return {
+            itemObject: entry,
+            tmdbResource: entry.poster,
+            altText: entry.title,
+        }
+    })
 
-    return(
-        <Pressable key={index} style={styles.entryContainer} onPress={() => onPressWatchlistEntry(entry)}>
-            <TmdbImage {...tmdbParams}/>
-        </Pressable>
-    )
-}
 
-const renderWatchlistRow = (tuple: WatchlistEntry[], index: number) => {
-    return(
-        <View key={index} style={styles.rowContainer}>
-            {tuple.map((entry, index) => renderWatchlistEntry(entry, index))}
-        </View>
-    )
-}
+    const listParams: ListParams = {
+        list: watchlistAsList,
+        type: TmdbImageType.Cover,
+        listEntryStyle: styles.posterStyle,
+        entriesPerRow: ENTRIES_PER_ROW,
+        onPressListEntry: onPressWatchlistEntry,
+    }
 
-export const Watchlist = (params: WatchlistParams) => {
-    const tuples = createTuples(params.watchlist, ENTRIES_PER_ROW)
+
     return(
         <View style={styles.container}>
-            {tuples.map((tuple, index) => renderWatchlistRow(tuple, index))}
+            <List {...listParams}/>
         </View>
     )
 }

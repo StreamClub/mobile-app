@@ -46,3 +46,13 @@ export const usePatchDisplayName = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export const useGetProfilePhotos = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getProfilePhotos = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/users/photos';
+        const params: Params = { };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+    return {getProfilePhotos, loading};
+}

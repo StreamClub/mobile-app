@@ -32,7 +32,7 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
         <View style={containerStyles.container}>
             <View style={containerStyles.pictureAndDetailsSection}>
                 <View style={containerStyles.picture}>
-                    <ProfilePicture style={styles.picture}/>
+                    <ProfilePicture style={styles.picture} editable={params.editable} />
                 </View>
                 <View style={containerStyles.details}>
                     <View style={containerStyles.metric}>

@@ -57,6 +57,19 @@ export default function Index() {
                     color: 'blue',
                 }}
                 onPress={() => {
+                    router.push('/recos')
+                }}
+            >
+                Recomendaciones
+            </Text>
+
+            <Text
+                style={{
+                    marginVertical: 10,
+                    textDecorationLine: 'underline',
+                    color: 'blue',
+                }}
+                onPress={() => {
                     router.push('/services')
                 }}
             >

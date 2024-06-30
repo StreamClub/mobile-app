@@ -4,6 +4,7 @@ import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { UserEntry } from '../../entities/UsersListEntry'
+import { ContentType } from '../../components/Types/ContentType'
 
 const searchContentSlice = createSlice({
     name: 'searchContent',
@@ -16,6 +17,7 @@ const searchContentSlice = createSlice({
             id: "",
             seen: false,
             inWatchlist: false,
+            type: MOVIES_NAME
         }
     },
     reducers: {
@@ -38,8 +40,9 @@ const searchContentSlice = createSlice({
             state,
             action: PayloadAction<{ category: string, inWatchlist: boolean, contentId: string }>
         ) {
-            const x = action.payload
-            console.log({x})
+            const PAYLOAD = action.payload
+            console.log({ PAYLOAD })
+            console.log(state.category)
             if (state.category === action.payload.category) {
                 const updatedResults = state.results.map(entry => {
                     if (entry.id === action.payload.contentId) {
@@ -53,15 +56,16 @@ const searchContentSlice = createSlice({
                     }
                 });
                 state.results = updatedResults as MovieEntry[] | SeriesEntry[] | ArtistEntry[];
-                
-                if (state.focusedEntry.id === action.payload.contentId) {
-                    state.focusedEntry.inWatchlist = action.payload.inWatchlist
-                }
+            }
+
+            if (state.focusedEntry.id === action.payload.contentId && state.focusedEntry.type === action.payload.category) {
+                state.focusedEntry.inWatchlist = action.payload.inWatchlist
             }
         },
+        
         setFocusedEntry(
             state,
-            action: PayloadAction<{ id: string, seen: boolean, inWatchlist: boolean }>
+            action: PayloadAction<{ id: string, seen: boolean, inWatchlist: boolean, type: string }>
         ) {
             state.focusedEntry = action.payload
         },

@@ -14,6 +14,7 @@ import { SeriesDetailScreen } from '../../components/Series/SeriesDetails/Series
 import { ContentType } from '../../components/Types/ContentType'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import { setFocusedEntry } from '../../store/slices/searchContentSlice'
+import { SERIES_NAME } from '../../constants'
 
 
 export default function Serie() {
@@ -27,7 +28,7 @@ export default function Serie() {
     const onSuccess = (response: any) => {
         const series = response.data
         setSeries(series)
-        dispatch(setFocusedEntry({id: series.id, seen: false, inWatchlist: series.inWatchlist}))
+        dispatch(setFocusedEntry({id: series.id, seen: false, inWatchlist: series.inWatchlist, type: SERIES_NAME}))
     }
 
     useEffect(() => {

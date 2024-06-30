@@ -22,7 +22,7 @@ export default function Page() {
         const accessToken = response.data.token
         const refreshToken = response.data.refreshToken
         signIn?.(accessToken, refreshToken)
-        router.replace('/home')
+        router.replace('/profile')
     }
 
     const onPressSignIn = () => {

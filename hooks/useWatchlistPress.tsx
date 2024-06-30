@@ -4,13 +4,14 @@ import { ContentEntry } from '../entities/ContentEntry'
 import { ContentDetail } from '../entities/Details/ContentDetailEntry'
 import { useMovieWatchlist } from '../apiCalls/movies'
 import { useSeriesWatchlist } from '../apiCalls/series'
-// import { useAppSelector } from './redux/useAppSelector'
 import { useAppDispatch } from './redux/useAppDispatch';
 import { updateInWatchlistState } from '../store/slices/searchContentSlice';
 import { MOVIES_NAME, SERIES_NAME } from '../constants'
+import { changeOnWatchlistState } from '../store/slices/recosSlice';
+import { ContentType as ContentTypeEnum } from "../components/Types/ContentType";
 
 export const useWatchlistPress = (
-    contentEntry: ContentEntry | ContentDetail,
+    contentEntry: ContentEntry | ContentDetail | { id: string, inWatchlist: boolean },
     contentType: ContentType
 ) => {
     const {addMovieToWatchlist, removeMovieFromWatchlist, loading: movieLoading} = useMovieWatchlist();
@@ -22,10 +23,17 @@ export const useWatchlistPress = (
         
         const params = { 
             category: contentType.isMovie() ? MOVIES_NAME : SERIES_NAME, 
-            contentId: contentEntry.id, 
+            contentId: contentEntry.id,
             inWatchlist: true 
         }
         dispatch(updateInWatchlistState(params));
+
+        const params2 = { 
+            type: contentType.isMovie() ? ContentTypeEnum.Movie : ContentTypeEnum.Series, 
+            id: parseInt(contentEntry.id),
+            inWatchlist: true,
+        }
+        dispatch(changeOnWatchlistState(params2));
     }
 
     const onSuccessRemove = (response: any) => {
@@ -37,6 +45,13 @@ export const useWatchlistPress = (
             inWatchlist: false 
         }
         dispatch(updateInWatchlistState(params));
+
+        const params2 = { 
+            type: contentType.isMovie() ? ContentTypeEnum.Movie : ContentTypeEnum.Series, 
+            id: parseInt(contentEntry.id),
+            inWatchlist: false,
+        }
+        dispatch(changeOnWatchlistState(params2));
     }
 
     const addContentToWatchlist = () => {
@@ -65,10 +80,10 @@ export const useWatchlistPress = (
 
     const onPress = () => {
         if (loading) return
-        if (!contentEntry.inWatchlist) {
-            addContentToWatchlist()
-        } else {
+        if (contentEntry.inWatchlist) {
             removeContentFromWatchlist()
+        } else {
+            addContentToWatchlist()
         }
     }
     const loading = movieLoading || seriesLoading;

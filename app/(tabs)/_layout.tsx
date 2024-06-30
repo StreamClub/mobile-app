@@ -37,27 +37,22 @@ export default function AppLayout() {
         }}
         >
             <Tabs.Screen
-                name="profile"
+                name="recos"
                 options={{
                     tabBarIcon: ({ focused }) =>
                         <Image
-                            source={focused ? LocalIcon.account : LocalIcon.account_unselected}
+                            source={focused? LocalIcon.recos : LocalIcon.recos_unselected }
                             style={{
-                                aspectRatio: 1,
+                                aspectRatio: 469 / 512,
                                 height: focused? 24 : 20,
                             }}
                         />,
                     headerStyle: {
                         backgroundColor: colors.primaryRed
                     },
-                    headerTitle: "Mi Perfil",
+                    headerTitle: "Bienvenido",
                     headerTintColor: '#fff',
                     headerShown: true,
-                    headerRight: () => 
-                    <View style={{flexDirection: 'row'}} >
-                        <RequestsListButton />
-                        <SettingsButton />
-                    </View>
                 }}
             />
             <Tabs.Screen
@@ -79,12 +74,38 @@ export default function AppLayout() {
                     headerShown: true,
                 }}
             />
-            {/* <Tabs.Screen
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    tabBarIcon: ({ focused }) =>
+                        <Image
+                            source={focused ? LocalIcon.account : LocalIcon.account_unselected}
+                            style={{
+                                aspectRatio: 1,
+                                height: focused? 24 : 20,
+                            }}
+                        />,
+                    headerStyle: {
+                        backgroundColor: colors.primaryRed
+                    },
+                    headerTitle: "Mi Perfil",
+                    headerTintColor: '#fff',
+                    headerShown: true,
+                    headerRight: () => 
+                        <View style={{flexDirection: 'row'}} >
+                            <RequestsListButton />
+                            <SettingsButton />
+                        </View>
+                }}
+            />
+            
+            {/* Comment this so original "home" screen appers */}
+            <Tabs.Screen
                 name="home"
                 options={{
                     href: null,
                 }}
-            /> */}
+            />
         </Tabs>
     );
 }

@@ -7,7 +7,6 @@ import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/Pro
 import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
-import { useSession } from '../../context/ctx'
 import { useOnFocus } from '../../hooks/useOnFocus'
 import { useProfile } from '../../hooks/useProfile'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
@@ -21,10 +20,12 @@ const emptyProfile = {
     friendsCount: 0,
     reviewsCount: 0,
     level: {
-        name: '',
+        name: 'Loading...',
         points: 0,
-        nextLevelThreshold: 0
-    }
+        nextLevelThreshold: 1
+    },
+    friendRequest: null,
+    friendship: null
 }
 
 export default function Profile() {

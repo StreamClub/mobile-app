@@ -5,7 +5,11 @@ export const useErrorHandler = () => {
     const dispatch = useAppDispatch();
     
     const setError = (error: any) => {
-        dispatch(setErrorMessage(error.response.data.error));
+        if(error.response?.data.error) {
+            dispatch(setErrorMessage(error.response.data.error));
+        } else {
+            dispatch(setErrorMessage("Algo salió mal"));
+        }
         dispatch(setShowError(true));
     }
 

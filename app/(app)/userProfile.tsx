@@ -12,13 +12,20 @@ import { useProfile } from '../../hooks/useProfile'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
 
 const emptyProfile = {
-    editable: true,
-    id: 0,
-    email: '',
-    userName: '',
-    displayName: '',
-    friendsCount: 0,
-    reviewsCount: 0
+  editable: true,
+  id: 0,
+  email: '',
+  userName: '',
+  displayName: '',
+  friendsCount: 0,
+  reviewsCount: 0,
+  level: {
+      name: 'Loading...',
+      points: 0,
+      nextLevelThreshold: 1
+  },
+  friendRequest: null,
+  friendship: null
 }
 
 export type UserProfileParams = {

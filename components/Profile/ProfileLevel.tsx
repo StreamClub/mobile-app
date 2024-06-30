@@ -12,7 +12,6 @@ export type ProfileLevelParams = {
 
 export const ProfileLevel = (params: ProfileLevelParams) => {
   const progress = params.points? params.points/params.nextLevelThreshold : 0;
-
   return(
     <View>
       <BodyText body={params.name} size='big' style={{margin: 10}} />

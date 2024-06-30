@@ -1,7 +1,6 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { colors } from '../../assets'
-import { BodyText } from '../../components/BasicComponents/BodyText'
 import { SearchList } from '../../components/Search/SearchList'
 import { SearchContentBar } from '../../components/Search/SearchBar'
 import { ContentList } from '../../components/Content/ContentList'
@@ -10,6 +9,7 @@ import { SearchCategories } from '../../components/Search/SearchCategories'
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { UserEntry } from '../../entities/UsersListEntry'
+import { DiscoverButton } from '../../components/Search/DiscoverButton'
 
 export default function Search() {
     const { textSearched, results } = useAppSelector(
@@ -21,17 +21,9 @@ export default function Search() {
 
     const renderSearchHistoryTitle = () => {
         return (
-            <BodyText
-                style={{
-                    marginTop: 20,
-                    fontWeight: 'bold',
-                    alignSelf: 'flex-start',
-                    marginLeft: '5%',
-                }}
-                size="big"
-                color={colors.primaryBlack}
-                body={'Búsquedas recientes' + textSearched}
-            />
+            <View style={{justifyContent: 'flex-end', flex: 1, margin: 10}}>
+                <DiscoverButton />
+            </View>
         )
     }
 
@@ -61,6 +53,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        backgroundColor: colors.secondaryWhite,
+        backgroundColor: colors.secondaryWhite
     },
 })

@@ -37,23 +37,22 @@ export default function AppLayout() {
         }}
         >
             <Tabs.Screen
-                name="profile"
+                name="recos"
                 options={{
                     tabBarIcon: ({ focused }) =>
                         <Image
-                            source={focused ? LocalIcon.account : LocalIcon.account_unselected}
+                            source={focused? LocalIcon.recos : LocalIcon.recos_unselected }
                             style={{
-                                aspectRatio: 1,
+                                aspectRatio: 469 / 512,
                                 height: focused? 24 : 20,
                             }}
                         />,
                     headerStyle: {
                         backgroundColor: colors.primaryRed
                     },
-                    headerTitle: "Mi Perfil",
+                    headerTitle: "Bienvenido",
                     headerTintColor: '#fff',
                     headerShown: true,
-                    headerRight: () => <LogOutButton/>
                 }}
             />
             <Tabs.Screen
@@ -76,31 +75,33 @@ export default function AppLayout() {
                 }}
             />
             <Tabs.Screen
-                name="recos"
+                name="profile"
                 options={{
                     tabBarIcon: ({ focused }) =>
                         <Image
-                            source={focused? LocalIcon.recos : LocalIcon.recos_unselected }
+                            source={focused ? LocalIcon.account : LocalIcon.account_unselected}
                             style={{
-                                aspectRatio: 469 / 512,
+                                aspectRatio: 1,
                                 height: focused? 24 : 20,
                             }}
                         />,
                     headerStyle: {
                         backgroundColor: colors.primaryRed
                     },
-                    headerTitle: "TITULO DE PANTALLA",
+                    headerTitle: "Mi Perfil",
                     headerTintColor: '#fff',
                     headerShown: true,
+                    headerRight: () => <LogOutButton/>
                 }}
             />
-            {/* Quitar comentario para que no aparezca la pantalla "home" */}
-            {/* <Tabs.Screen
+            
+            {/* Comment this so original "home" screen appers */}
+            <Tabs.Screen
                 name="home"
                 options={{
                     href: null,
                 }}
-            /> */}
+            />
         </Tabs>
     );
 }

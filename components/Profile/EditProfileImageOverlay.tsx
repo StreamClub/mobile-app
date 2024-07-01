@@ -55,6 +55,7 @@ export const EditProfileImageOverlay = () => {
                 style={[styles.image, !image.available && {opacity: 0.5}]} />
             </View>
           ))}
+        {/* Agregar un textito que diga que se desbloquean nuevas imagenes al subir de nivel (puedo averiguar una i de info) */}
         </View>
         </> :
         <LoadingComponent /> }

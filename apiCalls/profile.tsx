@@ -5,9 +5,9 @@ import { Params, usePrivateCall } from './generic'
 export const useGetWatchlist = (userId: number) => {
     const {privateCall, loading} = usePrivateCall();
 
-    const getWatchlist = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const getWatchlist = (page: number, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const endpoint = '/watchlist/' + userId
-        const params: Params = { };
+        const params: Params = { params: { page, pageSize: 10 } };
         privateCall('GET', endpoint, params, onSuccess);
     }
     return {getWatchlist, loading};

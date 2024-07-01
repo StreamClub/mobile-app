@@ -1,21 +1,10 @@
 
 import { useGetMovieRecos, useGetSeriesRecos } from "../apiCalls/recos";
-import { ServiceEntry } from "../components/Types/Services";
 import { Reco } from "../components/Types/Reco";
 import { ContentType } from "../components/Types/ContentType";
 import { useSession } from "../context/ctx";
 import { useAppDispatch } from './redux/useAppDispatch';
-import { updateUserMovieRecos, updateUserSeriesRecos, changeOnWatchlistState } from '../store/slices/recosSlice';
-import { useWatchlistPress } from './useWatchlistPress'
-import { ContentType as ContentTypeClass } from '../entities/ContentType'
-
-//todo: remover fakes cuando el backend este listo
-const fakeServices = [{
-    logoPath: '/vbXJBJVv3u3YWt6ml0l0ldDblXT.jpg',
-    displayPriority: 29,
-    providerId: 569,
-    providerName: "DocAlliance Films",
-}] as ServiceEntry[]
+import { updateUserMovieRecos, updateUserSeriesRecos } from '../store/slices/recosSlice';
 
 export const useRecos = () => {
     const session = useSession()
@@ -33,7 +22,6 @@ export const useRecos = () => {
                 title: rawReco.title,
                 poster: rawReco.poster,
                 releaseDate: rawReco.releaseDate,
-                services: fakeServices,
                 genres: rawReco.genres,
                 duration: rawReco.duration,
                 type: ContentType.Movie,
@@ -43,6 +31,7 @@ export const useRecos = () => {
         })
         
         dispatch(updateUserMovieRecos(recos))
+
     }
 
     const onSuccessGetSeriesRecos = (response: any) => {
@@ -55,7 +44,6 @@ export const useRecos = () => {
                 title: rawReco.title,
                 poster: rawReco.poster,
                 releaseDate: rawReco.releaseDate,
-                services: fakeServices,
                 genres: rawReco.genres,
                 duration: rawReco.duration,
                 type: ContentType.Series,
@@ -68,24 +56,10 @@ export const useRecos = () => {
     }
 
     const loadRecos = () => {
-        getMovieRecos(onSuccessGetMovieRecos);
+        console.log("[loadRecos]")
+        getMovieRecos(onSuccessGetMovieRecos)
         getSeriesRecos(onSuccessGetSeriesRecos)
     }
-
-    // const useChangeOnWatchlistState = (type: ContentType, id: number, inWatchlist: boolean) => {
-    //     const stringId = id.toString()
-
-    //     const params = { 
-    //         type, 
-    //         id,
-    //         inWatchlist,
-    //     }
-    //     dispatch(changeOnWatchlistState(params));
-        
-
-    //     const { onPress } = useWatchlistPress({ id: stringId, inWatchlist }, new ContentTypeClass(type))
-    //     onPress()
-    // }
 
     return { loadRecos }
 }

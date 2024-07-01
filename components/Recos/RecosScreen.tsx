@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Dimensions, Text } from 'react-native';
+import { StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { colors } from '../../assets';
 import { UserRecos } from './UserRecos';
 

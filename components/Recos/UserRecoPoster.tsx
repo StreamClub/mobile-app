@@ -28,7 +28,6 @@ export const UserRecoPoster = (params: UserRecoPosterParams) => {
 
     const { reco, index } = params
     const detailsLeyend = "Ver detalle"
-    const { logoPath } = reco.services[0]
     const genres = reco.genres ? reco.genres.slice(0, 3) : []
     const inWatchlistLogo = reco.inWatchlist ? LocalIcon.removeFromWatchlist : LocalIcon.addToWatchlist
 

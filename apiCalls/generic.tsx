@@ -27,9 +27,10 @@ export const usePrivateCall = () => {
     const {setError} = useErrorHandler()
     const [loading, setLoading] = useState(false);
     const session = useSession();
+    
     const accessToken = session?.accessToken;
     const refreshToken = session?.refreshToken;
-
+    
     const expiredToken = (response: any) => {
         return response.status === tokenExpiredStatusCode && response.data.error === tokenExpiredErrorMessage
     }
@@ -93,6 +94,10 @@ export const usePrivateCall = () => {
         onSuccess: (response: AxiosResponse<any, any>) => void,
         onFailure?: (error: any) => void, newAccessToken?: string) => {
             setLoading(true);
+            if (!accessToken) {
+                console.log('[usePrivateCall] REQUEST NO EJECUTADA YA QUE accessToken = null')
+                return
+            }
             axios({
                 method: method,
                 url: baseURL + endpoint,

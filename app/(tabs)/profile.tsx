@@ -33,7 +33,7 @@ export default function Profile() {
     const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
     const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
-    const {loadingParams, getAll} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader);
+    const {loadingParams, getAll, onWatchlistReachedEnd} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader);
 
     useOnFocus(() => {
         getAll()
@@ -42,6 +42,7 @@ export default function Profile() {
     const profileParams: ProfileScreenParams = {
         editable: true,
         watchlist: watchlist,
+        onWatchlistReachedEnd: onWatchlistReachedEnd,
         profileHeader: profileHeader,
         userServices: userServices,
         seenContent: seenContent

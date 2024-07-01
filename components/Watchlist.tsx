@@ -14,6 +14,7 @@ const entryContainerFlex = 1/ENTRIES_PER_ROW
 
 export type WatchlistParams = {
     watchlist: WatchlistEntry[];
+    onReachedEnd: () => void;
 }
 
 export const Watchlist = (params: WatchlistParams) => {
@@ -44,6 +45,7 @@ export const Watchlist = (params: WatchlistParams) => {
         listEntryStyle: styles.posterStyle,
         entriesPerRow: ENTRIES_PER_ROW,
         onPressListEntry: onPressWatchlistEntry,
+        onReachedEnd: params.onReachedEnd,
     }
 
 

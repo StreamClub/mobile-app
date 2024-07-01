@@ -28,6 +28,7 @@ export type ListParams = {
     onPressListEntry: (itemObject: any) => void;
     listEntryWrapper?: (itemObject: any, itemComponent:React.JSX.Element, params: any) => React.ReactNode;
     listEntryWrapperProps?: any;
+    onReachedEnd?: () => void;
 }
 
 const renderEntry = (entry: ListEntry, index: number, params: ListParams) => {
@@ -79,6 +80,8 @@ export const List = (params: ListParams) => {
                 keyExtractor={(item, index) => index.toString()}
                 initialNumToRender={8}
                 windowSize={6}
+                onEndReached={params.onReachedEnd}
+                onEndReachedThreshold={0.3}
             />
         </View>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'expo-router'
+import { Redirect, router } from 'expo-router'
 import { useSession } from '../context/ctx'
 import { useEffect } from 'react'
 import { InitialScreen } from '../screens/InitialScreen'
@@ -14,15 +14,18 @@ export default function Index() {
     useEffect(() => {
         if (accessToken && refreshToken) {
             console.log(
-                '[INDEX] accessToken && refreshToken loaded. Redirecting to /home...'
+                '[INDEX] Tokens found'
             )
-
+            console.log({ accessToken, refreshToken })
             processTokens?.(accessToken, refreshToken)
+
+            console.log("[INDEX] Redirecting to /recos...")
+            router.replace('/recos')
         }
     }, [accessToken, refreshToken])
 
     if (accessToken && refreshToken) {
-        return <Redirect href="/profile" />
+        return <Redirect href="/recos" />
     } else {
         return <InitialScreen />
     }

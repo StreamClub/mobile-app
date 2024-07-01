@@ -20,6 +20,7 @@ const screenWidth = Dimensions.get('window').width
 export type ProfileScreenParams = {
     editable?: boolean;
     watchlist: WatchlistEntry[];
+    onWatchlistReachedEnd: () => void;
     profileHeader: ProfileHeaderParams;
     userServices: CarouselEntry[];
     seenContent: CarouselEntry[];
@@ -68,7 +69,8 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
     }
 
     const watchlistParams = {
-        watchlist: params.watchlist
+        watchlist: params.watchlist,
+        onReachedEnd: params.onWatchlistReachedEnd
     }
 
     const onPressMoreSeenContent = () => {

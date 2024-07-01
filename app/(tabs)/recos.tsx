@@ -5,7 +5,7 @@ import { colors } from '../../assets'
 import { RecosScreen } from '../../components/Recos/RecosScreen'
 import { useRecos } from '../../hooks/useRecos'
 
-export default function Profile() {
+export default function Recos() {
     const { loadRecos } = useRecos();
 
     useEffect(() => {

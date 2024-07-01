@@ -6,7 +6,6 @@ export type Reco = {
     title: string,
     poster: any,
     releaseDate: string,
-    services: ServiceEntry[],
     genres: string[],
     duration: number,
     type: ContentType,

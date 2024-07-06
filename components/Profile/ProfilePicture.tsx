@@ -5,25 +5,21 @@ import { LocalIcon } from '../Types/LocalIcon';
 import { Overlay } from 'react-native-elements';
 import { EditProfileImageOverlay } from './EditProfileImageOverlay';
 import { colors } from '../../assets';
-
-const getPictureUri = (firebaseId: number) => {
-    // TODO: implement firebase
-    return "https://www.shutterstock.com/image-photo/boring-job-bengal-cat-business-600nw-1999601336.jpg"
-}
+import { imagesMap } from './imagesMap';
 
 export type ProfilePictureParams = {
+    photoId: number,
     style: object,
     editable?: boolean
 }
 
 export const ProfilePicture = (params: ProfilePictureParams) => {
-    const uri = getPictureUri(1);
     const [openModal, setOpenModal] = useState(false);
 
     return(
         <View style={{flexDirection: 'row'}} >
             <Image 
-                source={{uri: uri}} 
+                source={imagesMap[params.photoId]}  
                 style={params.style}
             />
             {params.editable? 

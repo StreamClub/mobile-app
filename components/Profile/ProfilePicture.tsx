@@ -43,7 +43,7 @@ export const ProfilePicture = (params: ProfilePictureParams) => {
                     borderRadius: 20,
                 }}
             >
-                <EditProfileImageOverlay />
+                <EditProfileImageOverlay setOpenModal={setOpenModal} />
             </Overlay>
         </View>
     )

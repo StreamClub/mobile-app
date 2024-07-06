@@ -30,19 +30,20 @@ export const useGetProfile = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
-export type patchDisplayNameParams = {
-    displayName: string
+export type patchProfileParams = {
+    displayName?: string,
+    photoId?: number
 }
 
-export const usePatchDisplayName = () => {
+export const usePatchProfile = () => {
     const {privateCall, loading} = usePrivateCall();
 
-    const patchDisplayName = (queryParams: patchDisplayNameParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const patchProfile = (queryParams: patchProfileParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const endpoint = '/users'
         const params: Params = { data: queryParams }
         privateCall('PATCH', endpoint, params, onSuccess)
     }
-    return {patchDisplayName, loading};
+    return {patchProfile, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import { TitleText } from '../BasicComponents/TitleText';
 import { colors } from '../../assets';
-import { useGetProfilePhotos } from '../../apiCalls/profile';
+import { useGetProfilePhotos, usePatchProfile } from '../../apiCalls/profile';
 import { LoadingComponent } from '../BasicComponents/LoadingComponent';
 import { useOnFocus } from '../../hooks/useOnFocus';
+import { BodyText } from '../BasicComponents/BodyText';
 
 const imagesMap: { [key: number]: any } = {
   11: require("../../assets/profileImages/11.png"),
@@ -26,9 +27,14 @@ type ProfilePhoto = {
   available: boolean
 }
 
-export const EditProfileImageOverlay = () => {
+type EditProfileImageOverlayParams = {
+  setOpenModal: Dispatch<SetStateAction<boolean>>
+}
+
+export const EditProfileImageOverlay = (params: EditProfileImageOverlayParams) => {
   const {getProfilePhotos, loading} = useGetProfilePhotos();
   const [profilePhotos, setProfilePhotos] = useState<Array<ProfilePhoto>>([]);
+  const {patchProfile} = usePatchProfile();
 
   const onSuccess = (response: any) => {
     const input = response.data;
@@ -40,6 +46,20 @@ export const EditProfileImageOverlay = () => {
     getProfilePhotos(onSuccess);
   })
 
+  const onSuccessUpdatePhoto = (response: any) => {
+    console.log(response.data);
+    params.setOpenModal(false);
+  }
+
+  const onImagePress = (image: ProfilePhoto) => {
+    if(image.available) {
+      console.log(image.id);
+      patchProfile({photoId: image.id}, onSuccessUpdatePhoto);
+    } else {
+      console.log("Image not available");
+    }
+  }
+
   return (
     <View style={styles.container}>
         {!loading?
@@ -50,12 +70,14 @@ export const EditProfileImageOverlay = () => {
         <View style={styles.grid}>
           {profilePhotos.map((image, index) => (
             <View key={index} style={styles.imageContainer}>
-              <Image 
-                source={imagesMap[image.id]} 
-                style={[styles.image, !image.available && {opacity: 0.5}]} />
+              <Pressable onPress={() => onImagePress(image)}>
+                <Image 
+                  source={imagesMap[image.id]} 
+                  style={[styles.image, !image.available && {opacity: 0.5}]} />
+              </Pressable>
             </View>
           ))}
-        {/* Agregar un textito que diga que se desbloquean nuevas imagenes al subir de nivel (puedo averiguar una i de info) */}
+        <BodyText body ="* ¡Desbloquea nuevas imágenes al subir de nivel!" />
         </View>
         </> :
         <LoadingComponent /> }

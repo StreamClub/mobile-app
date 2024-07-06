@@ -14,13 +14,14 @@ type ProfilePhoto = {
 }
 
 type EditProfileImageOverlayParams = {
-  setOpenModal: Dispatch<SetStateAction<boolean>>
+  setOpenModal: Dispatch<SetStateAction<boolean>>,
+  setPhotoId: Dispatch<SetStateAction<number>>
 }
 
 export const EditProfileImageOverlay = (params: EditProfileImageOverlayParams) => {
   const {getProfilePhotos, loading} = useGetProfilePhotos();
   const [profilePhotos, setProfilePhotos] = useState<Array<ProfilePhoto>>([]);
-  const {patchProfile} = usePatchProfile();
+  const {patchProfile, loading: patchLoading} = usePatchProfile();
 
   const onSuccess = (response: any) => {
     const input = response.data;
@@ -34,6 +35,7 @@ export const EditProfileImageOverlay = (params: EditProfileImageOverlayParams) =
 
   const onSuccessUpdatePhoto = (response: any) => {
     console.log(response.data);
+    params.setPhotoId(response.data.photoId);
     params.setOpenModal(false);
   }
 

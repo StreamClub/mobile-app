@@ -15,11 +15,12 @@ export type ProfilePictureParams = {
 
 export const ProfilePicture = (params: ProfilePictureParams) => {
     const [openModal, setOpenModal] = useState(false);
+    const [photoId, setPhotoId] = useState(params.photoId);
 
     return(
         <View style={{flexDirection: 'row'}} >
             <Image 
-                source={imagesMap[params.photoId]}  
+                source={imagesMap[photoId]}  
                 style={params.style}
             />
             {params.editable? 
@@ -39,7 +40,9 @@ export const ProfilePicture = (params: ProfilePictureParams) => {
                     borderRadius: 20,
                 }}
             >
-                <EditProfileImageOverlay setOpenModal={setOpenModal} />
+                <EditProfileImageOverlay 
+                    setPhotoId={setPhotoId}
+                    setOpenModal={setOpenModal} />
             </Overlay>
         </View>
     )

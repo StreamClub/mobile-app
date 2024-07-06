@@ -10,7 +10,8 @@ export type ReviewType = {
   contentId: number,
   contentType: string,
   liked: boolean,
-  review: string
+  review: string,
+  userName?: string
 }
 
 type ReviewEntry = {
@@ -33,7 +34,10 @@ export const ReviewCard = (params: ReviewEntry) => {
                 size={50} 
                 style={{margin: 5}}
                 source={{uri: 'https://www.shutterstock.com/image-photo/boring-job-bengal-cat-business-600nw-1999601336.jpg'}} />
-              <BodyText body={"User " + review.userId} style={{margin: 10, fontWeight: 'bold'}} size='big'/>
+              <BodyText 
+                body={review.userName? review.userName : "My review"} 
+                style={{margin: 10, fontWeight: 'bold'}} 
+                size='big'/>
             </View>
             {review.liked?
               <Icon source="thumb-up" color={colors.secondaryBlue} size={40} /> :

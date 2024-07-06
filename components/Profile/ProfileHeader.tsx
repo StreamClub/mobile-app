@@ -19,7 +19,8 @@ export type ProfileHeaderParams = {
     editable: boolean,
     level: ProfileLevelParams,
     friendRequest: FriendRequestType | null,
-    friendship: FriendshipType | null
+    friendship: FriendshipType | null,
+    photoId: number
 }
 
 export const ProfileHeader = (params: ProfileHeaderParams) => {
@@ -32,7 +33,7 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
         <View style={containerStyles.container}>
             <View style={containerStyles.pictureAndDetailsSection}>
                 <View style={containerStyles.picture}>
-                    <ProfilePicture style={styles.picture}/>
+                    <ProfilePicture photoId={params.photoId} style={styles.picture} editable={params.editable} />
                 </View>
                 <View style={containerStyles.details}>
                     <View style={containerStyles.metric}>

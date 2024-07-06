@@ -25,7 +25,8 @@ const emptyProfile = {
         nextLevelThreshold: 1
     },
     friendRequest: null,
-    friendship: null
+    friendship: null,
+    photoId: 11
 }
 
 export default function Profile() {

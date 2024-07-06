@@ -28,4 +28,6 @@ export enum LocalIcon {
     series = require('../../assets/icons/series.png'),
     clock = require('../../assets/icons/clock.png'),
     play = require('../../assets/icons/play.png'),
+    games = require('../../assets/icons/games.png'),
+    games_unselected = require('../../assets/icons/games_unselected.png'),
 }

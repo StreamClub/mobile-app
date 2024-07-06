@@ -7,6 +7,7 @@ import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
 import { RequestsListButton } from '../../components/Profile/Friends/RequestsListButton';
 import { SettingsButton } from '../../components/Settings/SettingsButton';
+
 export default function AppLayout() {
     const session = useSession()
 
@@ -75,6 +76,25 @@ export default function AppLayout() {
                 }}
             />
             <Tabs.Screen
+                name="games"
+                options={{
+                    tabBarIcon: ({ focused }) =>
+                        <Image
+                            source={focused? LocalIcon.games : LocalIcon.games_unselected }
+                            style={{
+                                aspectRatio: 500 / 512,
+                                height: focused? 24 : 20,
+                            }}
+                        />,
+                    headerStyle: {
+                        backgroundColor: colors.primaryRed
+                    },
+                    headerTitle: "Juegos",
+                    headerTintColor: '#fff',
+                    headerShown: true,
+                }}
+            />
+            <Tabs.Screen
                 name="profile"
                 options={{
                     tabBarIcon: ({ focused }) =>
@@ -96,14 +116,6 @@ export default function AppLayout() {
                             <RequestsListButton />
                             <SettingsButton />
                         </View>
-                }}
-            />
-            
-            {/* Comment this so original "home" screen appers */}
-            <Tabs.Screen
-                name="home"
-                options={{
-                    href: null,
                 }}
             />
         </Tabs>

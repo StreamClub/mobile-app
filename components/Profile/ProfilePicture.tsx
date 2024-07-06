@@ -19,10 +19,12 @@ export const ProfilePicture = (params: ProfilePictureParams) => {
 
     return(
         <View style={{flexDirection: 'row'}} >
-            <Image 
-                source={imagesMap[photoId]}  
-                style={params.style}
-            />
+            {photoId?
+                <Image 
+                    source={imagesMap[photoId]}  
+                    style={params.style}
+                /> : null
+            }
             {params.editable? 
                 <IconButton
                     icon={LocalIcon.edit}

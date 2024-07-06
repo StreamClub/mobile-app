@@ -18,10 +18,12 @@ export const UsersListEntry = (params: UsersListEntryParams) => {
     router.push({ pathname: '/userProfile', params: routeParams })
   }
 
+  console.log(params.user)
+
   return(
     <Pressable onPress={onUserPress}>
       <View style={{flexDirection: 'row', margin: 20, justifyContent: 'flex-start'}}>
-        <ProfilePicture style={{borderRadius: 80, width: 70, height: 70}}/>
+        <ProfilePicture photoId={params.user.photoId} style={{borderRadius: 80, width: 70, height: 70}}/>
         <View style={{flexDirection: 'column', marginLeft: 20, flex: 0.9}}>
           <TitleText body={params.user.displayName} numberOfLines={1} />
           <BodyText body={params.user.email} numberOfLines={1} />

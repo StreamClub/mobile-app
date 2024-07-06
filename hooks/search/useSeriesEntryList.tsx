@@ -35,13 +35,13 @@ export const useDataToSerieEntryList = () => {
     }
 
     const toUsersListEntries = (data: any) => {
-        const usersList: UserEntry[] = []
-        const usersResponse = data.results
+        const usersList: UserEntry[] = [];
+        const usersResponse = data.results;
         usersResponse.forEach((user: any) => {
-            const userEntry: UserEntry = UserEntry.fromJson(user)
-            usersList.push(userEntry)
+            const userEntry: UserEntry = UserEntry.fromJson(user);
+            usersList.push(userEntry);
         })
-        return usersList
+        return usersList;
     }
 
     return { toSeriesListEntries, toMovieListEntries, toArtistListEntries, toUsersListEntries }

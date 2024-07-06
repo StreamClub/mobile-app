@@ -17,7 +17,7 @@ export const SearchCategories = (params: SearchCategories) => {
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
     
     useOnFocus(() => {
-        dispatch(setCategory(CATEGORIES[INITIAL_CATEGORY]));
+        //dispatch(setCategory(CATEGORIES[INITIAL_CATEGORY])); //ESTO ROMPE LO DE LA BUSQUEDA DE USUARIO
     })
 
     const onPress = (value: number) => {

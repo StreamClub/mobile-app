@@ -23,7 +23,8 @@ export const FriendEntry = (params: FriendType) => {
   return(
     <Pressable onPress={onFriendPress} >
       <View style={{flexDirection: 'row', margin: 20, justifyContent: 'flex-start', alignItems: 'center'}}>
-        <ProfilePicture style={{borderRadius: 80, width: 70, height: 70}}/>
+        {/* Hardcodeada la foto de perfil xq no la recibo desde el back */}
+        <ProfilePicture photoId={11} style={{borderRadius: 80, width: 70, height: 70}}/>
         <View style={{flexDirection: 'column', marginLeft: 20, flex: 0.9}}>
           <TitleText body={params.displayName} numberOfLines={1} />
           <BodyText body={params.email} numberOfLines={1} />

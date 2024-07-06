@@ -18,7 +18,6 @@ export class Review {
   }
 
   public static fromJson(json: any): Review {
-    console.log(json);
     return new Review({
       id: json.id,
       userId: json.userId,

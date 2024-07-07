@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { IconWithText, IconWithTextParams } from '../BasicComponents/IconWithText';
 import { LocalIcon } from '../Types/LocalIcon';
-import { usePatchDisplayName, patchDisplayNameParams } from '../../apiCalls/profile';
+import { patchProfileParams, usePatchProfile } from '../../apiCalls/profile';
 import { MAX_DISPLAY_NAME_LENGHT } from '../../constants/constants';
 
 type ProfileDisplayNameParams = {
@@ -13,7 +13,7 @@ type ProfileDisplayNameParams = {
 export const ProfileDisplayName = (params: ProfileDisplayNameParams) => {
   const [editing, setEditing] = React.useState(false);
   const [displayName, setDisplayName] = React.useState(params.displayName);
-  const {patchDisplayName} = usePatchDisplayName();
+  const {patchProfile} = usePatchProfile();
 
   const onSuccessPatchDisplayName = (response: any) => {
     console.log("[onsuccess]", response.data)
@@ -45,10 +45,10 @@ export const ProfileDisplayName = (params: ProfileDisplayNameParams) => {
   const onChangeDisplayName = (newDisplayName: string) => {
     console.log("[onchange]", newDisplayName)
 
-    const patchDisplayNameParams: patchDisplayNameParams = {
+    const patchDisplayNameParams: patchProfileParams = {
         displayName: newDisplayName
     }
-    patchDisplayName(patchDisplayNameParams, onSuccessPatchDisplayName)
+    patchProfile(patchDisplayNameParams, onSuccessPatchDisplayName)
   }
 
   const textInputParams = {

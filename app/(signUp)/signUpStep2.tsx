@@ -24,7 +24,6 @@ export default function Page() {
         const { token, refreshToken } = response.data
 
         signIn?.(token, refreshToken)
-        router.replace('/home')
     }
 
     const handleCreateAccount = (verificationCode: number) => {

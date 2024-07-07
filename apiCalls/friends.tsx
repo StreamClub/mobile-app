@@ -5,9 +5,9 @@ import { Params, usePrivateCall } from './generic';
 export const useGetUsersFriends = () => {
   const {privateCall, loading} = usePrivateCall();
 
-  const getFriends = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+  const getFriends = (page:number, onSuccess: (response: AxiosResponse<any, any>) => void) => {
     const endpoint = '/friends';
-    const params: Params = { };
+    const params: Params = { params: {page, pageSize: 20} };
     privateCall('GET', endpoint, params, onSuccess);
   }
 
@@ -18,9 +18,9 @@ export const useGetUsersFriends = () => {
 export const useGetFriendsRequest = () => {
   const {privateCall, loading} = usePrivateCall();
 
-  const getFriendsRequests = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+  const getFriendsRequests = (page: number, onSuccess: (response: AxiosResponse<any, any>) => void) => {
     const endpoint = '/friends/requests';
-    const params: Params = {};
+    const params: Params = { params: {page, pageSize: 20} };
     privateCall('GET', endpoint, params, onSuccess);
   }
 

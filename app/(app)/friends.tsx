@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { colors } from '../../assets'
 import { Stack } from 'expo-router'
@@ -10,21 +10,28 @@ import { FriendType } from '../../components/Profile/Friends/FriendEntry'
 
 export default function Friends() {
   const [friends, setFriends] = useState<FriendType[]>([]);
-  const {getFriends, loading} = useGetFriends(setFriends);
+  const {getFriends, onFriendsReachedEnd, loading} = useGetFriends(setFriends);
+  const [ loadingFirstPage, setLoadingFirstPage ] = useState(true);
 
   useOnFocus(() => {
     getFriends();
   })
+  useEffect(() => {
+    if (loadingFirstPage && !loading) {
+      console.log('[loadingFirstPage]', loadingFirstPage)
+      setLoadingFirstPage(false);
+    }
+  }, [loading])
 
   return(
     <View style={styles.container}>
       <Stack.Screen
         options ={{}}
       />
-      {loading ? 
+      {loadingFirstPage ? 
         <LoadingComponent />
       :
-        <FriendsList friends={friends}/>
+        <FriendsList friends={friends} onReachedEnd={onFriendsReachedEnd}/>
       }
     </View>
   )

@@ -12,9 +12,7 @@ export default function Games() {
         size="small"
         style={{ margin: 30 }}
         color={colors.primaryBlue} />
-      <View>
-        <TriviasList />
-      </View>
+      <TriviasList />
     </View>
   )
 }

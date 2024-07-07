@@ -26,7 +26,6 @@ export const GoogleSignInButton = () => {
     const accessToken = response.data.token
     const refreshToken = response.data.refreshToken
     signIn?.(accessToken, refreshToken)
-    router.replace('/home');
   }
 
   const onFailure = (error: any) => {

@@ -7,7 +7,7 @@ export const useGetWatchlist = (userId: number) => {
 
     const getWatchlist = (page: number, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const endpoint = '/watchlist/' + userId
-        const params: Params = { params: { page, pageSize: 10 } };
+        const params: Params = { params: { page, pageSize: 20 } };
         privateCall('GET', endpoint, params, onSuccess);
     }
     return {getWatchlist, loading};

@@ -23,7 +23,7 @@ export const useProfile = (setWatchlist: Dispatch<SetStateAction<WatchlistEntry[
   const {getUserServices, loading: loadingUserServices} = useUserServices(userId);
   const {getProfile, loading: loadingProfileHeader} = useGetProfile();
   const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
-  const loadingParams = loadingWatchlist || loadingProfileHeader || loadingUserServices || loadingSeenContent;
+  const loadingParams = loadingProfileHeader || loadingUserServices || loadingSeenContent;
 
   const onSuccessGetWatchlist = (response: any) => {
     const watchlist:WatchlistEntry[] = response.data.results
@@ -72,6 +72,7 @@ export const useProfile = (setWatchlist: Dispatch<SetStateAction<WatchlistEntry[
 
   const getAll = () => {
     getWatchlist(INITIAL_PAGE, onSuccessGetWatchlist);
+    setNextPage(INITIAL_PAGE+1)
 
     const profileParams: getProfileParams = {
       userId: userId? userId : 0,

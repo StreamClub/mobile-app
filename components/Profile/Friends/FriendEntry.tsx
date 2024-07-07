@@ -30,6 +30,15 @@ export const FriendEntry = (params: FriendType) => {
           <BodyText body={params.email} numberOfLines={1} />
         </View>
       </View>
+      <View
+        style={{
+            height: 1,
+            backgroundColor: 'black',
+            width: '90%',
+            marginBottom: 10,
+            alignSelf: 'center',
+        }}
+      ></View> 
     </Pressable>
   )
 }

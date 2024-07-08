@@ -11,3 +11,17 @@ export const useGetAllTrivias = () => {
 
   return {getAllTrivias, loading};
 }
+
+// --------- --------- --------- --------- --------- ---------
+export const useGetTrivia = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const getTrivia = (contentType: string, contentId: string,  onSuccess: (response: AxiosResponse<any, any>) => void) => {
+      console.log("Buscando trivias");
+      const endpoint = '/trivias/' + contentType + '/' + contentId;
+      console.log(endpoint);
+      privateCall('GET', endpoint, {}, onSuccess);
+  }
+
+  return {getTrivia, loading};
+}

@@ -25,8 +25,8 @@ export const TriviasList = () => {
     <ScrollView style={{width: screenWidth}} >
       {loading?
         <LoadingComponent /> :
-        trivias.map((trivia) => 
-          <TriviaCard trivia={trivia} />
+        trivias.map((trivia, index) => 
+          <TriviaCard trivia={trivia} key={index} />
         )
       }
     </ScrollView>

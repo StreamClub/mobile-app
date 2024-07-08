@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from 'react-native'
 import { colors } from "../../assets";
-import { BodyText } from "../BasicComponents/BodyText";
 import { TitleText } from "../BasicComponents/TitleText";
 import { TmdbImage, TmdbImageType } from "../BasicComponents/TmdbImage";
-import { ScrollView } from "react-native-gesture-handler";
 import { CustomButton } from "../BasicComponents/CustomButton";
 import { Overlay } from "react-native-elements";
+import { TriviaGame } from "./TriviaGame";
 
 export type Trivia = {
   id: string,
@@ -21,6 +20,7 @@ type TriviaCardParams = {
 }
 
 export const TriviaCard = (params: TriviaCardParams) => {
+  const [openModal, setOpenModal] = useState(false);
   const trivia = params.trivia;
 
   return(
@@ -39,9 +39,19 @@ export const TriviaCard = (params: TriviaCardParams) => {
             type="primary"
             fontSize="small"
             buttonSize="medium"
-            onPress={() => console.log("Jugando")} />
+            onPress={() => setOpenModal(true)} />
         </View>
       </View>
+      <Overlay
+        isVisible={openModal}
+        onBackdropPress={() => setOpenModal(false)}
+        overlayStyle={{
+            backgroundColor: colors.primarySkyBlue,
+            margin: 20,
+            borderRadius: 20,
+        }} >
+        <TriviaGame contentId={trivia.contentId} contentType={trivia.contentType} />
+      </Overlay>
     </View>
   )
 }

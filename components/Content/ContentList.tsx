@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ContentEntry } from '../../entities/ContentEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { MovieEntry } from '../../entities/MovieListEntry'
@@ -16,6 +16,11 @@ type ContentListProps = {
 }
 
 export const ContentList = (params: ContentListProps) => {
+    
+    useEffect(() => {
+        console.log("[ContentList] rendered")
+    },[])
+
     const { category } = useAppSelector((state) => state.searchContent)
     switch (category) {
         case SERIES_NAME:

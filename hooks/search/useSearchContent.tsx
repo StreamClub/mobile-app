@@ -9,18 +9,27 @@ import {
     SERIES_NAME,
     USERS_NAME,
 } from '../../constants'
+import { ArtistEntry } from '../../entities/ArtistListEntry'
+import { MovieEntry } from '../../entities/MovieListEntry'
+import { SeriesEntry } from '../../entities/SeriesListEntry'
+import { UserEntry } from '../../entities/UsersListEntry'
 import {
     setLoading,
+    setResults,
     setTextSearched,
+    setNextPage,
+    addResults,
 } from '../../store/slices/searchContentSlice'
+import { serializeSearchResults } from '../../utils/serializeSearchResults'
 import { useAppDispatch } from '../redux/useAppDispatch'
 import { useAppSelector } from '../redux/useAppSelector'
+import { useDataToSerieEntryList } from './useSeriesEntryList'
 import { useTimer } from './useTimer'
 
-export const useSearchContent = (
-    onSuccessSearch: (response: any) => void
-) => {
-    const { textSearched, category } = useAppSelector(
+const INITIAL_PAGE = 1
+
+export const useSearchContent = () => {
+    const { textSearched, category, nextPage } = useAppSelector(
         (state) => state.searchContent
     )
     const dispatch = useAppDispatch()
@@ -29,11 +38,14 @@ export const useSearchContent = (
     const { searchArtists } = useSearchArtist();
     const { searchUsers } = useSearchUsers();
 
-    const searchText = (text: string) => {
-        console.log('Buscando ' + text + '...')
+    const searchTextPage = () => {
+        searchText(textSearched, nextPage)
+    }
 
-        const queryParams: SearchParams = { query: text, page: 1 }
-
+    const searchText = (text: string, page: number = INITIAL_PAGE) => {
+        console.log('Buscando ' + text + '...' + 'pagina ' + page + ' ' + category)
+        const queryParams: SearchParams = { query: text, page: page }
+        console.log("queryParams: " + JSON.stringify(queryParams))
         if (category == MOVIES_NAME) {
             searchMovies(queryParams, onSuccessSearch)
         } else if (category == SERIES_NAME) {
@@ -60,6 +72,7 @@ export const useSearchContent = (
         if (newText.length > MAX_SEARCH_LENGTH) return
         
         dispatch(setTextSearched(newText))
+        dispatch(setResults([]))
         cancelTimer()
 
         // If the text is empty, no new timer is needed
@@ -71,5 +84,47 @@ export const useSearchContent = (
         startNewTimer(newText)
     }
 
-    return { onSubmit, onChangeTextSearched }
+    const { toSeriesListEntries, toArtistListEntries, toMovieListEntries, toUsersListEntries } =
+        useDataToSerieEntryList()
+
+    // onSuccess and onFailure callbacks
+    // ------------------------------------------------------------
+    const onSuccessSearch = (response: any) => {
+        console.log('Busqueda exitosa: ')
+        const _page = response.data.page
+        let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[]
+        switch (category) {
+            case MOVIES_NAME:
+                parsedResponse = toMovieListEntries(response.data)
+                break
+            case SERIES_NAME:
+                parsedResponse = toSeriesListEntries(response.data)
+                break
+            case ARTISTS_NAME:
+                parsedResponse = toArtistListEntries(response.data)
+                break
+            case USERS_NAME:
+                parsedResponse = toUsersListEntries(response.data)
+                break
+            default:
+                break
+        }
+        const serializedData = serializeSearchResults(parsedResponse, category)
+        if (_page === INITIAL_PAGE) {
+            dispatch(setNextPage(INITIAL_PAGE + 1))
+            dispatch(setResults(serializedData))
+            dispatch(setLoading(false))
+        }
+        else {
+            if (parsedResponse.length > 0) {
+                console.log('Adding page', _page)
+                dispatch(addResults(serializedData))
+                const np = _page + 1
+                dispatch(setNextPage(np))
+            }
+            dispatch(setLoading(false))
+        }
+    }
+
+    return { onSubmit, onChangeTextSearched, searchTextPage }
 }

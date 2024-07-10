@@ -4,7 +4,6 @@ import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { UserEntry } from '../../entities/UsersListEntry'
-import { ContentType } from '../../components/Types/ContentType'
 
 const searchContentSlice = createSlice({
     name: 'searchContent',
@@ -18,7 +17,8 @@ const searchContentSlice = createSlice({
             seen: false,
             inWatchlist: false,
             type: MOVIES_NAME
-        }
+        },
+        nextPage: 2,
     },
     reducers: {
         setCategory(state, action: PayloadAction<string>) {
@@ -34,7 +34,14 @@ const searchContentSlice = createSlice({
             state,
             action: PayloadAction<MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[] >
         ) {
+            console.log("Setting results.. " + JSON.stringify(action.payload))
             state.results = action.payload
+        },
+        addResults(
+            state,
+            action: PayloadAction<MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[] >
+        ) {
+            state.results = state.results.concat(action.payload)
         },
         updateInWatchlistState(
             state,
@@ -69,9 +76,13 @@ const searchContentSlice = createSlice({
         ) {
             state.focusedEntry = action.payload
         },
+        
+        setNextPage(state, action: PayloadAction<number>) {
+            state.nextPage = action.payload
+        },
     },
 })
 
-export const { setCategory, setTextSearched, setLoading, setResults, updateInWatchlistState, setFocusedEntry } =
+export const { setCategory, setTextSearched, setLoading, setResults, updateInWatchlistState, setFocusedEntry, setNextPage, addResults } =
     searchContentSlice.actions
 export default searchContentSlice.reducer

@@ -31,33 +31,39 @@ export const SearchContentBar = () => {
 
     // onSuccess and onFailure callbacks
     // ------------------------------------------------------------
-    const onSuccessSearch = (response: any) => {
-        console.log('Busqueda exitosa: ')
-        let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[]
-        switch (category) {
-            case MOVIES_NAME:
-                parsedResponse = toMovieListEntries(response.data)
-                break
-            case SERIES_NAME:
-                parsedResponse = toSeriesListEntries(response.data)
-                break
-            case ARTISTS_NAME:
-                parsedResponse = toArtistListEntries(response.data)
-                break
-            case USERS_NAME:
-                parsedResponse = toUsersListEntries(response.data)
-                break
-            default:
-                break
-        }
-        const serializedData = serializeSearchResults(parsedResponse, category)
-        dispatch(setResults(serializedData))
-        dispatch(setLoading(false))
-    }
+    // const onSuccessSearch = (response: any) => {
+    //     console.log('Busqueda exitosa: ')
+    //     const page = response.data.page
+    //     let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[]
+    //     switch (category) {
+    //         case MOVIES_NAME:
+    //             parsedResponse = toMovieListEntries(response.data)
+    //             break
+    //         case SERIES_NAME:
+    //             parsedResponse = toSeriesListEntries(response.data)
+    //             break
+    //         case ARTISTS_NAME:
+    //             parsedResponse = toArtistListEntries(response.data)
+    //             break
+    //         case USERS_NAME:
+    //             parsedResponse = toUsersListEntries(response.data)
+    //             break
+    //         default:
+    //             break
+    //     }
+    //     const serializedData = serializeSearchResults(parsedResponse, category)
+    //     if (page === 1){
+    //         dispatch(setResults(serializedData))
+    //         dispatch(setLoading(false))
+    //     }
+    //     else {
+    //         dispatch(setResultsPage(serializedData))
+    //     }
+    // }
 
-    const { onSubmit, onChangeTextSearched } = useSearchContent(
-        onSuccessSearch
-    )
+    const { onSubmit, onChangeTextSearched } = useSearchContent()
+        // onSuccessSearch
+    // )
     // ------------------------------------------------------------
 
     return (

@@ -1,8 +1,9 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { FlatList, ScrollView, StyleSheet } from 'react-native'
 import { ContentType } from '../entities/ContentType'
 import { ContentListEntry } from './Content/ContentListEntry'
 import { MovieEntry } from '../entities/MovieListEntry'
+import { useSearchContent } from '../hooks/search/useSearchContent'
 
 type MovieListProps = {
     movieList: MovieEntry[]
@@ -11,6 +12,7 @@ type MovieListProps = {
 export const MovieList = (params: MovieListProps) => {
     const movieList = params.movieList
     const contentType = new ContentType('movie')
+    const { searchTextPage } = useSearchContent()
 
     // Render functions
     // ------------------------------------------------------------
@@ -26,9 +28,19 @@ export const MovieList = (params: MovieListProps) => {
     // ------------------------------------------------------------
 
     return (
-        <ScrollView style={styles.movieListContainer}>
-            {movieList.map(renderMovieEntry)}
-        </ScrollView>
+        <FlatList 
+            style={styles.movieListContainer}
+            data={movieList}
+            renderItem={({item, index}) => renderMovieEntry(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={searchTextPage}
+        />
+
+
+        // <ScrollView style={styles.movieListContainer}>
+        //     {movieList.map(renderMovieEntry)}
+        // </ScrollView>
     )
 }
 

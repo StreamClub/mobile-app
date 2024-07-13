@@ -35,7 +35,9 @@ export const TriviaQuestion = (params: TriviaQuestionParams) => {
         <BodyText body={params.question.question} />
         <View>
           {params.question.options.map((option, index) => 
-            <View style={{flexDirection: 'row', alignContent: 'center'}} >
+            <View 
+              style={{flexDirection: 'row', alignContent: 'center'}}
+              key={index} >
               <RadioButton
                 value={option}
                 status={ checked === option ? 'checked' : 'unchecked' }

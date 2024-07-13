@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useGetTrivia } from "../../apiCalls/trivias";
 import { TmdbImage, TmdbImageType } from "../BasicComponents/TmdbImage";
 import { TitleText } from "../BasicComponents/TitleText";
 import { colors } from "../../assets";
 import { LoadingComponent } from "../BasicComponents/LoadingComponent";
-import { Question, TriviaQuestion } from "./TriviaQuestion";
-import { CustomButton } from "../BasicComponents/CustomButton";
+import { Question } from "./TriviaQuestion";
+import { TriviaContent } from "./TriviaContent";
 
 type TriviaGameParams = {
   contentType: string,
-  contentId: number
+  contentId: number,
+  setOpenModal: Dispatch<SetStateAction<boolean>>
 }
 
-type TriviaGame = {
+export type TriviaGame = {
   id: string,
   contentId: number,
   contentType: string,
@@ -34,22 +35,13 @@ const emptyTriviaGame: TriviaGame = {
 export const TriviaGame = (params: TriviaGameParams) => {
   const {getTrivia, loading} = useGetTrivia();
   const [triviaGame, setTriviaGame] = useState<TriviaGame>(emptyTriviaGame);
-  const [index, setIndex] = useState(0);
-  const [responses, setResponses] = useState<Array<string>>([]);
 
   useEffect(() => {
     getTrivia(params.contentType, params.contentId.toString(), onSuccess);
   }, [])
 
   const onSuccess = (response: any) => {
-    console.log(response.data);
     setTriviaGame(response.data);
-  }
-
-  const pushResponse = (option: string) => {
-    const newResponses = [...responses];
-    newResponses[index] = option;
-    setResponses(newResponses);
   }
   
   return(
@@ -66,23 +58,9 @@ export const TriviaGame = (params: TriviaGameParams) => {
               body={triviaGame.title}
               style={{margin: 10}} />
           </View>
-          {triviaGame.questions.length > 0?
-            <TriviaQuestion 
-              question={triviaGame.questions[index]}
-              questionNumber={index + 1}
-              totalQuestions={triviaGame.questions.length}
-              key={index}
-              pushResponse={pushResponse} /> :
-            null
-          }
-          <CustomButton 
-            buttonText="Siguiente"
-            type="primary"
-            fontSize="small"
-            buttonSize="medium"
-            disabled={responses[index] == null}
-            onPress={() => setIndex(index + 1)}
-            style={{margin: 10, alignSelf: 'flex-end'}} />
+          <TriviaContent 
+            triviaGame={triviaGame}
+            setOpenModal={params.setOpenModal} />
         </View>
       }
     </View>

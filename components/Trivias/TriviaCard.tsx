@@ -44,13 +44,16 @@ export const TriviaCard = (params: TriviaCardParams) => {
       </View>
       <Overlay
         isVisible={openModal}
-        onBackdropPress={() => setOpenModal(false)}
+        onBackdropPress={() => {}}
         overlayStyle={{
             backgroundColor: colors.primarySkyBlue,
             margin: 20,
             borderRadius: 20,
         }} >
-        <TriviaGame contentId={trivia.contentId} contentType={trivia.contentType} />
+        <TriviaGame 
+          contentId={trivia.contentId} 
+          contentType={trivia.contentType}
+          setOpenModal={setOpenModal} />
       </Overlay>
     </View>
   )

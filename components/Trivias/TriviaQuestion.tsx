@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { BodyText } from "../BasicComponents/BodyText";
 import { View } from "react-native";
 import { TitleText } from "../BasicComponents/TitleText";
@@ -15,11 +15,17 @@ export type Question = {
 type TriviaQuestionParams = {
   question: Question,
   questionNumber: number,
-  totalQuestions: number
+  totalQuestions: number,
+  pushResponse: (option: string) => void
 }
 
 export const TriviaQuestion = (params: TriviaQuestionParams) => {
   const [checked, setChecked] = useState('none');
+
+  const onCheck = (option: string) => {
+    setChecked(option);
+    params.pushResponse(option);
+  }
 
   return(
     <View style={{backgroundColor: colors.primaryWhite, borderRadius: 10}} >
@@ -28,17 +34,17 @@ export const TriviaQuestion = (params: TriviaQuestionParams) => {
           body={"Pregunta " + (params.questionNumber) + "/" + params.totalQuestions + ":"} />
         <BodyText body={params.question.question} />
         <View>
-          {params.question.options.map((question, index) => 
+          {params.question.options.map((option, index) => 
             <View style={{flexDirection: 'row', alignContent: 'center'}} >
               <RadioButton
-                value={question}
-                status={ checked === question ? 'checked' : 'unchecked' }
-                onPress={() => setChecked(question)}
+                value={option}
+                status={ checked === option ? 'checked' : 'unchecked' }
+                onPress={() => onCheck(option)}
                 key={index}
                 color={colors.primaryBlue}
                 uncheckedColor={colors.primaryBlack} />
               <BodyText
-                body={question}
+                body={option}
                 style={{margin: 5}} />
             </View>
           )}

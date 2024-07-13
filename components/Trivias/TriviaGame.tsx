@@ -35,6 +35,7 @@ export const TriviaGame = (params: TriviaGameParams) => {
   const {getTrivia, loading} = useGetTrivia();
   const [triviaGame, setTriviaGame] = useState<TriviaGame>(emptyTriviaGame);
   const [index, setIndex] = useState(0);
+  const [responses, setResponses] = useState<Array<string>>([]);
 
   useEffect(() => {
     getTrivia(params.contentType, params.contentId.toString(), onSuccess);
@@ -43,6 +44,12 @@ export const TriviaGame = (params: TriviaGameParams) => {
   const onSuccess = (response: any) => {
     console.log(response.data);
     setTriviaGame(response.data);
+  }
+
+  const pushResponse = (option: string) => {
+    const newResponses = [...responses];
+    newResponses[index] = option;
+    setResponses(newResponses);
   }
   
   return(
@@ -63,7 +70,9 @@ export const TriviaGame = (params: TriviaGameParams) => {
             <TriviaQuestion 
               question={triviaGame.questions[index]}
               questionNumber={index + 1}
-              totalQuestions={triviaGame.questions.length} /> :
+              totalQuestions={triviaGame.questions.length}
+              key={index}
+              pushResponse={pushResponse} /> :
             null
           }
           <CustomButton 
@@ -71,7 +80,9 @@ export const TriviaGame = (params: TriviaGameParams) => {
             type="primary"
             fontSize="small"
             buttonSize="medium"
-            onPress={() => setIndex(index + 1)} />
+            disabled={responses[index] == null}
+            onPress={() => setIndex(index + 1)}
+            style={{margin: 10, alignSelf: 'flex-end'}} />
         </View>
       }
     </View>

@@ -1,9 +1,10 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { FlatList, ScrollView } from 'react-native'
 import { styles } from './styles/SeriesList.style'
 import { SeriesEntry } from '../../../entities/SeriesListEntry'
 import { ContentListEntry } from '../../Content/ContentListEntry'
 import { ContentType } from '../../../entities/ContentType'
+import { useSearchContent } from '../../../hooks/search/useSearchContent'
 
 type SeriesListProps = {
     seriesList: SeriesEntry[]
@@ -12,6 +13,7 @@ type SeriesListProps = {
 export const SeriesList = (params: SeriesListProps) => {
     const seriesList = params.seriesList
     const contentType = new ContentType('series')
+    const { searchTextPage } = useSearchContent()
 
     const renderSeriesEntry = (seriesEntry: SeriesEntry, index: number) => {
         return (
@@ -24,8 +26,13 @@ export const SeriesList = (params: SeriesListProps) => {
     }
 
     return (
-        <ScrollView style={styles.seriesListContainer}>
-            {seriesList.map(renderSeriesEntry)}
-        </ScrollView>
+        <FlatList 
+            style={styles.seriesListContainer}
+            data={seriesList}
+            renderItem={({item, index}) => renderSeriesEntry(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={searchTextPage}
+        />
     )
 }

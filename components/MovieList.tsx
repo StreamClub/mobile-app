@@ -36,11 +36,6 @@ export const MovieList = (params: MovieListProps) => {
             onEndReachedThreshold={0}
             onEndReached={searchTextPage}
         />
-
-
-        // <ScrollView style={styles.movieListContainer}>
-        //     {movieList.map(renderMovieEntry)}
-        // </ScrollView>
     )
 }
 

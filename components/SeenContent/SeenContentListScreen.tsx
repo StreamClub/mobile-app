@@ -7,20 +7,16 @@ import { SeenContentList, SeenContentListParams } from './SeenContentList';
 const screenWidth = Dimensions.get('window').width
 
 export type SeenContentListScreenParams = {
-    seenContentList: SeenContentEntry[];
     onPressSeenContentEntry: (entry: SeenContentEntry) => void;
 }
 
 export const SeenContentListScreen = (params: SeenContentListScreenParams) => {
     const seenContentListParams: SeenContentListParams = {
-        seenContentList: params.seenContentList,
         onPressSeenContentEntry: params.onPressSeenContentEntry,
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <SeenContentList {...seenContentListParams}/>
-        </ScrollView>
+        <SeenContentList {...seenContentListParams}/>
     )
 }
 

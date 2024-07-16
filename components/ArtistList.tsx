@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Image, StyleSheet, Pressable } from 'react-native'
+import { ScrollView, View, Image, StyleSheet, Pressable, FlatList } from 'react-native'
 import { Icon } from 'react-native-paper'
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
@@ -14,6 +14,7 @@ import { ArtistEntry } from '../entities/ArtistListEntry'
 import { MAX_NAME_LENGTH } from '../constants'
 import { ArtistDetailsParams } from '../apiCalls/params/content/ArtistDetailParams'
 import { router } from 'expo-router'
+import { useSearchContent } from '../hooks/search/useSearchContent'
 
 type ArtistListProps = {
     artistList: ArtistEntry[]
@@ -175,10 +176,17 @@ export const ArtistList = (params: ArtistListProps) => {
 
     // ------------------------------------------------------------
 
+    const { searchTextPage } = useSearchContent()
+
     return (
-        <ScrollView style={styles.artistListContainer}>
-            {artistList.map(renderArtistEntry)}
-        </ScrollView>
+        <FlatList 
+            style={styles.artistListContainer}
+            data={artistList}
+            renderItem={({item, index}) => renderArtistEntry(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={searchTextPage}
+        />
     )
 }
 

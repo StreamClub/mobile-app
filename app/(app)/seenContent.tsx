@@ -11,6 +11,10 @@ import { SeenContentListScreen, SeenContentListScreenParams } from '../../compon
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { ContentType } from '../../components/Types/ContentType'
 import { router } from 'expo-router'
+import { useSeenContent } from '../../hooks/useSeenContent'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
+import { setUserId } from '../../store/slices/seenContentSlice'
+import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 
 export type SeenContentParams = {
     userId?: string
@@ -19,22 +23,16 @@ export type SeenContentParams = {
 export default function SeenContent() {
     const params = useLocalSearchParams<SeenContentParams>();
     const session = useSession();
-    const userId = params.userId? +params.userId : session?.userId;
-    const [seenContent, setSeenContent] = useState<SeenContentEntry[]>([])
-    const {getSeenContent, loading: loadingSeenContent} = useGetSeenContent();
+    const userId = params.userId? +params.userId : session?.userId ? session.userId : 0;
 
-    const onSuccessGetSeenContent = (response: any) => {
-        const _seenContent: SeenContentEntry[] = response.data.results;
-        setSeenContent(_seenContent)
-    }
+    const { loadingFirstPage } = useAppSelector((state) => state.seenContent)
+    const { loadSeenContent } = useSeenContent() 
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const seenContentParams: getSeenContentParams = {
-            userId: userId ? userId : 0,
-            page: 1,
-            pageSize: 10,
-        }
-        getSeenContent(seenContentParams, onSuccessGetSeenContent)
+        console.log("[SeenContent] setting userId: ", userId)
+        dispatch(setUserId(userId))
+        loadSeenContent(userId)
     }, [])
 
     const onPressSeenContentEntry = (entry: SeenContentEntry) => {
@@ -48,7 +46,6 @@ export default function SeenContent() {
     }
 
     const seenContentListScreenParams: SeenContentListScreenParams = {
-        seenContentList: seenContent,
         onPressSeenContentEntry: onPressSeenContentEntry,
     }
 
@@ -59,7 +56,7 @@ export default function SeenContent() {
                     
                 }}
             />
-            {loadingSeenContent ? 
+            {loadingFirstPage ? 
                 <LoadingComponent />
             :
                 <SeenContentListScreen {...seenContentListScreenParams}/>   

@@ -1,17 +1,18 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, Pressable } from 'react-native';
+import { View, StyleSheet, Dimensions, Pressable, FlatList } from 'react-native';
 import { colors } from '../../assets';
 import { createTuples } from '../../utils/listManager';
 import { TmdbImage, TmdbImageParams, TmdbImageType } from '../BasicComponents/TmdbImage';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
 import { seenContentEntryWrapper, SeenContentEntryWrapperParams, SeenContentEntryWrapperProps } from './SeenContentEntryWrapper';
+import { useAppSelector } from '../../hooks/redux/useAppSelector';
+import { useSeenContent } from '../../hooks/useSeenContent';
 
 const ENTRIES_PER_ROW = 3;
 const entryContainerFlex = 1/ENTRIES_PER_ROW
 const screenWidth = Dimensions.get('window').width;
 
 export type SeenContentListParams = {
-    seenContentList: SeenContentEntry[];
     onPressSeenContentEntry: (entry: SeenContentEntry) => void;
 }
 
@@ -59,19 +60,26 @@ const renderSeenContentRow = (tuple: SeenContentEntry[], index: number, params: 
 }
 
 export const SeenContentList = (params: SeenContentListParams) => {
-    const tuples = createTuples(params.seenContentList, ENTRIES_PER_ROW)
+    const { seenContent } = useAppSelector((state) => state.seenContent)
+    const { loadSeenContentPage } = useSeenContent()
+
+    const tuples = createTuples(seenContent, ENTRIES_PER_ROW)
     return(
-        <View style={styles.container}>
-            {tuples.map((tuple: SeenContentEntry[], index: number) => 
-                renderSeenContentRow(tuple, index, params))
-            }
-        </View>
+        <FlatList 
+            style={styles.container}
+            data={tuples}
+            renderItem={({item, index}) => renderSeenContentRow(item, index, params)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={loadSeenContentPage}
+        />
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         backgroundColor: colors.secondaryWhite
     },
     rowContainer: {

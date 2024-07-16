@@ -21,6 +21,7 @@ export const useGetSeenContent = () => {
             }
         }
         privateCall('GET', endpoint, params, onSuccess)
+        console.log("[useGetSeenContent] queryParams: ", queryParams)
     }
     return {getSeenContent, loading}
 }

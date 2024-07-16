@@ -32,10 +32,6 @@ export default function Services() {
         setUserServices(_userServices)
     }
 
-    const onFailure = (error: any) => {
-        console.log({ error })
-    }
-
     const onSuccessGetAllServices = (response: any) => {
         console.log('All services loaded')
         const _allServices: ServiceEntry[] = response.data.streamServices
@@ -47,11 +43,6 @@ export default function Services() {
         getUserServices(onSuccess)
         getAllServices(onSuccessGetAllServices)
     }, [])
-
-    const onFailureDelete = (error: any) => {
-        getUserServices(onSuccess)
-        getAllServices(onSuccessGetAllServices)
-    }
 
     const onSuccessDelete = (response: any) => {
         console.log('Item deleted')

@@ -86,6 +86,12 @@ export const useWatchlistPress = (
             addContentToWatchlist()
         }
     }
+
+    const onPressFocusedEntry = () => {
+        console.log('onPressFocusedEntry')
+        onPress()
+    }
+
     const loading = movieLoading || seriesLoading;
-    return { onPress, loading }
+    return { onPress, loading, onPressFocusedEntry }
 }

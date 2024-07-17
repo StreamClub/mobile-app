@@ -10,8 +10,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router'
 import { ContentType } from '../Types/ContentType'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
-import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
-import { changeOnWatchlistState } from '../../store/slices/recosSlice';
 import { useWatchlistPress } from '../../hooks/useWatchlistPress'
 import { ContentType as ContentTypeClass } from '../../entities/ContentType'
 

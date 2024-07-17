@@ -50,10 +50,13 @@ const searchContentSlice = createSlice({
             const PAYLOAD = action.payload
             console.log({ PAYLOAD })
             console.log(state.category)
+            console.log(state.results)
             if (state.category === action.payload.category) {
+                console.log("Updating results..", state.category === action.payload.category)
                 const updatedResults = state.results.map(entry => {
-                    if (entry.id === action.payload.contentId) {
+                    if (entry.id == action.payload.contentId) {
                         // Returns the updated entry
+                        console.log("Updating entry..")
                         const updatedEntry = { ...entry, inWatchlist: action.payload.inWatchlist };
                         return updatedEntry;
                     }

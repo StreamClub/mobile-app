@@ -40,13 +40,13 @@ export const MovieHeader = (params: MovieHeaderParams) => {
                 />
             </View>
             <View style={{ margin: 10 }}>
-            <Pressable onPress={() => onPressFocusedEntry()} style={styles.iconContainer}>
-                <WatchlistButton
-                    inWatchlist={focusedEntry.inWatchlist}
-                    watchlistLoading={loading}
-                    iconStyle={styles.iconsStyle}
-                />
-            </Pressable>
+                <Pressable onPress={() => onPressFocusedEntry()} style={styles.iconContainer}>
+                    <WatchlistButton
+                        watchlistLoading={loading}
+                        iconStyle={styles.iconsStyle}
+                        inWatchlist={focusedEntry.inWatchlist}
+                    />
+                </Pressable>
             </View>
         </>
     )

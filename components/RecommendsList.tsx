@@ -6,6 +6,8 @@ import { colors } from '../assets'
 import { Icon } from 'react-native-paper'
 import { router } from 'expo-router'
 import { MovieDetailsParams } from '../app/(app)/movie'
+import { ContentDetailsParams } from '../apiCalls/params/content/ContentDetailsParams'
+import { TmdbImage, TmdbImageType } from './BasicComponents/TmdbImage'
 
 export type Content = {
     title: string
@@ -15,17 +17,25 @@ export type Content = {
 }
 
 type RecommendsParams = {
-    contents: Array<Content>
-    style: object
-    title: string
+    contents: Array<Content>,
+    style: object,
+    title: string,
+    contentType: 'movie' | 'series'
 }
 
 export const RecommendsList = (params: RecommendsParams) => {
-    const onRecommendPress = (movie: Content) => {
+    const onMovieRecommendPress = (movie: Content) => {
         const newParams: MovieDetailsParams = {
             id: movie.id.toString(),
         }
         router.replace({ pathname: '/movie', params: newParams })
+    }
+
+    const onSeriesRecommendPress = (series: Content) => {
+        const newParams: ContentDetailsParams = {
+            id: series.id.toString(),
+        }
+        router.replace({ pathname: '/serie', params: newParams })
     }
 
     return (
@@ -34,7 +44,10 @@ export const RecommendsList = (params: RecommendsParams) => {
             <ScrollView horizontal>
                 {params.contents.map((content, index) => (
                     <Pressable
-                        onPress={() => onRecommendPress(content)}
+                    onPress={() => params.contentType == 'movie'?
+                        onMovieRecommendPress(content) :
+                        onSeriesRecommendPress(content)
+                    }
                         key={index}
                     >
                         <View
@@ -44,33 +57,10 @@ export const RecommendsList = (params: RecommendsParams) => {
                                 margin: 5,
                             }}
                         >
-                            {content.posterPath ? (
-                                <Image
-                                    source={{
-                                        uri:
-                                            'https://image.tmdb.org/t/p/original' +
-                                            content.posterPath,
-                                    }}
-                                    style={styles.photo}
-                                />
-                            ) : (
-                                <View
-                                    style={[
-                                        styles.photo,
-                                        {
-                                            backgroundColor:
-                                                colors.primarySkyBlue,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        },
-                                    ]}
-                                >
-                                    <Icon
-                                        source="image-off-outline"
-                                        size={90}
-                                    />
-                                </View>
-                            )}
+                            <TmdbImage
+                                resource={content.posterPath}
+                                type={TmdbImageType.Cover}
+                                style={styles.photo} />
                             <BodyText body={content.title} numberOfLines={2} />
                             <BodyText
                                 body={content.releaseDate

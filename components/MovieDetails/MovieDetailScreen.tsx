@@ -78,6 +78,7 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                 <ReviewsList contentId={movie.id} contentType='movie' userReview={movie.userReview}/>
                 {movie.similar.length > 0 && (
                     <RecommendsList
+                        contentType='movie'
                         contents={movie.similar}
                         style={styles.recommends}
                         title="Películas similares:"

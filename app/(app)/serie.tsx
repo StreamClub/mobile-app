@@ -35,13 +35,6 @@ export default function Serie() {
         getSeries(serieId, onSuccess)
     }, [])
 
-    const onRecommendPress = (series: Content) => {
-        const newParams: ContentDetailsParams = {
-            id: series.id.toString(),
-        }
-        router.replace({ pathname: '/serie', params: newParams })
-    }
-
     const onPressFullCredits = () => {
         router.push({ pathname: '/credits', params: { contentId: serieId, contentType: ContentType.Series} })
     }
@@ -56,7 +49,6 @@ export default function Serie() {
             {!loading && series ? (
                 <SeriesDetailScreen
                     series={series}
-                    onRecommendPress={onRecommendPress}
                     onPressFullCredits={onPressFullCredits}
                 />
             ) : (

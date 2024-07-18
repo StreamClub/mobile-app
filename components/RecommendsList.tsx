@@ -7,6 +7,7 @@ import { Icon } from 'react-native-paper'
 import { router } from 'expo-router'
 import { MovieDetailsParams } from '../app/(app)/movie'
 import { ContentDetailsParams } from '../apiCalls/params/content/ContentDetailsParams'
+import { TmdbImage, TmdbImageType } from './BasicComponents/TmdbImage'
 
 export type Content = {
     title: string
@@ -56,33 +57,10 @@ export const RecommendsList = (params: RecommendsParams) => {
                                 margin: 5,
                             }}
                         >
-                            {content.posterPath ? (
-                                <Image
-                                    source={{
-                                        uri:
-                                            'https://image.tmdb.org/t/p/original' +
-                                            content.posterPath,
-                                    }}
-                                    style={styles.photo}
-                                />
-                            ) : (
-                                <View
-                                    style={[
-                                        styles.photo,
-                                        {
-                                            backgroundColor:
-                                                colors.primarySkyBlue,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        },
-                                    ]}
-                                >
-                                    <Icon
-                                        source="image-off-outline"
-                                        size={90}
-                                    />
-                                </View>
-                            )}
+                            <TmdbImage
+                                resource={content.posterPath}
+                                type={TmdbImageType.Cover}
+                                style={styles.photo} />
                             <BodyText body={content.title} numberOfLines={2} />
                             <BodyText
                                 body={content.releaseDate

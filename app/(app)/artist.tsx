@@ -15,7 +15,7 @@ import { CreditsEntry } from '../../components/Types/Credits'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { router } from 'expo-router'
 
-export default function Serie() {
+export default function Artist() {
     const emptyArtist = {
         id: 1136406,
         name: '',

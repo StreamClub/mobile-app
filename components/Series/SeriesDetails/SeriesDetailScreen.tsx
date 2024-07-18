@@ -4,7 +4,7 @@ import { Chip } from 'react-native-paper'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
 import { CastList } from '../../CastList'
-import { Content, RecommendsList } from '../../RecommendsList'
+import { RecommendsList } from '../../RecommendsList'
 import { SeriesPlatforms } from './SeriesPlatforms'
 import { NextEpisode } from './NextEpisode'
 import { SeriesDetail } from '../../../entities/Details/Series/SeriesDetailEntry'
@@ -13,8 +13,7 @@ import { SeriesInfo } from './SeriesInfo'
 import { ReviewsList } from '../../Content/Reviews/ReviewsList'
 
 type SeriesDetailScreenParams = {
-    series: SeriesDetail
-    onRecommendPress: (series: Content) => void
+    series: SeriesDetail,
     onPressFullCredits: () => void;
 }
 
@@ -97,7 +96,7 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
                 <ReviewsList contentId={params.series.id} contentType='series' userReview={params.series.userReview}/>
                 {params.series.similar.length > 0 ? (
                     <RecommendsList
-                        onRecommendPress={params.onRecommendPress}
+                        contentType='series'
                         title="Series similares:"
                         contents={params.series.similar}
                         style={styles.recommends}

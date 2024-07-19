@@ -15,25 +15,18 @@ type SearchCategories = {}
 
 export const SearchCategories = (params: SearchCategories) => {
     const dispatch = useAppDispatch()
-    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
-    const { category } = useAppSelector((state) => state.searchContent)
-    console.log(category);
-    
-    useOnFocus(() => {
-        //dispatch(setCategory(CATEGORIES[INITIAL_CATEGORY])); //ESTO ROMPE LO DE LA BUSQUEDA DE USUARIO
-    })
+    const { category } = useAppSelector((state) => state.searchContent);
 
     const onPress = (value: number) => {
-        dispatch(setTextSearched(''))
-        dispatch(setResults([]))
-        setSelectedIndex(value)
-        dispatch(setCategory(value))
+        dispatch(setTextSearched(''));
+        dispatch(setResults([]));
+        dispatch(setCategory(value));
     }
 
     return (
         <ButtonGroup
             buttons={CATEGORIES}
-            selectedIndex={selectedIndex}
+            selectedIndex={category}
             onPress={onPress}
             containerStyle={{
                 marginTop: 20,

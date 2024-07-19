@@ -16,12 +16,14 @@ type ContentListProps = {
 }
 
 export const ContentList = (params: ContentListProps) => {
+    const { category } = useAppSelector((state) => state.searchContent)
+    console.log(params.contentEntry);
+    console.log("Category:" + category);
     
     useEffect(() => {
         console.log("[ContentList] rendered")
     },[])
 
-    const { category } = useAppSelector((state) => state.searchContent)
     switch (CATEGORIES[category]) {
         case SERIES_NAME:
             return <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />

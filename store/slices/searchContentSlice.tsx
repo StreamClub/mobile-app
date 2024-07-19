@@ -51,8 +51,8 @@ const searchContentSlice = createSlice({
             console.log({ PAYLOAD })
             console.log(state.category)
             console.log(state.results)
-            if (state.category === action.payload.category) {
-                console.log("Updating results..", state.category === action.payload.category)
+            if (CATEGORIES[state.category] === action.payload.category) {
+                console.log("Updating results..", CATEGORIES[state.category] === action.payload.category)
                 const updatedResults = state.results.map(entry => {
                     if (entry.id == action.payload.contentId) {
                         // Returns the updated entry

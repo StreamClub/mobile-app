@@ -5,7 +5,7 @@ import { GenresChecklist } from './GenresChecklist';
 import { DurationSlider } from './DurationSlider';
 import { MyPlatformsButton } from './MyPlatformsButton';
 import { CustomButton } from '../BasicComponents/CustomButton';
-import { MOVIES_NAME } from '../../constants';
+import { CATEGORIES, INITIAL_CATEGORY, MOVIES_NAME } from '../../constants';
 import { ContentEntry } from '../../entities/ContentEntry';
 import { DiscoverCategories } from './DiscoverCategories';
 import { useDiscoverContent } from '../../hooks/search/useDiscoverContent';
@@ -20,7 +20,7 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
   const [runtimeLte, setRuntimeLte] = useState(-1);
   const [runtimeGte, setRuntimeGte] = useState(0);
   const [checkedGenres, setCheckedGenres] = useState<Array<number>>([]);
-  const [selectedCategory, setSelectedCategory] = useState(MOVIES_NAME);
+  const [selectedCategory, setSelectedCategory] = useState(INITIAL_CATEGORY);
   const {discover, loading} = useDiscoverContent(params.setResults, params.setSearched);
 
   const onDiscoverPress = () => {
@@ -30,16 +30,15 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
   return(
     <View style={styles.form}>
       <DiscoverCategories
-        selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory} />
       <GenresChecklist
         checkedGenres={checkedGenres}
         setCheckedGenres={setCheckedGenres}
-        selectedCategory={selectedCategory} />
+        selectedCategory={CATEGORIES[selectedCategory]} />
       <DurationSlider
         setRuntimeGte={setRuntimeGte}
         setRuntimeLte={setRuntimeLte}
-        category={selectedCategory} />
+        category={CATEGORIES[selectedCategory]} />
       <MyPlatformsButton 
         inMyPlatforms={inMyPlatforms} 
         setInMyPlatforms={setInMyPlatforms} />

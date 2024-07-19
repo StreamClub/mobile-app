@@ -8,7 +8,7 @@ import { UserEntry } from '../../entities/UsersListEntry'
 const searchContentSlice = createSlice({
     name: 'searchContent',
     initialState: {
-        category: CATEGORIES[INITIAL_CATEGORY],
+        category: INITIAL_CATEGORY,
         textSearched: '',
         loading: false,
         results: [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[],
@@ -21,7 +21,7 @@ const searchContentSlice = createSlice({
         nextPage: 2,
     },
     reducers: {
-        setCategory(state, action: PayloadAction<string>) {
+        setCategory(state, action: PayloadAction<number>) {
             state.category = action.payload
         },
         setTextSearched(state, action: PayloadAction<string>) {

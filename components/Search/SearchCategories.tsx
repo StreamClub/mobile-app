@@ -9,12 +9,15 @@ import {
     setTextSearched,
 } from '../../store/slices/searchContentSlice'
 import { useOnFocus } from '../../hooks/useOnFocus'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
 
 type SearchCategories = {}
 
 export const SearchCategories = (params: SearchCategories) => {
     const dispatch = useAppDispatch()
     const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
+    const { category } = useAppSelector((state) => state.searchContent)
+    console.log(category);
     
     useOnFocus(() => {
         //dispatch(setCategory(CATEGORIES[INITIAL_CATEGORY])); //ESTO ROMPE LO DE LA BUSQUEDA DE USUARIO
@@ -24,7 +27,7 @@ export const SearchCategories = (params: SearchCategories) => {
         dispatch(setTextSearched(''))
         dispatch(setResults([]))
         setSelectedIndex(value)
-        dispatch(setCategory(CATEGORIES[value]))
+        dispatch(setCategory(value))
     }
 
     return (

@@ -33,7 +33,7 @@ export const DiscoverContentList = (params: DiscoverContentListParams) => {
     console.log("[DISCOVER] Searching next page");
     params.filters.page += 1;
     params.setFilters(params.filters);
-    discover(category, params.filters); //ACA EL 0 HARDCODEA PARA PELICULA, HAY Q TOMAR LA CATEGORIA DE REDUX
+    discover(category, params.filters);
   }
 
   return(

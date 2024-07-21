@@ -6,7 +6,7 @@ import { MovieEntry } from '../entities/MovieListEntry'
 
 type MovieListProps = {
     movieList: MovieEntry[],
-    searchNextPage: (...params: any[]) => void;
+    searchNextPage: (...params: any[]) => void
 }
 
 export const MovieList = (params: MovieListProps) => {

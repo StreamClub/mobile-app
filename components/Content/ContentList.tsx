@@ -25,11 +25,13 @@ export const ContentList = (params: ContentListProps) => {
 
     switch (CATEGORIES[category]) {
         case SERIES_NAME:
-            return <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />
+            return <SeriesList 
+                        searchNextPage={params.searchNextPage}
+                        seriesList={params.contentEntry as SeriesEntry[]} />
         case MOVIES_NAME:
             return <MovieList 
-                searchNextPage={params.searchNextPage}
-                movieList={params.contentEntry as MovieEntry[]} />
+                        searchNextPage={params.searchNextPage}
+                        movieList={params.contentEntry as MovieEntry[]} />
         case ARTISTS_NAME:
             return <ArtistList artistList={params.contentEntry as ArtistEntry[]} />
         case USERS_NAME:

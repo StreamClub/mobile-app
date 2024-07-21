@@ -5,6 +5,7 @@ import { ContentList } from "../Content/ContentList";
 import { View } from "react-native";
 import { CustomButton } from "../BasicComponents/CustomButton";
 import { useDiscoverContent } from "../../hooks/search/useDiscoverContent";
+import { useAppSelector } from "../../hooks/redux/useAppSelector";
 
 type DiscoverContentListParams = {
   contentList:  ContentEntry[],
@@ -15,6 +16,8 @@ type DiscoverContentListParams = {
 }
 
 export const DiscoverContentList = (params: DiscoverContentListParams) => {
+  const { category } = useAppSelector((state) => state.searchContent);
+  
   const setResults = (serializedData: ContentEntry[]) => {
     const allResults = params.contentList.concat(serializedData);
     params.setResults(allResults);
@@ -30,7 +33,7 @@ export const DiscoverContentList = (params: DiscoverContentListParams) => {
     console.log("[DISCOVER] Searching next page");
     params.filters.page += 1;
     params.setFilters(params.filters);
-    discover(0, params.filters);
+    discover(category, params.filters); //ACA EL 0 HARDCODEA PARA PELICULA, HAY Q TOMAR LA CATEGORIA DE REDUX
   }
 
   return(

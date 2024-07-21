@@ -23,7 +23,12 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
   const [runtimeGte, setRuntimeGte] = useState(0);
   const [checkedGenres, setCheckedGenres] = useState<Array<number>>([]);
   const [selectedCategory, setSelectedCategory] = useState(INITIAL_CATEGORY);
-  const {discover, loading} = useDiscoverContent(params.setResults, params.setSearched);
+
+  const setResults = (serializedData: ContentEntry[]) => {
+    params.setResults(serializedData);
+  }
+
+  const {discover, loading} = useDiscoverContent(setResults, params.setSearched);
 
   const onDiscoverPress = () => {
     const filters: DiscoverParams = {

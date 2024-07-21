@@ -8,7 +8,7 @@ import { ContentEntry } from "../../entities/ContentEntry";
 import { useAppDispatch } from "../redux/useAppDispatch";
 import { setCategory } from "../../store/slices/searchContentSlice";
 
-export const useDiscoverContent = (setResults: Dispatch<SetStateAction<ContentEntry[]>>,
+export const useDiscoverContent = (setResults: (serializedData: ContentEntry[]) => void,
   setSearched: Dispatch<SetStateAction<boolean>>) => {
   const {discoverMovie, loading: loadingMovies} = useDiscoverMovie();
   const {discoverSeries, loading: loadingSeries} = useDiscoverSeries();

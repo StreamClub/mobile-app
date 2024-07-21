@@ -15,15 +15,20 @@ type DiscoverContentListParams = {
 }
 
 export const DiscoverContentList = (params: DiscoverContentListParams) => {
-  const {discover, loading} = useDiscoverContent(params.setResults, params.setSearched);
+  const setResults = (serializedData: ContentEntry[]) => {
+    const allResults = params.contentList.concat(serializedData);
+    params.setResults(allResults);
+  }
+
+  const {discover, loading} = useDiscoverContent(setResults, params.setSearched);
   
   const onPress = () => {
     params.setSearched(false);
   }
-
+  
   const searchNextPage = () => {
+    console.log("[DISCOVER] Searching next page");
     params.filters.page += 1;
-    console.log(params.filters);
     params.setFilters(params.filters);
     discover(0, params.filters);
   }
@@ -35,7 +40,8 @@ export const DiscoverContentList = (params: DiscoverContentListParams) => {
         buttonText='Descubrir'
         fontSize='medium'
         type='primary'
-        onPress={onPress} />
+        onPress={onPress}
+        loading={loading} />
       </View>
       <ContentList 
         searchNextPage={searchNextPage}

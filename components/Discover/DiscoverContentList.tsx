@@ -4,16 +4,28 @@ import { ContentEntry } from "../../entities/ContentEntry";
 import { ContentList } from "../Content/ContentList";
 import { View } from "react-native";
 import { CustomButton } from "../BasicComponents/CustomButton";
+import { useDiscoverContent } from "../../hooks/search/useDiscoverContent";
 
 type DiscoverContentListParams = {
   contentList:  ContentEntry[],
-  setSearched: Dispatch<SetStateAction<boolean>>
+  setSearched: Dispatch<SetStateAction<boolean>>,
+  setResults: Dispatch<SetStateAction<ContentEntry[]>>,
+  setFilters: Dispatch<SetStateAction<any>>,
+  filters: any
 }
 
 export const DiscoverContentList = (params: DiscoverContentListParams) => {
+  const {discover, loading} = useDiscoverContent(params.setResults, params.setSearched);
   
   const onPress = () => {
     params.setSearched(false);
+  }
+
+  const searchNextPage = () => {
+    params.filters.page += 1;
+    console.log(params.filters);
+    params.setFilters(params.filters);
+    discover(0, params.filters);
   }
 
   return(
@@ -25,7 +37,9 @@ export const DiscoverContentList = (params: DiscoverContentListParams) => {
         type='primary'
         onPress={onPress} />
       </View>
-      <ContentList contentEntry={params.contentList} />
+      <ContentList 
+        searchNextPage={searchNextPage}
+        contentEntry={params.contentList} />
     </SearchList>
   )
 }

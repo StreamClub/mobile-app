@@ -8,14 +8,19 @@ import { ContentEntry } from '../../entities/ContentEntry'
 export default function Discover() {
     const [results, setResults] = useState<ContentEntry[]>([]);
     const [searched, setSearched] = useState<boolean>(false);
+    const [filters, setFilters] = useState({});
     
     return (
         <View style={styles.container}>
             {searched?
                 <DiscoverContentList 
+                    setResults={setResults}
                     setSearched={setSearched}
-                    contentList={results} /> :
+                    contentList={results}
+                    filters={filters}
+                    setFilters={setFilters} /> :
                 <DiscoverForm
+                    setFilters={setFilters}
                     setResults={setResults}
                     setSearched={setSearched} />
             }

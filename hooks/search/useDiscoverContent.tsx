@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DiscoverParams, useDiscoverMovie } from "../../apiCalls/movies";
 import { useDiscoverSeries } from "../../apiCalls/series";
 import { CATEGORIES, MOVIES_NAME, SERIES_NAME } from "../../constants";
@@ -32,16 +32,7 @@ export const useDiscoverContent = (setResults: Dispatch<SetStateAction<ContentEn
     setSearched(true);
   }
 
-  const discover = (category: number, checkedGenres: number[], runtimeLte: number,
-    runtimeGte: number, inMyPlatforms: boolean) => {
-    const filters: DiscoverParams = {
-      country: 'AR',
-      page: 1,
-      genderIds: checkedGenres.toString(),
-      ...(runtimeLte !== -1 && { runtimeLte: runtimeLte }),
-      runtimeGte: runtimeGte,
-      inMyPlatforms: inMyPlatforms
-    }
+  const discover = (category: number, filters: DiscoverParams) => {
     dispatch(setCategory(category));
     if (CATEGORIES[category] == MOVIES_NAME) {
       discoverMovie(filters, onSuccessMovies);

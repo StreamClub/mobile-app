@@ -12,13 +12,12 @@ import { UserEntry } from '../../entities/UsersListEntry'
 import { UsersList } from '../UsersList/UsersList'
 
 type ContentListProps = {
-    contentEntry: ContentEntry[] | ArtistEntry[] | UserEntry[]
+    contentEntry: ContentEntry[] | ArtistEntry[] | UserEntry[],
+    searchNextPage: (...params: any[]) => void
 }
 
 export const ContentList = (params: ContentListProps) => {
-    const { category } = useAppSelector((state) => state.searchContent)
-    console.log(params.contentEntry);
-    console.log("Category:" + category);
+    const { category } = useAppSelector((state) => state.searchContent);
     
     useEffect(() => {
         console.log("[ContentList] rendered")
@@ -28,7 +27,9 @@ export const ContentList = (params: ContentListProps) => {
         case SERIES_NAME:
             return <SeriesList seriesList={params.contentEntry as SeriesEntry[]} />
         case MOVIES_NAME:
-            return <MovieList movieList={params.contentEntry as MovieEntry[]} />
+            return <MovieList 
+                searchNextPage={params.searchNextPage}
+                movieList={params.contentEntry as MovieEntry[]} />
         case ARTISTS_NAME:
             return <ArtistList artistList={params.contentEntry as ArtistEntry[]} />
         case USERS_NAME:

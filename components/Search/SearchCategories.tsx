@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { colors } from '../../assets'
-import { CATEGORIES, INITIAL_CATEGORY } from '../../constants'
+import { CATEGORIES } from '../../constants'
 import { ButtonGroup } from '@rneui/themed'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import {
@@ -8,12 +8,9 @@ import {
     setResults,
     setTextSearched,
 } from '../../store/slices/searchContentSlice'
-import { useOnFocus } from '../../hooks/useOnFocus'
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
 
-type SearchCategories = {}
-
-export const SearchCategories = (params: SearchCategories) => {
+export const SearchCategories = () => {
     const dispatch = useAppDispatch()
     const { category } = useAppSelector((state) => state.searchContent);
 

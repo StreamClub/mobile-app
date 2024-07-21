@@ -5,14 +5,16 @@ import { GenresChecklist } from './GenresChecklist';
 import { DurationSlider } from './DurationSlider';
 import { MyPlatformsButton } from './MyPlatformsButton';
 import { CustomButton } from '../BasicComponents/CustomButton';
-import { CATEGORIES, INITIAL_CATEGORY, MOVIES_NAME } from '../../constants';
+import { CATEGORIES, INITIAL_CATEGORY } from '../../constants';
 import { ContentEntry } from '../../entities/ContentEntry';
 import { DiscoverCategories } from './DiscoverCategories';
 import { useDiscoverContent } from '../../hooks/search/useDiscoverContent';
+import { DiscoverParams } from '../../apiCalls/movies';
 
 type DiscoverFormParams = {
   setResults: Dispatch<SetStateAction<ContentEntry[]>>,
-  setSearched: Dispatch<SetStateAction<boolean>>
+  setSearched: Dispatch<SetStateAction<boolean>>,
+  setFilters: Dispatch<SetStateAction<any>>
 }
 
 export const DiscoverForm = (params: DiscoverFormParams) => {
@@ -24,7 +26,16 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
   const {discover, loading} = useDiscoverContent(params.setResults, params.setSearched);
 
   const onDiscoverPress = () => {
-    discover(selectedCategory,checkedGenres,runtimeLte,runtimeGte,inMyPlatforms);
+    const filters: DiscoverParams = {
+      country: 'AR',
+      page: 1,
+      genderIds: checkedGenres.toString(),
+      ...(runtimeLte !== -1 && { runtimeLte: runtimeLte }),
+      runtimeGte: runtimeGte,
+      inMyPlatforms: inMyPlatforms
+    }
+    params.setFilters(filters);
+    discover(selectedCategory, filters);
   }
 
   return(

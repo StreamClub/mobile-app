@@ -4,6 +4,7 @@ import { useSearchSeries } from '../../apiCalls/series'
 import { useSearchUsers } from '../../apiCalls/users'
 import {
     ARTISTS_NAME,
+    CATEGORIES,
     MAX_SEARCH_LENGTH,
     MOVIES_NAME,
     SERIES_NAME,
@@ -46,13 +47,13 @@ export const useSearchContent = () => {
         console.log('Buscando ' + text + '...' + 'pagina ' + page + ' ' + category)
         const queryParams: SearchParams = { query: text, page: page }
         console.log("queryParams: " + JSON.stringify(queryParams))
-        if (category == MOVIES_NAME) {
+        if (CATEGORIES[category] == MOVIES_NAME) {
             searchMovies(queryParams, onSuccessSearch)
-        } else if (category == SERIES_NAME) {
+        } else if (CATEGORIES[category] == SERIES_NAME) {
             searchSeries(queryParams, onSuccessSearch)
-        } else if (category == ARTISTS_NAME) {
+        } else if (CATEGORIES[category] == ARTISTS_NAME) {
             searchArtists(queryParams, onSuccessSearch)
-        } else if (category == USERS_NAME) {
+        } else if (CATEGORIES[category] == USERS_NAME) {
             searchUsers(text, onSuccessSearch)
         }
     }
@@ -93,7 +94,7 @@ export const useSearchContent = () => {
         console.log('Busqueda exitosa: ')
         const _page = response.data.page
         let parsedResponse = [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[]
-        switch (category) {
+        switch (CATEGORIES[category]) {
             case MOVIES_NAME:
                 parsedResponse = toMovieListEntries(response.data)
                 break
@@ -109,7 +110,7 @@ export const useSearchContent = () => {
             default:
                 break
         }
-        const serializedData = serializeSearchResults(parsedResponse, category)
+        const serializedData = serializeSearchResults(parsedResponse, CATEGORIES[category])
         if (_page === INITIAL_PAGE) {
             dispatch(setNextPage(INITIAL_PAGE + 1))
             dispatch(setResults(serializedData))

@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DiscoverParams, useDiscoverMovie } from "../../apiCalls/movies";
 import { useDiscoverSeries } from "../../apiCalls/series";
-import { MOVIES_NAME, SERIES_NAME } from "../../constants";
+import { CATEGORIES, MOVIES_NAME, SERIES_NAME } from "../../constants";
 import { serializeSearchResults } from "../../utils/serializeSearchResults";
 import { useDataToSerieEntryList } from "./useSeriesEntryList";
 import { ContentEntry } from "../../entities/ContentEntry";
 import { useAppDispatch } from "../redux/useAppDispatch";
 import { setCategory } from "../../store/slices/searchContentSlice";
 
-export const useDiscoverContent = (setResults: Dispatch<SetStateAction<ContentEntry[]>>,
+export const useDiscoverContent = (setResults: (serializedData: ContentEntry[]) => void,
   setSearched: Dispatch<SetStateAction<boolean>>) => {
   const {discoverMovie, loading: loadingMovies} = useDiscoverMovie();
   const {discoverSeries, loading: loadingSeries} = useDiscoverSeries();
@@ -32,18 +32,9 @@ export const useDiscoverContent = (setResults: Dispatch<SetStateAction<ContentEn
     setSearched(true);
   }
 
-  const discover = (category: string, checkedGenres: number[], runtimeLte: number,
-    runtimeGte: number, inMyPlatforms: boolean) => {
-    const filters: DiscoverParams = {
-      country: 'AR',
-      page: 1,
-      genderIds: checkedGenres.toString(),
-      ...(runtimeLte !== -1 && { runtimeLte: runtimeLte }),
-      runtimeGte: runtimeGte,
-      inMyPlatforms: inMyPlatforms
-    }
+  const discover = (category: number, filters: DiscoverParams) => {
     dispatch(setCategory(category));
-    if (category == MOVIES_NAME) {
+    if (CATEGORIES[category] == MOVIES_NAME) {
       discoverMovie(filters, onSuccessMovies);
     } else {
       discoverSeries(filters, onSuccessSeries);

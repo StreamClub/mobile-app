@@ -10,11 +10,13 @@ import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { UserEntry } from '../../entities/UsersListEntry'
 import { DiscoverButton } from '../../components/Search/DiscoverButton'
+import { useSearchContent } from '../../hooks/search/useSearchContent'
 
 export default function Search() {
     const { textSearched, results } = useAppSelector(
         (state) => state.searchContent
     )
+    const { searchTextPage } = useSearchContent();
     // ------------------------------------------------------------
     // Render functions
     // ------------------------------------------------------------
@@ -30,7 +32,9 @@ export default function Search() {
     const renderContentList = (contentList: ContentEntry[] | ArtistEntry[] | UserEntry[]) => {
         return (
             <SearchList length={contentList.length}>
-                <ContentList contentEntry={contentList} />
+                <ContentList 
+                    searchNextPage={searchTextPage}
+                    contentEntry={contentList} />
             </SearchList>
         )
     }

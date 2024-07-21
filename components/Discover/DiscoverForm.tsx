@@ -5,14 +5,16 @@ import { GenresChecklist } from './GenresChecklist';
 import { DurationSlider } from './DurationSlider';
 import { MyPlatformsButton } from './MyPlatformsButton';
 import { CustomButton } from '../BasicComponents/CustomButton';
-import { MOVIES_NAME } from '../../constants';
+import { CATEGORIES, INITIAL_CATEGORY } from '../../constants';
 import { ContentEntry } from '../../entities/ContentEntry';
 import { DiscoverCategories } from './DiscoverCategories';
 import { useDiscoverContent } from '../../hooks/search/useDiscoverContent';
+import { DiscoverParams } from '../../apiCalls/movies';
 
 type DiscoverFormParams = {
   setResults: Dispatch<SetStateAction<ContentEntry[]>>,
-  setSearched: Dispatch<SetStateAction<boolean>>
+  setSearched: Dispatch<SetStateAction<boolean>>,
+  setFilters: Dispatch<SetStateAction<any>>
 }
 
 export const DiscoverForm = (params: DiscoverFormParams) => {
@@ -20,26 +22,39 @@ export const DiscoverForm = (params: DiscoverFormParams) => {
   const [runtimeLte, setRuntimeLte] = useState(-1);
   const [runtimeGte, setRuntimeGte] = useState(0);
   const [checkedGenres, setCheckedGenres] = useState<Array<number>>([]);
-  const [selectedCategory, setSelectedCategory] = useState(MOVIES_NAME);
-  const {discover, loading} = useDiscoverContent(params.setResults, params.setSearched);
+  const [selectedCategory, setSelectedCategory] = useState(INITIAL_CATEGORY);
+
+  const setResults = (serializedData: ContentEntry[]) => {
+    params.setResults(serializedData);
+  }
+
+  const {discover, loading} = useDiscoverContent(setResults, params.setSearched);
 
   const onDiscoverPress = () => {
-    discover(selectedCategory,checkedGenres,runtimeLte,runtimeGte,inMyPlatforms);
+    const filters: DiscoverParams = {
+      country: 'AR',
+      page: 1,
+      genderIds: checkedGenres.toString(),
+      ...(runtimeLte !== -1 && { runtimeLte: runtimeLte }),
+      runtimeGte: runtimeGte,
+      inMyPlatforms: inMyPlatforms
+    }
+    params.setFilters(filters);
+    discover(selectedCategory, filters);
   }
 
   return(
     <View style={styles.form}>
       <DiscoverCategories
-        selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory} />
       <GenresChecklist
         checkedGenres={checkedGenres}
         setCheckedGenres={setCheckedGenres}
-        selectedCategory={selectedCategory} />
+        selectedCategory={CATEGORIES[selectedCategory]} />
       <DurationSlider
         setRuntimeGte={setRuntimeGte}
         setRuntimeLte={setRuntimeLte}
-        category={selectedCategory} />
+        category={CATEGORIES[selectedCategory]} />
       <MyPlatformsButton 
         inMyPlatforms={inMyPlatforms} 
         setInMyPlatforms={setInMyPlatforms} />

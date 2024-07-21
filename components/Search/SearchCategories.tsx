@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { colors } from '../../assets'
-import { CATEGORIES, INITIAL_CATEGORY } from '../../constants'
+import { CATEGORIES } from '../../constants'
 import { ButtonGroup } from '@rneui/themed'
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
 import {
@@ -8,29 +8,22 @@ import {
     setResults,
     setTextSearched,
 } from '../../store/slices/searchContentSlice'
-import { useOnFocus } from '../../hooks/useOnFocus'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
 
-type SearchCategories = {}
-
-export const SearchCategories = (params: SearchCategories) => {
+export const SearchCategories = () => {
     const dispatch = useAppDispatch()
-    const [selectedIndex, setSelectedIndex] = useState(INITIAL_CATEGORY);
-    
-    useOnFocus(() => {
-        //dispatch(setCategory(CATEGORIES[INITIAL_CATEGORY])); //ESTO ROMPE LO DE LA BUSQUEDA DE USUARIO
-    })
+    const { category } = useAppSelector((state) => state.searchContent);
 
     const onPress = (value: number) => {
-        dispatch(setTextSearched(''))
-        dispatch(setResults([]))
-        setSelectedIndex(value)
-        dispatch(setCategory(CATEGORIES[value]))
+        dispatch(setTextSearched(''));
+        dispatch(setResults([]));
+        dispatch(setCategory(value));
     }
 
     return (
         <ButtonGroup
             buttons={CATEGORIES}
-            selectedIndex={selectedIndex}
+            selectedIndex={category}
             onPress={onPress}
             containerStyle={{
                 marginTop: 20,

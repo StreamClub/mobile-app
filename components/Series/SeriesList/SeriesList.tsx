@@ -7,13 +7,13 @@ import { ContentType } from '../../../entities/ContentType'
 import { useSearchContent } from '../../../hooks/search/useSearchContent'
 
 type SeriesListProps = {
+    searchNextPage: (...params: any[]) => void,
     seriesList: SeriesEntry[]
 }
 
 export const SeriesList = (params: SeriesListProps) => {
-    const seriesList = params.seriesList
-    const contentType = new ContentType('series')
-    const { searchTextPage } = useSearchContent()
+    const seriesList = params.seriesList;
+    const contentType = new ContentType('series');
 
     const renderSeriesEntry = (seriesEntry: SeriesEntry, index: number) => {
         return (
@@ -32,7 +32,7 @@ export const SeriesList = (params: SeriesListProps) => {
             renderItem={({item, index}) => renderSeriesEntry(item, index)}
             keyExtractor={(item, index) => index.toString()}
             onEndReachedThreshold={0}
-            onEndReached={searchTextPage}
+            onEndReached={params.searchNextPage}
         />
     )
 }

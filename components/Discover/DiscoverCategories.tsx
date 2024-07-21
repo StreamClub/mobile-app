@@ -4,8 +4,7 @@ import { colors } from "../../assets";
 import { INITIAL_CATEGORY, MOVIES_NAME, SERIES_NAME } from "../../constants";
 
 type DiscoverCategoriesParams = {
-  selectedCategory: string,
-  setSelectedCategory: Dispatch<SetStateAction<string>>
+  setSelectedCategory: Dispatch<SetStateAction<number>>
 }
 
 export const DiscoverCategories = (params: DiscoverCategoriesParams) => {
@@ -13,11 +12,7 @@ export const DiscoverCategories = (params: DiscoverCategoriesParams) => {
 
   const onPress = (value: number) => {
     setSelectedIndex(value);
-    if (value == 1) {
-      params.setSelectedCategory(SERIES_NAME);
-    } else {
-      params.setSelectedCategory(MOVIES_NAME);
-    }
+    params.setSelectedCategory(value);
   }
   
   return(

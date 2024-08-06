@@ -8,7 +8,7 @@ import { Icon } from 'react-native-paper'
 import { EpisodeOverlay } from './EpisodeOverlay'
 import { Overlay } from 'react-native-elements'
 import { Episode } from '../../../entities/Details/Series/Episode'
-import { SeenSection } from '../../Content/SeenSection'
+import { SeenSection } from '../../Content/SeriesSeenSection'
 import { ContentType } from '../../../entities/ContentType'
 import { TmdbImage, TmdbImageType } from '../../BasicComponents/TmdbImage'
 

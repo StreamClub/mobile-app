@@ -14,9 +14,10 @@ const searchContentSlice = createSlice({
         results: [] as MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[],
         focusedEntry: {
             id: "",
-            seen: false,
+            seen: 0 as number,
             inWatchlist: false,
-            type: MOVIES_NAME
+            type: MOVIES_NAME,
+            focusedSeasonSeen: 0 as number | undefined,
         },
         nextPage: 2,
     },
@@ -73,11 +74,56 @@ const searchContentSlice = createSlice({
             }
         },
         
+        updateSeenState(
+            state,
+            action: PayloadAction<{ category: string, seen: number, contentId: string }>
+        ) {
+            if (CATEGORIES[state.category] === action.payload.category) {
+                console.log("Updating results..", CATEGORIES[state.category] === action.payload.category)
+                const updatedResults = state.results.map(entry => {
+                    if (entry.id == action.payload.contentId) {
+                        // Returns the updated entry
+                        console.log("Updating entry..")
+                        const updatedEntry = { ...entry, seen: action.payload.seen };
+                        return updatedEntry;
+                    }
+                    else {
+                        // Returns the original entry
+                        return entry;
+                    }
+                });
+                state.results = updatedResults as MovieEntry[] | SeriesEntry[] | ArtistEntry[];
+            }
+
+
+            console.log("[updateSeenState] Updating seen state..")
+            if (state.focusedEntry.id === action.payload.contentId && state.focusedEntry.type === action.payload.category) {
+                console.log("[updateSeenState] Updating focused entry..")
+                console.log("[updateSeenState] Focused entry id: ", state.focusedEntry.id)
+                console.log("[updateSeenState] Action payload id: ", action.payload.contentId)
+                console.log("[updateSeenState] Focused entry type: ", state.focusedEntry.type)
+                console.log("[updateSeenState] Action payload type: ", action.payload.category)
+
+                console.log({ action })
+                console.log({ state })
+                state.focusedEntry.seen = action.payload.seen as number
+            }
+        },
+
         setFocusedEntry(
             state,
-            action: PayloadAction<{ id: string, seen: boolean, inWatchlist: boolean, type: string }>
+            action: PayloadAction<{ id: string, seen: boolean | number, inWatchlist: boolean, type: string }>
         ) {
-            state.focusedEntry = action.payload
+            state.focusedEntry.id = action.payload.id
+            state.focusedEntry.seen = action.payload.seen as number
+            state.focusedEntry.inWatchlist = action.payload.inWatchlist
+            state.focusedEntry.type = action.payload.type
+        },
+        setFocusedEntrySeasonSeen(
+            state,
+            action: PayloadAction<{ seen: number }>
+        ) {
+            state.focusedEntry.focusedSeasonSeen = action.payload.seen
         },
         
         setNextPage(state, action: PayloadAction<number>) {
@@ -86,6 +132,6 @@ const searchContentSlice = createSlice({
     },
 })
 
-export const { setCategory, setTextSearched, setLoading, setResults, updateInWatchlistState, setFocusedEntry, setNextPage, addResults } =
+export const { setCategory, setTextSearched, setLoading, setResults, updateSeenState, updateInWatchlistState, setFocusedEntry, setNextPage, addResults } =
     searchContentSlice.actions
 export default searchContentSlice.reducer

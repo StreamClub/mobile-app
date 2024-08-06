@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Pressable, View, StyleSheet } from 'react-native'
-import { SeenSection } from '../Content/SeenSection'
+import { SeenSection } from '../Content/SeriesSeenSection'
 import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
 import { ContentType } from '../../entities/ContentType'
 import { WatchlistSection } from '../Content/WatchlistSection'

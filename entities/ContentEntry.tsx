@@ -3,7 +3,7 @@ import { Content } from './Content'
 export class ContentEntry extends Content {
     public available: boolean
     public score: number
-    public seen: boolean
+    public seen: number
     public status: string
     public inWatchlist: boolean
 

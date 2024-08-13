@@ -30,7 +30,7 @@ export const EpisodeOverlay = (params: EpisodeOverlayEntry) => {
                 <BodyText body={' ' + episode.runtime + ' min'} size="medium" />
                 <View style={{ flex: 1 }}>
                     <BodyText
-                        body={formatDate(episode.airDate.toDateString())}
+                        body={formatDate(new Date(episode.airDate).toDateString())}
                         color={colors.primaryGrey}
                         style={{ fontWeight: 'bold', alignSelf: 'flex-end' }}
                         size="medium"

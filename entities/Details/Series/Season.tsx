@@ -3,7 +3,7 @@ export class Season {
     public seriesId: number;
     public name: string;
     public poster: string;
-    public airDate: Date;
+    public airDate: string;
     public seen: boolean;
 
     constructor(season: Season) {
@@ -21,8 +21,8 @@ export class Season {
             seriesId: seriesId,
             name: json.name,
             poster: json.poster,
-            airDate: new Date(json.airDate),
-            seen: false
+            airDate: new Date(json.airDate).toISOString(),
+            seen: json.seen as boolean,
         });
     }
 }

@@ -6,27 +6,39 @@ import { Episode } from '../entities/Details/Series/Episode'
 import { Platform } from '../entities/Details/Platform'
 import { SeeContentButton } from '../components/Content/SeeContentButton'
 import { SeasonInfo } from '../components/Series/SeasonDetails/SeasonInfo'
-import { EpisodeList } from '../components/Series/SeasonDetails/EpisodeList'
+import { EpisodeListEntry } from '../components/Series/SeasonDetails/EpisodeListEntry'
+import { useAppSelector } from '../hooks/redux/useAppSelector'
 
 type SeasonDetailsScreenParams = {
-    season: SeasonDetail
+    season?: SeasonDetail
     platforms: Platform[]
 }
 
 export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
-    const episodes = params.season.episodes
+    const { focusedSeason } = useAppSelector((state) => state.searchContent)
+    if (!focusedSeason) {
+        return null
+    }
 
+    const episodes = focusedSeason.episodes
+    const { season } = params
+
+    if (!season) {
+        return null
+    }
+    
     return (
         <FlatList
-            data={episodes}
-            ListHeaderComponent={renderHeader(params, episodes)}
+            data={season.episodes}
+            ListHeaderComponent={renderHeader(params, season, season.episodes)}
             renderItem={({ item, index }) => (
                 <View style={{ alignItems: 'center'}} >
-                <EpisodeList
-                    seasonId={params.season.id}
-                    seriesId={params.season.seriesId}
+                <EpisodeListEntry
+                    episodeSeen = {focusedSeason.episodes[index].seen}
+                    seasonId={season.id}
+                    seriesId={season.seriesId}
                     episode={item}
-                    key={index} 
+                    key={index}
                 /></View>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -36,9 +48,9 @@ export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
     )
 }
 
-const renderHeader = (params: SeasonDetailsScreenParams, episodes: Episode[]) => {
+const renderHeader = (params: SeasonDetailsScreenParams, season: SeasonDetail, episodes: Episode[]) => {
     return <>
-        <SeasonInfo season={params.season} />
+        <SeasonInfo season={season} />
         {params.platforms.length > 0 &&
             <View
                 style={{

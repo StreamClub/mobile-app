@@ -23,8 +23,8 @@ export const SeriesInfo = (params: SeriesInfoParams) => {
     const releaseYear = params.series.releaseDate
         ? params.series.releaseDate.getFullYear()
         : 'Desconocido'
-    const lastYear = params.series.lastAirDate
-        ? params.series.lastAirDate.getFullYear()
+    const lastYear = new Date(params.series.lastAirDate)
+        ? new Date(params.series.lastAirDate).getFullYear()
         : 'Desconocido'
     const totalEpisodes = params.series.totalEpisodes
         ? params.series.totalEpisodes

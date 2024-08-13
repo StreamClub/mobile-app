@@ -5,7 +5,7 @@ import { Season } from './Season'
 
 export class SeriesDetail extends ContentDetail {
     public createdBy: string[]
-    public lastAirDate: Date
+    public lastAirDate: string
     public totalEpisodes: number
     public totalSeasons: number
     public seasons: Season[]
@@ -27,7 +27,7 @@ export class SeriesDetail extends ContentDetail {
         const content = ContentDetail.fromJson(json)
         return new SeriesDetail({
             createdBy: json.createdBy,
-            lastAirDate: new Date(json.lastAirDate),
+            lastAirDate: json.lastAirDate,
             totalEpisodes: json.numberOfEpisodes,
             totalSeasons: json.numberOfSeasons,
             seasons: json.seasons.map((item: any) =>

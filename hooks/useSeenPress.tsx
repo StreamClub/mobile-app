@@ -3,7 +3,7 @@ import { ContentType } from '../entities/ContentType'
 import { useMovieSeen } from '../apiCalls/movies'
 import { useSeriesSeen } from '../apiCalls/series'
 import { MOVIES_NAME, SERIES_NAME } from '../constants'
-import { updateSeenState } from '../store/slices/searchContentSlice'
+import { updateEpisodeSeenState, updateSeasonSeenState, updateSeenState } from '../store/slices/searchContentSlice'
 import { useAppDispatch } from './redux/useAppDispatch'
 import { useAppSelector } from './redux/useAppSelector'
 
@@ -46,17 +46,15 @@ export const useSeenPress = () => {
 
     const onSuccessPartialSeen = (response: any) => {
         
-        //TODO: reemplazar esta linea
-        const percentSeen = getRandomInt();
-        // const percentSeen = response.data.seen;
-
-        console.log('[useSeenPress onSuccessPartialSeen]', percentSeen)
+        const percentSeen = response.data.seen;
         
         const params = { 
             category: focusedEntry.type, 
             contentId: focusedEntry.id,
             seen: percentSeen
         }
+        console.log('Actualizo el porcentaje de visto de la serie');
+        console.log(params);
         dispatch(updateSeenState(params));
     }
 
@@ -72,8 +70,10 @@ export const useSeenPress = () => {
         if (_contentType == SERIES_NAME) {
             if (episodeId && seasonId) {
                 markEpisodeAsSeen(episodeId, focusedEntry.id, seasonId, onSuccessPartialSeen)
+                dispatch(updateEpisodeSeenState({ episodeId: Number(episodeId), seen: true }));
             } else if (seasonId) {
                 markSeasonAsSeen(seasonId, focusedEntry.id, onSuccessPartialSeen)
+                dispatch(updateSeasonSeenState({ seen: true }));
             } else {
                 markSeriesAsSeen(_contentId, (response: any) => onSuccessAdd(response, _contentId, _contentType))
             }
@@ -92,8 +92,10 @@ export const useSeenPress = () => {
         if (_contentType == SERIES_NAME) {
             if (episodeId && seasonId) {
                 unmarkEpisodeAsSeen(episodeId, focusedEntry.id, seasonId, onSuccessPartialSeen)
+                dispatch(updateEpisodeSeenState({ episodeId: Number(episodeId), seen: false }));
             } else if (seasonId) {
                 unmarkSeasonAsSeen(seasonId, focusedEntry.id, onSuccessPartialSeen)
+                dispatch(updateSeasonSeenState({ seen: false }));
             } else {
                 unmarkSeriesAsSeen(_contentId, (response: any) => onSuccessRemove(response, _contentId, _contentType))
             }
@@ -110,6 +112,7 @@ export const useSeenPress = () => {
 
     const onPress = (params: OnPressParams) => {
         console.log("[useSeenPress onPress]", focusedEntry)
+        console.log("[useSeenPress onPress]", params)
         const _seenState = params.seenState || focusedEntry.seen
 
         if (loading) return

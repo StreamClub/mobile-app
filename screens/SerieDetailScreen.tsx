@@ -14,11 +14,12 @@ import { TitleText } from '../components/BasicComponents/TitleText'
 import { BodyText } from '../components/BasicComponents/BodyText'
 import { colors } from '../assets'
 import { CastList } from '../components/CastList'
-import { Content, RecommendsList } from '../components/RecomendsList'
+// import { Content, RecommendsList } from '../components/RecomendsList'
 import { SeriesDetail } from '../entities/Details/Series/SeriesDetailEntry'
 import { SeriesPlatforms } from '../components/Series/SeriesDetails/SeriesPlatforms'
 import { NextEpisode } from '../components/Series/SeriesDetails/NextEpisode'
 import { SeasonsList } from '../components/Series/SeriesDetails/SeasonsList'
+import { Content, RecommendsList } from '../components/RecommendsList'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -37,8 +38,8 @@ const renderBackgroundImage = (params: SerieDetailScreenParams) => {
     const releaseYear = params.series.releaseDate
         ? params.series.releaseDate.getFullYear()
         : ' ? '
-    const lastYear = params.series.lastAirDate
-        ? params.series.lastAirDate.getFullYear()
+    const lastYear = new Date(params.series.lastAirDate)
+        ? new Date(params.series.lastAirDate).getFullYear()
         : ' ? '
 
     const backgroundSize = 210 + (titleTextHeight / 30 - 2) * 30

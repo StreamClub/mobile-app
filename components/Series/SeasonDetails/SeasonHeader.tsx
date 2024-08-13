@@ -1,11 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
-import { SeenSection } from '../../Content/SeriesSeenSection'
 import { ContentType } from '../../../entities/ContentType'
 import { Season } from '../../../entities/Details/Series/Season'
 import { PercentSection } from '../../Content/PercentSection'
 import { useAppSelector } from '../../../hooks/redux/useAppSelector'
 import { useSeenPress } from '../../../hooks/useSeenPress'
+import { SeasonSeenSection } from '../../Content/SeasonSeenSection'
 
 type SeasonHeaderParams = {
     season?: Season
@@ -13,26 +13,23 @@ type SeasonHeaderParams = {
 
 export const SeasonHeader = (params: SeasonHeaderParams) => {
     const contentType = new ContentType('season')
-    const { focusedEntry } = useAppSelector((state) => state.searchContent)
-    const { onPress: onPressPercent, loading : loadingPercent } = useSeenPress()
+    const { focusedEntry, focusedSeason } = useAppSelector((state) => state.searchContent)
 
-    if (!params.season) {
-        return null
-    }
+    // const { onPress: onPressPercent, loading : loadingPercent } = useSeenPress()
+
     return (
-        <View style={{ margin: 10 }}>
+        <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <PercentSection
                 seenPercent={focusedEntry.seen}
                 onPress={()=> console.log('pressed')}
                 loading={false}
-                seasonId={params.season.id.toString()}
+                seasonId={focusedSeason.seasonId.toString()}
             />
-            
-            <SeenSection
-                seenState={params.season.seen}
-                contentId={params.season.id.toString()}
-                seriesId={params.season.seriesId.toString()}
-                contentType={contentType}
+            <View style={{width: 10}}/>
+
+            <SeasonSeenSection
+                seriesId={focusedEntry.id.toString()}
+                seasonId={focusedSeason.seasonId.toString()}
             />
         </View>
     )

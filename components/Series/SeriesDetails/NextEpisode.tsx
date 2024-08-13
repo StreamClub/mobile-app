@@ -38,7 +38,7 @@ export const NextEpisode = (params: NextEpisodeEntry) => {
                     numberOfLines={1}
                 />
                 <BodyText
-                    body={formatter.format(params.episode.airDate)}
+                    body={formatter.format(new Date(params.episode.airDate))}
                     color={colors.primaryGrey}
                     style={{ fontWeight: 'bold' }}
                 />

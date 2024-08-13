@@ -1,11 +1,11 @@
 export class Episode {
-    public airDate: Date
+    public airDate: string
     public episodeId?: number
     public name: string
     public overview?: string
     public runtime?: number
     public poster: string
-    public seen?: boolean
+    public seen?: number
 
     constructor(episode: Episode) {
         this.airDate = episode.airDate
@@ -19,7 +19,7 @@ export class Episode {
 
     public static fromJson(json: any): Episode {
         return new Episode({
-            airDate: new Date(json.airDate),
+            airDate: new Date(json.airDate).toISOString(),
             episodeId: json.episodeId,
             name: json.name,
             overview: json.overview,

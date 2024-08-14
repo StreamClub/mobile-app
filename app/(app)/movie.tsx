@@ -1,66 +1,49 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useSession } from '../../context/ctx'
-import { useState, useEffect } from 'react'
-import { getMovie } from '../../apiCalls/movies'
+import { useEffect } from 'react'
+import { useGetMovie } from '../../apiCalls/movies'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
-import { MovieDetailScreen } from '../../screens/MovieDetailScreen'
-
-import { Stack, router, useLocalSearchParams } from 'expo-router'
-import { Content } from '../../components/RecomendsList'
+import { MovieDetailScreen } from '../../components/MovieDetails/MovieDetailScreen'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import { colors } from '../../assets'
 import { useMovieDetail } from '../../hooks/useMovieDetails'
 import { MovieHeader } from '../../components/MovieDetails/MovieHeader'
+import { useAppDispatch } from '../../hooks/redux/useAppDispatch'
+import { setFocusedEntry } from '../../store/slices/searchContentSlice'
+import { ContentType } from '../../components/Types/ContentType'
+import { MOVIES_NAME } from '../../constants'
+
 
 export type MovieDetailsParams = {
     id: string
 }
 
 export default function Movie() {
-    const session = useSession()
-    const {movie, setMovie} = useMovieDetail()
+    const { movie, setMovie } = useMovieDetail()
     const params = useLocalSearchParams<MovieDetailsParams>()
-    const [movieLoaded, setMovieLoaded] = useState(false)
-    const movieId = params.id
+    const { loading, getMovie } = useGetMovie()
+    const movieId = params.id || ''
+    const dispatch = useAppDispatch();
 
     const onSuccess = (response: any) => {
-        console.log('responseMovie ' + response.data.title);
-        setMovie(response.data);
-        setMovieLoaded(true);
-    }
-
-    const onFailure = (error: any) => {
-        console.log(error)
+        const movie = response.data
+        setMovie(movie)
+        dispatch(setFocusedEntry({id: movie.id, seen: movie.seen, inWatchlist: movie.inWatchlist, type: MOVIES_NAME}))
     }
 
     useEffect(() => {
-        const loadMovie = async () => {
-            await getMovie(session, movieId, onSuccess, onFailure)
-        }
-        loadMovie()
+        getMovie(movieId, onSuccess)
     }, [])
-
-    const onRedommendedPress = (movie: Content) => {
-        const newParams: MovieDetailsParams = {
-            id: movie.id.toString(),
-        }
-        router.replace({ pathname: '/movie', params: newParams })
-    }
 
     return (
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerRight: () => (
-                        <MovieHeader movie={movie}/>
-                    ),
+                    headerRight: () => <MovieHeader movie={movie} setMovie={setMovie}/>,
                 }}
             />
-            {movie && movieLoaded ? (
-                <MovieDetailScreen
-                    movie={movie}
-                    onRecommendPress={onRedommendedPress}
-                />
+            {movie && !loading ? (
+                <MovieDetailScreen movie={movie} />
             ) : (
                 <LoadingComponent />
             )}

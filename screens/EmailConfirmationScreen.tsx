@@ -8,11 +8,11 @@ import { colors } from "../assets";
 
 type EmailConfirmParams = {
     onSubmit: (validationCode: number) => void;
+    loading: boolean;
 };
 
 export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
     const [verificationCode, setVerificationCode] = useState("");
-    const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.signUpScreen}>
@@ -45,12 +45,11 @@ export const EmailConfirmationScreen = (params: EmailConfirmParams) => {
                     buttonText="Confirmar código"
                     onPress={() => {
                         params.onSubmit(Number(verificationCode));
-                        setLoading(true);
                     }}
                     buttonSize="big"
                     fontSize="big"
                     type="primary"
-                    loading={loading}
+                    loading={params.loading}
                 />
             </View>
         </View>

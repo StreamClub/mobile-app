@@ -1,40 +1,23 @@
 import React from 'react'
-import {
-    ScrollView,
-    View,
-    Image,
-    StyleSheet,
-    Pressable,
-    ImageSourcePropType,
-    ActivityIndicator,
-} from 'react-native'
+import { ScrollView, View, Image, StyleSheet, Pressable, FlatList } from 'react-native'
 import { Icon } from 'react-native-paper'
 import { BodyText } from './BasicComponents/BodyText'
 import { TitleText } from './BasicComponents/TitleText'
 import { colors } from '../assets/styles/colors'
 import { formatDate, calculateAge } from '../utils/dateManager'
-import { IconWithText, IconWithTextParams } from './BasicComponents/IconWithText'
+import {
+    IconWithText,
+    IconWithTextParams,
+} from './BasicComponents/IconWithText'
 import { LocalIcon } from './Types/LocalIcon'
-
-const MAX_NAME_LENGHT = 45
-
-export type ArtistEntry = {
-    id: string
-    name: string
-    poster: string
-    birthDate: string
-    birthPlace: string
-    deathDate: string
-    gender: string
-}
-
-export type ArtistListCallbacks = {
-    onArtistPress: (artist: ArtistEntry) => void
-}
+import { ArtistEntry } from '../entities/ArtistListEntry'
+import { MAX_NAME_LENGTH } from '../constants'
+import { ArtistDetailsParams } from '../apiCalls/params/content/ArtistDetailParams'
+import { router } from 'expo-router'
+import { useSearchContent } from '../hooks/search/useSearchContent'
 
 type ArtistListProps = {
     artistList: ArtistEntry[]
-    callbacks: ArtistListCallbacks
 }
 
 export const ArtistList = (params: ArtistListProps) => {
@@ -42,9 +25,16 @@ export const ArtistList = (params: ArtistListProps) => {
 
     // Callbacks calls
     // ------------------------------------------------------------
-    const onArtistPress = (artistEntry: ArtistEntry) => {
-        params.callbacks.onArtistPress(artistEntry)
+    const onArtistPress = (artist: any) => {
+        console.log(artist.name + ' pressed')
+
+        const params: ArtistDetailsParams = {
+            id: artist.id,
+        }
+
+        router.push({ pathname: '/artist', params })
     }
+
     // ------------------------------------------------------------
 
     // Render functions
@@ -106,9 +96,9 @@ export const ArtistList = (params: ArtistListProps) => {
 
     const renderDetailsSection = (artistEntry: ArtistEntry) => {
         let artistName = artistEntry.name
-        if (artistEntry.name.length > MAX_NAME_LENGHT) {
+        if (artistEntry.name.length > MAX_NAME_LENGTH) {
             artistName =
-                artistEntry.name.slice(0, MAX_NAME_LENGHT).trim() + '...'
+                artistEntry.name.slice(0, MAX_NAME_LENGTH).trim() + '...'
         }
 
         const noInformationAvailable =
@@ -150,7 +140,7 @@ export const ArtistList = (params: ArtistListProps) => {
     const renderDetails = (artistEntry: ArtistEntry) => {
         let birthDate = formatDate(artistEntry.birthDate)
         let deathDate = formatDate(artistEntry.deathDate)
-        
+
         if (artistEntry.deathDate) {
             deathDate +=
                 ' (' +
@@ -161,15 +151,15 @@ export const ArtistList = (params: ArtistListProps) => {
         }
 
         const birthDateParams: IconWithTextParams = {
-            icon: LocalIcon.birth,
+            leftIcon: LocalIcon.birth,
             text: birthDate,
         }
         const deathDateParams: IconWithTextParams = {
-            icon: LocalIcon.death,
+            leftIcon: LocalIcon.death,
             text: deathDate,
         }
         const birthPlaceParams: IconWithTextParams = {
-            icon: LocalIcon.location,
+            leftIcon: LocalIcon.location,
             text: artistEntry.birthPlace,
         }
 
@@ -177,17 +167,26 @@ export const ArtistList = (params: ArtistListProps) => {
             <View style={styles.infoContainer}>
                 {artistEntry.birthDate && <IconWithText {...birthDateParams} />}
                 {artistEntry.deathDate && <IconWithText {...deathDateParams} />}
-                {artistEntry.birthPlace && (<IconWithText {...birthPlaceParams} />)}  
+                {artistEntry.birthPlace && (
+                    <IconWithText {...birthPlaceParams} />
+                )}
             </View>
         )
     }
 
     // ------------------------------------------------------------
 
+    const { searchTextPage } = useSearchContent()
+
     return (
-        <ScrollView style={styles.artistListContainer}>
-            {artistList.map(renderArtistEntry)}
-        </ScrollView>
+        <FlatList 
+            style={styles.artistListContainer}
+            data={artistList}
+            renderItem={({item, index}) => renderArtistEntry(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={searchTextPage}
+        />
     )
 }
 

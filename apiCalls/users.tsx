@@ -1,26 +1,19 @@
 import { AxiosResponse } from 'axios';
-import { useSession } from '../context/ctx';
-import { privateCall, Params } from './generic';
-
-const country = "AR" // TODO: Esto hay que cambiarlo
+import { Params, usePrivateCall } from './generic';
+import { useAppDispatch } from '../hooks/redux/useAppDispatch';
+import { setLoading } from '../store/slices/searchContentSlice';
 
 // --------- --------- --------- --------- --------- ---------
-export type SearchUserParams = {
-    query: string,
-    page: number,
-}
+export const useSearchUsers = () => {
+    const {privateCall, loading} = usePrivateCall();
+    const dispatch = useAppDispatch();
 
-export function searchUsers(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchUserParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void) {
+    const searchUsers = (queryText: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/users'
+        const params: Params = { params: {query: queryText} }
+        dispatch(setLoading(true));
+        privateCall('GET', endpoint, params, onSuccess);
+    }
 
-    console.log('[TODO] Buscando usuarios...');
-
-    // TODO: Implementar
-    // const endpoint = '....'
-    // const params: Params = { params: { country: country, ...... } }
-
-    // privateCall('GET', session, endpoint, params, onSuccess, onFailure)
+    return {searchUsers}
 }

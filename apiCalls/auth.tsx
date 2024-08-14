@@ -1,7 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { publicCall, Params } from './generic';
-import { useSession } from '../context/ctx';
-
+import { Params, usePublicCall } from './generic';
 
 // --------- --------- --------- --------- --------- ---------
 export type logInBody = {
@@ -9,56 +7,58 @@ export type logInBody = {
     password: string
 }
 
-export function logIn(body: logInBody, session: ReturnType<typeof useSession>, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
+export const useLogIn = () => {
+    const {loading, publicCall} = usePublicCall();
 
-    const params: Params = { data: body }
-    const endpoint = '/auth/login'
+    const logIn = (body: logInBody, onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure?: (error: any) => void) => {
+        const params: Params = { data: body }
+        const endpoint = '/auth/login'
+        publicCall('POST', endpoint, params, onSuccess, onFailure);
+    }
 
-    publicCall('POST', session, endpoint, params, onSuccess, onFailure)
+    return {logIn, loading};
 }
 
+export const useGoogleLogIn = () => {
+    const {loading, publicCall} = usePublicCall();
+
+    const googleLogIn = (body: logInBody, onSuccess: (response: AxiosResponse<any, any>) => void,
+    onFailure: (error: any) => void) => {
+        const params: Params = { data: body }
+        const endpoint = '/auth/login/google'
+        publicCall('POST', endpoint, params, onSuccess, onFailure);
+    }
+    
+    return {googleLogIn, loading};
+}
 
 // --------- --------- --------- --------- --------- ---------
 export type sendVerificationCodeBody = {
     email: string
 }
 
-export function signUp(
-    body: sendVerificationCodeBody,
-    session: ReturnType<typeof useSession>,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-    ) {
-
-    const params: Params = { data: body }
-    const endpoint = '/auth/sendVerificationCode'
-
-    publicCall('POST', session, endpoint, params, onSuccess, onFailure)
-}
-
-
-// --------- --------- --------- --------- --------- ---------
 export type RegisterBodyType = {
     email: string,
     password: string,
     verificationCode: number
 }
 
-export function register(body: RegisterBodyType, session: ReturnType<typeof useSession>, onSuccess: (response: AxiosResponse<any, any>) => void, onFailure: (error: any) => void) {
-    
-    // TODO: eliminar este comentario una vez que se verifique que el flujo de registro funciona correctamente
-    // implementacion original (sin publicCall)
-    // axios.post('/auth/register', body).then(
-    //     (response) => {
-    //         onSuccess(response)
-    //     }, (error) => {
-    //         onFailure(error)
-    // });
 
-    const params: Params = { data: body }
-    const endpoint = '/auth/register'
+export const useSignUp = () => {
+    const {loading, publicCall} = usePublicCall()
+    const sendVerification = (body: sendVerificationCodeBody,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { data: body }
+        const endpoint = '/auth/sendVerificationCode'
+        publicCall('POST', endpoint, params, onSuccess);
+    }
+    const register = (body: RegisterBodyType,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { data: body }
+        const endpoint = '/auth/register'
+        publicCall('POST', endpoint, params, onSuccess);
+    }
 
-    publicCall('POST', session, endpoint, params, onSuccess, onFailure)
+    return {sendVerification, register, loading};
 }
-
-// --------- --------- --------- --------- --------- ---------

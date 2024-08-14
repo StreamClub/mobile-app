@@ -4,12 +4,13 @@ import { View } from "react-native";
 import { Card, TextInput } from "react-native-paper";
 import { BodyText } from "../components/BasicComponents/BodyText";
 import { CustomButton } from "../components/BasicComponents/CustomButton";
-import { TextInputMask } from "react-native-masked-text";
 import config from "../config.json";
 import { colors } from "../assets";
+import { router } from "expo-router";
 
 type SignUpParams = {
-    onNext: (email: string, password: string, birthDate: string) => void;
+    onNext: (email: string, password: string) => void;
+    loading: boolean;
 };
 
 export const SignUpScreen = (params: SignUpParams) => {
@@ -19,8 +20,6 @@ export const SignUpScreen = (params: SignUpParams) => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [isValidEmail, setIsValidEmail] = useState(true);
-    const [isValidBirth, setIsValidBirth] = useState(true);
-    const [birthDate, setbirthDate] = useState("");
 
     const handleEmailChange = (text: string) => {
         setEmail(text);
@@ -36,8 +35,6 @@ export const SignUpScreen = (params: SignUpParams) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible((prev) => !prev);
     };
-
-    const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.signUpScreen}>
@@ -107,30 +104,12 @@ export const SignUpScreen = (params: SignUpParams) => {
                             />
                         )}
                     </View>
-                    <TextInput
-                        label="Fecha de nacimiento"
-                        style={styles.input}
-                        textColor={colors.primaryWhite}
-                        activeUnderlineColor={colors.primaryBlack}
-                        render={(props) => (
-                            <TextInputMask
-                                type={"datetime"}
-                                options={{
-                                    format: "DD/MM/YYYY",
-                                }}
-                                {...props}
-                            />
-                        )}
-                        onChangeText={(date) => {
-                            setbirthDate(date);
-                        }}
-                    />
                 </Card.Content>
             </Card>
             <View style={styles.buttons}>
                 <CustomButton
                     buttonText="Cancelar"
-                    onPress={() => console.log("Next")}
+                    onPress={() => router.push({ pathname: '/', params: {} })}
                     fontSize="medium"
                     buttonSize="medium"
                     type='secondary'
@@ -139,22 +118,20 @@ export const SignUpScreen = (params: SignUpParams) => {
                 <CustomButton
                     buttonText="Siguiente"
                     onPress={() => {
-                        params.onNext(email, password, birthDate)
-                        setLoading(true)
+                        params.onNext(email, password);
                     }}
                     disabled={
                         !(
                             email &&
                             password &&
                             isValidEmail &&
-                            passwordsMatch &&
-                            isValidBirth
+                            passwordsMatch
                         )
                     }
                     fontSize="medium"
                     buttonSize="medium"
                     type='primary'
-                    loading={loading}
+                    loading={params.loading}
                 />
             </View>
         </View>

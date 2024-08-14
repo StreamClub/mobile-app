@@ -15,7 +15,7 @@ export class SimilarContent {
         return new SimilarContent({
             id: json.id,
             title: json.title,
-            posterPath: json.posterPath,
+            posterPath: json.posterPath? json.posterPath : json.poster,
             releaseDate: new Date(json.releaseDate)
         });
     }

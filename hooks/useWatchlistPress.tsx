@@ -1,84 +1,96 @@
-import {
-    addMovieToWatchlist,
-    removeMovieFromWatchlist,
-} from '../apiCalls/movies'
-import { useSession } from '../context/ctx'
 import { useState } from 'react'
 import { ContentType } from '../entities/ContentType'
-import {
-    addSeriesToWatchlist,
-    removeSeriesFromWatchlist,
-} from '../apiCalls/series'
-import { Content } from '../entities/Content'
+import { ContentEntry } from '../entities/ContentEntry'
+import { ContentDetail } from '../entities/Details/ContentDetailEntry'
+import { useMovieWatchlist } from '../apiCalls/movies'
+import { useSeriesWatchlist } from '../apiCalls/series'
+import { useAppDispatch } from './redux/useAppDispatch';
+import { updateInWatchlistState } from '../store/slices/searchContentSlice';
+import { MOVIES_NAME, SERIES_NAME } from '../constants'
+import { changeOnWatchlistState } from '../store/slices/recosSlice';
+import { ContentType as ContentTypeEnum } from "../components/Types/ContentType";
 
 export const useWatchlistPress = (
-    contentEntry: Content,
+    contentEntry: ContentEntry | ContentDetail | { id: string, inWatchlist: boolean },
     contentType: ContentType
 ) => {
-    const [inWatchlist, setInWatchlist] = useState(contentEntry.inWatchlist)
-    const [loading, setLoading] = useState(false)
+    const {addMovieToWatchlist, removeMovieFromWatchlist, loading: movieLoading} = useMovieWatchlist();
+    const {addSeriesToWatchlist, removeSeriesFromWatchlist, loading: seriesLoading} = useSeriesWatchlist();
+    const dispatch = useAppDispatch();
 
     const onSuccessAdd = (response: any) => {
         console.log('Agrego a watchlist')
-        setInWatchlist(true)
-        setLoading(false)
+        
+        const params = { 
+            category: contentType.isMovie() ? MOVIES_NAME : SERIES_NAME, 
+            contentId: contentEntry.id,
+            inWatchlist: true 
+        }
+        dispatch(updateInWatchlistState(params));
+
+        const params2 = { 
+            type: contentType.isMovie() ? ContentTypeEnum.Movie : ContentTypeEnum.Series, 
+            id: parseInt(contentEntry.id),
+            inWatchlist: true,
+        }
+        dispatch(changeOnWatchlistState(params2));
     }
 
     const onSuccessRemove = (response: any) => {
         console.log('Borro de watchlist')
-        setInWatchlist(false)
-        setLoading(false)
-    }
+        
+        const params = { 
+            category: contentType.isMovie() ? MOVIES_NAME : SERIES_NAME,
+            contentId: contentEntry.id,
+            inWatchlist: false 
+        }
+        dispatch(updateInWatchlistState(params));
 
-    const onFailure = (error: any) => {
-        console.log(error)
-        console.log(error.message)
-        setLoading(false)
+        const params2 = { 
+            type: contentType.isMovie() ? ContentTypeEnum.Movie : ContentTypeEnum.Series, 
+            id: parseInt(contentEntry.id),
+            inWatchlist: false,
+        }
+        dispatch(changeOnWatchlistState(params2));
     }
-
-    const session = useSession()
 
     const addContentToWatchlist = () => {
         contentType.isMovie()
             ? addMovieToWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessAdd,
-                  onFailure
+                  onSuccessAdd
               )
             : addSeriesToWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessAdd,
-                  onFailure
+                  onSuccessAdd
               )
     }
 
     const removeContentFromWatchlist = () => {
         contentType.isMovie()
             ? removeMovieFromWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessRemove,
-                  onFailure
+                  onSuccessRemove
               )
             : removeSeriesFromWatchlist(
-                  session,
                   contentEntry.id,
-                  onSuccessRemove,
-                  onFailure
+                  onSuccessRemove
               )
     }
 
     const onPress = () => {
         if (loading) return
-        if (!inWatchlist) {
-            addContentToWatchlist()
-        } else {
+        if (contentEntry.inWatchlist) {
             removeContentFromWatchlist()
+        } else {
+            addContentToWatchlist()
         }
-        setLoading(true)
     }
 
-    return { onPress, inWatchlist, loading }
+    const onPressFocusedEntry = () => {
+        onPress()
+    }
+
+    const loading = movieLoading || seriesLoading;
+    return { onPress, loading, onPressFocusedEntry }
 }

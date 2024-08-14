@@ -1,6 +1,8 @@
 import { AxiosResponse } from 'axios'
-import { useSession } from '../context/ctx'
-import { privateCall, Params } from './generic'
+import { Params, usePrivateCall } from './generic'
+import { useAppDispatch } from '../hooks/redux/useAppDispatch'
+import { setLoading } from '../store/slices/searchContentSlice'
+import { DiscoverParams } from './movies'
 
 const country = 'AR' //TODO: Esto hay que cambiarlo
 
@@ -10,135 +12,120 @@ export type SearchParams = {
     page: number
 }
 
-export function searchSeries(
-    session: ReturnType<typeof useSession>,
-    queryParams: SearchParams,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/series/'
-    const params: Params = { params: {...queryParams, country: country } }
+export const useSearchSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
+    const dispatch = useAppDispatch();
+
+    const searchSeries = (queryParams: SearchParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/'
+        const params: Params = { params: {...queryParams, country: country } }
+        dispatch(setLoading(true));
+        privateCall('GET', endpoint, params, onSuccess);
+        // TODO: agregar onfailurecustom con dispatch(setLoading(false))
+    }
+
+    return {searchSeries};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export const useGetSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getSeries = (serieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/' + serieId
+        const params: Params = { params: { country: country } }
+
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+    return {getSeries, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export const useGetSeason = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getSeason = (seriesId: string, seasonId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/' + seriesId + '/seasons/' + seasonId;
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {getSeason, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export const useSeriesWatchlist = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const addSeriesToWatchlist = (seriesId: string, 
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: seriesId,
+            contentType: 'series',
+        };
+        const params: Params = { data: body };
+        privateCall('PUT', '/watchlist', params, onSuccess);
+    }
+
+    const removeSeriesFromWatchlist = (seriesId: string,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const body = {
+            contentId: seriesId,
+            contentType: 'series',
+        };
+        const params: Params = { data: body };
+        privateCall('DELETE', '/watchlist', params, onSuccess);
+    }
+
+    return {addSeriesToWatchlist, removeSeriesFromWatchlist, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
+export const useSeriesSeen = () => {
+    const {privateCall, loading} = usePrivateCall();
     
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function getSerie(
-    session: ReturnType<typeof useSession>,
-    serieId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/series/' + serieId
-    const params: Params = { params: { country: country } }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function getSeason(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    seasonId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const endpoint = '/series/' + seriesId + '/seasons/' + seasonId
-    const params: Params = { params: { country: country } }
-
-    privateCall('GET', session, endpoint, params, onSuccess, onFailure)
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function addSeriesToWatchlist(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: seriesId,
-        contentType: 'series',
+    const markSeriesAsSeen = (seriesId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('PUT', '/seenContent/series/' + seriesId, {}, onSuccess);
     }
-    const params: Params = { data: body }
-    privateCall('PUT', session, '/watchlist', params, onSuccess, onFailure)
-}
 
-export function removeSeriesFromWatchlist(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const body = {
-        contentId: seriesId,
-        contentType: 'series',
+    const unmarkSeriesAsSeen = (seriesId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('DELETE', '/seenContent/series/' + seriesId, {}, onSuccess);
     }
-    const params: Params = { data: body }
-    privateCall('DELETE', session, '/watchlist', params, onSuccess, onFailure)
+
+    const markSeasonAsSeen = (seasonId: string, seriesId: string,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('PUT', '/seenContent/series/' + seriesId + '/seasons/' + seasonId, {}, onSuccess);
+    }
+
+    const unmarkSeasonAsSeen = (seasonId: string, seriesId: string,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        privateCall('DELETE', '/seenContent/series/' + seriesId + '/seasons/' + seasonId, {}, onSuccess);
+    }
+
+    const markEpisodeAsSeen = (episodeId: string, seriesId: string, seasonId: string,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const url = '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episodes/' + episodeId;
+        privateCall('PUT', url, {}, onSuccess);
+    }
+
+    const unmarkEpisodeAsSeen = (episodeId: string, seriesId: string, seasonId: string,
+        onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const url = '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episodes/' + episodeId;
+        privateCall('DELETE', url, {}, onSuccess);
+    }
+
+    return {markSeriesAsSeen, unmarkSeriesAsSeen, markSeasonAsSeen, unmarkSeasonAsSeen, 
+        markEpisodeAsSeen, unmarkEpisodeAsSeen, loading};
 }
 
 // --------- --------- --------- --------- --------- ---------
-export function markSeriesAsSeen(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) { 
-    privateCall('PUT', session, '/seenContent/series/' + seriesId, {}, onSuccess, onFailure);
-}
+export const useDiscoverSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
 
-export function unmarkSeriesAsSeen(
-    session: ReturnType<typeof useSession>,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    privateCall('DELETE', session, '/seenContent/series/' + seriesId, {}, onSuccess, onFailure);
-}
+    const discoverSeries = (filters: DiscoverParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const params: Params = { params: {...filters } };
+        privateCall('GET', '/series/discover', params, onSuccess);
+    }
 
-// --------- --------- --------- --------- --------- ---------
-export function markSeasonAsSeen(
-    session: ReturnType<typeof useSession>,
-    seasonId: string,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) { 
-    privateCall('PUT', session, '/seenContent/series/' + seriesId + '/seasons/' + seasonId, {}, onSuccess, onFailure);
-}
-
-export function unmarkSeasonAsSeen(
-    session: ReturnType<typeof useSession>,
-    seasonId: string,
-    seriesId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    privateCall('DELETE', session, '/seenContent/series/' + seriesId + '/seasons/' + seasonId, {}, onSuccess, onFailure);
-}
-
-// --------- --------- --------- --------- --------- ---------
-export function markEpisodeAsSeen(
-    session: ReturnType<typeof useSession>,
-    episodeId: string,
-    seriesId: string,
-    seasonId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) { 
-    const url = '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episodes/' + episodeId;
-    privateCall('PUT', session, url, {}, onSuccess, onFailure);
-}
-
-export function unmarkEpisodeAsSeen(
-    session: ReturnType<typeof useSession>,
-    episodeId: string,
-    seriesId: string,
-    seasonId: string,
-    onSuccess: (response: AxiosResponse<any, any>) => void,
-    onFailure: (error: any) => void
-) {
-    const url = '/seenContent/series/' + seriesId + '/seasons/' + seasonId + '/episodes/' + episodeId;
-    privateCall('DELETE', session, url, {}, onSuccess, onFailure);
+    return {discoverSeries, loading};
 }

@@ -1,11 +1,12 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
 import { ContentType } from '../entities/ContentType'
 import { ContentListEntry } from './Content/ContentListEntry'
 import { MovieEntry } from '../entities/MovieListEntry'
 
 type MovieListProps = {
-    movieList: MovieEntry[]
+    movieList: MovieEntry[],
+    searchNextPage: (...params: any[]) => void
 }
 
 export const MovieList = (params: MovieListProps) => {
@@ -26,9 +27,14 @@ export const MovieList = (params: MovieListProps) => {
     // ------------------------------------------------------------
 
     return (
-        <ScrollView style={styles.movieListContainer}>
-            {movieList.map(renderMovieEntry)}
-        </ScrollView>
+        <FlatList 
+            style={styles.movieListContainer}
+            data={movieList}
+            renderItem={({item, index}) => renderMovieEntry(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={params.searchNextPage}
+        />
     )
 }
 

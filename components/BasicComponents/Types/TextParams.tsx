@@ -7,4 +7,8 @@ export type TextParams = {
   onLayout?: (...params: any[]) => void;
   numberOfLines?: number;
   max_length?: number;
+  onPress?: (...params: any[]) => void;
+  visible?: boolean;
+  textInputParams?: object;
+  canEdit?: boolean;
 }

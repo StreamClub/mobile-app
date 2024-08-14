@@ -1,101 +1,71 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Image, ScrollView, LayoutChangeEvent, Pressable } from "react-native";
-import { Icon } from 'react-native-paper';
-import { colors } from "../assets";
-import { BodyText } from '../components/BasicComponents/BodyText';
-import { TitleText } from '../components/BasicComponents/TitleText';
-import { Overlay } from '@rneui/themed';
-import { EpisodeList } from '../components/SeasonDetails/EpisodeList';
-import { SeasonDetail } from '../entities/Details/Series/SeasonDetail';
-import { Episode } from '../entities/Details/Series/Episode';
+import React from 'react'
+import { View, ScrollView, FlatList } from 'react-native'
+import { TitleText } from '../components/BasicComponents/TitleText'
+import { SeasonDetail } from '../entities/Details/Series/SeasonDetail'
+import { Episode } from '../entities/Details/Series/Episode'
+import { Platform } from '../entities/Details/Platform'
+import { SeeContentButton } from '../components/Content/SeeContentButton'
+import { SeasonInfo } from '../components/Series/SeasonDetails/SeasonInfo'
+import { EpisodeListEntry } from '../components/Series/SeasonDetails/EpisodeListEntry'
+import { useAppSelector } from '../hooks/redux/useAppSelector'
 
 type SeasonDetailsScreenParams = {
-    season: SeasonDetail;
-}
-
-const renderSeasonInfo = (season: SeasonDetail) => {
-    const [titleTextHeight, setTitleTextHeight] = useState(0);
-    const [openOverview, setOpenOverview] = useState(false);
-    
-    const handleTitleTextLayout = (event: LayoutChangeEvent) => {
-        setTitleTextHeight(event.nativeEvent.layout.height);
-    };
-
-    return(
-        <View style={styles.details}>
-                <View style={styles.posterView}>
-                    {season.poster?
-                        <Image 
-                            source={{ uri: "https://image.tmdb.org/t/p/original" + season.poster }}
-                            style={styles.poster}
-                        /> :
-                        <View style={styles.poster}>
-                            <Icon source="image-off-outline" size={90}/>
-                        </View>
-                    }
-                </View>
-                <View style={styles.info}>
-                    <BodyText body={season.name} style={{fontWeight: 'bold'}} 
-                    size='big' onLayout={handleTitleTextLayout}/>
-                    <Pressable 
-                        onPress={() => setOpenOverview(true)}
-                        style={{flex: 1, height: (255 - titleTextHeight)}}>
-                        <BodyText body={season.overview} size='small' style={{flex: 1}}/>
-                        {season.overview.length > 10?
-                        <BodyText 
-                            body="Ver más" size='small' 
-                            color={colors.primaryBlue} 
-                            style={{alignSelf: 'flex-end',marginRight: 20, fontWeight: 'bold'}}/> : null}
-                    </Pressable>
-                </View>
-                <Overlay 
-                    isVisible={openOverview && (season.overview.length > 10)} 
-                    onBackdropPress={() => setOpenOverview(false)} 
-                    overlayStyle={{backgroundColor: colors.primarySkyBlue, margin: 20, borderRadius: 20}}>
-                        <BodyText body={season.overview} />
-                </Overlay>
-            </View>
-    )
+    season?: SeasonDetail
+    platforms: Platform[]
 }
 
 export const SeasonDetailScreen = (params: SeasonDetailsScreenParams) => {
-    const episodes = params.season.episodes;
+    const { focusedSeason } = useAppSelector((state) => state.searchContent)
+    if (!focusedSeason) {
+        return null
+    }
 
-    return(
-        <ScrollView>
-            {renderSeasonInfo(params.season)}
-            <TitleText body={'Capítulos (' + episodes.length + '):'} style={{marginLeft: 20, marginTop: 20, fontWeight: 'bold'}}/>
-            <View style={{alignItems: 'center', marginBottom: 20}}>
-                {episodes ? episodes.map(
-                    (episode: Episode, index: number) => 
-                    <EpisodeList seasonId={params.season.id} seriesId={params.season.seriesId} episode={episode} episodeNumber={index} key={index} />
-                ) : null}
-            </View>
-        </ScrollView>
-    );
+    const episodes = focusedSeason.episodes
+    const { season } = params
+
+    if (!season) {
+        return null
+    }
+    
+    return (
+        <FlatList
+            data={season.episodes}
+            ListHeaderComponent={renderHeader(params, season, season.episodes)}
+            renderItem={({ item, index }) => (
+                <View style={{ alignItems: 'center'}} >
+                <EpisodeListEntry
+                    episodeSeen = {focusedSeason.episodes[index].seen}
+                    seasonId={season.id}
+                    seriesId={season.seriesId}
+                    episode={item}
+                    key={index}
+                /></View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            initialNumToRender={2}
+            windowSize={6}
+        />
+    )
 }
 
-const styles = StyleSheet.create({
-    poster: {
-        height: 255,
-        width: 170,
-        borderColor: colors.primaryBlack,
-        borderWidth: 1,
-        marginRight: 5,
-        marginLeft: 20,
-        marginTop: 20
-    },
-    posterView: {
-        alignSelf: 'flex-start',
-        flexShrink: 0,
-    },
-    details: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-    },
-    info: {
-        flex: 1,
-        flexDirection: 'column',
-        marginTop: 20
-    }
-})
+const renderHeader = (params: SeasonDetailsScreenParams, season: SeasonDetail, episodes: Episode[]) => {
+    return <>
+        <SeasonInfo season={season} />
+        {params.platforms.length > 0 &&
+            <View
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 20,
+                }}
+            >
+                <SeeContentButton
+                    platforms={params.platforms}
+                    text="Ver serie" />
+            </View>}
+        <TitleText
+            body={'Capítulos (' + episodes.length + '):'}
+            style={{ marginLeft: 20, marginTop: 20, fontWeight: 'bold' }} />
+    </>
+}
+

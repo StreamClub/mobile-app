@@ -1,11 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ContentScore } from '../Content/ContentScore'
-import { SeenSection } from '../Content/SeenSection'
-import { ContentEntry } from '../../entities/ContentListEntry'
+import { MoviesSeenSection } from './MoviesSeenSection'
+import { ContentEntry } from '../../entities/ContentEntry'
 import { WatchlistSection } from '../Content/WatchlistSection'
 import { ContentType } from '../../entities/ContentType'
 import { styles } from './styles/Content.styles'
+import { SeriesSeenSection } from './SeriesSeenSection'
 
 type BottomSectionProps = {
     contentEntry: ContentEntry
@@ -15,12 +16,28 @@ type BottomSectionProps = {
 
 export const BottomSection = (params: BottomSectionProps) => {
     const { contentEntry, scoreFormatted, contentType } = params
+
+    
+
     return (
         <>
             <View style={{ flex: 0.25, flexDirection: 'row', width: '100%' }}>
                 <ContentScore score={scoreFormatted} />
                 <View style={styles.iconContainer}>
-                    <SeenSection seenState={contentEntry.seen} contentId={contentEntry.id} contentType={contentType} />
+                    {
+                        contentType.isSeries() ?
+                            <SeriesSeenSection
+                                seenState={contentEntry.seen}
+                                seriesId={contentEntry.id}
+                            />
+
+                            : contentType.isMovie() ?
+                                <MoviesSeenSection
+                                    seenState={contentEntry.seen}
+                                    movieId={contentEntry.id}
+                                />
+                                : null
+                    }
                 </View>
 
                 <WatchlistSection

@@ -4,16 +4,16 @@ import { colors } from '../../assets'
 import { SearchBar } from '@rneui/themed'
 import { Icon } from 'react-native-elements'
 import { LocalIcon } from '../Types/LocalIcon'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
+import { useSearchContent } from '../../hooks/search/useSearchContent'
 
-type SearchBarProps = {
-    showLoading: boolean
-    textSearched: string
-    onChangeTextSearched: (text: string) => void
-    onSubmit: () => void
-}
+export const SearchContentBar = () => {
+    const { textSearched, loading } = useAppSelector(
+        (state) => state.searchContent
+    )
+    const { onSubmit, onChangeTextSearched } = useSearchContent()
+    // ------------------------------------------------------------
 
-export const SearchContentBar = (params: SearchBarProps) => {
-    const { showLoading, textSearched, onChangeTextSearched, onSubmit } = params
     return (
         <SearchBar
             placeholder="Buscar..."
@@ -41,7 +41,7 @@ export const SearchContentBar = (params: SearchBarProps) => {
             cancelIcon={<Icon name="close" type="ionicon" color="black" />}
             onChangeText={onChangeTextSearched}
             value={textSearched}
-            showLoading={showLoading}
+            showLoading={loading}
             loadingProps={{
                 color: 'black',
             }}

@@ -1,12 +1,13 @@
 import React from 'react'
 import { Pressable, View, StyleSheet } from 'react-native'
-import { SeenSection } from '../../Content/SeenSection'
 import { ContentType } from '../../../entities/ContentType'
 import { SeriesDetail } from '../../../entities/Details/Series/SeriesDetailEntry'
 import { useAppSelector } from '../../../hooks/redux/useAppSelector'
 import { ShareContentButton } from '../../Content/ShareContentButton'
 import { WatchlistButton } from '../../BasicComponents/WatchlistButton'
 import { useWatchlistPress } from '../../../hooks/useWatchlistPress'
+import { PercentSection } from '../../Content/PercentSection'
+import { useSeenPress } from '../../../hooks/useSeenPress'
 
 type SeriesHeaderParams = {
     series?: SeriesDetail
@@ -18,7 +19,7 @@ export const SeriesHeader = (params: SeriesHeaderParams) => {
     const { focusedEntry } = useAppSelector((state) => state.searchContent)
 
     const { onPressFocusedEntry, loading } = useWatchlistPress({id: focusedEntry.id, inWatchlist:focusedEntry.inWatchlist}, contentType)
-
+    const { onPress: onPressPercent, loading : loadingPercent } = useSeenPress()
     
     if (!series) {
         return null
@@ -31,10 +32,10 @@ export const SeriesHeader = (params: SeriesHeaderParams) => {
                     poster={series.poster} />
             </View>
             <View style={{ margin: 10 }}>
-                <SeenSection
-                    seenState={false}
-                    contentId={series.id}
-                    contentType={contentType}
+                <PercentSection
+                    seenPercent={focusedEntry.seen}
+                    onPress={onPressPercent}
+                    loading={loadingPercent}
                 />
             </View>
             <View style={{ margin: 10 }}>

@@ -8,17 +8,19 @@ import { Icon } from 'react-native-paper'
 import { EpisodeOverlay } from './EpisodeOverlay'
 import { Overlay } from 'react-native-elements'
 import { Episode } from '../../../entities/Details/Series/Episode'
-import { SeenSection } from '../../Content/SeenSection'
 import { ContentType } from '../../../entities/ContentType'
 import { TmdbImage, TmdbImageType } from '../../BasicComponents/TmdbImage'
+import { MoviesSeenSection } from '../../Content/MoviesSeenSection'
+import { EpisodeSeenSection } from '../../Content/EpisodeSeenSection'
 
-type EpisodeListEntry = {
+type EpisodeListEntryParams = {
+    episodeSeen: boolean
     episode: Episode
     seasonId: number
     seriesId: number
 }
 
-export const EpisodeList = (params: EpisodeListEntry) => {
+export const EpisodeListEntry = (params: EpisodeListEntryParams) => {
     const [openModal, setOpenModal] = useState(false)
     const episode = params.episode
     const contentType = new ContentType('episode')
@@ -50,7 +52,7 @@ export const EpisodeList = (params: EpisodeListEntry) => {
                         size="medium"
                     />
                     <BodyText
-                        body={formatDate(episode.airDate.toDateString())}
+                        body={formatDate(new Date(episode.airDate).toDateString())}
                         color={colors.primaryGrey}
                         style={{ fontWeight: 'bold' }}
                         size="small"
@@ -70,15 +72,14 @@ export const EpisodeList = (params: EpisodeListEntry) => {
                             margin: 5,
                         }}
                     >
-                        {episode.episodeId ? (
-                            <SeenSection
-                                seenState={episode.seen ? episode.seen : false}
-                                contentId={episode.episodeId.toString()}
+                        {episode.episodeId && 
+                            <EpisodeSeenSection
+                                seenState={params.episodeSeen? 100 : 0}
                                 seriesId={params.seriesId.toString()}
                                 seasonId={params.seasonId.toString()}
-                                contentType={contentType}
+                                episodeId={episode.episodeId.toString()}
                             />
-                        ) : null}
+                        }
                     </View>
                 </View>
             </View>

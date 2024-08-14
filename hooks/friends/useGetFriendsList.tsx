@@ -15,7 +15,6 @@ export const useGetFriendsRequests = (setFriendsRequests: Dispatch<SetStateActio
 
   const onSuccessGetFriendsRequestPage = (response: any) => {
     const newEntries:FriendRequestType[] = response.data.results;
-    console.log('[onSuccessGetFriendsRequestPage]', newEntries)
     if (newEntries.length > 0) {
       setFriendsRequests(prevFriendsRequests => [...prevFriendsRequests, ...newEntries]);
       setNextPage(nextPage + 1);
@@ -27,7 +26,6 @@ export const useGetFriendsRequests = (setFriendsRequests: Dispatch<SetStateActio
     setNextPage(INITIAL_PAGE + 1);
   }
   const onFriendsRequestsReachedEnd = () => {
-    console.log('[onFriendsRequestsReachedEnd]')
     getFriendsRequests(nextPage, onSuccessGetFriendsRequestPage);
   }
 
@@ -57,7 +55,6 @@ export const useGetFriends = (setFriends: Dispatch<SetStateAction<FriendType[]>>
   }
 
   const onFriendsReachedEnd = () => {
-    console.log('[onFriendsReachedEnd]')
     getFriendsApiCall(nextPage, onSuccessGetFriendsRequestPage);
   }
 

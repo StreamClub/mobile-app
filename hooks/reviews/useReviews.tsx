@@ -39,16 +39,13 @@ export const useReviewsList = (contentId: string, contentType: 'movie' | 'series
 
   const setReviews = (data: any) => {
     const reviewsData: Array<Review> = []
-    console.log(data);
     data.map((review: any) => {
-      console.log(review);
       reviewsData.push(Review.fromJson(review));
     })
     setReviewState(reviewsData);
   }
 
   const onSeeAllPress = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
-    console.log("on press");
     getReviews(contentId, contentType, onSuccess)
   }
 

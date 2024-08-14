@@ -34,7 +34,6 @@ export const EditProfileImageOverlay = (params: EditProfileImageOverlayParams) =
   })
 
   const onSuccessUpdatePhoto = (response: any) => {
-    console.log(response.data);
     params.setPhotoId(response.data.photoId);
     params.setOpenModal(false);
   }

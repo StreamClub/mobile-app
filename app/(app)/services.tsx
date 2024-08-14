@@ -35,7 +35,6 @@ export default function Services() {
     const onSuccessGetAllServices = (response: any) => {
         console.log('All services loaded')
         const _allServices: ServiceEntry[] = response.data.streamServices
-        console.log(_allServices)
         setAllServices(_allServices)
     }
 

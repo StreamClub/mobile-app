@@ -46,7 +46,6 @@ export const useGetReviews = () => {
   const getReviews = (contentId: string, contentType: 'movie' | 'series', 
     onSuccess: (response: AxiosResponse<any, any>) => void) => {
     const endpoint = '/reviews/content/' + (contentType == 'movie'? 'movies' : 'series') + '/' + contentId;
-    console.log(endpoint);
     privateCall('GET', endpoint, {}, onSuccess);
   }
 

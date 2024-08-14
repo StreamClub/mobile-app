@@ -88,7 +88,6 @@ export const useWatchlistPress = (
     }
 
     const onPressFocusedEntry = () => {
-        console.log('onPressFocusedEntry')
         onPress()
     }
 

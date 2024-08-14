@@ -6,9 +6,9 @@ import { TitleText } from '../../BasicComponents/TitleText'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
 import { Platform } from '../../../entities/Details/Platform'
-import { SeasonDetailsParams } from '../../../app/(app)/(app)/season'
 import { router } from 'expo-router'
 import { TmdbImage, TmdbImageType } from '../../BasicComponents/TmdbImage'
+import { SeasonDetailsParams } from '../../../app/(app)/season'
 
 type SeasonsListParams = {
     seasons: Season[]
@@ -60,7 +60,7 @@ export const SeasonsList = (params: SeasonsListParams) => {
                                     numberOfLines={2}
                                 />
                                 <BodyText
-                                    body={season.airDate
+                                    body={new Date(season.airDate)
                                         .getFullYear()
                                         .toString()}
                                     size="medium"

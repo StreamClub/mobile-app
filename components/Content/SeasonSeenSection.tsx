@@ -5,28 +5,29 @@ import { styles } from '../Series/SeriesList/styles/SeriesList.style'
 import { useSeenPress } from '../../hooks/useSeenPress'
 import { ContentType } from '../../entities/ContentType'
 import { LocalIcon } from '../Types/LocalIcon'
+import { Percent } from '../BasicComponents/Percent'
+import { useAppSelector } from '../../hooks/redux/useAppSelector'
 
 type SeenButtonProps = {
-    seenState: boolean
-    contentId: string
-    seriesId?: string
-    seasonId?: string
-    contentType: ContentType
+    seriesId: string
+    seasonId: string
 }
 
-export const SeenSection = (params: SeenButtonProps) => {
-    const { seenState, contentId, contentType, seriesId, seasonId } = params
-    const { onPress, seen, loading } = useSeenPress(
-        seenState,
-        contentId,
-        contentType,
-        seriesId,
-        seasonId
-    )
+export const SeasonSeenSection = (params: SeenButtonProps) => {
+    const { seriesId, seasonId } = params
+    const { onPress, loading } = useSeenPress()
+    const { focusedSeason } = useAppSelector((state) => state.searchContent)
+
+    const OnPressParams = {
+        seenState: focusedSeason.seen? 100 : 0,
+        seasonId: seasonId,
+        contentId: seriesId,
+        contentType: new ContentType('series'),
+    }
 
     return (
         <>
-            <Pressable onPress={() => onPress()}>
+            <Pressable onPress={() => onPress(OnPressParams)}>
                 {loading ? (
                     <ActivityIndicator
                         size="small"
@@ -37,7 +38,7 @@ export const SeenSection = (params: SeenButtonProps) => {
                 ) : (
                     <Image
                         source={
-                            seen ? LocalIcon.markAsUnseen : LocalIcon.markAsSeen
+                            focusedSeason.seen ? LocalIcon.markAsUnseen : LocalIcon.markAsSeen
                         }
                         style={styles.iconsStyle}
                     />

@@ -5,7 +5,7 @@ import { colors } from '../../assets';
 import { BodyText } from './BodyText';
 export type PercentParams = {
     style: any;
-    percent: number;
+    percent: number; // 0 a 100%
     size: number;
     showText: Boolean;
 }

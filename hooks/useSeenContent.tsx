@@ -31,8 +31,6 @@ export const useSeenContent = () => {
     }
 
     const loadSeenContentPage = () => {
-        console.log("[loadSeenContentPage] nextPage: ", nextPage)
-        console.log("[loadSeenContentPage] userId: ", userId)
         loadSeenContent(userId, nextPage)
     }
 

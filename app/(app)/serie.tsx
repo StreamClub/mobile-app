@@ -28,7 +28,9 @@ export default function Serie() {
     const onSuccess = (response: any) => {
         const series = response.data
         setSeries(series)
-        dispatch(setFocusedEntry({id: series.id, seen: false, inWatchlist: series.inWatchlist, type: SERIES_NAME}))
+        const newFocusedEntry = {id: series.id, seen: series.seen, inWatchlist: series.inWatchlist, type: SERIES_NAME}
+        console.log(newFocusedEntry)
+        dispatch(setFocusedEntry(newFocusedEntry))
     }
 
     useEffect(() => {

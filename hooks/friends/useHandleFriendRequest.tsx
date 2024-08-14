@@ -5,7 +5,6 @@ export const useHandleFriendRequest = (requestId: string, setShowRequest: Dispat
   const { removeRequest, loading } = useRemoveFriendRequest();
 
   const onSuccessSendFriendRequest = (response: any) => {
-    console.log(response.data);
     setShowRequest(false);
   }
 

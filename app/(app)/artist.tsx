@@ -42,7 +42,6 @@ export default function Artist() {
     const artistId = params.id
 
     const onPressShowBiography = () => {
-        console.log('onPressShowBiography')
         setShowBiography(!showBiography)
     }
 

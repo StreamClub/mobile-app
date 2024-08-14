@@ -42,7 +42,6 @@ const searchContentSlice = createSlice({
             state,
             action: PayloadAction<MovieEntry[] | SeriesEntry[] | ArtistEntry[] | UserEntry[] >
         ) {
-            console.log("Setting results.. " + JSON.stringify(action.payload))
             state.results = action.payload
         },
         addResults(
@@ -55,16 +54,11 @@ const searchContentSlice = createSlice({
             state,
             action: PayloadAction<{ category: string, inWatchlist: boolean, contentId: string }>
         ) {
-            const PAYLOAD = action.payload
-            console.log({ PAYLOAD })
-            console.log(state.category)
-            console.log(state.results)
             if (CATEGORIES[state.category] === action.payload.category) {
-                console.log("Updating results..", CATEGORIES[state.category] === action.payload.category)
                 const updatedResults = state.results.map(entry => {
                     if (entry.id == action.payload.contentId) {
                         // Returns the updated entry
-                        console.log("Updating entry..")
+                        
                         const updatedEntry = { ...entry, inWatchlist: action.payload.inWatchlist };
                         return updatedEntry;
                     }
@@ -86,11 +80,9 @@ const searchContentSlice = createSlice({
             action: PayloadAction<{ category: string, seen: number, contentId: string }>
         ) {
             if (CATEGORIES[state.category] === action.payload.category) {
-                console.log("Updating results..", CATEGORIES[state.category] === action.payload.category)
                 const updatedResults = state.results.map(entry => {
                     if (entry.id == action.payload.contentId) {
                         // Returns the updated entry
-                        console.log("Updating entry..")
                         const updatedEntry = { ...entry, seen: action.payload.seen };
                         return updatedEntry;
                     }
@@ -102,17 +94,7 @@ const searchContentSlice = createSlice({
                 state.results = updatedResults as MovieEntry[] | SeriesEntry[] | ArtistEntry[];
             }
 
-
-            console.log("[updateSeenState] Updating seen state..")
             if (state.focusedEntry.id === action.payload.contentId && state.focusedEntry.type === action.payload.category) {
-                console.log("[updateSeenState] Updating focused entry..")
-                console.log("[updateSeenState] Focused entry id: ", state.focusedEntry.id)
-                console.log("[updateSeenState] Action payload id: ", action.payload.contentId)
-                console.log("[updateSeenState] Focused entry type: ", state.focusedEntry.type)
-                console.log("[updateSeenState] Action payload type: ", action.payload.category)
-
-                console.log({ action })
-                console.log({ state })
                 state.focusedEntry.seen = action.payload.seen as number
             }
 
@@ -138,8 +120,6 @@ const searchContentSlice = createSlice({
                 episodes: { episodeId: number, seen: boolean }[]
              }>
         ) {
-            console.log("Setting focused season..")
-            console.log(action.payload)
             state.focusedSeason = action.payload
 
         },

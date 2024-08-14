@@ -24,9 +24,6 @@ const recosSlice = createSlice({
             state,
             action: PayloadAction<{ type: ContentType, id: number, inWatchlist: boolean }>
         ) {
-            const x = action.payload
-            console.log({ x })
-
             state.userRecos = getUpdatedRecos(state.userRecos, action);
 
             if (action.payload.type === ContentType.Movie) {

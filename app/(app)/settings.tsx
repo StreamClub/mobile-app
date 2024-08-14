@@ -15,7 +15,6 @@ export default function Services() {
   const [isSeenContentListPrivate, setIsSeenContentListPrivate] = useState(false);
 
   const onSuccess = (response: any)=> {
-    console.log(response.data);
     setIsWatchlistPrivate(response.data.isWatchlistPrivate);
     setIsSeenContentListPrivate(response.data.isSeenContentListPrivate);
   }

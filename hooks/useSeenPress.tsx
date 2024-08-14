@@ -23,8 +23,6 @@ export const useSeenPress = () => {
 
     const loading = loadingMovie || loadingSeries;
     const onSuccessAdd = (response: any, contentId: string, category: string) => {
-        console.log('Marco como visto');
-        
         const params = { 
             category: category, 
             contentId: contentId,
@@ -34,8 +32,6 @@ export const useSeenPress = () => {
     }
 
     const onSuccessRemove = (response: any, contentId: string, category: string) => {
-        console.log('Desmarco como visto');
-
         const params = { 
             category: category, 
             contentId: contentId,
@@ -53,8 +49,6 @@ export const useSeenPress = () => {
             contentId: focusedEntry.id,
             seen: percentSeen
         }
-        console.log('Actualizo el porcentaje de visto de la serie');
-        console.log(params);
         dispatch(updateSeenState(params));
     }
 
@@ -111,14 +105,14 @@ export const useSeenPress = () => {
     }
 
     const onPress = (params: OnPressParams) => {
-        console.log("[useSeenPress onPress]", focusedEntry)
-        console.log("[useSeenPress onPress]", params)
-        const _seenState = params.seenState || focusedEntry.seen
+        const _seenState = params.seenState != undefined? params.seenState : focusedEntry.seen
 
         if (loading) return
         if (_seenState) {
+            console.log('Desmarcar como visto');
             unmarkContentAsSeen(params)
         } else {
+            console.log('Marcar como visto');
             markContentAsSeen(params)
         }
     }

@@ -38,11 +38,7 @@ export default function Season() {
     const onSuccess = (response: any) => {
 
         const data = response.data
-        console.log(data.seen)
-        console.log(data.seen)
         const season = SeasonDetail.fromJson(response.data, Number(seriesId))
-        console.log(season.seen)
-        console.log(data.seen)
         // redux params
         const setFocusedSeasonParams = {
             seriesId: Number(seriesId),

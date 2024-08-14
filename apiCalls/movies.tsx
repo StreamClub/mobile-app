@@ -31,8 +31,6 @@ export const useSearchMovies = () => {
     
     const searchMovies = (queryParams: SearchParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const params: Params = { params: {...queryParams, country: country } }
-        console.log("Buscando por searchMovies");
-        console.log("params :" + JSON.stringify(params));
         dispatch(setLoading(true));
         privateCall('GET', endpoint, params, onSuccess);
         //TODO: AGREGAR LOGICA EN BASE A SHOWERROR PARA QUE SETEE EL PAYLOAD DE REDUX DE LA BUSQUEDA
@@ -99,7 +97,6 @@ export const useDiscoverMovie = () => {
 
     const discoverMovie = (filters: DiscoverParams, onSuccess: (response: AxiosResponse<any, any>) => void) => {
         const params: Params = { params: {...filters } };
-        console.log("Buscando por discover");
         privateCall('GET', '/movies/discover', params, onSuccess);
     }
 

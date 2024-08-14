@@ -20,7 +20,6 @@ export type WatchlistParams = {
 export const Watchlist = (params: WatchlistParams) => {
     
     const onPressWatchlistEntry = (entry: WatchlistEntry) => {
-        console.log('entry', entry)
         const contentScreenParams: ContentDetailsParams = {
           id: entry.id.toString(),
         }

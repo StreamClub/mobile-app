@@ -17,7 +17,6 @@ export const TriviasList = () => {
   }, [])
 
   const onSuccess = (response: any) => {
-    console.log(response.data);
     setTrivias(response.data)
   }
 

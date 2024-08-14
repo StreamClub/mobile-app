@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Pressable, View, StyleSheet } from 'react-native'
-import { SeenSection } from '../Content/SeriesSeenSection'
+// import { SeenSection } from '../Content/SeriesSeenSection'
 import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
 import { ContentType } from '../../entities/ContentType'
 import { WatchlistSection } from '../Content/WatchlistSection'
@@ -8,6 +8,7 @@ import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { ShareContentButton } from '../Content/ShareContentButton'
 import { useWatchlistPress } from '../../hooks/useWatchlistPress'
 import { WatchlistButton } from '../BasicComponents/WatchlistButton'
+import { MoviesSeenSection } from '../Content/MoviesSeenSection'
 
 
 type MovieHeaderParams = {
@@ -33,10 +34,9 @@ export const MovieHeader = (params: MovieHeaderParams) => {
                     poster={movie.poster} />
             </View>
             <View style={{ margin: 10 }}>
-                <SeenSection
-                    seenState={movie.seen}
-                    contentId={movie.id}
-                    contentType={contentType}
+                <MoviesSeenSection
+                    seenState={focusedEntry.seen}
+                    movieId={movie.id}
                 />
             </View>
             <View style={{ margin: 10 }}>

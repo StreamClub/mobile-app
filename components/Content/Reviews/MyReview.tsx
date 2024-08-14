@@ -25,13 +25,11 @@ export const MyReview = (params: MyReviewEntry) => {
 
   const onSuccess = (response: any) => {
     setOpenModal(false);
-    console.log(response.data);
     setUserReview(response.data);
   }
 
   const onDeleteSuccess = (response: any) => {
     setOpenDeleteModal(false);
-    console.log(response.data);
     setUserReview(null);
   }
 

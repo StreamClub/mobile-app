@@ -46,7 +46,6 @@ export const useSearchContent = () => {
     const searchText = (text: string, page: number = INITIAL_PAGE) => {
         console.log('Buscando ' + text + '...' + 'pagina ' + page + ' ' + category)
         const queryParams: SearchParams = { query: text, page: page }
-        console.log("queryParams: " + JSON.stringify(queryParams))
         if (CATEGORIES[category] == MOVIES_NAME) {
             searchMovies(queryParams, onSuccessSearch)
         } else if (CATEGORIES[category] == SERIES_NAME) {
@@ -65,7 +64,6 @@ export const useSearchContent = () => {
     const onSubmit = () => {
         if (textSearched.length < 1) return
         cancelTimer()
-        console.log('[Submit]')
         searchText(textSearched)
     }
 
@@ -118,7 +116,6 @@ export const useSearchContent = () => {
         }
         else {
             if (parsedResponse.length > 0) {
-                console.log('Adding page', _page)
                 dispatch(addResults(serializedData))
                 const np = _page + 1
                 dispatch(setNextPage(np))

@@ -8,6 +8,7 @@ import { TitleText } from '../../components/BasicComponents/TitleText';
 import { SeenContentPrivacyButton } from '../../components/Settings/SeenContentPrivacyButton';
 import { useOnFocus } from '../../hooks/useOnFocus';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
+import { StatisticsButton } from '../../components/Settings/StatisticsButton';
 
 export default function Services() {
   const {getUsersPrivacy, loading} = useGetUsersPrivacy();
@@ -31,6 +32,7 @@ export default function Services() {
           <TitleText body='Configuración:' color={colors.primaryGrey}/>
           <WatchlistPrivacyButton isPrivate={isWatchlistPrivate} />
           <SeenContentPrivacyButton isPrivate={isSeenContentListPrivate} />
+          <StatisticsButton />
           <LogOutButton />
         </>
       }

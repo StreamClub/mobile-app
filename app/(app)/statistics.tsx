@@ -8,7 +8,10 @@ export default function Statistics() {
 
   return (
     <View style={styles.container}>
-      <TitleText body='Estadísticas de uso de tus plataformas:' color={colors.primaryBlack}/>
+      <TitleText 
+        body='Estadísticas de uso de tus plataformas:' 
+        color={colors.primaryBlack}
+        style={{marginTop: 10}} />
       <PlatformsBarChart />
     </View>
   )
@@ -18,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: colors.secondaryWhite
   }
 })

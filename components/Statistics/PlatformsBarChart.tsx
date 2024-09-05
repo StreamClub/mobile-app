@@ -4,6 +4,8 @@ import { Svg, Rect, Text as SvgText } from 'react-native-svg';
 import { useGetStatistics } from '../../apiCalls/statistics';
 import { colors } from '../../assets';
 import { getScreenSize } from '../../utils/screenUtils';
+import { BodyText } from '../BasicComponents/BodyText';
+import { LoadingComponent } from '../BasicComponents/LoadingComponent';
 
 type ProviderStatsType = {
   providerId: number,
@@ -32,54 +34,63 @@ const emptyStats: StatsType = {
 export const PlatformsBarChart = () => {
   const {getStatistics, loading} = useGetStatistics();
   const [stats, setStats] = useState<StatsType>(emptyStats);
+  const [maxValue, setMaxValue] = useState(0);
 
   const onSuccess = (response: any) => {
     setStats(response.data);
+    setMaxValue(Math.max(...response.data.top.map((item: { timeWatched: Number; }) => item.timeWatched)));
+    console.log(response.data.top)
   }
 
   useEffect(() => {
     getStatistics('1', onSuccess);
   }, [])
 
-  const topValues = stats.top;
   const chartHeight = 200;
   const barWidth = 50;
-  const spacing = 20;
+  const spacing = 30;
   const { width: chartWidth } = getScreenSize();
-  const maxValue = Math.max(...topValues.map(item => item.timeWatched));
+  const barColors = [colors.primaryBlue, colors.primaryRed, colors.primaryGrey, colors.secondarySkyBlue, colors.primaryBlack];
 
   return(
     <View style={styles.container}>
-      <Svg height={chartHeight + 50} width={chartWidth}>
-        {topValues.map((item, index) => (
-          <React.Fragment key={index}>
-            <Rect
-              x={index * (barWidth + spacing)}
-              y={chartHeight - (item.timeWatched / maxValue) * chartHeight}
-              width={barWidth}
-              height={(item.timeWatched / maxValue) * chartHeight}
-              fill={colors.primaryBlue}
-              rx={10} // Rounded corners
-            />
-            <SvgText
-              x={index * (barWidth + spacing) + barWidth / 2}
-              y={chartHeight + 20}
-              fontSize="12"
-              fill="black"
-              textAnchor="middle">
-                {item.providerName}
-            </SvgText>
-            <SvgText
-              x={index * (barWidth + spacing) + barWidth / 2}
-              y={chartHeight - (item.timeWatched / maxValue) * chartHeight - 10}
-              fontSize="12"
-              fill="black"
-              textAnchor="middle">
-                {item.timeWatched.toFixed(1)}h
-            </SvgText>
-          </React.Fragment>
-        ))}
-      </Svg>
+      {loading?
+        null : 
+        <View style={{flexDirection: 'row'}}>
+          {stats.top.map((item, index) => (
+            <BodyText 
+              key={index}
+              body={item.providerName}
+              color={barColors[index % barColors.length]}
+              style={{margin: 5}} />
+          ))}
+        </View>
+      }
+      {loading?
+        <LoadingComponent /> :
+        <Svg height={chartHeight + 50} width={chartWidth - 100}>
+          {stats.top.map((item, index) => (
+            <React.Fragment key={index}>
+              <Rect
+                x={index * (barWidth + spacing)}
+                y={chartHeight - (item.timeWatched / maxValue) * chartHeight}
+                width={barWidth}
+                height={(item.timeWatched / maxValue) * chartHeight}
+                fill={barColors[index % barColors.length]}
+                rx={10}
+              />
+              <SvgText
+                x={index * (barWidth + spacing) + barWidth / 2}
+                y={chartHeight + 20}
+                fontSize="14"
+                fill={barColors[index % barColors.length]}
+                textAnchor="end">
+                  {item.timeWatched.toFixed(1)}h
+              </SvgText>
+            </React.Fragment>
+          ))}
+        </Svg>
+      }
     </View>
   )
 }
@@ -88,7 +99,8 @@ const styles = StyleSheet.create({
   container: {
       padding: 20,
       backgroundColor: '#F1F4F9',
-      borderRadius: 10
+      borderRadius: 10,
+      margin: 10
   }
 });
 

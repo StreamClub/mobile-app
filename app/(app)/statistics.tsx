@@ -2,18 +2,21 @@ import React from 'react';
 import { View, StyleSheet } from "react-native";
 import { colors } from '../../assets';
 import { TitleText } from '../../components/BasicComponents/TitleText';
-import { PlatformsBarChart } from '../../components/Statistics/PlatformsBarChart';
+import { PlatformsStatistics } from '../../components/Statistics/PlatformsStatistics';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Statistics() {
 
   return (
-    <View style={styles.container}>
-      <TitleText 
-        body='Estadísticas de uso de tus plataformas:' 
-        color={colors.primaryBlack}
-        style={{marginTop: 10}} />
-      <PlatformsBarChart />
-    </View>
+    <ScrollView style={{backgroundColor: colors.secondaryWhite}}>
+      <View style={styles.container}>
+        <TitleText 
+          body='Estadísticas de uso de tus plataformas:' 
+          color={colors.primaryBlack}
+          style={{marginTop: 10}} />
+        <PlatformsStatistics />
+      </View>
+    </ScrollView>
   )
 }
 
@@ -21,7 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: colors.secondaryWhite
+    justifyContent: 'flex-start'
   }
 })

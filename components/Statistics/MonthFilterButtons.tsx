@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ButtonGroup } from '@rneui/themed'
 import { colors } from "../../assets";
-import { AxiosResponse } from "axios";
 
 type MonthFilterButtonsType = {
   updateStats: (month: string) => void;
@@ -36,7 +35,7 @@ export const MonthFilterButtons = (params: MonthFilterButtonsType) => {
         borderColor: 'black',
       }}
       selectedButtonStyle={{
-        backgroundColor: colors.primaryRed,
+        backgroundColor: colors.primarySkyBlue,
       }}
       textStyle={{
         color: 'black',

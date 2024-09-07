@@ -11,6 +11,7 @@ import { barColors } from './types/BarColors';
 import { BarChart } from './BarChart';
 import { colors } from '../../assets';
 import { UnsubscribeRecommendations } from './UnsubscribeRecommendations';
+import { SubscribeRecommendations } from './SubscribeRecommendations';
 
 const { width: chartWidth } = getScreenSize();
 
@@ -70,6 +71,7 @@ export const PlatformsStatistics = () => {
       <UnsubscribeRecommendations 
         recommendations={stats.unsubscribeRecommendations}
         totalViewed={stats.timeInPlatforms + stats.timeOutsidePlatforms} />
+      <SubscribeRecommendations />
     </View>
   )
 }

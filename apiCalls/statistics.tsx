@@ -13,3 +13,15 @@ export const useGetStatistics = () => {
 
   return {getStatistics, loading};
 }
+
+// --------- --------- --------- --------- --------- ---------
+export const useGetSubscribeRecommendations = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const getSubscribeRecommendations = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+      const endpoint = '/streamProviders/subscribeRecommendations';
+      privateCall('GET', endpoint, {}, onSuccess);
+  }
+
+  return {getSubscribeRecommendations, loading};
+}

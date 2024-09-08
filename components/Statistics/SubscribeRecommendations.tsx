@@ -20,20 +20,25 @@ export const SubscribeRecommendations = () => {
 
   return(
     <View>
-      <TitleText
-        body="Servicios Recomendados" />
-      {recommendations.map((item, index) => (
-        <View style={styles.platformRow} key={index}>
-          <TmdbImage
-            resource={item.logoPath}
-            type={TmdbImageType.Cover}
-            style={styles.logo} />
-          <BodyText 
-            body={item.providerName + ': a tus amigos les encanta este servicio'}
-            size='big'
-            style={{margin: 10, flex: 1}} />
-        </View>
-      ))}
+      {recommendations.length > 0?
+        <>
+        <TitleText
+          body="Servicios Recomendados" />
+        {recommendations.map((item, index) => (
+          <View style={styles.platformRow} key={index}>
+            <TmdbImage
+              resource={item.logoPath}
+              type={TmdbImageType.Cover}
+              style={styles.logo} />
+            <BodyText 
+              body={item.providerName + ': a tus amigos les encanta este servicio'}
+              size='big'
+              style={{margin: 10, flex: 1}} />
+          </View>
+        ))}
+        </>
+        : null
+      }
     </View>
   )
 }

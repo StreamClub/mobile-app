@@ -15,29 +15,34 @@ type UnsubscribeRecommendationsType = {
 export const UnsubscribeRecommendations = (params: UnsubscribeRecommendationsType) => {
   return(
     <View>
-      <TitleText 
-        body='Recomendamos dar de baja:' 
-        color={colors.primaryBlack}
-        style={{marginTop: 10}} />
-      <BodyText
-        body="En los últimos 6 meses, han habido servicios que has usado poco. 
-        Para optimizar tus gastos  te recomendamos considerar darte de baja de estos servicios:"
-        size="big"
-        color={colors.primaryBlack} />
-      {params.recommendations.map((item, index) => (
-        <View style={styles.platformRow} key={index}>
-          <TmdbImage
-            resource={item.logoPath}
-            type={TmdbImageType.Cover}
-            style={styles.logo} />
-          <BodyText 
-            body={item.providerName + ': solo el ' 
-              + (item.timeWatched/params.totalViewed).toFixed(0)
-              + '% de tu contenido visto proviene de este servicio.'}
-            size='big'
-            style={{margin: 10, flex: 1}} />
-        </View>
-      ))}
+      {params.recommendations.length > 0?
+        <>
+        <TitleText 
+          body='Recomendamos dar de baja:' 
+          color={colors.primaryBlack}
+          style={{marginTop: 10}} />
+        <BodyText
+          body="En los últimos 6 meses, han habido servicios que has usado poco. 
+          Para optimizar tus gastos  te recomendamos considerar darte de baja de estos servicios:"
+          size="big"
+          color={colors.primaryBlack} />
+        {params.recommendations.map((item, index) => (
+          <View style={styles.platformRow} key={index}>
+            <TmdbImage
+              resource={item.logoPath}
+              type={TmdbImageType.Cover}
+              style={styles.logo} />
+            <BodyText 
+              body={item.providerName + ': solo el ' 
+                + (item.timeWatched/params.totalViewed).toFixed(0)
+                + '% de tu contenido visto proviene de este servicio.'}
+              size='big'
+              style={{margin: 10, flex: 1}} />
+          </View>
+        ))}
+        </>
+        : null
+      }
     </View>
   )
 }

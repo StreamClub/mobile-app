@@ -2,16 +2,16 @@ import { AxiosResponse } from 'axios';
 import { Params, usePrivateCall } from './generic';
 
 // --------- --------- --------- --------- --------- ---------
-export const useGetFriendsRequest = () => {
+export const useGetGroups = () => {
   const {privateCall, loading} = usePrivateCall();
 
-  const getFriendsRequests = (page: number, onSuccess: (response: AxiosResponse<any, any>) => void) => {
-    const endpoint = '/friends/requests';
-    const params: Params = { params: {page, pageSize: 20} };
+  const getGroups = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/groups';
+    const params: Params = { };
     privateCall('GET', endpoint, params, onSuccess);
   }
 
-  return {getFriendsRequests, loading}
+  return { getGroups }
 }
 
 // --------- --------- --------- --------- --------- ---------

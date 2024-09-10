@@ -1,13 +1,8 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView, Dimensions, View, FlatList } from 'react-native';
+import React from 'react';
+import { StyleSheet, Dimensions, View, FlatList } from 'react-native';
 import { colors } from '../../assets';
-import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/CarouselParams';
-import { Carousel } from '../BasicComponents/Carousel';
-import { TmdbImageType } from '../BasicComponents/TmdbImage';
-import { useGetMoviesSeenByFriends } from '../../apiCalls/recos';
 import { TitleText } from '../BasicComponents/TitleText';
 import { router } from 'expo-router';
-import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams';
 import { BodyText } from '../BasicComponents/BodyText';
 import { FriendsSelector } from './FriendsSelector';
 import { Input } from 'react-native-elements';
@@ -43,12 +38,12 @@ export const CreateGroupScreen = () => {
 
     return (
         <FlatList
-                style={styles.container}
-                ListHeaderComponent = {
-                    <>
-                    <View style={{margin: 10}}>
-                        <BodyText body="Recibe recomendaciones para ti y tus amigos." size='medium'/>
-                        <BodyText body="estarán disponibles en 24hs" size='medium'/>
+            style={styles.container}
+            ListHeaderComponent={
+                <>
+                    <View style={{ margin: 10 }}>
+                        <BodyText body="Recibe recomendaciones para ti y tus amigos." size='medium' />
+                        <BodyText body="estarán disponibles en 24hs" size='medium' />
 
                         <Input
                             placeholder="Nombre del grupo"
@@ -62,26 +57,26 @@ export const CreateGroupScreen = () => {
                         />
 
                     </View>
-                    
+
                     <TitleText body="Miembros" style={styles.titleText} size='medium' />
                     <View style={styles.horizontalLine} />
-                    <FriendsSelector onChange={onMembersChange}/>
-                    </>
-                }
-                ListFooterComponent={
-                    <CustomButton
-                        buttonText='Crear Grupo'
-                        fontSize='small'
-                        type='primary'
-                        onPress={onClickCreateGroup}
-                        buttonSize='medium'
-                        style={{ marginVertical: 5, alignSelf: 'center' }}
-                        disabled={groupName.length === 0 || members.length === 0}
-                    />
-                }
-                data={[]}
-                renderItem={() => null}
-            />
+                    <FriendsSelector onChange={onMembersChange} />
+                </>
+            }
+            ListFooterComponent={
+                <CustomButton
+                    buttonText='Crear Grupo'
+                    fontSize='small'
+                    type='primary'
+                    onPress={onClickCreateGroup}
+                    buttonSize='medium'
+                    style={{ marginVertical: 5, alignSelf: 'center' }}
+                    disabled={groupName.length === 0 || members.length === 0}
+                />
+            }
+            data={[]}
+            renderItem={() => null}
+        />
     )
 }
 
@@ -130,8 +125,8 @@ const styles = StyleSheet.create({
 
 const seenContentStyles = StyleSheet.create({
     contentPoster: {
-        height: (screenWidth/1.7),
-        aspectRatio: 2/3,
+        height: (screenWidth / 1.7),
+        aspectRatio: 2 / 3,
         borderRadius: 5,
         margin: 0,
         marginHorizontal: 10,

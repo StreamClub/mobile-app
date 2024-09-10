@@ -1,62 +1,32 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, View } from 'react-native';
 import { colors } from '../../assets';
-import { UserRecos } from './UserRecos';
-import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/CarouselParams';
-import { Carousel } from '../BasicComponents/Carousel';
-import { TmdbImageType } from '../BasicComponents/TmdbImage';
-import { useGetMoviesSeenByFriends } from '../../apiCalls/recos';
 import { TitleText } from '../BasicComponents/TitleText';
 import { router } from 'expo-router';
-import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams';
 import { Icon } from 'react-native-elements';
 import { CustomButton } from '../BasicComponents/CustomButton';
+import { useGetGroups } from '../../apiCalls/groups';
+import { GroupType } from '../Types/Groups';
+import { GroupsList } from '../Groups/GroupsList';
 
 const screenWidth = Dimensions.get('window').width
 
 export const Groups = () => {
-    // const { getMoviesSeenByFriends } = useGetMoviesSeenByFriends();
+    const { getGroups } = useGetGroups();
+    const [groups, setGroups] = React.useState<GroupType[]>([]);
 
-    // const [carrouselMovies, setCarrouselMovies] = React.useState<CarouselEntry[]>([]);
+    const onSuccessGetGroups = (response: any) => {
+        console.log('Groups:', response.data)
+        setGroups(response.data.groups)
+    }
 
-    // const onGetMoviesSeenByFriendsSuccess = (response: any) => {
-    //     const rawMovieRecos = response.data.recommendations;
-    //     console.log("/movies/recommendations ammount", rawMovieRecos.length)
-    //     const carrouselMovies: CarouselEntry[] = []; 
-    //     rawMovieRecos.forEach((rawMovie: any) => {
-    //         const movie: CarouselEntry = {
-    //             tmdbResource: rawMovie.poster,
-    //             itemData: rawMovie,
-    //         }
-    //         carrouselMovies.push(movie)
-    //     });
-    //     setCarrouselMovies(carrouselMovies);
-    // }
-
-    // useEffect(() => {
-    //     getMoviesSeenByFriends(onGetMoviesSeenByFriendsSuccess)
-    // }
-    // , [])
-
-    // const onMoviePressed = (movie: any) => {
-    //     const params: ContentDetailsParams = {
-    //         id: movie.id.toString(),
-    //     }
-
-    //     router.push({ pathname: '/movie', params })
-    // }
-
-    // const friendsRecosParams: CarouselParams = {
-    //     type: TmdbImageType.Cover,
-    //     items: carrouselMovies,
-    //     containerStyle: styles.carousel,
-    //     itemStyle: seenContentStyles.contentPoster,
-    //     onItemPressed: onMoviePressed,
-    // }
+    useEffect(() => {
+        getGroups(onSuccessGetGroups)
+    }
+        , [])
 
     return (
         <>
-            {/* {carrouselMovies.length > 0 && */}
             <View style={{
                 flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 10, marginTop: 10
 
@@ -70,17 +40,20 @@ export const Groups = () => {
                 />
             </View>
             <View style={styles.horizontalLine} />
-            <CustomButton
-                buttonText='Crea tu primer grupo'
-                fontSize='small'
-                type='primary'
-                onPress={() => router.push('/createGroup')}
-                buttonSize='medium'
-                style={{ marginVertical: 5, alignSelf: 'center' }}
-            />
+
+            {groups.length > 0 ?
+                <GroupsList groups={groups} />
+                :
+                <CustomButton
+                    buttonText='Crea tu primer grupo'
+                    fontSize='small'
+                    type='primary'
+                    onPress={() => router.push('/createGroup')}
+                    buttonSize='medium'
+                    style={{ marginVertical: 5, alignSelf: 'center' }}
+                />
+            }
             <View style={styles.horizontalLine} />
-            {/*<Carousel {...friendsRecosParams}/>        */}
-            {/* } */}
         </>
     )
 }

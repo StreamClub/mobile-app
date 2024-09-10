@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView, Dimensions, View } from 'react-native';
+import { StyleSheet, ScrollView, Dimensions, View, FlatList } from 'react-native';
 import { colors } from '../../assets';
 import { UserRecos } from './UserRecos';
 import { CarouselEntry, CarouselParams } from '../BasicComponents/Types/CarouselParams';
@@ -54,17 +54,25 @@ export const RecosScreen = () => {
     }
     
     return (
-        <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
-            <UserRecos />
-            {carrouselMovies.length > 0 &&
+        <FlatList
+            style={styles.container}
+            ListHeaderComponent={
                 <>
-                <TitleText body="Populares entre amigos" style={styles.titleText} size='medium'/>
-                <Carousel {...friendsRecosParams}/>
+                <UserRecos />
+                {carrouselMovies.length > 0 &&
+                    <>
+                    <TitleText body="Populares entre amigos" style={styles.titleText} size='medium'/>
+                    <Carousel {...friendsRecosParams}/>
+                    </>
+                }
                 </>
             }
-
-            <Groups />
-        </ScrollView>
+            ListFooterComponent={
+                <Groups />
+            }
+            data={[]}
+            renderItem={() => null}
+        />
     )
 }
 

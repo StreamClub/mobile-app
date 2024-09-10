@@ -94,10 +94,11 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
                     <BodyText body={"Gestionar plataformas"} size="medium" style={styles.linkedText} onPress={onPressManageServices}/> :
                     null
                 }
-                <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
-                <Carousel {...seenContentCarouselParams}/>
-                <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={onPressMoreSeenContent}/>
-
+                {params.seenContent.length > 0 && <>
+                    <TitleText body="Últimas visualizaciones" style={styles.titleText} size='medium'/>
+                    <Carousel {...seenContentCarouselParams}/>
+                    <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={onPressMoreSeenContent}/>
+                </>}
                 <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
             </>
         )

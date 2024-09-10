@@ -34,3 +34,17 @@ export const useGetSeriesRecos = () => {
 
     return { getSeriesRecos };
 }
+
+export const useGetMoviesSeenByFriends = () => {
+    const { privateCall } = usePrivateCall();
+
+    const getMoviesSeenByFriends = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/movies/recommendations';
+        const params: Params = { }
+
+
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return { getMoviesSeenByFriends }
+}

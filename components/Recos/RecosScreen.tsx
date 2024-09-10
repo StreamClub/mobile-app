@@ -9,6 +9,7 @@ import { useGetMoviesSeenByFriends } from '../../apiCalls/recos';
 import { TitleText } from '../BasicComponents/TitleText';
 import { router } from 'expo-router';
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams';
+import { Groups } from './Groups';
 
 const screenWidth = Dimensions.get('window').width
 
@@ -61,6 +62,8 @@ export const RecosScreen = () => {
                 <Carousel {...friendsRecosParams}/>
                 </>
             }
+
+            <Groups />
         </ScrollView>
     )
 }

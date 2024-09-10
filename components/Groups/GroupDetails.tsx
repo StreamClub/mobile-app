@@ -15,6 +15,8 @@ type MemberType = {
 
 type GroupDetailsParams = {
     groupId: number,
+    onDelete: (groupId: number) => void,
+    onCancel: () => void,
 }
 
 export const GroupDetails = (params: GroupDetailsParams) => {
@@ -60,14 +62,14 @@ export const GroupDetails = (params: GroupDetailsParams) => {
                         type="primary"
                         fontSize="small"
                         buttonSize="medium"
-                        onPress={() => console.log("Pressed") } 
+                        onPress={() => params.onDelete(params.groupId) } 
                     />
                     <CustomButton
                         buttonText="Cancelar"
                         type="secondary"
                         fontSize="small"
                         buttonSize="medium"
-                        onPress={() => console.log("Pressed") } 
+                        onPress={() => params.onCancel() } 
                     />
                 </View>
             </View>

@@ -42,14 +42,14 @@ export const useCreateGroup = () => {
 
 
 // --------- --------- --------- --------- --------- ---------
-// export const useRemoveFriend = () => {
-//   const {privateCall, loading} = usePrivateCall();
+export const useDeleteGroup = () => {
+  const {privateCall, loading} = usePrivateCall();
 
-//   const removeFriend = (userId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
-//     const endpoint = '/friends/' + userId;
-//     const params: Params = {};
-//     privateCall('DELETE', endpoint, params, onSuccess);
-//   }
+  const deleteGroup = (groupId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/groups/' + groupId;
+    const params: Params = {};
+    privateCall('DELETE', endpoint, params, onSuccess);
+  }
 
-//   return {removeFriend, loading}
-// }
+  return { deleteGroup }
+}

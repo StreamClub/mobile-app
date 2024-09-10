@@ -6,6 +6,7 @@ import { GroupType } from '../Types/Groups'
 import { TitleText } from '../BasicComponents/TitleText'
 import { Icon, Overlay } from 'react-native-elements'
 import { GroupDetails } from './GroupDetails'
+import { useDeleteGroup } from '../../apiCalls/groups'
 
 type GroupsListParams = {
     groups: GroupType[]
@@ -14,6 +15,26 @@ type GroupsListParams = {
 export const GroupsList = (params: GroupsListParams) => {
     const [openModal, setOpenModal] = React.useState(false);
     const [groupId, setGroupId] = React.useState(0);
+
+    const { deleteGroup } = useDeleteGroup()
+
+    const onSuccessDeleteGroup = (response: any) => {
+        console.log('Group deleted', response)
+        // TODO: Redux delete logic
+    }
+
+    const onDelete = (groupId: number) => {
+        console.log('Group delete', groupId)
+        deleteGroup(groupId.toString(), onSuccessDeleteGroup)
+        
+        setGroupId(0)
+        setOpenModal(false)
+    }
+
+    const onCancel = () => {
+        setGroupId(0)
+        setOpenModal(false)
+    }
 
     useEffect(() => {
         if (groupId) {
@@ -32,7 +53,7 @@ export const GroupsList = (params: GroupsListParams) => {
                 height: '60%',
                 borderRadius: 20,
             }} >
-            <GroupDetails groupId={groupId} />
+            <GroupDetails groupId={groupId} onDelete={onDelete} onCancel={onCancel}/>
         </Overlay>
 
         <FlatList

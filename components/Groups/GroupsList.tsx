@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
 import { BodyText } from '../BasicComponents/BodyText'
 import { colors } from '../../assets'
 import { GroupType } from '../Types/Groups'
 import { TitleText } from '../BasicComponents/TitleText'
 import { Icon, Overlay } from 'react-native-elements'
+import { GroupDetails } from './GroupDetails'
 
 type GroupsListParams = {
     groups: GroupType[]
@@ -12,6 +13,13 @@ type GroupsListParams = {
 
 export const GroupsList = (params: GroupsListParams) => {
     const [openModal, setOpenModal] = React.useState(false);
+    const [groupId, setGroupId] = React.useState(0);
+
+    useEffect(() => {
+        if (groupId) {
+            setOpenModal(true)
+        }
+    }, [groupId])
 
     return (
         <>
@@ -20,10 +28,11 @@ export const GroupsList = (params: GroupsListParams) => {
             onBackdropPress={() => setOpenModal(false)}
             overlayStyle={{
                 backgroundColor: colors.primarySkyBlue,
-                margin: 20,
+                width: '80%',
+                height: '60%',
                 borderRadius: 20,
             }} >
-            <TitleText body={'Para ver con '} size='medium' />
+            <GroupDetails groupId={groupId} />
         </Overlay>
 
         <FlatList
@@ -41,7 +50,7 @@ export const GroupsList = (params: GroupsListParams) => {
                         name={"edit"}
                         type="font-awesome"
                         color="black"
-                        onPress={() => setOpenModal(true)}
+                        onPress={() => setGroupId(item.id)}
                     />
                 </View>
 

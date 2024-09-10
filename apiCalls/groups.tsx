@@ -15,6 +15,19 @@ export const useGetGroups = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export const useGetGroupDetails = () => {
+  const {privateCall, loading} = usePrivateCall();
+
+  const getGroupDetails = (groupId: number, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+    const endpoint = '/groups/' + groupId;
+    const params: Params = { };
+    privateCall('GET', endpoint, params, onSuccess);
+  }
+
+  return { getGroupDetails }
+}
+
+// --------- --------- --------- --------- --------- ---------
 export const useCreateGroup = () => {
   const {privateCall, loading} = usePrivateCall();
 
@@ -26,6 +39,7 @@ export const useCreateGroup = () => {
 
   return { createGroup }
 }
+
 
 // --------- --------- --------- --------- --------- ---------
 // export const useRemoveFriend = () => {

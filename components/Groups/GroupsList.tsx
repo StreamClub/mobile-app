@@ -4,15 +4,28 @@ import { BodyText } from '../BasicComponents/BodyText'
 import { colors } from '../../assets'
 import { GroupType } from '../Types/Groups'
 import { TitleText } from '../BasicComponents/TitleText'
-import { Icon } from 'react-native-elements'
+import { Icon, Overlay } from 'react-native-elements'
 
 type GroupsListParams = {
     groups: GroupType[]
 }
 
 export const GroupsList = (params: GroupsListParams) => {
+    const [openModal, setOpenModal] = React.useState(false);
 
     return (
+        <>
+        <Overlay
+            isVisible={openModal}
+            onBackdropPress={() => setOpenModal(false)}
+            overlayStyle={{
+                backgroundColor: colors.primarySkyBlue,
+                margin: 20,
+                borderRadius: 20,
+            }} >
+            <TitleText body={'Para ver con '} size='medium' />
+        </Overlay>
+
         <FlatList
             style={{ width: '100%' }}
             data={params.groups}
@@ -28,7 +41,7 @@ export const GroupsList = (params: GroupsListParams) => {
                         name={"edit"}
                         type="font-awesome"
                         color="black"
-                        onPress={() => console.log('Edit group', item)}
+                        onPress={() => setOpenModal(true)}
                     />
                 </View>
 
@@ -43,5 +56,6 @@ export const GroupsList = (params: GroupsListParams) => {
             keyExtractor={(item, index) => index.toString()}
 
         />
+        </>
     )
 }

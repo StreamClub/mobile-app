@@ -13,16 +13,24 @@ import { FriendsSelector } from './FriendsSelector';
 import { Input } from 'react-native-elements';
 import { CustomButton } from '../BasicComponents/CustomButton';
 import { FriendType } from '../Profile/Friends/FriendEntry';
+import { useCreateGroup } from '../../apiCalls/groups';
 
 const screenWidth = Dimensions.get('window').width
 
 export const CreateGroupScreen = () => {
     const [groupName, setGroupName] = React.useState<string>('')
     const [members, setMembers] = React.useState<FriendType[]>([])
-    
+    const createGroup = useCreateGroup()
+
+    const onSuccessCreateGroup = () => {
+        console.log('Group created successfully')
+        router.back()
+    }
+
     const onClickCreateGroup = () => {
         const membersIds = members.map(member => member.id)
-        console.log('Create Group', groupName, membersIds)
+        console.log('sending Create Group request', groupName, membersIds)
+        createGroup.createGroup(groupName, membersIds, onSuccessCreateGroup)
     }
 
     const onGroupNameChange = (newGroupName: string) => {

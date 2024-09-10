@@ -61,7 +61,7 @@ export const FriendsSelector = (params: FriendsSelectorParams) => {
     return (
         friends.length > 0 ?
             <>
-            <View style={{margin: 10}}>
+            <View style={{margin: 10, width: '100%' }}>
                 <FriendEntry {...myself} showCheckBox={true} />
             </View>
             

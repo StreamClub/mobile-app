@@ -10,6 +10,7 @@ import { TitleText } from '../BasicComponents/TitleText';
 import { router } from 'expo-router';
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams';
 import { Groups } from './Groups';
+import { SubgroupRecommendationsButton } from './SubGroupRecommendations/SubgroupRecommendationsButton';
 
 const screenWidth = Dimensions.get('window').width
 
@@ -68,7 +69,10 @@ export const RecosScreen = () => {
                 </>
             }
             ListFooterComponent={
-                <Groups />
+                <>
+                    <SubgroupRecommendationsButton />
+                    <Groups />
+                </>
             }
             data={[]}
             renderItem={() => null}

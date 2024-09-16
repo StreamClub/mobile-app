@@ -48,3 +48,16 @@ export const useGetMoviesSeenByFriends = () => {
 
     return { getMoviesSeenByFriends }
 }
+
+export const useGetSeriesSeenByFriends = () => {
+    const { privateCall } = usePrivateCall();
+
+    const getSeriesSeenByFriends = (onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/recommendations';
+        const params: Params = { }
+
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return { getSeriesSeenByFriends }
+}

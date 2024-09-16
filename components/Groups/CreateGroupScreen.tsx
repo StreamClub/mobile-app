@@ -23,8 +23,7 @@ export const CreateGroupScreen = () => {
     }
 
     const onClickCreateGroup = () => {
-        const membersIds = members.map(member => member.id)
-        console.log('sending Create Group request', groupName, membersIds)
+        const membersIds = members.map(member => member.userId)
         createGroup.createGroup(groupName, membersIds, onSuccessCreateGroup)
     }
 

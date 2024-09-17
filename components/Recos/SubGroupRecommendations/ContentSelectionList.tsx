@@ -6,12 +6,13 @@ import { useAppSelector } from "../../../hooks/redux/useAppSelector";
 import { BodyText } from "../../BasicComponents/BodyText";
 import { SeenContentEntry } from "../../Types/SeenContentEntry";
 import { createTuples } from "../../../utils/listManager";
-import { colors } from "../../../assets";
 import { TmdbImage, TmdbImageType } from "../../BasicComponents/TmdbImage";
-import { TitleText } from "../../BasicComponents/TitleText";
 import { Checkbox } from "react-native-paper";
+import { useAppDispatch } from "../../../hooks/redux/useAppDispatch";
+import { setUserId } from "../../../store/slices/seenContentSlice";
 
 export const ContentSelectionList = () => {
+  const dispatch = useAppDispatch();
   const session = useSession();
   const userId = session?.userId ? session.userId : 0;
   const [checked, setChecked] = useState(false);
@@ -20,16 +21,17 @@ export const ContentSelectionList = () => {
 
   useEffect(() => {
     console.log("[SeenContent] setting userId: ", userId);
+    dispatch(setUserId(userId));
     loadSeenContent(userId);
   }, []);
 
-  const tuples = createTuples(seenContent, 20)
+  const tuples = createTuples(seenContent, 1);
 
   const renderSeenContentRow = (tuple: SeenContentEntry[], index: number) => {
     return(
       <View key={index} style={styles.rowContainer}>
         {tuple.map((movie, index) => 
-          <>
+          <View key={index}>
           <View style={styles.row}>
             <View style={{flexDirection: 'row', flex: 0.7}}>
               <TmdbImage
@@ -50,7 +52,7 @@ export const ContentSelectionList = () => {
             </View>
           </View>
           <View style={styles.horizontalLine} />
-          </>
+          </View>
         )}
       </View>
     )
@@ -65,7 +67,7 @@ export const ContentSelectionList = () => {
           renderItem={({item, index}) => renderSeenContentRow(item, index)}
           keyExtractor={(item, index) => index.toString()}
           onEndReachedThreshold={0}
-          onEndReached={() => console.log("Test")/* loadSeenContentPage */} /> :
+          onEndReached={loadSeenContentPage} /> :
         <BodyText body="No seen content" />
       }
     </View>

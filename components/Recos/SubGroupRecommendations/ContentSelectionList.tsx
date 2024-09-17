@@ -5,17 +5,17 @@ import { useSession } from "../../../context/ctx";
 import { useAppSelector } from "../../../hooks/redux/useAppSelector";
 import { BodyText } from "../../BasicComponents/BodyText";
 import { SeenContentEntry } from "../../Types/SeenContentEntry";
-import { createTuples } from "../../../utils/listManager";
 import { TmdbImage, TmdbImageType } from "../../BasicComponents/TmdbImage";
 import { Checkbox } from "react-native-paper";
 import { useAppDispatch } from "../../../hooks/redux/useAppDispatch";
 import { setUserId } from "../../../store/slices/seenContentSlice";
+import { colors } from "../../../assets";
 
 export const ContentSelectionList = () => {
   const dispatch = useAppDispatch();
   const session = useSession();
   const userId = session?.userId ? session.userId : 0;
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState<Array<number>>([]);
   const { loadSeenContent, loadSeenContentPage } = useSeenContent();
   const { seenContent } = useAppSelector((state) => state.seenContent);
 
@@ -25,58 +25,63 @@ export const ContentSelectionList = () => {
     loadSeenContent(userId);
   }, []);
 
-  const tuples = createTuples(seenContent, 1);
+  const pushSelection = (movieId: number) => {
+    if (checked.includes(movieId)) {
+      setChecked(checked.filter(item => item !== movieId));
+    } else if (checked.length < 3) {
+      setChecked([...checked, movieId]);
+    }
+  }
 
-  const renderSeenContentRow = (tuple: SeenContentEntry[], index: number) => {
+  const renderSeenContentRow = (movie: SeenContentEntry, index: number) => {
     return(
-      <View key={index} style={styles.rowContainer}>
-        {tuple.map((movie, index) => 
-          <View key={index}>
-          <View style={styles.row}>
-            <View style={{flexDirection: 'row', flex: 0.7}}>
-              <TmdbImage
-                resource={movie.poster}
-                type={TmdbImageType.Cover}
-                style={styles.posterStyle} />
-              <BodyText 
-                key={index} 
-                body={movie.title}
-                size="big"
-                style={{flex: 1, margin: 5}} />
-            </View>
-            <View style={{flex: 0.4}}>
-              <Checkbox
-                status={checked? 'checked' : 'unchecked'}
-                onPress={() =>
-                  setChecked(!checked)} />
-            </View>
+      <View key={index}>
+        <View style={styles.row}>
+          <View style={{flexDirection: 'row', flex: 0.7}}>
+            <TmdbImage
+              resource={movie.poster}
+              type={TmdbImageType.Cover}
+              style={styles.posterStyle} />
+            <BodyText 
+              key={index} 
+              body={movie.title}
+              size="big"
+              style={{flex: 1, margin: 5}} />
           </View>
-          <View style={styles.horizontalLine} />
+          <View style={{flex: 0.4}}>
+            <Checkbox
+              status={checked.includes(movie.id) ? 'checked' : 'unchecked'}
+              onPress={() =>
+                pushSelection(movie.id)}
+              color={colors.primaryBlue} />
           </View>
-        )}
+        </View>
+        <View style={styles.horizontalLine} />
       </View>
     )
   }
 
   return(
     <View style={{margin: 10}} >
-      {seenContent.length > 0?
-        <FlatList 
-          style={styles.container}
-          data={tuples}
-          renderItem={({item, index}) => renderSeenContentRow(item, index)}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReachedThreshold={0}
-          onEndReached={loadSeenContentPage} /> :
-        <BodyText body="No seen content" />
-      }
+      <View style={styles.rowContainer}>
+        {seenContent.length > 0?
+          <FlatList 
+            style={styles.container}
+            data={seenContent}
+            renderItem={({item, index}) => renderSeenContentRow(item, index)}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0}
+            onEndReached={loadSeenContentPage} /> :
+          <BodyText body="No seen content" />
+        }
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%'
+    width: '90%'
   },
   rowContainer: {
     flexDirection: 'column',

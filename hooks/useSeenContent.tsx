@@ -19,7 +19,6 @@ export const useSeenContent = () => {
     const { userId, nextPage } = useAppSelector((state) => state.seenContent)
 
     const onSuccessGetSeenContent = (response: any) => {
-        console.log("[onSuccessGetSeenContent] response: ", response.data)
         const page: number = response.data.page
         const seenContent: SeenContentEntry[] = response.data.results
 

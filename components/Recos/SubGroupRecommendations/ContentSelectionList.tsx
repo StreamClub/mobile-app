@@ -10,6 +10,7 @@ import { Checkbox } from "react-native-paper";
 import { useAppDispatch } from "../../../hooks/redux/useAppDispatch";
 import { setUserId } from "../../../store/slices/seenContentSlice";
 import { colors } from "../../../assets";
+import { ContentSelectionRow } from "./ContentSelectionRow";
 
 export const ContentSelectionList = () => {
   const dispatch = useAppDispatch();
@@ -36,26 +37,10 @@ export const ContentSelectionList = () => {
   const renderSeenContentRow = (movie: SeenContentEntry, index: number) => {
     return(
       <View key={index}>
-        <View style={styles.row}>
-          <View style={{flexDirection: 'row', flex: 0.7}}>
-            <TmdbImage
-              resource={movie.poster}
-              type={TmdbImageType.Cover}
-              style={styles.posterStyle} />
-            <BodyText 
-              key={index} 
-              body={movie.title}
-              size="big"
-              style={{flex: 1, margin: 5}} />
-          </View>
-          <View style={{flex: 0.4}}>
-            <Checkbox
-              status={checked.includes(movie.id) ? 'checked' : 'unchecked'}
-              onPress={() =>
-                pushSelection(movie.id)}
-              color={colors.primaryBlue} />
-          </View>
-        </View>
+        <ContentSelectionRow
+          movie={movie}
+          pushSelection={pushSelection}
+          checked={checked} />
         <View style={styles.horizontalLine} />
       </View>
     )
@@ -87,17 +72,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     width: '90%'
-  },
-  posterStyle: {
-    width: 100,
-    aspectRatio: 2/3,
-  },
-  row: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    margin: 5, 
-    width: '90%',
-    alignItems: 'center'
   },
   horizontalLine: {
     width: "100%",

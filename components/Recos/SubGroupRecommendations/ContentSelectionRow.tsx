@@ -32,7 +32,8 @@ export const ContentSelectionRow = (params: ContentSelectionRowType) => {
           status={params.checked.includes(movie.id) ? 'checked' : 'unchecked'}
           onPress={() =>
             params.pushSelection(movie.id)}
-          color={colors.primaryBlue} />
+          color={colors.primaryBlue}
+          disabled={((params.checked.length >= 3) && (!params.checked.includes(movie.id)))} />
       </View>
     </View>
   )

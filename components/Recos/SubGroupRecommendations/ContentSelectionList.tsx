@@ -5,12 +5,13 @@ import { useSession } from "../../../context/ctx";
 import { useAppSelector } from "../../../hooks/redux/useAppSelector";
 import { BodyText } from "../../BasicComponents/BodyText";
 import { SeenContentEntry } from "../../Types/SeenContentEntry";
-import { TmdbImage, TmdbImageType } from "../../BasicComponents/TmdbImage";
-import { Checkbox } from "react-native-paper";
 import { useAppDispatch } from "../../../hooks/redux/useAppDispatch";
 import { setUserId } from "../../../store/slices/seenContentSlice";
-import { colors } from "../../../assets";
 import { ContentSelectionRow } from "./ContentSelectionRow";
+import { CustomButton } from "../../BasicComponents/CustomButton";
+import { colors } from "../../../assets";
+import { router } from "expo-router";
+import { SubGroupRecommendationsType } from "../../../app/(app)/subgroupRecommendations";
 
 export const ContentSelectionList = () => {
   const dispatch = useAppDispatch();
@@ -46,21 +47,41 @@ export const ContentSelectionList = () => {
     )
   }
 
+  const onPress = () => {
+    const params: SubGroupRecommendationsType = {
+      selectedContent: checked.join(',')
+    }
+    router.push({pathname: '/subGroupRecommendations', params: params})
+  }
+
   return(
-    <View style={{margin: 10}} >
-      <View style={styles.rowContainer}>
-        {seenContent.length > 0?
-          <FlatList 
-            style={styles.container}
-            data={seenContent}
-            renderItem={({item, index}) => renderSeenContentRow(item, index)}
-            keyExtractor={(item, index) => index.toString()}
-            onEndReachedThreshold={0}
-            onEndReached={loadSeenContentPage} /> :
-          <BodyText body="No seen content" />
-        }
+    <>
+      <CustomButton
+        buttonText="Recibir recomendaciones"
+        fontSize="medium"
+        onPress={onPress}
+        type="primary"
+        buttonSize="auto"
+        style={{alignSelf: 'flex-start', width: "100%" }} />
+      <View style={{margin: 10}} >
+        {checked.length >= 3? 
+        <BodyText
+          body="Ya seleccionaste el máximos de películas posible."
+          color={colors.primaryRed} /> : null }
+        <View style={styles.rowContainer}>
+          {seenContent.length > 0?
+            <FlatList 
+              style={styles.container}
+              data={seenContent}
+              renderItem={({item, index}) => renderSeenContentRow(item, index)}
+              keyExtractor={(item, index) => index.toString()}
+              onEndReachedThreshold={0}
+              onEndReached={loadSeenContentPage} /> :
+            <BodyText body="No hay contenido visto" />
+          }
+        </View>
       </View>
-    </View>
+    </>
   )
 }
 
@@ -70,7 +91,6 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
     width: '90%'
   },
   horizontalLine: {

@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from "react-native";
 import { colors } from '../../assets';
 import { TitleText } from '../../components/BasicComponents/TitleText';
 import { useLocalSearchParams } from 'expo-router'
 import { useSimilarMovies } from '../../apiCalls/movies';
+import { ContentList } from '../../components/Content/ContentList';
+import { ContentEntry } from '../../entities/ContentEntry';
+import { MOVIES_NAME } from '../../constants';
+import { serializeSearchResults } from '../../utils/serializeSearchResults';
+import { useDataToSerieEntryList } from '../../hooks/search/useSeriesEntryList';
+import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
+import { BodyText } from '../../components/BasicComponents/BodyText';
 
 export type SubGroupRecommendationsType = {
   selectedContent: string
@@ -12,24 +19,42 @@ export type SubGroupRecommendationsType = {
 export default function SubGroupRecommendations() {
   const params = useLocalSearchParams<SubGroupRecommendationsType>();
   const {similarMovies, loading} = useSimilarMovies();
+  const [contentList, setContentList] = useState<Array<ContentEntry>>([]);
+  const { toMovieListEntries, toSeriesListEntries } = useDataToSerieEntryList();
 
   const onSuccess = (response: any) => {
-    console.log(response.data);
+    console.log('Busqueda exitosa: ');
+    const parsedResponse = toMovieListEntries(response.data);
+    const serializedData = serializeSearchResults(parsedResponse, MOVIES_NAME);
+    setContentList(serializedData);
   }
 
   useEffect(() => {
-    console.log("About to get movies");
-    console.log(params.selectedContent);
     similarMovies(params.selectedContent, onSuccess);
   }, []);
 
   return (
     <View style={styles.container}>
       <TitleText 
-        body='Algo similar a esto' 
+        body='Contenido similar:' 
         color={colors.primaryBlack}
         style={{margin: 10}} />
       <View style={styles.horizontalLine} />
+      {loading?
+        <View style={{alignSelf: 'center', justifyContent: 'center'}}>
+          <LoadingComponent />
+        </View> :
+        contentList.length > 0?
+          <ContentList 
+            searchNextPage={() => console.log("End of page")}
+            contentEntry={contentList} /> :
+          <View style={{margin: 10}} >
+            <BodyText
+              body="Lamentablemente no encontramos recomendaciones para tu selección."
+              size="big"
+              color={colors.primaryBlue} />
+          </View>
+      }
     </View>
   )
 }
@@ -50,3 +75,4 @@ const styles = StyleSheet.create({
     margin: 5
   }
 })
+

@@ -11,9 +11,13 @@ import { ContentSelectionRow } from "./ContentSelectionRow";
 import { CustomButton } from "../../BasicComponents/CustomButton";
 import { colors } from "../../../assets";
 import { router } from "expo-router";
-import { SubGroupRecommendationsType } from "../../../app/(app)/subgroupRecommendations";
+import { SubGroupRecommendationsType } from "../../../app/(app)/subGroupRecommendations";
 
-export const ContentSelectionList = () => {
+type ContentSelectionListType = {
+  selectedCategory: number
+}
+
+export const ContentSelectionList = (params: ContentSelectionListType) => {
   const dispatch = useAppDispatch();
   const session = useSession();
   const userId = session?.userId ? session.userId : 0;
@@ -24,7 +28,9 @@ export const ContentSelectionList = () => {
   useEffect(() => {
     console.log("[SeenContent] setting userId: ", userId);
     dispatch(setUserId(userId));
-    loadSeenContent(userId);
+    if (params.selectedCategory == 0) {
+      loadSeenContent(userId, undefined, 'movie');
+    }
   }, []);
 
   const pushSelection = (movieId: number) => {
@@ -62,7 +68,8 @@ export const ContentSelectionList = () => {
         onPress={onPress}
         type="primary"
         buttonSize="auto"
-        style={{alignSelf: 'flex-start', width: "100%" }} />
+        disabled={checked.length == 0}
+        style={{alignSelf: 'flex-start', width: "100%", marginTop: 15 }} />
       <View style={{margin: 10}} >
         {checked.length >= 3? 
         <BodyText

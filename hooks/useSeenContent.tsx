@@ -1,7 +1,3 @@
-
-import { useGetMovieRecos, useGetSeriesRecos } from "../apiCalls/recos";
-import { Reco } from "../components/Types/Reco";
-import { ContentType } from "../components/Types/ContentType";
 import { useSession } from "../context/ctx";
 import { useAppDispatch } from './redux/useAppDispatch';
 import { updateSeenContent, setLoadingFirstPage, setNextPage } from '../store/slices/seenContentSlice';
@@ -33,14 +29,16 @@ export const useSeenContent = () => {
         loadSeenContent(userId, nextPage)
     }
 
-    const loadSeenContent = (userId: number, page: number = INITIAL_PAGE) => {
+    const loadSeenContent = (userId: number, page: number = INITIAL_PAGE, contentTypes?: 'movie' | 'series') => {
         console.log("[loadSeenContent] page: ", page)
 
         const seenContentParams: getSeenContentParams = {
             userId: userId,
             page: page,
             pageSize: PAGE_SIZE,
+            ...(contentTypes && { contentTypes })
         }
+        console.log(seenContentParams);
         if (page === INITIAL_PAGE) {
             dispatch(setLoadingFirstPage(true))
             dispatch(setNextPage(INITIAL_PAGE + 1))

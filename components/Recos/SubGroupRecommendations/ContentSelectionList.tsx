@@ -18,20 +18,9 @@ type ContentSelectionListType = {
 }
 
 export const ContentSelectionList = (params: ContentSelectionListType) => {
-  const dispatch = useAppDispatch();
-  const session = useSession();
-  const userId = session?.userId ? session.userId : 0;
   const [checked, setChecked] = useState<Array<number>>([]);
-  const { loadSeenContent, loadSeenContentPage } = useSeenContent();
+  const { loadSeenContentPage } = useSeenContent();
   const { seenContent } = useAppSelector((state) => state.seenContent);
-
-  useEffect(() => {
-    console.log("[SeenContent] setting userId: ", userId);
-    dispatch(setUserId(userId));
-    if (params.selectedCategory == 0) {
-      loadSeenContent(userId, undefined, 'movie');
-    }
-  }, []);
 
   const pushSelection = (movieId: number) => {
     if (checked.includes(movieId)) {

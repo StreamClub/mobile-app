@@ -11,13 +11,12 @@ const PAGE_SIZE = 20
 export const useSeenContent = () => {
     const session = useSession()
     const dispatch = useAppDispatch()
-    const { getSeenContent } = useGetSeenContent();
+    const { getSeenContent, loading } = useGetSeenContent();
     const { userId, nextPage } = useAppSelector((state) => state.seenContent)
 
     const onSuccessGetSeenContent = (response: any) => {
         const page: number = response.data.page
         const seenContent: SeenContentEntry[] = response.data.results
-
         dispatch(updateSeenContent({ page, seenContent }))
         dispatch(setLoadingFirstPage(false))
         if (seenContent.length > 0) {
@@ -46,5 +45,5 @@ export const useSeenContent = () => {
         getSeenContent(seenContentParams, onSuccessGetSeenContent)
     }
     
-    return { loadSeenContent, loadSeenContentPage }
+    return { loadSeenContent, loadSeenContentPage, loading }
 }

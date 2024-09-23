@@ -21,7 +21,7 @@ export const FriendsSelector = (params: FriendsSelectorParams) => {
 
     const onCheckBoxPress = (friend: FriendType) => {
         const newFriends = friends.map(f => {
-            if (f.id === friend.id) {
+            if (f.userId === friend.userId) {
                 f.selected = !f.selected;
             }
             return f;

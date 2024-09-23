@@ -8,6 +8,7 @@ import { CustomButton } from '../BasicComponents/CustomButton';
 import { useGetGroups } from '../../apiCalls/groups';
 import { GroupType } from '../Types/Groups';
 import { GroupsList } from '../Groups/GroupsList';
+import { useOnFocus } from '../../hooks/useOnFocus';
 
 const screenWidth = Dimensions.get('window').width
 
@@ -16,14 +17,12 @@ export const Groups = () => {
     const [groups, setGroups] = React.useState<GroupType[]>([]);
 
     const onSuccessGetGroups = (response: any) => {
-        console.log('Groups:', response.data)
         setGroups(response.data.groups)
     }
 
-    useEffect(() => {
+    useOnFocus(() => {
         getGroups(onSuccessGetGroups)
-    }
-        , [])
+    })
 
     return (
         <>
@@ -42,7 +41,7 @@ export const Groups = () => {
             <View style={styles.horizontalLine} />
 
             {groups.length > 0 ?
-                <GroupsList groups={groups} />
+                <GroupsList groups={groups} setGroups={setGroups}/>
                 :
                 <CustomButton
                     buttonText='Crea tu primer grupo'

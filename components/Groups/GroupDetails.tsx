@@ -27,9 +27,10 @@ export const GroupDetails = (params: GroupDetailsParams) => {
 
     const onSuccessGetGroupDetails = (response: any) => {
         const name: string = response.data.name;
-        setName(response.data.name)
+        setName(name)
         
         const members: MemberType[] = response.data.members;
+        console.log('Members:', members)
         setMembers(members)
     }
 

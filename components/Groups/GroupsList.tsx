@@ -9,7 +9,8 @@ import { GroupDetails } from './GroupDetails'
 import { useDeleteGroup } from '../../apiCalls/groups'
 
 type GroupsListParams = {
-    groups: GroupType[]
+    groups: GroupType[],
+    setGroups: (groups: GroupType[]) => void
 }
 
 export const GroupsList = (params: GroupsListParams) => {
@@ -19,14 +20,16 @@ export const GroupsList = (params: GroupsListParams) => {
     const { deleteGroup } = useDeleteGroup()
 
     const onSuccessDeleteGroup = (response: any) => {
-        console.log('Group deleted', response)
-        // TODO: Redux delete logic
+        console.log('Group deleted successfully')
     }
 
     const onDelete = (groupId: number) => {
-        console.log('Group delete', groupId)
+        console.log('Begining group delete', groupId)
         deleteGroup(groupId.toString(), onSuccessDeleteGroup)
         
+        const newGroups = params.groups.filter(group => group.id !== groupId)
+        params.setGroups(newGroups)
+
         setGroupId(0)
         setOpenModal(false)
     }

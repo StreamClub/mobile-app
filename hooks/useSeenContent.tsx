@@ -1,13 +1,10 @@
-
-import { useGetMovieRecos, useGetSeriesRecos } from "../apiCalls/recos";
-import { Reco } from "../components/Types/Reco";
-import { ContentType } from "../components/Types/ContentType";
 import { useSession } from "../context/ctx";
 import { useAppDispatch } from './redux/useAppDispatch';
 import { updateSeenContent, setLoadingFirstPage, setNextPage } from '../store/slices/seenContentSlice';
 import { getSeenContentParams, useGetSeenContent } from "../apiCalls/content";
 import { SeenContentEntry } from "../components/Types/SeenContentEntry";
 import { useAppSelector } from "./redux/useAppSelector";
+import { useState } from "react";
 
 const INITIAL_PAGE = 1
 const PAGE_SIZE = 20
@@ -15,14 +12,12 @@ const PAGE_SIZE = 20
 export const useSeenContent = () => {
     const session = useSession()
     const dispatch = useAppDispatch()
-    const { getSeenContent } = useGetSeenContent();
+    const { getSeenContent, loading } = useGetSeenContent();
     const { userId, nextPage } = useAppSelector((state) => state.seenContent)
 
     const onSuccessGetSeenContent = (response: any) => {
-        console.log("[onSuccessGetSeenContent] response: ", response.data)
         const page: number = response.data.page
         const seenContent: SeenContentEntry[] = response.data.results
-
         dispatch(updateSeenContent({ page, seenContent }))
         dispatch(setLoadingFirstPage(false))
         if (seenContent.length > 0) {
@@ -30,18 +25,24 @@ export const useSeenContent = () => {
         }
     }
 
-    const loadSeenContentPage = () => {
-        loadSeenContent(userId, nextPage)
+    const loadSeenContentPage = (contentTypes?: 'movie' | 'series') => {
+        console.log("Get new page for type: ", contentTypes)
+        if (contentTypes != undefined) {
+            loadSeenContent(userId, nextPage, contentTypes);
+        } else {
+            loadSeenContent(userId, nextPage);
+        }
     }
 
-    const loadSeenContent = (userId: number, page: number = INITIAL_PAGE) => {
-        console.log("[loadSeenContent] page: ", page)
-
+    const loadSeenContent = (userId: number, page: number = INITIAL_PAGE, contentTypes?: 'movie' | 'series') => {
+        console.log("[loadSeenContent] page: ", page);
         const seenContentParams: getSeenContentParams = {
             userId: userId,
             page: page,
             pageSize: PAGE_SIZE,
+            ...(contentTypes && { contentTypes })
         }
+        console.log(seenContentParams);
         if (page === INITIAL_PAGE) {
             dispatch(setLoadingFirstPage(true))
             dispatch(setNextPage(INITIAL_PAGE + 1))
@@ -49,5 +50,5 @@ export const useSeenContent = () => {
         getSeenContent(seenContentParams, onSuccessGetSeenContent)
     }
     
-    return { loadSeenContent, loadSeenContentPage }
+    return { loadSeenContent, loadSeenContentPage, loading }
 }

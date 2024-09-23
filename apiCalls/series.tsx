@@ -129,3 +129,17 @@ export const useDiscoverSeries = () => {
 
     return {discoverSeries, loading};
 }
+
+// --------- --------- --------- --------- --------- ---------
+export const useSimilarSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const similarSeries = (selectedContent: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        console.log("About to get similar series");
+        console.log(selectedContent);
+        const params: Params = { params: {seriesIds: selectedContent} };
+        privateCall('GET', '/series/similar', params, onSuccess);
+    }
+
+    return {similarSeries, loading};
+}

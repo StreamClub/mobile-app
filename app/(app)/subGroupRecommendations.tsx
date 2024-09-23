@@ -6,31 +6,46 @@ import { useLocalSearchParams } from 'expo-router'
 import { useSimilarMovies } from '../../apiCalls/movies';
 import { ContentList } from '../../components/Content/ContentList';
 import { ContentEntry } from '../../entities/ContentEntry';
-import { MOVIES_NAME } from '../../constants';
+import { MOVIES_NAME, SERIES_NAME } from '../../constants';
 import { serializeSearchResults } from '../../utils/serializeSearchResults';
 import { useDataToSerieEntryList } from '../../hooks/search/useSeriesEntryList';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { BodyText } from '../../components/BasicComponents/BodyText';
+import { useAppSelector } from '../../hooks/redux/useAppSelector';
+import { useSimilarSeries } from '../../apiCalls/series';
 
 export type SubGroupRecommendationsType = {
-  selectedContent: string
+  selectedContent: string,
+  category: 'movie' | 'series'
 }
 
 export default function SubGroupRecommendations() {
   const params = useLocalSearchParams<SubGroupRecommendationsType>();
-  const {similarMovies, loading} = useSimilarMovies();
+  const {similarMovies, loading: loadingMovies} = useSimilarMovies();
+  const {similarSeries, loading: loadingSeries} = useSimilarSeries();
   const [contentList, setContentList] = useState<Array<ContentEntry>>([]);
   const { toMovieListEntries, toSeriesListEntries } = useDataToSerieEntryList();
 
-  const onSuccess = (response: any) => {
-    console.log('Busqueda exitosa: ');
+  const onMovieSuccess = (response: any) => {
+    console.log('Busqueda exitosa pelicula: ');
     const parsedResponse = toMovieListEntries(response.data);
     const serializedData = serializeSearchResults(parsedResponse, MOVIES_NAME);
     setContentList(serializedData);
   }
 
+  const onSeriesSuccess = (response: any) => {
+    console.log('Busqueda exitosa serie: ');
+    const parsedResponse = toSeriesListEntries(response.data);
+    const serializedData = serializeSearchResults(parsedResponse, SERIES_NAME);
+    setContentList(serializedData);
+  }
+
   useEffect(() => {
-    similarMovies(params.selectedContent, onSuccess);
+    if (params.category == 'movie') {
+      similarMovies(params.selectedContent, onMovieSuccess);
+    } else {
+      similarSeries(params.selectedContent, onSeriesSuccess);
+    }
   }, []);
 
   return (
@@ -40,7 +55,7 @@ export default function SubGroupRecommendations() {
         color={colors.primaryBlack}
         style={{margin: 10}} />
       <View style={styles.horizontalLine} />
-      {loading?
+      {(loadingSeries || loadingMovies)?
         <View style={{alignSelf: 'center', justifyContent: 'center'}}>
           <LoadingComponent />
         </View> :

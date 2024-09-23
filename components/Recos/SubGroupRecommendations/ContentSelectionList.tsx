@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import { useSeenContent } from "../../../hooks/useSeenContent";
-import { useSession } from "../../../context/ctx";
 import { useAppSelector } from "../../../hooks/redux/useAppSelector";
 import { BodyText } from "../../BasicComponents/BodyText";
 import { SeenContentEntry } from "../../Types/SeenContentEntry";
-import { useAppDispatch } from "../../../hooks/redux/useAppDispatch";
-import { setUserId } from "../../../store/slices/seenContentSlice";
 import { ContentSelectionRow } from "./ContentSelectionRow";
 import { CustomButton } from "../../BasicComponents/CustomButton";
 import { colors } from "../../../assets";
@@ -20,6 +17,7 @@ type ContentSelectionListType = {
 export const ContentSelectionList = (params: ContentSelectionListType) => {
   const [checked, setChecked] = useState<Array<number>>([]);
   const { loadSeenContentPage } = useSeenContent();
+  const selectedCategory = params.selectedCategory;
   const { seenContent } = useAppSelector((state) => state.seenContent);
 
   const pushSelection = (movieId: number) => {
@@ -43,8 +41,10 @@ export const ContentSelectionList = (params: ContentSelectionListType) => {
   }
 
   const onPress = () => {
+    const category = (selectedCategory == 0? 'movie' : 'series');
     const params: SubGroupRecommendationsType = {
-      selectedContent: checked.join(',')
+      selectedContent: checked.join(','),
+      category: category
     }
     router.push({pathname: '/subGroupRecommendations', params: params})
   }

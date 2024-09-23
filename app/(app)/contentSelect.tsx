@@ -11,6 +11,7 @@ import { useAppDispatch } from '../../hooks/redux/useAppDispatch';
 import { useSession } from '../../context/ctx';
 import { setUserId } from '../../store/slices/seenContentSlice';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
+import { setCategory } from '../../store/slices/searchContentSlice';
 
 export default function ContentSelect() {
   const [selectedCategory, setSelectedCategory] = useState(INITIAL_CATEGORY);
@@ -37,6 +38,7 @@ export default function ContentSelect() {
     console.log("Index: ", value);
     setSelectedCategory(value);
     getSeenContent(value);
+    dispatch(setCategory(value));
   }
 
   return (

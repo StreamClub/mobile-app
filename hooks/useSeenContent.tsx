@@ -4,6 +4,7 @@ import { updateSeenContent, setLoadingFirstPage, setNextPage } from '../store/sl
 import { getSeenContentParams, useGetSeenContent } from "../apiCalls/content";
 import { SeenContentEntry } from "../components/Types/SeenContentEntry";
 import { useAppSelector } from "./redux/useAppSelector";
+import { useState } from "react";
 
 const INITIAL_PAGE = 1
 const PAGE_SIZE = 20
@@ -12,6 +13,7 @@ export const useSeenContent = () => {
     const session = useSession()
     const dispatch = useAppDispatch()
     const { getSeenContent, loading } = useGetSeenContent();
+    const [contentTypes, setContentTypes] = useState<('movie' | 'series') | undefined>(undefined);
     const { userId, nextPage } = useAppSelector((state) => state.seenContent)
 
     const onSuccessGetSeenContent = (response: any) => {
@@ -25,12 +27,16 @@ export const useSeenContent = () => {
     }
 
     const loadSeenContentPage = () => {
-        loadSeenContent(userId, nextPage)
+        if (contentTypes != undefined) {
+            loadSeenContent(userId, nextPage, contentTypes);
+        } else {
+            loadSeenContent(userId, nextPage);
+        }
     }
 
     const loadSeenContent = (userId: number, page: number = INITIAL_PAGE, contentTypes?: 'movie' | 'series') => {
         console.log("[loadSeenContent] page: ", page)
-
+        setContentTypes(contentTypes);
         const seenContentParams: getSeenContentParams = {
             userId: userId,
             page: page,

@@ -12,13 +12,15 @@ import { useSession } from '../../context/ctx';
 import { setUserId } from '../../store/slices/seenContentSlice';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { setCategory } from '../../store/slices/searchContentSlice';
+import { useAppSelector } from '../../hooks/redux/useAppSelector';
 
 export default function ContentSelect() {
-  const [selectedCategory, setSelectedCategory] = useState(INITIAL_CATEGORY);
   const { loadSeenContent, loading } = useSeenContent();
+  const { category } = useAppSelector((state) => state.searchContent);
   const dispatch = useAppDispatch();
   const session = useSession();
   const userId = session?.userId ? session.userId : 0;
+  const [selectedCategory, setSelectedCategory] = useState(category);
 
   const getSeenContent = (index: number) => {
     if (index == 0) {
@@ -31,7 +33,7 @@ export default function ContentSelect() {
   useEffect(() => {
     console.log("[SeenContent] setting userId: ", userId);
     dispatch(setUserId(userId));
-    getSeenContent(INITIAL_CATEGORY);
+    getSeenContent(category);
   }, []);
 
   const onPress = (value: number) => {

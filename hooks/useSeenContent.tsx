@@ -13,7 +13,6 @@ export const useSeenContent = () => {
     const session = useSession()
     const dispatch = useAppDispatch()
     const { getSeenContent, loading } = useGetSeenContent();
-    const [contentTypes, setContentTypes] = useState<('movie' | 'series') | undefined>(undefined);
     const { userId, nextPage } = useAppSelector((state) => state.seenContent)
 
     const onSuccessGetSeenContent = (response: any) => {
@@ -26,7 +25,8 @@ export const useSeenContent = () => {
         }
     }
 
-    const loadSeenContentPage = () => {
+    const loadSeenContentPage = (contentTypes?: 'movie' | 'series') => {
+        console.log("Get new page for type: ", contentTypes)
         if (contentTypes != undefined) {
             loadSeenContent(userId, nextPage, contentTypes);
         } else {
@@ -35,8 +35,7 @@ export const useSeenContent = () => {
     }
 
     const loadSeenContent = (userId: number, page: number = INITIAL_PAGE, contentTypes?: 'movie' | 'series') => {
-        console.log("[loadSeenContent] page: ", page)
-        setContentTypes(contentTypes);
+        console.log("[loadSeenContent] page: ", page);
         const seenContentParams: getSeenContentParams = {
             userId: userId,
             page: page,

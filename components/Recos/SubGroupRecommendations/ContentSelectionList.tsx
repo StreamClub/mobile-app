@@ -17,7 +17,7 @@ type ContentSelectionListType = {
 export const ContentSelectionList = (params: ContentSelectionListType) => {
   const [checked, setChecked] = useState<Array<number>>([]);
   const { loadSeenContentPage } = useSeenContent();
-  const selectedCategory = params.selectedCategory;
+  const selectedCategory = (params.selectedCategory == 0? 'movie' : 'series');
   const { seenContent } = useAppSelector((state) => state.seenContent);
 
   const pushSelection = (movieId: number) => {
@@ -41,10 +41,9 @@ export const ContentSelectionList = (params: ContentSelectionListType) => {
   }
 
   const onPress = () => {
-    const category = (selectedCategory == 0? 'movie' : 'series');
     const params: SubGroupRecommendationsType = {
       selectedContent: checked.join(','),
-      category: category
+      category: selectedCategory
     }
     router.push({pathname: '/subGroupRecommendations', params: params})
   }
@@ -72,7 +71,7 @@ export const ContentSelectionList = (params: ContentSelectionListType) => {
               renderItem={({item, index}) => renderSeenContentRow(item, index)}
               keyExtractor={(item, index) => index.toString()}
               onEndReachedThreshold={0}
-              onEndReached={loadSeenContentPage} /> :
+              onEndReached={() => loadSeenContentPage(selectedCategory)} /> :
             <BodyText body="No hay contenido visto" />
           }
         </View>
@@ -83,7 +82,8 @@ export const ContentSelectionList = (params: ContentSelectionListType) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%'
+    width: '90%',
+    marginBottom: 10
   },
   rowContainer: {
     flexDirection: 'column',

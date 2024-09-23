@@ -71,7 +71,7 @@ export const SeenContentList = (params: SeenContentListParams) => {
             renderItem={({item, index}) => renderSeenContentRow(item, index, params)}
             keyExtractor={(item, index) => index.toString()}
             onEndReachedThreshold={0}
-            onEndReached={loadSeenContentPage}
+            onEndReached={() => loadSeenContentPage()}
         />
     )
 }

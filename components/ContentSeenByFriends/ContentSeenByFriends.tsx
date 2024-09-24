@@ -88,7 +88,7 @@ export const ContentSeenByFriends = () => {
     return (
         <>
             {carrouselMovies.length > 0 && <>
-            <TitleText body="Peliculas vistas por tus amigos" style={styles.titleText} size='medium'/>
+            <TitleText body="Películas vistas por amigos" style={styles.titleText} size='medium'/>
             <Carousel {...friendsRecosParams}/>
             </>}
             {carrouselSeries.length > 0 && <>

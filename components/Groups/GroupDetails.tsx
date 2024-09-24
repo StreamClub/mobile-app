@@ -30,7 +30,6 @@ export const GroupDetails = (params: GroupDetailsParams) => {
         setName(name)
         
         const members: MemberType[] = response.data.members;
-        console.log('Members:', members)
         setMembers(members)
     }
 

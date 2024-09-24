@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { colors } from '../../assets';
 import { TitleText } from '../BasicComponents/TitleText';
@@ -9,18 +9,22 @@ import { useGetGroups } from '../../apiCalls/groups';
 import { GroupType } from '../Types/Groups';
 import { GroupsList } from '../Groups/GroupsList';
 import { useOnFocus } from '../../hooks/useOnFocus';
+import { LoadingComponent } from '../BasicComponents/LoadingComponent';
 
 const screenWidth = Dimensions.get('window').width
 
 export const Groups = () => {
     const { getGroups } = useGetGroups();
-    const [groups, setGroups] = React.useState<GroupType[]>([]);
+    const [groups, setGroups] = useState<GroupType[]>([]);
+    const [loading, setLoading] = useState(true); 
 
     const onSuccessGetGroups = (response: any) => {
         setGroups(response.data.groups)
+        setLoading(false)
     }
 
     useOnFocus(() => {
+        setLoading(true)
         getGroups(onSuccessGetGroups)
     })
 
@@ -40,18 +44,22 @@ export const Groups = () => {
             </View>
             <View style={styles.horizontalLine} />
 
-            {groups.length > 0 ?
-                <GroupsList groups={groups} setGroups={setGroups}/>
-                :
-                <CustomButton
-                    buttonText='Crea tu primer grupo'
-                    fontSize='small'
-                    type='primary'
-                    onPress={() => router.push('/createGroup')}
-                    buttonSize='medium'
-                    style={{ marginVertical: 5, alignSelf: 'center' }}
-                />
-            }
+            {loading?
+                <LoadingComponent />
+            :<>
+                {groups.length > 0 ?
+                    <GroupsList groups={groups} setGroups={setGroups}/>
+                    :
+                    <CustomButton
+                        buttonText='Crea tu primer grupo'
+                        fontSize='small'
+                        type='primary'
+                        onPress={() => router.push('/createGroup')}
+                        buttonSize='medium'
+                        style={{ marginVertical: 5, alignSelf: 'center' }}
+                    />
+                }
+            </>}
             <View style={styles.horizontalLine} />
         </>
     )

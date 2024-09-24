@@ -53,6 +53,7 @@ export const CreateGroupScreen = () => {
                             autoCorrect={false}
                             textContentType="emailAddress"
                             keyboardType="email-address"
+                            maxLength={15}
                         />
 
                     </View>

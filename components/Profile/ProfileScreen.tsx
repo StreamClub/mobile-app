@@ -1,5 +1,5 @@
-import React from 'react';
-import {  StyleSheet, ScrollView, Dimensions, View, Text, Image, FlatList } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {  StyleSheet, Dimensions, FlatList, RefreshControl } from 'react-native';
 import { WatchlistEntry } from '../Types/Watchlist';
 import { Watchlist } from '../Watchlist';
 import { ProfileHeader, ProfileHeaderParams } from './ProfileHeader';
@@ -24,9 +24,18 @@ export type ProfileScreenParams = {
     profileHeader: ProfileHeaderParams;
     userServices: CarouselEntry[];
     seenContent: CarouselEntry[];
+    getAll: () => void;
 }
 
 export const ProfileScreen = (params: ProfileScreenParams) => {
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        params.getAll()
+        setRefreshing(false);
+      }, []);
+    
     const editable = (params.editable != null)? params.editable : true;
     const userServicesCarouselParams: CarouselParams = {
         items: params.userServices,
@@ -107,6 +116,9 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
     return (
 
         <FlatList
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             ListHeaderComponent={renderProfileContent()}
             ListFooterComponent={<Watchlist {...watchlistParams}/>}
             data={[]}

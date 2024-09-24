@@ -1,16 +1,24 @@
-import React from 'react';
-import { StyleSheet, Dimensions, View, FlatList } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, Dimensions, FlatList, RefreshControl } from 'react-native';
 import { colors } from '../../assets';
 import { UserRecos } from './UserRecos';
 import { Groups } from './Groups';
 import { SubgroupRecommendationsButton } from './SubGroupRecommendations/SubgroupRecommendationsButton';
 import { ContentSeenByFriends } from '../ContentSeenByFriends/ContentSeenByFriends';
 
-const screenWidth = Dimensions.get('window').width
-
 export const RecosScreen = () => {
-    return (
+    const [refreshing, setRefreshing] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setRefreshKey((prevKey) => prevKey + 1);
+        setRefreshing(false);
+      }, []);
+    
+      return (
         <FlatList
+            key={refreshKey}
             style={styles.container}
             ListHeaderComponent={
                 <>
@@ -26,6 +34,9 @@ export const RecosScreen = () => {
             }
             data={[]}
             renderItem={() => null}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
         />
     )
 }

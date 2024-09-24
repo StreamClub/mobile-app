@@ -1,5 +1,5 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, RefreshControl } from 'react-native'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
@@ -7,7 +7,6 @@ import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/Pro
 import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
-import { useOnFocus } from '../../hooks/useOnFocus'
 import { useProfile } from '../../hooks/useProfile'
 import { WatchlistEntry } from '../../components/Types/Watchlist'
 
@@ -36,9 +35,9 @@ export default function Profile() {
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
     const {loadingParams, getAll, onWatchlistReachedEnd} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader);
 
-    useOnFocus(() => {
+    useEffect(() => {
         getAll()
-    })
+    }, [])
 
     const profileParams: ProfileScreenParams = {
         editable: true,
@@ -46,7 +45,8 @@ export default function Profile() {
         onWatchlistReachedEnd: onWatchlistReachedEnd,
         profileHeader: profileHeader,
         userServices: userServices,
-        seenContent: seenContent
+        seenContent: seenContent,
+        getAll: getAll
     }
 
     return (

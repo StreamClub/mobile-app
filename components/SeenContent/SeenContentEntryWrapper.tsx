@@ -54,7 +54,7 @@ export const seenContentEntryWrapper = (params: SeenContentEntryWrapperParams) =
     const lastSeenEpisode = isSeries? params.itemObject.lastSeenEpisode : null;
     const seen = isSeries ? params.itemObject.seen : null;
     const updatedDate = formatDateDDMMYYYY(params.itemObject.updatedAt);
-    console.log(params.itemObject.updatedAt);
+    
     return (
         <View>
             <BodyText body={updatedDate} size='medium' style={{marginLeft: 10}}/>

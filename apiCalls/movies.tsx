@@ -19,6 +19,19 @@ export const useGetMovie = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export const useGetSimilarMovies = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getSimilarMovies = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/movies/' + movieId + '/recommendations';
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {getSimilarMovies, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
 export type SearchParams = {
     query: string
     page: number

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Chip } from 'react-native-paper'
 import { MovieDetail } from '../../entities/Details/MovieDetailEntry'
-import { RecommendsList } from '../RecommendsList'
+import { Content, RecommendsList } from '../RecommendsList'
 import { MovieInfo } from './MovieInfo'
 import { MoviePlatforms } from './MoviePlatforms'
 import { BodyText } from '../BasicComponents/BodyText'
@@ -12,6 +12,9 @@ import { SeeMovieButton } from './SeeMovieButton'
 import { router } from 'expo-router'
 import { ContentType } from '../Types/ContentType'
 import { ReviewsList } from '../Content/Reviews/ReviewsList'
+import { SimilarContent } from '../../entities/Details/SimilarContent'
+import { useGetSimilarMovies } from '../../apiCalls/movies'
+import { LoadingComponent } from '../BasicComponents/LoadingComponent'
 
 type MovieDetailScreenParams = {
     movie: MovieDetail
@@ -20,9 +23,27 @@ type MovieDetailScreenParams = {
 export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
     const { movie } = params
 
+    const [similarMovies, setSimilarMovies] = useState<Content[]>([])
+
     const onPressFullCredits = () => {
         router.push({ pathname: '/credits', params: { contentId: movie.id, contentType: ContentType.Movie} })
     }
+
+    const { getSimilarMovies, loading } = useGetSimilarMovies()
+
+    const onSuccessGetSimilar = (response: any) => {
+        console.log("Got similar Movies")
+        const similarMovies: Content[] = response.data.map((movie: any) => {
+            return SimilarContent.fromJson(movie)
+        })
+        setSimilarMovies(similarMovies)
+    }
+
+    useEffect(() => {
+        console.log("Getting similar Movies")
+
+        getSimilarMovies(movie.id, onSuccessGetSimilar)
+    }, [])
 
     return (
         <ScrollView>
@@ -76,10 +97,11 @@ export const MovieDetailScreen = (params: MovieDetailScreenParams) => {
                         onPress={onPressFullCredits}/>
                 </>}
                 <ReviewsList contentId={movie.id} contentType='movie' userReview={movie.userReview}/>
-                {movie.similar.length > 0 && (
+                { loading && <LoadingComponent /> }
+                { !loading && movie.similar.length > 0 && (
                     <RecommendsList
                         contentType='movie'
-                        contents={movie.similar}
+                        contents={similarMovies.length > 0 ? similarMovies : movie.similar}
                         style={styles.recommends}
                         title="Películas similares:"
                     />

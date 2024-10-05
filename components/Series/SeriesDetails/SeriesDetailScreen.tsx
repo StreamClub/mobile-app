@@ -24,18 +24,16 @@ type SeriesDetailScreenParams = {
 }
 
 export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
-    
     const { series } = params
-    const [similarMovies, setSimilarMovies] = useState<Content[]>([])
+    const [similarSeries, setSimilarSeries] = useState<Content[]>([])
 
     const { getSimilarSeries, loading } = useGetSimilarSeries()
 
     const onSuccessGetSimilar = (response: any) => {
-        console.log("Got similar Movies")
-        const similarMovies: Content[] = response.data.map((series: any) => {
+        const _similarSeries: Content[] = response.data.map((series: any) => {
             return SimilarContent.fromJson(series)
         })
-        setSimilarMovies(similarMovies)
+        setSimilarSeries(_similarSeries)
     }
 
     useEffect(() => {
@@ -130,7 +128,7 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
                     <RecommendsList
                         contentType='series'
                         title="Series similares:"
-                        contents={similarMovies.length > 0 ? similarMovies : params.series.similar}
+                        contents={similarSeries.length > 0 ? similarSeries : params.series.similar}
                         style={styles.recommends}
                     />
                 ) : null}

@@ -1,6 +1,5 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ContentScore } from '../Content/ContentScore'
 import { MoviesSeenSection } from './MoviesSeenSection'
 import { ContentEntry } from '../../entities/ContentEntry'
 import { WatchlistSection } from '../Content/WatchlistSection'
@@ -10,19 +9,17 @@ import { SeriesSeenSection } from './SeriesSeenSection'
 
 type BottomSectionProps = {
     contentEntry: ContentEntry
-    scoreFormatted: string
     contentType: ContentType
 }
 
 export const BottomSection = (params: BottomSectionProps) => {
-    const { contentEntry, scoreFormatted, contentType } = params
+    const { contentEntry, contentType } = params
 
     
 
     return (
         <>
             <View style={{ flex: 0.25, flexDirection: 'row', width: '100%' }}>
-                <ContentScore score={scoreFormatted} />
                 <View style={styles.iconContainer}>
                     {
                         contentType.isSeries() ?

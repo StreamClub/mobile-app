@@ -1,7 +1,6 @@
 import React from 'react'
 import { Pressable } from 'react-native'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
-import { formatScore } from '../../utils'
 import { BottomSection } from '../Content/BottomSection'
 import { ContentType } from '../../entities/ContentType'
 import { styles } from '../Series/SeriesList/styles/SeriesList.style'
@@ -40,7 +39,6 @@ export const ContentDetail = (params: ContentDetailProps) => {
                 <BottomSection
                     contentEntry={contentEntry}
                     contentType={contentType}
-                    scoreFormatted={formatScore(contentEntry.score)}
                 />
             </Pressable>
         </>

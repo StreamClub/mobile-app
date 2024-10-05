@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native'
 import { Chip } from 'react-native-paper'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
@@ -15,11 +15,20 @@ import { ReviewsList } from '../../Content/Reviews/ReviewsList'
 type SeriesDetailScreenParams = {
     series: SeriesDetail,
     onPressFullCredits: () => void;
+    refreshing: boolean,
+    refreshKey: React.Key,
+    onRefresh: () => void,
 }
 
 export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
+    
     return (
-        <ScrollView>
+        <ScrollView
+            key={params.refreshKey}
+            refreshControl={
+                <RefreshControl refreshing={params.refreshing} onRefresh={params.onRefresh}
+                />}
+        >
             <View style={styles.container}>
                 <SeriesInfo series={params.series} />
                 <SeriesPlatforms
@@ -91,9 +100,9 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
                 ) : null}
                 {params.series.cast.length > 0 && <>
                     <CastList cast={params.series.cast} style={styles.cast} />
-                    <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits}/>
+                    <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits} />
                 </>}
-                <ReviewsList contentId={params.series.id} contentType='series' userReview={params.series.userReview}/>
+                <ReviewsList contentId={params.series.id} contentType='series' userReview={params.series.userReview} />
                 {params.series.similar.length > 0 ? (
                     <RecommendsList
                         contentType='series'

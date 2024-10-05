@@ -35,7 +35,7 @@ export const ReviewCard = (params: ReviewEntry) => {
                 style={{margin: 5}}
                 source={{uri: 'https://www.shutterstock.com/image-photo/boring-job-bengal-cat-business-600nw-1999601336.jpg'}} />
               <BodyText 
-                body={review.userName? review.userName : "My review"} 
+                body={review.userName? review.userName : "Mi reseña"} 
                 style={{margin: 10, fontWeight: 'bold'}} 
                 size='big'/>
             </View>
@@ -46,7 +46,7 @@ export const ReviewCard = (params: ReviewEntry) => {
           </View>
           <View style={{ borderBottomWidth: 1, borderBottomColor: colors.primaryBlack, marginTop: 10, marginBottom: 10}} />
           <View>
-            <BodyText body={review.review} />
+            <BodyText body={review.review} style={{marginBottom: 10}} />
           </View>
         </Card.Content>
         {editable?

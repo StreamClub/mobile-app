@@ -9,7 +9,7 @@ type MovieBodyProps = {
 }
 
 export const MovieBody = (params: MovieBodyProps) => {
-    const { movieEntry } = params
+    const { movieEntry } = params;
 
     return (
         <>

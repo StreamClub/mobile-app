@@ -25,7 +25,8 @@ const emptyProfile = {
       nextLevelThreshold: 1
   },
   friendRequest: null,
-  friendship: null
+  friendship: null,
+  photoId: 0
 }
 
 export type UserProfileParams = {
@@ -39,7 +40,7 @@ export default function UserProfile() {
   const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
   const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
   const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
-  const {loadingParams, getAll} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader, userId);
+  const {loadingParams, getAll, onWatchlistReachedEnd} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader, userId);
 
   useOnFocus(() => {
     getAll()
@@ -50,7 +51,9 @@ export default function UserProfile() {
     watchlist: watchlist,
     profileHeader: profileHeader,
     userServices: userServices,
-    seenContent: seenContent
+    seenContent: seenContent,
+    getAll: getAll,
+    onWatchlistReachedEnd: onWatchlistReachedEnd,
   }
 
   return (

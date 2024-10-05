@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, ScrollView, View, Text, Image, Pressable } from 'react-native'
 import { useAppSelector } from '../../hooks/redux/useAppSelector'
 import { UserReco } from './UserReco'
 import { LocalIcon } from '../Types/LocalIcon'
+import { LoadingComponent } from '../BasicComponents/LoadingComponent'
+import { useRecos } from '../../hooks/useRecos'
 
 const hasIndex = (list: any[], index: number) => {
     return index >= 0 && index < list.length;
 };
 
 export const UserRecos = () => {
-    const { userRecos } = useAppSelector((state) => state.recos)
+    const { loadRecos } = useRecos();
+
+    useEffect(() => {
+        loadRecos()
+    }, [])
+
+    const { userRecos, loadingUserMovieRecos, loadingUserSeriesRecos } = useAppSelector((state) => state.recos)
     const [actualIndex, setActualIndex] = React.useState(0)
 
     const renderRecoByIndex = (index: number) => {
@@ -29,7 +37,7 @@ export const UserRecos = () => {
     const rightArrow = () => {
         return (
             <Pressable
-                style={{ position: "absolute", right: 0, width: 40, height: 450, zIndex: 2, alignItems: "flex-end", justifyContent: "center"}}
+                style={{ position: "absolute", right: 0, width: 40, height: 450, zIndex: 2, alignItems: "flex-end", justifyContent: "center" }}
                 onPress={() => onChangeIndex(actualIndex + 1)}
             >
                 <Image
@@ -39,11 +47,11 @@ export const UserRecos = () => {
             </Pressable>
         )
     }
-    
+
     const leftArrow = () => {
         return (
             <Pressable
-                style={{ position: "absolute", left: 0, width: 40, height: 450, zIndex: 2, alignItems: "flex-start", justifyContent: "center"}}
+                style={{ position: "absolute", left: 0, width: 40, height: 450, zIndex: 2, alignItems: "flex-start", justifyContent: "center" }}
                 onPress={() => onChangeIndex(actualIndex - 1)}
             >
                 <Image
@@ -55,10 +63,16 @@ export const UserRecos = () => {
     }
 
     return (
-        <View style={{position: "relative"}}>
-            {renderRecoByIndex(actualIndex)}
-            { hasIndex(userRecos, actualIndex + 1) && rightArrow() }
-            { hasIndex(userRecos, actualIndex - 1) && leftArrow() }
+        <View style={{ position: "relative" }}>
+            {loadingUserMovieRecos || loadingUserSeriesRecos ?
+                <LoadingComponent />
+                :
+                <>
+                    {renderRecoByIndex(actualIndex)}
+                    {hasIndex(userRecos, actualIndex + 1) && rightArrow()}
+                    {hasIndex(userRecos, actualIndex - 1) && leftArrow()}
+                </>
+            }
         </View>
     )
 }

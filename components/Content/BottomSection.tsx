@@ -19,7 +19,7 @@ export const BottomSection = (params: BottomSectionProps) => {
 
     return (
         <>
-            <View style={{ flex: 0.25, flexDirection: 'row', width: '100%' }}>
+            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end' }}>
                 <View style={styles.iconContainer}>
                     {
                         contentType.isSeries() ?

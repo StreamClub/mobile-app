@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     },
     iconContainer: { 
         flex: 0.20, 
+        marginRight: 10,
         justifyContent: 'center', 
         alignItems: 'flex-end' 
     },

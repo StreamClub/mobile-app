@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     },
     iconContainer: { 
         flex: 0.20, 
-        justifyContent: 'center', 
-        alignItems: 'flex-end' 
+        justifyContent: 'center',
+        marginRight: 10
     },
 })

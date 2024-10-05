@@ -41,6 +41,19 @@ export const useGetSeries = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export const useGetSimilarSeries = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getSimilarSeries = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/series/' + movieId + '/recommendations';
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {getSimilarSeries, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
 export const useGetSeason = () => {
     const {privateCall, loading} = usePrivateCall();
 

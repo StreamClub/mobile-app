@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import {  StyleSheet, Dimensions, FlatList, RefreshControl } from 'react-native';
-import { WatchlistEntry } from '../Types/Watchlist';
 import { Watchlist } from '../Watchlist';
 import { ProfileHeader, ProfileHeaderParams } from './ProfileHeader';
 import { colors } from '../../assets';
@@ -19,8 +18,6 @@ const screenWidth = Dimensions.get('window').width
 
 export type ProfileScreenParams = {
     editable?: boolean;
-    watchlist: WatchlistEntry[];
-    onWatchlistReachedEnd: () => void;
     profileHeader: ProfileHeaderParams;
     userServices: CarouselEntry[];
     seenContent: CarouselEntry[];
@@ -77,11 +74,6 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
         onItemPressed: onPressSeenContentEntry,
     }
 
-    const watchlistParams = {
-        watchlist: params.watchlist,
-        onReachedEnd: params.onWatchlistReachedEnd
-    }
-
     const onPressMoreSeenContent = () => {
         const routeParams: SeenContentParams = {userId: params.profileHeader.id.toString()};
         router.push({ pathname: '/seenContent', params: routeParams });
@@ -90,7 +82,6 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
     const onPressManageServices = () => {
         router.push('/services')
     }
-
 
     const renderProfileContent = () => {
         return (
@@ -108,7 +99,6 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
                     <Carousel {...seenContentCarouselParams}/>
                     <BodyText body={"Ver más actividad"} size="medium" style={styles.linkedText} onPress={onPressMoreSeenContent}/>
                 </>}
-                <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
             </>
         )
     }
@@ -120,7 +110,7 @@ export const ProfileScreen = (params: ProfileScreenParams) => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             ListHeaderComponent={renderProfileContent()}
-            ListFooterComponent={<Watchlist {...watchlistParams}/>}
+            ListFooterComponent={<Watchlist userId={params.profileHeader.id}/>}
             data={[]}
             renderItem={() => null}
         />

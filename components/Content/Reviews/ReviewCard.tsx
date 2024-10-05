@@ -34,10 +34,6 @@ export const ReviewCard = (params: ReviewEntry) => {
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <ProfilePicture photoId={review.photoId} style={styles.picture} editable={false} />
-              {/* <Avatar.Image 
-                size={50} 
-                style={{margin: 5}}
-                source={{uri: 'https://www.shutterstock.com/image-photo/boring-job-bengal-cat-business-600nw-1999601336.jpg'}} /> */}
               <BodyText 
                 body={review.userName? review.userName : "Mi reseña"} 
                 style={{margin: 10, fontWeight: 'bold'}} 

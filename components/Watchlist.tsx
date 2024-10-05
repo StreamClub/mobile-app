@@ -11,6 +11,7 @@ import { List, ListParams, ListEntry } from './BasicComponents/List';
 import { useGetWatchlist } from '../apiCalls/profile';
 import { LoadingComponent } from './BasicComponents/LoadingComponent';
 import { TitleText } from './BasicComponents/TitleText';
+import { Icon } from 'react-native-paper';
 
 const ENTRIES_PER_ROW = 3;
 const entryContainerFlex = 1/ENTRIES_PER_ROW
@@ -32,7 +33,8 @@ export const Watchlist = (params: WatchlistParams) => {
 
     const onSuccessGetWatchlistPage = (response: any) => {
         console.log(response.data)
-        const newEntries: WatchlistEntry[] = response.data.results
+        const newEntries: WatchlistEntry[] = response.data.results;
+        setPublicWatchlist(response.data.isPublic);
         setWatchlist(prevWatchlist => [...prevWatchlist, ...newEntries]);
         if (newEntries.length > 0) {
           setNextPage(nextPage + 1)
@@ -74,8 +76,11 @@ export const Watchlist = (params: WatchlistParams) => {
 
     return(
         <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', margin: 10}}>
                 <TitleText body="Watchlist" style={styles.titleText} size='medium'/>
+                <Icon 
+                    source={publicWatchlist? "lock-open-outline" : "lock-outline"}
+                    size={30} />
             </View>
             {loading && (nextPage == 1)?
                 <LoadingComponent /> :
@@ -104,7 +109,6 @@ const styles = StyleSheet.create({
         aspectRatio: 2/3,
     },
     titleText: {
-        fontWeight:'bold', 
-        marginLeft: 10
+        fontWeight:'bold'
     },
 })

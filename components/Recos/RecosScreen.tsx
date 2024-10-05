@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, Dimensions, FlatList, RefreshControl } from 'react-native';
+import { StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { colors } from '../../assets';
 import { UserRecos } from './UserRecos';
 import { Groups } from './Groups';
@@ -15,7 +15,7 @@ export const RecosScreen = () => {
         setRefreshKey((prevKey) => prevKey + 1);
         setRefreshing(false);
       }, []);
-    
+
       return (
         <FlatList
             key={refreshKey}

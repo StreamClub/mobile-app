@@ -6,7 +6,8 @@ const recosSlice = createSlice({
     name: 'recos',
     initialState: {
         userRecos: [] as Reco[],
-        loadingUserRecos: true,
+        loadingUserMovieRecos: true,
+        loadingUserSeriesRecos: true,
         userMovieRecos: [] as Reco[],
         userSeriesRecos: [] as Reco[],
     },
@@ -33,13 +34,16 @@ const recosSlice = createSlice({
             }
         },
 
-        setLoading(state, action: PayloadAction<boolean>) {
-            state.loadingUserRecos = action.payload;
+        setLoadingUserMovieRecos(state, action: PayloadAction<boolean>) {
+            state.loadingUserMovieRecos = action.payload;
+        },
+        setLoadingUserSeriesRecos(state, action: PayloadAction<boolean>) {
+            state.loadingUserSeriesRecos = action.payload;
         },
     },
 })
 
-export const { updateUserMovieRecos, updateUserSeriesRecos, setLoading, changeOnWatchlistState } = recosSlice.actions
+export const { updateUserMovieRecos, updateUserSeriesRecos, setLoadingUserMovieRecos, setLoadingUserSeriesRecos, changeOnWatchlistState } = recosSlice.actions
 export default recosSlice.reducer
 
 const getUpdatedRecos = (recos: Reco[], action: PayloadAction<{ type: ContentType, id: number, inWatchlist: boolean }>) => {

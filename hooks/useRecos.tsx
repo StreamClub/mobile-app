@@ -4,7 +4,7 @@ import { Reco } from "../components/Types/Reco";
 import { ContentType } from "../components/Types/ContentType";
 import { useSession } from "../context/ctx";
 import { useAppDispatch } from './redux/useAppDispatch';
-import { updateUserMovieRecos, updateUserSeriesRecos } from '../store/slices/recosSlice';
+import { setLoadingUserMovieRecos, setLoadingUserSeriesRecos, updateUserMovieRecos, updateUserSeriesRecos } from '../store/slices/recosSlice';
 
 export const useRecos = () => {
     const session = useSession()
@@ -31,7 +31,7 @@ export const useRecos = () => {
         })
         
         dispatch(updateUserMovieRecos(recos))
-
+        dispatch(setLoadingUserMovieRecos(false))
     }
 
     const onSuccessGetSeriesRecos = (response: any) => {
@@ -53,10 +53,13 @@ export const useRecos = () => {
         })
         
         dispatch(updateUserSeriesRecos(recos))
+        dispatch(setLoadingUserSeriesRecos(false))
     }
 
     const loadRecos = () => {
         console.log("[loadRecos]")
+        dispatch(setLoadingUserMovieRecos(true))
+        dispatch(setLoadingUserSeriesRecos(true))
         getMovieRecos(onSuccessGetMovieRecos)
         getSeriesRecos(onSuccessGetSeriesRecos)
     }

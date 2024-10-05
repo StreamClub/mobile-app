@@ -3,6 +3,8 @@ import { View } from 'react-native'
 import { Card, Avatar, Icon, IconButton } from 'react-native-paper';
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets';
+import { ProfilePicture } from '../../Profile/ProfilePicture';
+import { styles } from './styles/Review.styles';
 
 export type ReviewType = {
   id: string,
@@ -11,6 +13,7 @@ export type ReviewType = {
   contentType: string,
   liked: boolean,
   review: string,
+  photoId: number,
   userName?: string
 }
 
@@ -30,10 +33,11 @@ export const ReviewCard = (params: ReviewEntry) => {
         <Card.Content>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Avatar.Image 
+              <ProfilePicture photoId={review.photoId} style={styles.picture} editable={false} />
+              {/* <Avatar.Image 
                 size={50} 
                 style={{margin: 5}}
-                source={{uri: 'https://www.shutterstock.com/image-photo/boring-job-bengal-cat-business-600nw-1999601336.jpg'}} />
+                source={{uri: 'https://www.shutterstock.com/image-photo/boring-job-bengal-cat-business-600nw-1999601336.jpg'}} /> */}
               <BodyText 
                 body={review.userName? review.userName : "Mi reseña"} 
                 style={{margin: 10, fontWeight: 'bold'}} 

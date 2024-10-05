@@ -11,3 +11,11 @@ export const calculateAge = (birthDate: string, deathDate?: string) => {
     diff /= (60 * 60 * 24);
     return Math.abs(Math.round(diff/365.25));
 }
+
+export const formatDateDDMMYYYY = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+    const year = date.getUTCFullYear();
+    return `${day}/${month}/${year}`;
+};

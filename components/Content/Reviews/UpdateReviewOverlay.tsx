@@ -22,7 +22,7 @@ export const UpdateReviewOverlay = (params: UpdateReviewEntry) => {
 
     return (
         <View style={styles.container}>
-            <TitleText body='Escribe tu review:' size='small' />
+            <TitleText body='Escribe tu reseña:' size='small' />
             <TextInput
                 style={styles.textInput}
                 value={review}
@@ -52,7 +52,7 @@ export const UpdateReviewOverlay = (params: UpdateReviewEntry) => {
                 />
             </View>
             <CustomButton 
-                buttonText='Actualizar review' 
+                buttonText={params.myReviewText? 'Actualizar reseña' : 'Crear reseña' }
                 type='primary'
                 onPress={() => params.onPress(liked, review, params.onSuccess)}
                 fontSize='small' 

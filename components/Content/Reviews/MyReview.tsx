@@ -37,7 +37,7 @@ export const MyReview = (params: MyReviewEntry) => {
     <>
     {userReview?
       <View style={{margin: 5, backgroundColor: colors.secondarySkyBlue, borderRadius: 10}}>
-        <TitleText body='Tu review:' size='small' style={{marginLeft: 10}} />
+        <TitleText body='Tu reseña:' size='small' style={{marginLeft: 10}} />
         <ReviewCard 
           review={userReview} 
           editable={true} 
@@ -45,7 +45,7 @@ export const MyReview = (params: MyReviewEntry) => {
           onDeletePress={() => setOpenDeleteModal(true)} />
       </View> :
       <CustomButton 
-        buttonText='Agregar una review' 
+        buttonText='Agregar una reseña' 
         type='primary'
         onPress={() =>  setOpenModal(true)}
         fontSize='medium' 
@@ -81,7 +81,7 @@ export const MyReview = (params: MyReviewEntry) => {
         onCancelPress={() => setOpenDeleteModal(false)}
         loading={deleteLoading} 
         onSuccess={onDeleteSuccess}
-        text='¿Estás seguro de que quieres eliminar esta review?' />
+        text='¿Estás seguro de que quieres eliminar esta reseña?' />
     </Overlay>
     </>
   )

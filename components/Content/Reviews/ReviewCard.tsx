@@ -46,7 +46,7 @@ export const ReviewCard = (params: ReviewEntry) => {
           </View>
           <View style={{ borderBottomWidth: 1, borderBottomColor: colors.primaryBlack, marginTop: 10, marginBottom: 10}} />
           <View>
-            <BodyText body={review.review} />
+            <BodyText body={review.review} style={{marginBottom: 10}} />
           </View>
         </Card.Content>
         {editable?

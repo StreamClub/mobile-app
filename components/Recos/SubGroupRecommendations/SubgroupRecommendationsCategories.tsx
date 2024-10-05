@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { colors } from "../../../assets"
 import { MOVIES_NAME, SERIES_NAME } from "../../../constants"
 import { ButtonGroup } from "react-native-elements"
@@ -9,6 +9,7 @@ type SubgroupRecommendationsCategoriesType = {
 }
 
 export const SubgroupRecommendationsCategories = (params: SubgroupRecommendationsCategoriesType) => {
+  
   return(
     <ButtonGroup
       buttons={[MOVIES_NAME, SERIES_NAME]}

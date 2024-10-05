@@ -4,15 +4,15 @@ import { colors } from '../../assets';
 import { TitleText } from '../../components/BasicComponents/TitleText';
 import { BodyText } from '../../components/BasicComponents/BodyText';
 import { ContentSelectionList } from '../../components/Recos/SubGroupRecommendations/ContentSelectionList';
-import { INITIAL_CATEGORY } from '../../constants';
 import { SubgroupRecommendationsCategories } from '../../components/Recos/SubGroupRecommendations/SubgroupRecommendationsCategories';
 import { useSeenContent } from '../../hooks/useSeenContent';
 import { useAppDispatch } from '../../hooks/redux/useAppDispatch';
 import { useSession } from '../../context/ctx';
 import { setUserId } from '../../store/slices/seenContentSlice';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
-import { setCategory } from '../../store/slices/searchContentSlice';
+import { setCategory, setResults, setTextSearched } from '../../store/slices/searchContentSlice';
 import { useAppSelector } from '../../hooks/redux/useAppSelector';
+import { INITIAL_CATEGORY } from '../../constants';
 
 export default function ContentSelect() {
   const { loadSeenContent, loading } = useSeenContent();
@@ -25,7 +25,7 @@ export default function ContentSelect() {
   const getSeenContent = (index: number) => {
     if (index == 0) {
       loadSeenContent(userId, undefined, 'movie');
-    } else {
+    } else if (index == 1) {
       loadSeenContent(userId, undefined, 'series');
     }
   }
@@ -33,7 +33,11 @@ export default function ContentSelect() {
   useEffect(() => {
     console.log("[SeenContent] setting userId: ", userId);
     dispatch(setUserId(userId));
-    getSeenContent(category);
+    dispatch(setResults([]));
+    setSelectedCategory(INITIAL_CATEGORY);
+    getSeenContent(INITIAL_CATEGORY);
+    dispatch(setTextSearched(''));
+    dispatch(setCategory(INITIAL_CATEGORY));
   }, []);
 
   const onPress = (value: number) => {

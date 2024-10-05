@@ -10,7 +10,8 @@ export type FriendRequestType = {
   displayName: string,
   email: string,
   userId: number,
-  userName: string
+  userName: string,
+  photoId: number
 }
 
 export type FriendshipType = {

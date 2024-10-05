@@ -16,6 +16,7 @@ export default function Friends() {
   useOnFocus(() => {
     getFriendRequest();
   })
+
   useEffect(() => {
     if (loadingFirstPage && !loading) {
       console.log('[loadingFirstPage]', loadingFirstPage)

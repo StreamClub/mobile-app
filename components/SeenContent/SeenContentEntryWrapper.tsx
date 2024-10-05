@@ -1,12 +1,12 @@
 import React from 'react'
-import { Image, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../../assets';
-import { SeenContentEntryFooter } from './SeenContentEntryFooter';
 import { SeenContentEntry } from '../Types/SeenContentEntry';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BodyText } from '../BasicComponents/BodyText';
 import { EpisodeNumber } from '../Types/EpisodeNumber';
 import { Percent } from '../BasicComponents/Percent';
+import { formatDateDDMMYYYY } from '../../utils/dateManager';
 
 function renderLastEpisodeSection(params: SeenContentEntryWrapperParams): React.ReactNode {
     const { itemObject, props } = params
@@ -53,10 +53,11 @@ export const seenContentEntryWrapper = (params: SeenContentEntryWrapperParams) =
     const isSeries = params.itemObject.contentType === 'series';
     const lastSeenEpisode = isSeries? params.itemObject.lastSeenEpisode : null;
     const seen = isSeries ? params.itemObject.seen : null;
-
+    const updatedDate = formatDateDDMMYYYY(params.itemObject.updatedAt);
+    console.log(params.itemObject.updatedAt);
     return (
         <View>
-            <BodyText body={"17/08/24"} size='medium' style={{marginLeft: 10}}/>
+            <BodyText body={updatedDate} size='medium' style={{marginLeft: 10}}/>
             <View style={styles.itemInnerContainer}>
                 {isSeries && seen &&
                     <Percent style={[styles.percent, {top: params.props.topPercent, left: params.props.leftPercent}]} percent={seen} size={params.props.percentSize} showText={params.props.showPercentText}/>
@@ -66,7 +67,6 @@ export const seenContentEntryWrapper = (params: SeenContentEntryWrapperParams) =
                 }
                 {params.itemComponent}
             </View>
-            <SeenContentEntryFooter size={params.props.sizeLastSeenIcons}/>
         </View>
     )
 }

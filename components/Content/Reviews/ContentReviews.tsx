@@ -24,19 +24,19 @@ export const ContentReviews = (params: ContentReviewsEntry) => {
     <View>
       {showReviews && reviews ?
         <View style={{backgroundColor: colors.secondarySkyBlue, margin: 5, borderRadius: 10}}>
-          <TitleText body='All reviews:' size='small' style={{marginLeft: 10}} />
+          <TitleText body='Reseñas:' size='small' style={{marginLeft: 10}} />
           {reviews.map((review, index) => (
             <ReviewCard review={review} key={index}/>
           ))}
           <CustomButton 
-            buttonText='Hide reviews' 
+            buttonText='Ocultar reseñas' 
             type='primary'
             onPress={() => setShowReviews(false)}
             fontSize='medium' 
             style={{margin: 20}}/>
         </View> :
         <CustomButton 
-          buttonText='See all reviews' 
+          buttonText='Ver todas las reseñas' 
           type='primary'
           onPress={() => {
             setShowReviews(true);

@@ -17,7 +17,7 @@ export const UserRecos = () => {
         loadRecos()
     }, [])
 
-    const { userRecos, loadingUserRecos, loadingUserMovieRecos, loadingUserSeriesRecos } = useAppSelector((state) => state.recos)
+    const { userRecos, loadingUserMovieRecos, loadingUserSeriesRecos } = useAppSelector((state) => state.recos)
     const [actualIndex, setActualIndex] = React.useState(0)
 
     const renderRecoByIndex = (index: number) => {

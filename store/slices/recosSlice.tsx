@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Reco } from '../../components/Types/Reco'
 import { ContentType } from '../../components/Types/ContentType';
+import { shuffleTwoLists } from '../../utils/shuffleLists';
 
 const recosSlice = createSlice({
     name: 'recos',
@@ -14,11 +15,12 @@ const recosSlice = createSlice({
     reducers: {
         updateUserMovieRecos(state, action: PayloadAction<Reco[]>) {
             state.userMovieRecos = action.payload;
-            state.userRecos = state.userSeriesRecos.concat(action.payload);
+            state.userRecos = shuffleTwoLists(state.userMovieRecos, state.userSeriesRecos);
+
         },
         updateUserSeriesRecos(state, action: PayloadAction<Reco[]>) {
             state.userSeriesRecos = action.payload;
-            state.userRecos = state.userMovieRecos.concat(action.payload);
+            state.userRecos = shuffleTwoLists(state.userMovieRecos, state.userSeriesRecos);
         },
 
         changeOnWatchlistState(

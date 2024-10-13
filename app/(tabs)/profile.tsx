@@ -27,9 +27,14 @@ const emptyProfile = {
     photoId: 11
 }
 
+export type SeenContent = {
+    isPublic: boolean,
+    results: CarouselEntry[]
+}
+
 export default function Profile() {
     const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
-    const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
+    const [seenContent, setSeenContent] = useState<SeenContent>({isPublic: true, results: []});
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
     const {loadingParams, getAll} = useProfile(setUserServices, setSeenContent, setProfileHeader);
 

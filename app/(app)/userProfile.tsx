@@ -9,6 +9,7 @@ import { Stack, useLocalSearchParams } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
 import { useOnFocus } from '../../hooks/useOnFocus'
 import { useProfile } from '../../hooks/useProfile'
+import { SeenContent } from '../(tabs)/profile'
 
 const emptyProfile = {
   editable: true,
@@ -36,7 +37,7 @@ export default function UserProfile() {
   const params = useLocalSearchParams<UserProfileParams>()
   const userId = +params.userId;
   const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
-  const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
+  const [seenContent, setSeenContent] = useState<SeenContent>({isPublic: true, results: []});
   const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
   const {loadingParams, getAll} = useProfile(setUserServices, setSeenContent, setProfileHeader, userId);
 

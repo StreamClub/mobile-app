@@ -7,11 +7,12 @@ import { ServiceEntry } from "../components/Types/Services";
 import { SeenContentEntry } from "../components/Types/SeenContentEntry";
 import { Dispatch, SetStateAction } from "react";
 import { useSession } from "../context/ctx";
+import { SeenContent } from "../app/(tabs)/profile";
 
 const INITIAL_PAGE = 1;
 
 export const useProfile = (setUserServices: Dispatch<SetStateAction<CarouselEntry[]>>, 
-  setSeenContent: Dispatch<SetStateAction<CarouselEntry[]>>,
+  setSeenContent: Dispatch<SetStateAction<SeenContent>>,
   setProfileHeader: Dispatch<SetStateAction<ProfileHeaderParams>>, otherUserId?: number) => {
   
   const session = useSession()
@@ -51,7 +52,7 @@ export const useProfile = (setUserServices: Dispatch<SetStateAction<CarouselEntr
         tmdbResource: contentData.poster,
       })
     })
-    setSeenContent(_carousel)
+    setSeenContent({isPublic: response.data.isPublic, results: _carousel})
   }
 
   const getAll = () => {

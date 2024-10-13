@@ -70,7 +70,7 @@ export default function AppLayout() {
                     headerStyle: {
                         backgroundColor: colors.primaryRed
                     },
-                    headerTitle: "Busqueda",
+                    headerTitle: "Búsqueda",
                     headerTintColor: '#fff',
                     headerShown: true,
                 }}

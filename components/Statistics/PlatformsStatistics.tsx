@@ -64,7 +64,7 @@ export const PlatformsStatistics = () => {
       <BodyText
         body={'Viste ' + 
           stats.timeInPlatforms.toFixed(1) + 
-          'hs de contenido ' + 
+          'hs de contenido. \n ' + 
           stats.timeOutsidePlatforms.toFixed(1) + 
           'hs no fueron vistas en tus plataformas.'}
         size='big'

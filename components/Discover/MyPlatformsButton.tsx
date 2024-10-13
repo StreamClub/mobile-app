@@ -19,7 +19,7 @@ export const MyPlatformsButton = (params: MyPlatformsButtonParams) => {
       <Switch 
         value={params.inMyPlatforms} 
         onValueChange={() => params.setInMyPlatforms(!params.inMyPlatforms)}
-        color={colors.primarySkyBlue} />
+        color={colors.primaryRed} />
     </View>
   )
 }

@@ -22,7 +22,7 @@ export const UnsubscribeRecommendations = (params: UnsubscribeRecommendationsTyp
           color={colors.primaryBlack}
           style={{marginTop: 10}} />
         <BodyText
-          body="En los últimos 6 meses, han habido servicios que has usado poco. 
+          body="En los últimos 6 meses, ha habido servicios que has usado poco. 
           Para optimizar tus gastos  te recomendamos considerar darte de baja de estos servicios:"
           size="big"
           color={colors.primaryBlack} />

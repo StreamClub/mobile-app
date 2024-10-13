@@ -6,6 +6,7 @@ export class Review {
   public liked: boolean;
   public review: string;
   public userName: string;
+  public photoId: number;
 
   constructor(review: Review) {
     this.id = review.id;
@@ -15,6 +16,7 @@ export class Review {
     this.liked = review.liked;
     this.review = review.review;
     this.userName = review.userName;
+    this.photoId = review.photoId;
   }
 
   public static fromJson(json: any): Review {
@@ -25,7 +27,8 @@ export class Review {
       contentType: json.contentType,
       liked: json.liked,
       review: json.review,
-      userName: json.userName
+      userName: json.userName,
+      photoId: json.photoId
     });
   }
 }

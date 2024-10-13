@@ -19,5 +19,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 5,
     justifyContent: 'flex-end',
+  },
+  picture: {
+    borderRadius: 80,
+    width: 60,
+    height: 60,
   }
 });

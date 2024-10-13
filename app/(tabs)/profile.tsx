@@ -8,11 +8,10 @@ import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
 import { useProfile } from '../../hooks/useProfile'
-import { WatchlistEntry } from '../../components/Types/Watchlist'
 
 const emptyProfile = {
     editable: true,
-    id: 0,
+    id: 1,
     email: '',
     userName: '',
     displayName: '',
@@ -28,21 +27,23 @@ const emptyProfile = {
     photoId: 11
 }
 
+export type SeenContent = {
+    isPublic: boolean,
+    results: CarouselEntry[]
+}
+
 export default function Profile() {
-    const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
     const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
-    const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
+    const [seenContent, setSeenContent] = useState<SeenContent>({isPublic: true, results: []});
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
-    const {loadingParams, getAll, onWatchlistReachedEnd} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader);
+    const {loadingParams, getAll} = useProfile(setUserServices, setSeenContent, setProfileHeader);
 
     useEffect(() => {
         getAll()
     }, [])
-
+    
     const profileParams: ProfileScreenParams = {
         editable: true,
-        watchlist: watchlist,
-        onWatchlistReachedEnd: onWatchlistReachedEnd,
         profileHeader: profileHeader,
         userServices: userServices,
         seenContent: seenContent,

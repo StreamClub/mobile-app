@@ -21,8 +21,9 @@ export const PlatformsStatistics = () => {
   const [maxValue, setMaxValue] = useState(0);
 
   const onSuccess = (response: any) => {
+    console.log(response.data);
     setStats(response.data);
-    setMaxValue(Math.max(...response.data.top.map((item: { timeWatched: Number; }) => item.timeWatched)));
+    setMaxValue(Math.max(...response.data.top.map((item: { timeWatched: number; }) => (item.timeWatched + 1))));
   }
 
   const updateStats = (month: string) => {

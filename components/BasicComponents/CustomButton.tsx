@@ -74,5 +74,6 @@ const styles = StyleSheet.create({
     disabledStyle: {
         backgroundColor: colors.primaryGrey,
         width: '100%',
+        height: '100%'
     },
 })

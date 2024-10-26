@@ -10,7 +10,7 @@ type FriendsListParams = {
 }
 
 export const FriendsList = (params: FriendsListParams) => {
-  console.log(params.friends);
+  
   return (
     params.friends.length > 0 ?
     

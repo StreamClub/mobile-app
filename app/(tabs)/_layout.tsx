@@ -7,6 +7,7 @@ import { Tabs } from 'expo-router';
 import { LocalIcon } from '../../components/Types/LocalIcon';
 import { RequestsListButton } from '../../components/Profile/Friends/RequestsListButton';
 import { SettingsButton } from '../../components/Settings/SettingsButton';
+import { BodyText } from '../../components/BasicComponents/BodyText';
 
 export default function AppLayout() {
     const session = useSession()
@@ -51,7 +52,7 @@ export default function AppLayout() {
                     headerStyle: {
                         backgroundColor: colors.primaryRed
                     },
-                    headerTitle: "Bienvenido",
+                    headerTitle: 'Bienvenido',
                     headerTintColor: '#fff',
                     headerShown: true,
                 }}

@@ -4,6 +4,11 @@ import { useSession } from '../context/ctx'
 import { useEffect } from 'react'
 import { InitialScreen } from '../screens/InitialScreen'
 
+import { LogBox } from 'react-native';
+
+// [DEMO] desactivar warnings
+// LogBox.ignoreAllLogs(true);
+
 export default function Index() {
     const session = useSession()
     const accessToken = session?.accessToken

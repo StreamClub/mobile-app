@@ -7,7 +7,7 @@ import { InitialScreen } from '../screens/InitialScreen'
 import { LogBox } from 'react-native';
 
 // [DEMO] desactivar warnings
-// LogBox.ignoreAllLogs(true);
+LogBox.ignoreAllLogs(true);
 
 export default function Index() {
     const session = useSession()

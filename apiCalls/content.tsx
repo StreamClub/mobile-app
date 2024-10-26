@@ -8,6 +8,7 @@ export type getSeenContentParams = {
     userId: number,
     page: number,
     pageSize: number,
+    contentTypes?: 'movie' | 'series'
 }
 
 export const useGetSeenContent = () => {
@@ -17,7 +18,8 @@ export const useGetSeenContent = () => {
         const params: Params = { 
             params: {
                 page: queryParams.page, 
-                pageSize: queryParams.pageSize
+                pageSize: queryParams.pageSize,
+                contentTypes: queryParams.contentTypes? queryParams.contentTypes : 'movie,series'
             }
         }
         privateCall('GET', endpoint, params, onSuccess)

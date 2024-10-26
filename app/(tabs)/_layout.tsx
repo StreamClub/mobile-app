@@ -44,8 +44,8 @@ export default function AppLayout() {
                         <Image
                             source={focused? LocalIcon.recos : LocalIcon.recos_unselected }
                             style={{
-                                aspectRatio: 469 / 512,
-                                height: focused? 24 : 20,
+                                aspectRatio: 500 / 512,
+                                height: focused ? 28 : 24
                             }}
                         />,
                     headerStyle: {
@@ -63,14 +63,14 @@ export default function AppLayout() {
                         <Image
                             source={focused? LocalIcon.search : LocalIcon.search_unselected }
                             style={{
-                                aspectRatio: 469 / 512,
-                                height: focused? 24 : 20,
+                                aspectRatio: 500 / 512,
+                                height: focused ? 28 : 24
                             }}
                         />,
                     headerStyle: {
                         backgroundColor: colors.primaryRed
                     },
-                    headerTitle: "Busqueda",
+                    headerTitle: "Búsqueda",
                     headerTintColor: '#fff',
                     headerShown: true,
                 }}
@@ -83,7 +83,7 @@ export default function AppLayout() {
                             source={focused? LocalIcon.games : LocalIcon.games_unselected }
                             style={{
                                 aspectRatio: 500 / 512,
-                                height: focused? 24 : 20,
+                                height: focused ? 28 : 24
                             }}
                         />,
                     headerStyle: {
@@ -101,8 +101,8 @@ export default function AppLayout() {
                         <Image
                             source={focused ? LocalIcon.account : LocalIcon.account_unselected}
                             style={{
-                                aspectRatio: 1,
-                                height: focused? 24 : 20,
+                                aspectRatio: 500 / 512,
+                                height: focused ? 28 : 24
                             }}
                         />,
                     headerStyle: {

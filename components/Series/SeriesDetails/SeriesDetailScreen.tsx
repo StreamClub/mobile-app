@@ -1,25 +1,54 @@
-import React from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native'
 import { Chip } from 'react-native-paper'
 import { BodyText } from '../../BasicComponents/BodyText'
 import { colors } from '../../../assets'
 import { CastList } from '../../CastList'
-import { RecommendsList } from '../../RecommendsList'
+import { Content, RecommendsList } from '../../RecommendsList'
 import { SeriesPlatforms } from './SeriesPlatforms'
 import { NextEpisode } from './NextEpisode'
 import { SeriesDetail } from '../../../entities/Details/Series/SeriesDetailEntry'
 import { SeasonsList } from './SeasonsList'
 import { SeriesInfo } from './SeriesInfo'
 import { ReviewsList } from '../../Content/Reviews/ReviewsList'
+import { useGetSimilarSeries } from '../../../apiCalls/series'
+import { SimilarContent } from '../../../entities/Details/SimilarContent'
+import { LoadingComponent } from '../../BasicComponents/LoadingComponent'
 
 type SeriesDetailScreenParams = {
     series: SeriesDetail,
     onPressFullCredits: () => void;
+    refreshing: boolean,
+    refreshKey: React.Key,
+    onRefresh: () => void,
 }
 
 export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
+    const { series } = params
+    const [similarSeries, setSimilarSeries] = useState<Content[]>([])
+
+    const { getSimilarSeries, loading } = useGetSimilarSeries()
+
+    const onSuccessGetSimilar = (response: any) => {
+        const _similarSeries: Content[] = response.data.map((series: any) => {
+            return SimilarContent.fromJson(series)
+        })
+        setSimilarSeries(_similarSeries)
+    }
+
+    useEffect(() => {
+        console.log("Getting similar Series")
+
+        getSimilarSeries(series.id, onSuccessGetSimilar)
+    }, [])
+
     return (
-        <ScrollView>
+        <ScrollView
+            key={params.refreshKey}
+            refreshControl={
+                <RefreshControl refreshing={params.refreshing} onRefresh={params.onRefresh}
+                />}
+        >
             <View style={styles.container}>
                 <SeriesInfo series={params.series} />
                 <SeriesPlatforms
@@ -91,14 +120,15 @@ export const SeriesDetailScreen = (params: SeriesDetailScreenParams) => {
                 ) : null}
                 {params.series.cast.length > 0 && <>
                     <CastList cast={params.series.cast} style={styles.cast} />
-                    <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits}/>
+                    <BodyText body={"Ver reparto completo"} size="medium" style={styles.linkedText} onPress={params.onPressFullCredits} />
                 </>}
-                <ReviewsList contentId={params.series.id} contentType='series' userReview={params.series.userReview}/>
-                {params.series.similar.length > 0 ? (
+                <ReviewsList contentId={params.series.id} contentType='series' userReview={params.series.userReview} />
+                { loading && <LoadingComponent /> }
+                { !loading && params.series.similar.length > 0 ? (
                     <RecommendsList
                         contentType='series'
                         title="Series similares:"
-                        contents={params.series.similar}
+                        contents={similarSeries.length > 0 ? similarSeries : params.series.similar}
                         style={styles.recommends}
                     />
                 ) : null}

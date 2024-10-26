@@ -9,11 +9,11 @@ import { Stack, useLocalSearchParams } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
 import { useOnFocus } from '../../hooks/useOnFocus'
 import { useProfile } from '../../hooks/useProfile'
-import { WatchlistEntry } from '../../components/Types/Watchlist'
+import { SeenContent } from '../(tabs)/profile'
 
 const emptyProfile = {
   editable: true,
-  id: 0,
+  id: 1,
   email: '',
   userName: '',
   displayName: '',
@@ -25,7 +25,8 @@ const emptyProfile = {
       nextLevelThreshold: 1
   },
   friendRequest: null,
-  friendship: null
+  friendship: null,
+  photoId: 0
 }
 
 export type UserProfileParams = {
@@ -35,11 +36,10 @@ export type UserProfileParams = {
 export default function UserProfile() {
   const params = useLocalSearchParams<UserProfileParams>()
   const userId = +params.userId;
-  const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
   const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
-  const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
+  const [seenContent, setSeenContent] = useState<SeenContent>({isPublic: true, results: []});
   const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
-  const {loadingParams, getAll} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader, userId);
+  const {loadingParams, getAll} = useProfile(setUserServices, setSeenContent, setProfileHeader, userId);
 
   useOnFocus(() => {
     getAll()
@@ -47,10 +47,10 @@ export default function UserProfile() {
 
   const profileParams: ProfileScreenParams = {
     editable: false,
-    watchlist: watchlist,
     profileHeader: profileHeader,
     userServices: userServices,
-    seenContent: seenContent
+    seenContent: seenContent,
+    getAll: getAll
   }
 
   return (

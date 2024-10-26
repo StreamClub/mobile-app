@@ -1,11 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { CATEGORIES, INITIAL_CATEGORY, MOVIES_NAME, SERIES_NAME } from '../../constants'
+import { CATEGORIES, INITIAL_CATEGORY, MOVIES_NAME } from '../../constants'
 import { MovieEntry } from '../../entities/MovieListEntry'
 import { SeriesEntry } from '../../entities/SeriesListEntry'
 import { ArtistEntry } from '../../entities/ArtistListEntry'
 import { UserEntry } from '../../entities/UsersListEntry'
-import { SeasonDetail } from '../../entities/Details/Series/SeasonDetail'
-import { Episode } from '../../entities/Details/Series/Episode'
 
 const searchContentSlice = createSlice({
     name: 'searchContent',

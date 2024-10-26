@@ -1,12 +1,11 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native'
+import React, { useCallback, useState } from 'react'
 import { useEffect } from 'react'
 import { colors } from '../../assets'
 import { useGetSeries } from '../../apiCalls/series'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
 import { Stack, router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
-import { Content } from '../../components/RecommendsList'
 import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 import { useSeriesDetails } from '../../hooks/useSeriesDetails'
 import { SeriesHeader } from '../../components/Series/SeriesDetails/SeriesHeader'
@@ -24,6 +23,15 @@ export default function Serie() {
     const { getSeries, loading } = useGetSeries();
     const dispatch = useAppDispatch();
 
+    const [refreshing, setRefreshing] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setRefreshKey((prevKey) => prevKey + 1);
+        setRefreshing(false);
+        getSeries(serieId, onSuccess)
+    }, []);
 
     const onSuccess = (response: any) => {
         const series = response.data
@@ -52,6 +60,9 @@ export default function Serie() {
                 <SeriesDetailScreen
                     series={series}
                     onPressFullCredits={onPressFullCredits}
+                    refreshing={refreshing}
+                    refreshKey={refreshKey}
+                    onRefresh={onRefresh}
                 />
             ) : (
                 <LoadingComponent />

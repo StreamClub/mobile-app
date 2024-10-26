@@ -23,7 +23,7 @@ export enum LocalIcon {
     edit = require('../../assets/icons/edit.png'),
     undo = require('../../assets/icons/undo.png'),
     recos = require('../../assets/icons/recos.png'),
-    recos_unselected = require('../../assets/icons/recos-unselected.png'),
+    recos_unselected = require('../../assets/icons/recos_unselected.png'),
     movie = require('../../assets/icons/movie.png'),
     series = require('../../assets/icons/series.png'),
     clock = require('../../assets/icons/clock.png'),

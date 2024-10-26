@@ -19,6 +19,19 @@ export const useGetMovie = () => {
 }
 
 // --------- --------- --------- --------- --------- ---------
+export const useGetSimilarMovies = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const getSimilarMovies = (movieId: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        const endpoint = '/movies/' + movieId + '/recommendations';
+        const params: Params = { params: { country: country } };
+        privateCall('GET', endpoint, params, onSuccess);
+    }
+
+    return {getSimilarMovies, loading};
+}
+
+// --------- --------- --------- --------- --------- ---------
 export type SearchParams = {
     query: string
     page: number
@@ -102,3 +115,18 @@ export const useDiscoverMovie = () => {
 
     return {discoverMovie, loading};
 }
+
+// --------- --------- --------- --------- --------- ---------
+export const useSimilarMovies = () => {
+    const {privateCall, loading} = usePrivateCall();
+
+    const similarMovies = (selectedContent: string, onSuccess: (response: AxiosResponse<any, any>) => void) => {
+        console.log("About to get similar movies");
+        console.log(selectedContent);
+        const params: Params = { params: {movieIds: selectedContent} };
+        privateCall('GET', '/movies/similar', params, onSuccess);
+    }
+
+    return {similarMovies, loading};
+}
+

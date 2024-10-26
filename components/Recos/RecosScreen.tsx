@@ -1,15 +1,43 @@
-import React from 'react';
-import { StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { colors } from '../../assets';
 import { UserRecos } from './UserRecos';
-
-const screenWidth = Dimensions.get('window').width
+import { Groups } from './Groups';
+import { SubgroupRecommendationsButton } from './SubGroupRecommendations/SubgroupRecommendationsButton';
+import { ContentSeenByFriends } from '../ContentSeenByFriends/ContentSeenByFriends';
 
 export const RecosScreen = () => {
-    return (
-        <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
-            <UserRecos />
-        </ScrollView>
+    const [refreshing, setRefreshing] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setRefreshKey((prevKey) => prevKey + 1);
+        setRefreshing(false);
+      }, []);
+
+      return (
+        <FlatList
+            key={refreshKey}
+            style={styles.container}
+            ListHeaderComponent={
+                <>
+                <UserRecos />
+                <ContentSeenByFriends />
+                </>
+            }
+            ListFooterComponent={
+                <>
+                    <SubgroupRecommendationsButton />
+                    <Groups />
+                </>
+            }
+            data={[]}
+            renderItem={() => null}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        />
     )
 }
 
@@ -18,27 +46,5 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         backgroundColor: colors.secondaryWhite,
-    },
-    carousel: {
-        width: screenWidth,
-    },
-    serviceLogo: {
-        height: 60,
-        aspectRatio: 1,
-        borderRadius: 15,
-        margin: 10,
-        borderWidth: 1,
-    },
-    linkedText: {
-        color: colors.primaryBlue,
-        fontWeight: 'bold',
-        alignSelf: 'flex-end',
-        marginTop: 10,
-        marginRight: 8,
-        textDecorationLine: 'underline',
-    },
-    titleText: {
-        fontWeight:'bold', 
-        marginLeft: 10
     },
 });

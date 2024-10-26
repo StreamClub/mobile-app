@@ -1,5 +1,5 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, RefreshControl } from 'react-native'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { colors } from '../../assets'
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent'
@@ -7,13 +7,11 @@ import { ProfileScreen, ProfileScreenParams } from '../../components/Profile/Pro
 import { ProfileHeaderParams } from '../../components/Profile/ProfileHeader'
 import { Stack } from 'expo-router'
 import { CarouselEntry } from '../../components/BasicComponents/Types/CarouselParams'
-import { useOnFocus } from '../../hooks/useOnFocus'
 import { useProfile } from '../../hooks/useProfile'
-import { WatchlistEntry } from '../../components/Types/Watchlist'
 
 const emptyProfile = {
     editable: true,
-    id: 0,
+    id: 1,
     email: '',
     userName: '',
     displayName: '',
@@ -29,24 +27,27 @@ const emptyProfile = {
     photoId: 11
 }
 
+export type SeenContent = {
+    isPublic: boolean,
+    results: CarouselEntry[]
+}
+
 export default function Profile() {
-    const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
     const [userServices, setUserServices] = useState<CarouselEntry[]>([]);
-    const [seenContent, setSeenContent] = useState<CarouselEntry[]>([]);
+    const [seenContent, setSeenContent] = useState<SeenContent>({isPublic: true, results: []});
     const [profileHeader, setProfileHeader] = useState<ProfileHeaderParams>(emptyProfile);
-    const {loadingParams, getAll, onWatchlistReachedEnd} = useProfile(setWatchlist, setUserServices, setSeenContent, setProfileHeader);
+    const {loadingParams, getAll} = useProfile(setUserServices, setSeenContent, setProfileHeader);
 
-    useOnFocus(() => {
+    useEffect(() => {
         getAll()
-    })
-
+    }, [])
+    
     const profileParams: ProfileScreenParams = {
         editable: true,
-        watchlist: watchlist,
-        onWatchlistReachedEnd: onWatchlistReachedEnd,
         profileHeader: profileHeader,
         userServices: userServices,
-        seenContent: seenContent
+        seenContent: seenContent,
+        getAll: getAll
     }
 
     return (

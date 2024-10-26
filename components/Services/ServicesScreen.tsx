@@ -77,10 +77,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     topContainer: {
-        flex: 0.3,
+        flex: 0.2,
     },
     bottomContainer: {
-        flex: 0.7,
+        flex: 0.8,
     },
     carousel: {
         width: screenWidth,

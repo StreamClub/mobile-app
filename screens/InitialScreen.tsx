@@ -17,9 +17,9 @@ export const InitialScreen = () => {
         style={styles.imageStyle}
       />
       <View style={styles.buttonContainer}>
-        <TitleText body="Bienvenido a Stream Club" />
+        <TitleText style={styles.titleText} body="Bienvenido a Stream Club" />
       </View>
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <CustomButton
           buttonText="Iniciar sesión"
           onPress={() => router.push("/signIn")}
@@ -36,7 +36,7 @@ export const InitialScreen = () => {
           buttonSize="big"
           type="secondary"
         />
-      </View>
+      </View> */}
       <GoogleSignInButton />
     </View>
   );
@@ -49,8 +49,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.secondaryWhite,
   },
+  titleText: {
+    fontSize: 30, // Tamaño más grande del texto
+    textAlign: 'center', // Alineación centrada del texto
+  },
   buttonContainer: {
-    padding: 10,
+    padding: 15,
   },
   imageStyle: {
     width: 389,

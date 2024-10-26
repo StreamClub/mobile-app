@@ -10,10 +10,6 @@ export default function Statistics() {
   return (
     <ScrollView style={{backgroundColor: colors.secondaryWhite}}>
       <View style={styles.container}>
-        <TitleText 
-          body='Estadísticas de uso de tus plataformas:' 
-          color={colors.primaryBlack}
-          style={{marginTop: 10}} />
         <PlatformsStatistics />
       </View>
     </ScrollView>

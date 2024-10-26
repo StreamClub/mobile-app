@@ -15,7 +15,7 @@ export const ProfileLevel = (params: ProfileLevelParams) => {
   return(
     <View>
       <BodyText body={params.name} size='big' style={{margin: 10}} />
-      <ProgressBar progress={progress > 0? 1 : progress} color={colors.primaryBlue} />
+      <ProgressBar progress={progress > 1? 1 : progress} color={colors.primaryBlue} />
       <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
         <BodyText body={params.points + '/' + params.nextLevelThreshold} />
       </View>

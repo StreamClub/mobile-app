@@ -37,13 +37,11 @@ export const PlatformsStatistics = () => {
   return(
     <View style={styles.container}>
       <View style={styles.card}>
-        <View style={{margin: 10}}>
-          <TitleText body='Último mes' />
           <MonthFilterButtons updateStats={updateStats} />
           <View style={{margin: 10}}>
             {loading?
               <LoadingComponent /> :
-              <>
+              <View style={{justifyContent: 'center', alignItems: 'center'}} >
                 <BarChart
                   stats={stats.top}
                   maxValue={maxValue} />
@@ -56,9 +54,8 @@ export const PlatformsStatistics = () => {
                       style={{margin: 5}} />
                   ))}
                 </View>
-              </>
+              </View>
             }
-          </View>
         </View>
       </View>
       <BodyText

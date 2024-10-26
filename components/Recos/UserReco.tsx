@@ -16,7 +16,7 @@ export const UserReco = (params: UserRecoParams) => {
 
     return (
         <LinearGradient
-            colors={['#FFFFFF', '#9FA125']}
+            colors={['#FFFFFF', '#6F757E']}
             start={{ x: 0, y: 1 }}
             end={{ x: 1, y: 0 }}
             style={styles.container}

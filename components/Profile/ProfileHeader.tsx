@@ -37,7 +37,7 @@ export const ProfileHeader = (params: ProfileHeaderParams) => {
                 </View>
                 <View style={containerStyles.details}>
                     <View style={containerStyles.metric}>
-                        <Pressable onPress={() => router.push({ pathname: '/friends' })} >
+                        <Pressable onPress={() => params.editable? router.push({ pathname: '/friends' }) : null} >
                             <BodyText size={"big"} body={params.friendsCount.toString()} style={styles.metricNumber}/>
                             <BodyText size={"big"} body={"Amigos"} style={styles.metricText}/>                            
                         </Pressable>

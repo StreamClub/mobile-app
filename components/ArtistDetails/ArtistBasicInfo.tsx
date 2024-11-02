@@ -63,7 +63,7 @@ export const ArtistBasicInfo = (params: ArtistBasicInfoParams) => {
                         fontWeight: 'bold',
                     }}
                 />
-                <View style={{ paddingTop: 20, flex: 1, width: '100%' }}>
+                <View style={{ paddingTop: 20, flex: 1, width: '100%', marginLeft: 10 }}>
                     {params.birthDate && <IconWithText {...birthDateParams} />}
                     {params.deathDate && <IconWithText {...deathDateParams} />}
                     {params.birthPlace && (

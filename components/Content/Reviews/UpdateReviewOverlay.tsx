@@ -56,7 +56,7 @@ export const UpdateReviewOverlay = (params: UpdateReviewEntry) => {
                 type='primary'
                 onPress={() => params.onPress(liked, review, params.onSuccess)}
                 fontSize='small' 
-                style={{ margin: 5 }}
+                style={{ margin: 5, height: 40 }}
                 disabled={!likeSet} 
                 loading={params.loading} />
         </View>

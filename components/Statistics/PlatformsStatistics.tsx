@@ -34,6 +34,10 @@ export const PlatformsStatistics = () => {
     getStatistics('1', onSuccess);
   }, [])
 
+  const padToEleven = (str:string) => {
+    return str.length >= 11 ? str : str.padEnd(11, ' ');
+  }
+
   return(
     <View style={styles.container}>
       <View style={styles.card}>
@@ -45,11 +49,11 @@ export const PlatformsStatistics = () => {
                 <BarChart
                   stats={stats.top}
                   maxValue={maxValue} />
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', width:'70%'}}>
                   {stats.top.map((item, index) => (
                     <BodyText 
                       key={index}
-                      body={item.providerName}
+                      body={padToEleven(item.providerName)}
                       color={barColors[index % barColors.length]}
                       style={{margin: 5}} />
                   ))}

@@ -12,7 +12,7 @@ export type BarChartType = {
 export const BarChart = (params: BarChartType) => {
   const chartHeight = 200;
   const barWidth = 50;
-  const spacing = 30;
+  const spacing = 50;
   const maxValue = params.maxValue;
 
   return (

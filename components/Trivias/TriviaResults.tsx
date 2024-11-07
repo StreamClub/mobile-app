@@ -28,7 +28,7 @@ export const TriviaResults = (params: TriviaResultsParams) => {
     <View style={{backgroundColor: colors.primaryWhite, borderRadius: 10}} >
         <View style={{margin: 10}}>
           <TitleText 
-            body={"Score " + score + "/" + params.responses.length + ":"} />
+            body={"Puntaje " + score + "/" + params.responses.length + ":"} />
           <View>
             {params.responses.map((response, index) => 
               <View style={{flexDirection: 'row', alignContent: 'center'}} key={index} >

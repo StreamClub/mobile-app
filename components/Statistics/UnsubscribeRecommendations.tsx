@@ -11,6 +11,10 @@ type UnsubscribeRecommendationsType = {
   totalViewed: number
 }
 
+const roundToFive = (value:number) => {
+  const rounded = Math.round(value / 5) * 5;
+  return rounded === 0 ? 5 : rounded;
+};
 
 export const UnsubscribeRecommendations = (params: UnsubscribeRecommendationsType) => {
   return(
@@ -34,7 +38,7 @@ export const UnsubscribeRecommendations = (params: UnsubscribeRecommendationsTyp
               style={styles.logo} />
             <BodyText 
               body={item.providerName + ': solo el ' 
-                + (item.timeWatched/params.totalViewed).toFixed(0)
+                + roundToFive((item.timeWatched / params.totalViewed) * 100)
                 + '% de tu contenido visto proviene de este servicio.'}
               size='big'
               style={{margin: 10, flex: 1}} />

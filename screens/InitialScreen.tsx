@@ -19,6 +19,7 @@ export const InitialScreen = () => {
       <View style={styles.buttonContainer}>
         <TitleText style={styles.titleText} body="Bienvenido a Stream Club" />
       </View>
+      {/* [DEMO] comentar */}
       {/* <View style={styles.buttonContainer}>
         <CustomButton
           buttonText="Iniciar sesión"
@@ -37,6 +38,7 @@ export const InitialScreen = () => {
           type="secondary"
         />
       </View> */}
+      {/* [DEMO] comentar */}
       <GoogleSignInButton />
     </View>
   );

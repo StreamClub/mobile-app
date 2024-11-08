@@ -10,6 +10,8 @@ import { useDeleteGroup } from '../../apiCalls/groups'
 import { Carousel } from '../BasicComponents/Carousel'
 import { TmdbImageType } from '../BasicComponents/TmdbImage'
 import { CarouselEntry } from '../BasicComponents/Types/CarouselParams'
+import { router } from 'expo-router'
+import { ContentDetailsParams } from '../../apiCalls/params/content/ContentDetailsParams'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -56,6 +58,13 @@ export const GroupsList = (params: GroupsListParams) => {
             carouselEntries.push(carouselEntry)
         })
         return carouselEntries
+    }
+
+    const onMoviePressed = (movie: any) => {
+        const params: ContentDetailsParams = {
+            id: movie.id.toString(),
+        }
+        router.push({ pathname: '/movie', params })
     }
 
     useEffect(() => {
@@ -112,7 +121,7 @@ export const GroupsList = (params: GroupsListParams) => {
                     items={formatToCarouselEntryArray(item.movies)}
                     containerStyle={styles.carousel}
                     itemStyle={seenContentStyles.contentPoster}
-                    onItemPressed={() => console.log('Pressed')}
+                    onItemPressed={onMoviePressed}
                 />
                 </>
             }

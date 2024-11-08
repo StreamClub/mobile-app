@@ -3,10 +3,10 @@ import { View, StyleSheet } from "react-native";
 import { useGetTrivia } from "../../apiCalls/trivias";
 import { TmdbImage, TmdbImageType } from "../BasicComponents/TmdbImage";
 import { TitleText } from "../BasicComponents/TitleText";
-import { colors } from "../../assets";
 import { LoadingComponent } from "../BasicComponents/LoadingComponent";
 import { Question } from "./TriviaQuestion";
 import { TriviaContent } from "./TriviaContent";
+import { IconButton } from "react-native-paper";
 
 type TriviaGameParams = {
   contentType: string,
@@ -45,18 +45,25 @@ export const TriviaGame = (params: TriviaGameParams) => {
   }
   
   return(
-    <View>
+    <View style={styles.card}>
       {loading?
         <LoadingComponent /> :
         <View>
-          <View style={{flexDirection: 'row'}} >
-            <TmdbImage
-              resource={triviaGame.poster}
-              type={TmdbImageType.Cover}
-              style={styles.triviaPoster} />
-            <TitleText 
-              body={triviaGame.title}
-              style={{margin: 10}} />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}} >
+            <View style={{flexDirection: 'row'}}>
+              <TmdbImage
+                resource={triviaGame.poster}
+                type={TmdbImageType.Cover}
+                style={styles.triviaPoster} />
+              <TitleText 
+                body={triviaGame.title}
+                style={{margin: 10}} />
+            </View>
+            <IconButton
+              icon='close'
+              size={30}
+              onPress={() => params.setOpenModal(false)}
+              style={{alignSelf: 'flex-start'}} />
           </View>
           <TriviaContent 
             triviaGame={triviaGame}
@@ -69,10 +76,8 @@ export const TriviaGame = (params: TriviaGameParams) => {
 
 export const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.primaryBlue,
-    margin: 10,
     borderRadius: 20,
-    flexDirection: 'row'
+    width: 350,
   },
   triviaPoster: {
     width: 100,

@@ -23,12 +23,12 @@ export const RecosScreen = () => {
             ListHeaderComponent={
                 <>
                 <UserRecos />
+                <SubgroupRecommendationsButton />
                 <ContentSeenByFriends />
                 </>
             }
             ListFooterComponent={
                 <>
-                    <SubgroupRecommendationsButton />
                     <Groups />
                 </>
             }

@@ -11,7 +11,6 @@ import { serializeSearchResults } from '../../utils/serializeSearchResults';
 import { useDataToSerieEntryList } from '../../hooks/search/useSeriesEntryList';
 import { LoadingComponent } from '../../components/BasicComponents/LoadingComponent';
 import { BodyText } from '../../components/BasicComponents/BodyText';
-import { useAppSelector } from '../../hooks/redux/useAppSelector';
 import { useSimilarSeries } from '../../apiCalls/series';
 
 export type SubGroupRecommendationsType = {

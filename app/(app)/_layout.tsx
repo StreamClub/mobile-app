@@ -1,8 +1,8 @@
 import React from 'react';
-import { Stack, router, Redirect } from 'expo-router';
+import { Stack, Redirect, useSegments } from 'expo-router';
 import { useSession } from '../../context/ctx';
 import { colors } from '../../assets';
-import { IconButton } from 'react-native-paper';
+import { screenHeadersMap } from '../../utils/screenHeadersMap';
 
 export default function AppLayout() {
     const session = useSession()
@@ -10,10 +10,12 @@ export default function AppLayout() {
     const accessToken = session?.accessToken
     const refreshToken = session?.refreshToken
     const isLoading = session?.isLoading
+    const segments = useSegments();
 
     if (!(accessToken) && !(refreshToken) && !(isLoading)) {
         return <Redirect href="/" />;
     }
+    const routeName = screenHeadersMap[segments[segments.length - 1]?.toString()] || "";
 
     return (
         <Stack
@@ -21,11 +23,7 @@ export default function AppLayout() {
                 headerStyle: {
                     backgroundColor: colors.primaryRed
                 },
-                headerTitle: () => router.canGoBack() ? <IconButton 
-                                        onPress={() => router.back()} 
-                                        icon="arrow-left" 
-                                        size={35} 
-                                        iconColor={colors.primaryWhite}/> : null,
+                headerTitle: routeName,
                 headerTintColor: '#fff',
                 headerShown: true,
                 headerBackVisible: false,

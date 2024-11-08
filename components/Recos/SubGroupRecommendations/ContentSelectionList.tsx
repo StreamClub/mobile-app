@@ -57,7 +57,7 @@ export const ContentSelectionList = (params: ContentSelectionListType) => {
         type="primary"
         buttonSize="auto"
         disabled={checked.length == 0}
-        style={{alignSelf: 'flex-start', width: "100%", marginTop: 15 }} />
+        style={{alignSelf: 'flex-start', width: "100%", marginTop: 15 , height: 50}} />
       <View style={{margin: 10}} >
         {checked.length >= 3? 
         <BodyText
